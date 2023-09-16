@@ -14,7 +14,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
 
+    <!-- Data Tables -->
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet" />
 
     {{-- Data tables --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css') }}">
@@ -138,30 +140,31 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
-
+    <!-- Data Tables -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
 
     <script>
-        new DataTable('#example');
+        $(document).ready(function() {
+            new DataTable('#example', {
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+            });
+        });
     </script>
-
-    {{-- <!-- DataTables  & Plugins -->
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}" defer></script>
-    <script src="{{ asset('js/dataTables.bootstrap4.min.js') }}" defer></script>
-    <script src="{{ asset('js/dataTables.responsive.min.js') }}" defer></script>
-    <script src="{{ asset('js/responsive.bootstrap4.min.js') }}" defer></script>
-    <script src="{{ asset('js/dataTables.buttons.min.js') }}" defer></script>
-    <script src="{{ asset('js/buttons.bootstrap4.min.js') }}" defer></script>
-    <script src="{{ asset('js/jszip.min.js') }}" defer></script>
-    <script src="{{ asset('js/pdfmake.min.js') }}" defer></script>
-    <script src="{{ asset('js/vfs_fonts.js') }}" defer></script>
-    <script src="{{ asset('js/buttons.html5.min.js') }}" defer></script>
-    <script src="{{ asset('js/buttons.print.min.js') }}" defer></script>
-    <script src="{{ asset('js/buttons.colVis.min.js') }}" defer></script> --}}
+    
 
     <!-- Page specific script -->
-    
+
 
 
     @yield('scripts')
