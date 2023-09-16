@@ -37,7 +37,7 @@
                                             <th>Entitas</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
-                                            <th>Action</th>
+                                            <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>

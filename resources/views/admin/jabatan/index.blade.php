@@ -35,7 +35,7 @@
                                             <th>Transportasi</th>
                                             <th>Uang Makan</th>
                                             <th>Total Gaji</th>
-                                            <th>Action</th>
+                                            <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>

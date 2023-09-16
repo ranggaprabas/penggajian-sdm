@@ -153,15 +153,43 @@
 
     <script>
         $(document).ready(function() {
-            new DataTable('#example', {
+            var table = new DataTable('#example', {
                 dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
+                buttons: [{
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: ':not(.action-column)' // Mengexklusikan kolom dengan class 'action-column'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: ':not(.action-column)'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':not(.action-column)'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':not(.action-column)'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':not(.action-column)'
+                        }
+                    }
                 ],
             });
         });
     </script>
-    
+
 
     <!-- Page specific script -->
 

@@ -31,7 +31,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nama</th>
-                                            <th>Action</th>
+                                            <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
