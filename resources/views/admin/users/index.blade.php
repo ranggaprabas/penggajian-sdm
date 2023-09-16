@@ -10,7 +10,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 d-flex justify-content-between">
-                    <h1 class="m-0">{{ __('Karyawan') }}</h1>
+                    <h1 class="m-0">{{ __('SDM') }}</h1>
 
                     <a href="{{ route('admin.users.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
                 </div><!-- /.col --> 
@@ -25,10 +25,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-body p-0">
-
+                        <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table">
+                                <table id="example" class="display" style="width: 100%">
                                     <thead>
                                         <tr>
                                             <th>Nama</th>

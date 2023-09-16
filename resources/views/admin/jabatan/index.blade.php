@@ -25,9 +25,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-body p-0">
+                        <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table">
+                                <table id="example" class="display" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Nama</th>
