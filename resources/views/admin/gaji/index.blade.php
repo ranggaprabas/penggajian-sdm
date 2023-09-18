@@ -89,61 +89,69 @@
                     </div>
                 </div>
             @endif
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nik</th>
-                                            <th>Nama</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>Jabatan</th>
-                                            <th>Gaji Pokok</th>
-                                            <th>Transportasi</th>
-                                            <th>Uang Makan</th>
-                                            <th>Potongan</th>
-                                            <th>Total Gaji</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($items as $item)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->nik }}</td>
-                                                <td>{{ $item->nama }}</td>
-                                                <td>{{ $item->jenis_kelamin }}</td>
-                                                <td>{{ $item->nama_jabatan }}</td>
-                                                <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
-                                                <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}</td>
-                                                <td>Rp. {{ number_format($item->uang_makan, 0, '', '.') }}</td>
-                                                @php
-                                                    $potongan_gaji_alpha = isset($potongan_alpha[0]) ? $potongan_alpha[0]->jumlah_potongan : 0;
-                                                    $potongan_gaji_izin = isset($potongan_izin[0]) ? $potongan_izin[0]->jumlah_potongan : 0;
-                                                    $total_potongan = $potongan_gaji_alpha * $item->alpha + $potongan_gaji_izin * $item->izin;
-                                                    $total_gaji = $item->gaji_pokok + $item->transportasi + $item->uang_makan - $total_potongan;
-                                                @endphp
-                                                <td>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
-                                                <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="9" class="text-center">Data Kosong</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                @if (count($items) > 0)
+                                    <div class="table-responsive">
+                                        <table id="example" class="display" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nik</th>
+                                                    <th>Nama</th>
+                                                    <th>Jenis Kelamin</th>
+                                                    <th>Jabatan</th>
+                                                    <th>Gaji Pokok</th>
+                                                    <th>Transportasi</th>
+                                                    <th>Uang Makan</th>
+                                                    <th>Potongan</th>
+                                                    <th>Total Gaji</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($items as $item)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $item->nik }}</td>
+                                                        <td>{{ $item->nama }}</td>
+                                                        <td>{{ $item->jenis_kelamin }}</td>
+                                                        <td>{{ $item->nama_jabatan }}</td>
+                                                        <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
+                                                        <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}</td>
+                                                        <td>Rp. {{ number_format($item->uang_makan, 0, '', '.') }}</td>
+                                                        @php
+                                                            $potongan_gaji_alpha = isset($potongan_alpha[0]) ? $potongan_alpha[0]->jumlah_potongan : 0;
+                                                            $potongan_gaji_izin = isset($potongan_izin[0]) ? $potongan_izin[0]->jumlah_potongan : 0;
+                                                            $total_potongan = $potongan_gaji_alpha * $item->alpha + $potongan_gaji_izin * $item->izin;
+                                                            $total_gaji = $item->gaji_pokok + $item->transportasi + $item->uang_makan - $total_potongan;
+                                                        @endphp
+                                                        <td>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
+                                                        <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="9" class="text-center">Data Kosong</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <span class="badge bg-danger">Data Kosong</span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
     </div>
     <!-- /.content -->
 @endsection
