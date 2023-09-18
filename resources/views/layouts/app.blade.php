@@ -18,6 +18,12 @@
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet" />
 
+
+    {{-- sweet alert --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
+
     {{-- Data tables --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.bootstrap4.min.css') }}">
@@ -150,6 +156,9 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
+    {{-- sweet alert --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <script>
         $(document).ready(function() {
@@ -194,6 +203,62 @@
         new DataTable('#example1');
     </script>
 
+    <script>
+        //button create post event
+        $('body').on('click', '#btn-delete-post', function() {
+
+            let item_id = $(this).data('id');
+            let token = $("meta[name='csrf-token']").attr("content");
+
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: "ingin menghapus data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    console.log('test');
+
+                    //fetch to delete data
+                    $.ajax({
+
+                        url: `/admin/entitas/${item_id}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(response) {
+
+                            //show success message
+                            Swal.fire({
+                                type: 'success',
+                                icon: 'success',
+                                title: `${response.message}`,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            //remove post on table
+                            $(`#index_${item_id}`).remove();
+
+                            // Kembali ke halaman sebelumnya
+                            setTimeout(function() {
+                                window.location.href =
+                                    "{{ route('admin.entitas.index') }}";
+                            }, 2000);
+                        }
+                    });
+
+
+                }
+            })
+
+        });
+    </script>
 
     <!-- Page specific script -->
 

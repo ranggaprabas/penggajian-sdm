@@ -77,10 +77,8 @@ class EntitasController extends Controller
     {
         $entita = Entitas::findOrFail($id);
 
-        // Mendapatkan semua user yang terkait dengan entitas
-        $users = User::where('entitas_id', $entita->id)->get();
-
         // Menghapus hubungan entitas pada setiap user
+        $users = User::where('entitas_id', $entita->id)->get();
         foreach ($users as $user) {
             $user->entitas_id = null;
             $user->save();
@@ -88,10 +86,11 @@ class EntitasController extends Controller
 
         // Menghapus entitas
         $entita->delete();
-
-        return redirect()->back()->with([
-            'message' => 'berhasil di delete',
-            'alert-info' => 'danger'
+        
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Entitas Berhasil Dihapus!.',
         ]);
     }
 }

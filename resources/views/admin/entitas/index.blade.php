@@ -37,16 +37,19 @@
                                     </thead>
                                     <tbody>
                                     @foreach($items as $item)
-                                        <tr>
+                                        <tr id="index_{{ $item->id }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td>
                                                 <a href="{{ route('admin.entitas.edit', ['entita' => $item->id]) }}" class="btn btn-info"> <i class="fa fa-edit"></i> </a>
-                                                <form onclick="return confirm('anda yakin ? ');" class="d-inline-block" action="{{ route('admin.entitas.destroy', $item->id) }}" method="post">
+                                                {{-- <form onclick="return confirm('anda yakin ? ');" class="d-inline-block" action="{{ route('admin.entitas.destroy', $item->id) }}" method="post">
                                                     @csrf 
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
-                                                </form>
+                                                </form> --}}
+                                                <a href="javascript:void(0)" id="btn-delete-post"
+                                                    data-id="{{ $item->id }}"
+                                                    class="btn btn-danger btn-sm">DELETE</a>
                                             </td>
                                         </tr>
                                     @endforeach
