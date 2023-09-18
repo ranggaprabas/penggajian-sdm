@@ -30,6 +30,7 @@
                                 <table id="example" class="display nowrap" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>No</th>
                                             <th>Nama</th>
                                             <th>Email</th>
                                             <th>Nik</th>
@@ -43,6 +44,7 @@
                                     <tbody>
                                     @foreach($users as $user)
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $user->nama }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->nik }}</td>

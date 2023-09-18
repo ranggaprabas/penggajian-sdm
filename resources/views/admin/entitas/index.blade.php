@@ -30,6 +30,7 @@
                                 <table id="example" class="display" style="width: 100%">
                                     <thead>
                                         <tr>
+                                            <th>No</th>
                                             <th>Nama</th>
                                             <th class="action-column">Action</th>
                                         </tr>
@@ -37,6 +38,7 @@
                                     <tbody>
                                     @foreach($items as $item)
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td>
                                                 <a href="{{ route('admin.entitas.edit', ['entita' => $item->id]) }}" class="btn btn-info"> <i class="fa fa-edit"></i> </a>

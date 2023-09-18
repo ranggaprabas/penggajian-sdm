@@ -30,6 +30,7 @@
                                 <table id="example" class="display" style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>No</th>
                                             <th>Nama</th>
                                             <th>Gaji Pokok</th>
                                             <th>Transportasi</th>
@@ -41,6 +42,7 @@
                                     <tbody>
                                     @foreach($items as $item)
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
                                             <td>Rp. {{ number_format($item->transportasi,0,'','.') }}</td>
