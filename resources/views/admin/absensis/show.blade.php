@@ -7,7 +7,7 @@
             <div class="row mb-2">
                 <div class="col-12 d-flex justify-content-between">
                     <h1 class="m-0">{{ __('Absensi kehadiran') }}</h1>
-                </div><!-- /.col --> 
+                </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -45,13 +45,13 @@
                                     <div class="form-group">
                                         <label for="tahun">Tahun</label>
                                         <select class="form-control" name="tahun" id="tahun">
-                                        <option value="#">-- Pilih Tahun --</option>
-                                        {{ $last= date('Y')-5 }}
-                                        {{ $now = date('Y') }}
+                                            <option value="#">-- Pilih Tahun --</option>
+                                            {{ $last = date('Y') - 5 }}
+                                            {{ $now = date('Y') }}
 
-                                        @for ($i = $now; $i >= $last; $i--)
-                                            <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
+                                            @for ($i = $now; $i >= $last; $i--)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
                                         </select>
                                     </div>
                                 </div>
@@ -62,83 +62,93 @@
                     </div>
                 </div>
             </div>
-            @if(request()->get('bulan') === null && request()->get('tahun') === null )
+            @if (request()->get('bulan') === null && request()->get('tahun') === null)
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            Menampilkan data kehadiran karyawan bulan <span class="text-bold">{{ date('m') }}</span> tahun <span class="text-bold">{{ date('Y') }}</span>
+                            Menampilkan data kehadiran karyawan bulan <span class="text-bold">{{ date('m') }}</span>
+                            tahun <span class="text-bold">{{ date('Y') }}</span>
                         </div>
                     </div>
                 </div>
-            @else 
+            @else
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            Menampilkan data kehadiran karyawan bulan <span class="text-bold">{{ request()->get('bulan') }}</span> tahun <span class="text-bold">{{ request()->get('tahun') }}</span>
+                            Menampilkan data kehadiran karyawan bulan <span
+                                class="text-bold">{{ request()->get('bulan') }}</span> tahun <span
+                                class="text-bold">{{ request()->get('tahun') }}</span>
                         </div>
                     </div>
                 </div>
             @endif
             <div class="row">
                 <div class="col-lg-12">
-                     <form action="{{ route('admin.absensis.store') }}" method="post">
-                        @csrf 
-                        @if(request()->get('bulan') === null && request()->get('tahun') === null )
-                            <input type="hidden" name="bulan" value="{{ ltrim(date('m').date('Y'), '0') }}">
-                        @else 
-                            <input type="hidden" name="bulan" value="{{ request()->get('bulan').request()->get('tahun') }}">
+                    <form action="{{ route('admin.absensis.store') }}" method="post">
+                        @csrf
+                        @if (request()->get('bulan') === null && request()->get('tahun') === null)
+                            <input type="hidden" name="bulan" value="{{ ltrim(date('m') . date('Y'), '0') }}">
+                        @else
+                            <input type="hidden" name="bulan"
+                                value="{{ request()->get('bulan') . request()->get('tahun') }}">
                         @endif
-                    <div class="card">
-                        <div class="card-body p-0">
-
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nik</th>
-                                            <th>Nama</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>Entitas</th>
-                                            <th>Jabatan</th>
-                                            <th>Hadir</th>
-                                            <th>Sakit</th>
-                                            <th>Alpha</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @forelse($absensis as $absensi)
-                                        <tr>
-                                            <input type="hidden" name="karyawan_id[]" value="{{ $absensi->id  }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $absensi->nik }}</td>
-                                            <td>{{ $absensi->nama }}</td>
-                                            <td>{{ $absensi->jenis_kelamin }}</td>
-                                            <td>{{ $absensi->nama_entitas }}</td>
-                                            <td>{{ $absensi->nama_jabatan }}</td>
-                                            <td width="10%">
-                                                <input name="hadir[]" style="width: 100%" type="number">
-                                            </td>
-                                            <td width="10%">
-                                                <input name="izin[]" style="width: 100%" type="number">
-                                            </td>
-                                            <td width="10%">
-                                                <input name="alpha[]" style="width: 100%" type="number">
-                                            </td>
-                                        </tr>
-                                    @empty 
-                                        <tr>
-                                            <td colspan="9" class="text-center">Data Kosong</td>
-                                        </tr>
-                                    @endforelse
-                                    </tbody>
-                                </table>
+                        <div class="card">
+                            <div class="card-body">
+                                @if (count($absensis) > 0)
+                                    <div class="table-responsive">
+                                        <table id="example" class="display" style="width: 100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nik</th>
+                                                    <th>Nama</th>
+                                                    <th>Jenis Kelamin</th>
+                                                    <th>Entitas</th>
+                                                    <th>Jabatan</th>
+                                                    <th>Hadir</th>
+                                                    <th>Sakit</th>
+                                                    <th>Alpha</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($absensis as $absensi)
+                                                    <tr>
+                                                        <input type="hidden" name="karyawan_id[]"
+                                                            value="{{ $absensi->id }}">
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $absensi->nik }}</td>
+                                                        <td>{{ $absensi->nama }}</td>
+                                                        <td>{{ $absensi->jenis_kelamin }}</td>
+                                                        <td>{{ $absensi->nama_entitas }}</td>
+                                                        <td>{{ $absensi->nama_jabatan }}</td>
+                                                        <td width="10%">
+                                                            <input name="hadir[]" style="width: 100%" type="number">
+                                                        </td>
+                                                        <td width="10%">
+                                                            <input name="izin[]" style="width: 100%" type="number">
+                                                        </td>
+                                                        <td width="10%">
+                                                            <input name="alpha[]" style="width: 100%" type="number">
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="9" class="text-center">Data Kosong</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary mx-auto btn-block">Add</button>
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <span class="badge bg-danger">Data Kosong</span>
+                                    </div>
+                                @endif
                             </div>
-
                         </div>
-                            <button type="submit" class="btn btn-primary">Add</button>
-                    </div>
-
                     </form>
                 </div>
             </div>
