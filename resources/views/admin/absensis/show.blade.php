@@ -20,6 +20,7 @@
                 <div class="col-lg-12">
                     <div class="card p-4">
                         <form action="{{ route('admin.absensis.show') }}" method="get">
+                            <p class="text-bold">Pilih Data yang ingin dicetak berdasarkan Bulan dan Tahun</p>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -96,7 +97,7 @@
                             <div class="card-body">
                                 @if (count($absensis) > 0)
                                     <div class="table-responsive">
-                                        <table id="example" class="display" style="width: 100%">
+                                        <table id="example1" class="display" style="width: 100%">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>

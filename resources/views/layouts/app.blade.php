@@ -190,6 +190,10 @@
         });
     </script>
 
+    <script>
+        new DataTable('#example1');
+    </script>
+
 
     <!-- Page specific script -->
 
