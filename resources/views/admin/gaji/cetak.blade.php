@@ -34,6 +34,7 @@
                 <th class="text-center">Nik</th>
                 <th class="text-center">Nama</th>
                 <th class="text-center">Jenis Kelamin</th>
+                <th class="text-center">Entitas</th>
                 <th class="text-center">Jabatan</th>
                 <th class="text-center">Gaji Pokok</th>
                 <th class="text-center">Transportasi</th>
@@ -49,6 +50,7 @@
                     <td>{{ $item->nik }}</td>
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->jenis_kelamin }}</td>
+                    <td>{{ $item->nama_entitas }}</td>
                     <td>{{ $item->nama_jabatan }}</td>
                     <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
                     <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}</td>

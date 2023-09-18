@@ -95,6 +95,7 @@
                                                 <th>Nik</th>
                                                 <th>Nama</th>
                                                 <th>Jenis Kelamin</th>
+                                                <th>Entitas</th>
                                                 <th>Jabatan</th>
                                                 <th>Hadir</th>
                                                 <th>Izin</th>
@@ -108,6 +109,7 @@
                                                     <td>{{ $absensi->user->nik }}</td>
                                                     <td>{{ $absensi->user->nama }}</td>
                                                     <td>{{ $absensi->user->jenis_kelamin }}</td>
+                                                    <td>{{ $absensi->user->entitas->nama }}</td>
                                                     <td>{{ $absensi->user->jabatan->nama }}</td>
                                                     <td>{{ $absensi->hadir }}</td>
                                                     <td>{{ $absensi->izin }}</td>

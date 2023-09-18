@@ -13,11 +13,11 @@ class AbsensiController extends Controller
     {
         $bulan = $request->get('bulan') . $request->get('tahun');
 
-        if($bulan === '') {
-            $bulanSaatIni = ltrim(date('m').date('Y'), '0');
-            $absensis = Absensi::with('user')->where('bulan', $bulanSaatIni)->get(); 
-        }else {
-            $absensis = Absensi::with('user')->where('bulan', $bulan)->get(); 
+        if ($bulan === '') {
+            $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
+            $absensis = Absensi::with('user')->where('bulan', $bulanSaatIni)->get();
+        } else {
+            $absensis = Absensi::with('user')->where('bulan', $bulan)->get();
         }
 
         return view('admin.absensis.index', compact('absensis'));
@@ -27,31 +27,36 @@ class AbsensiController extends Controller
     {
         $bulan = $request->get('bulan') . $request->get('tahun');
 
-        if($bulan === '') {
-            $bulanSaatIni = ltrim(date('m').date('Y'), '0');
-            $absensis = DB::select("
-                SELECT users.*,jabatan.nama as nama_jabatan
-                FROM users 
-                JOIN jabatan ON users.jabatan_id = jabatan.id 
-                WHERE NOT EXISTS 
-                (SELECT * FROM absensi 
-                    WHERE bulan = $bulanSaatIni
-                    AND users.id = absensi.user_id
-                )");
-        }else {
-            $absensis = DB::select("
-                select users.*,jabatan.nama as nama_jabatan
-                FROM users
-                JOIN jabatan ON users.jabatan_id = jabatan.id
-                WHERE NOT EXISTS
-                (SELECT * FROM absensi 
-                    WHERE bulan = $bulan 
-                    AND users.id = absensi.user_id
-                )");
+        if ($bulan === '') {
+            $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
+            $absensis = DB::table('users')
+                ->select('users.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
+                ->join('jabatan', 'users.jabatan_id', '=', 'jabatan.id')
+                ->leftJoin('entitas', 'users.entitas_id', '=', 'entitas.id')
+                ->whereNotExists(function ($query) use ($bulanSaatIni) {
+                    $query->select(DB::raw(1))
+                        ->from('absensi')
+                        ->whereRaw('users.id = absensi.user_id')
+                        ->where('bulan', $bulanSaatIni);
+                })
+                ->get();
+        } else {
+            $absensis = DB::table('users')
+                ->select('users.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
+                ->join('jabatan', 'users.jabatan_id', '=', 'jabatan.id')
+                ->leftJoin('entitas', 'users.entitas_id', '=', 'entitas.id')
+                ->whereNotExists(function ($query) use ($bulan) {
+                    $query->select(DB::raw(1))
+                        ->from('absensi')
+                        ->whereRaw('users.id = absensi.user_id')
+                        ->where('bulan', $bulan);
+                })
+                ->get();
         }
 
         return view('admin.absensis.show', compact('absensis'));
     }
+
 
     public function store(Request $request)
     {
@@ -61,14 +66,13 @@ class AbsensiController extends Controller
             'alpha[]' => 'nullable|number'
         ]);
 
-        foreach($request->karyawan_id as $key => $id)
-        {
+        foreach ($request->karyawan_id as $key => $id) {
             $input['user_id'] = $id;
             $input['bulan'] = $request->bulan;
             $input['hadir'] = $request->hadir[$key];
             $input['izin'] = $request->izin[$key];
             $input['alpha'] = $request->alpha[$key];
-            if($input['hadir'] === 0 || $input['hadir'] || $input['izin'] === 0 || $input['izin'] || $input['alpha'] === 0 || $input['alpha']) {
+            if ($input['hadir'] === 0 || $input['hadir'] || $input['izin'] === 0 || $input['izin'] || $input['alpha'] === 0 || $input['alpha']) {
                 Absensi::create($input);
             }
         }
