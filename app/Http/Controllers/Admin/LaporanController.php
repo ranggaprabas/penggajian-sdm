@@ -12,7 +12,8 @@ class LaporanController extends Controller
 {
     public function index()
     {
-        $users = User::get(['nama', 'id']);
+        // Ambil semua pengguna yang bukan admin (is_admin != 1)
+        $users = User::where('is_admin', '!=', 1)->get(['nama', 'id']);
 
         return view('admin.laporan.index', compact('users'));
     }

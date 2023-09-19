@@ -112,26 +112,34 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @php
+                                                    $counter = 1;
+                                                @endphp
                                                 @forelse($absensis as $absensi)
-                                                    <tr>
-                                                        <input type="hidden" name="karyawan_id[]"
-                                                            value="{{ $absensi->id }}">
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $absensi->nik }}</td>
-                                                        <td>{{ $absensi->nama }}</td>
-                                                        <td>{{ $absensi->jenis_kelamin }}</td>
-                                                        <td>{{ $absensi->nama_entitas ?? '-' }}</td>
-                                                        <td>{{ $absensi->nama_jabatan ?? '-' }}</td>
-                                                        <td width="10%">
-                                                            <input name="hadir[]" style="width: 100%" type="number">
-                                                        </td>
-                                                        <td width="10%">
-                                                            <input name="izin[]" style="width: 100%" type="number">
-                                                        </td>
-                                                        <td width="10%">
-                                                            <input name="alpha[]" style="width: 100%" type="number">
-                                                        </td>
-                                                    </tr>
+                                                    @if ($absensi->is_admin != 1)
+                                                        <tr>
+                                                            <input type="hidden" name="karyawan_id[]"
+                                                                value="{{ $absensi->id }}">
+                                                            <td>{{ $counter }}</td>
+                                                            <td>{{ $absensi->nik }}</td>
+                                                            <td>{{ $absensi->nama }}</td>
+                                                            <td>{{ $absensi->jenis_kelamin }}</td>
+                                                            <td>{{ $absensi->nama_entitas ?? '-' }}</td>
+                                                            <td>{{ $absensi->nama_jabatan ?? '-' }}</td>
+                                                            <td width="10%">
+                                                                <input name="hadir[]" style="width: 100%" type="number">
+                                                            </td>
+                                                            <td width="10%">
+                                                                <input name="izin[]" style="width: 100%" type="number">
+                                                            </td>
+                                                            <td width="10%">
+                                                                <input name="alpha[]" style="width: 100%" type="number">
+                                                            </td>
+                                                        </tr>
+                                                        @php
+                                                            $counter++;
+                                                        @endphp
+                                                    @endif
                                                 @empty
                                                     <tr>
                                                         <td colspan="9" class="text-center">Data Kosong</td>
@@ -147,7 +155,8 @@
                                     <div class="text-center">
                                         <span class="badge bg-danger"> Data Kosong!, Data Bulan ini sudah masuk di <a
                                                 href="{{ route('admin.absensis.index') }}"
-                                                style="color: #000000 !important; text-decoration: underline;">Data Absensi</a></span>
+                                                style="color: #000000 !important; text-decoration: underline;">Data
+                                                Absensi</a></span>
                                     </div>
                                 @endif
                             </div>

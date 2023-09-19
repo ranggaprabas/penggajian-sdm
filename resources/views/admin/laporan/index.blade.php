@@ -7,7 +7,7 @@
             <div class="row mb-2">
                 <div class="col-12 d-flex justify-content-center">
                     <h1 class="m-0 text-center">{{ __('Data Laporan') }}</h1>
-                </div><!-- /.col --> 
+                </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -27,8 +27,8 @@
                                         <label for="karyawan_id">Nama Karyawan</label>
                                         <select class="form-control" name="karyawan_id" id="karyawan_id">
                                             <option value="#">-- Pilih Karyawan --</option>
-                                            @foreach($users as $user)
-                                                @if($user->nama !== 'admin')
+                                            @foreach ($users as $user)
+                                                @if ($user->is_admin != 1 )
                                                     <option value="{{ $user->id }}">{{ $user->nama }}</option>
                                                 @endif
                                             @endforeach
@@ -59,18 +59,18 @@
                                     <div class="form-group">
                                         <label for="tahun">Tahun</label>
                                         <select class="form-control" name="tahun" id="tahun">
-                                        <option value="#">-- Pilih Tahun --</option>
-                                        {{ $last= date('Y')-5 }}
-                                        {{ $now = date('Y') }}
+                                            <option value="#">-- Pilih Tahun --</option>
+                                            {{ $last = date('Y') - 5 }}
+                                            {{ $now = date('Y') }}
 
-                                        @for ($i = $now; $i >= $last; $i--)
-                                            <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
+                                            @for ($i = $now; $i >= $last; $i--)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                                <button type="submit" class="btn btn-info"> Cetak <i class="fa fa-print"></i> </button>
+                            <button type="submit" class="btn btn-info"> Cetak <i class="fa fa-print"></i> </button>
                         </form>
                     </div>
                 </div>

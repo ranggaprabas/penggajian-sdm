@@ -26,7 +26,6 @@ class UserRequest extends FormRequest
                 return [
                     'nama' => 'required',
                     'email' => 'required|unique:users',
-                    'password' => 'required',
                     'nik' => 'required|unique:users',
                     'jabatan_id' => 'required',
                     'entitas_id' => 'required',
@@ -39,7 +38,6 @@ class UserRequest extends FormRequest
                 return [
                     'nama' => 'required',
                     'email' => ['required','unique:users,email,' . $this->route()->user->id],
-                    'password' => 'required',
                     'nik' => ['required','unique:users,nik,' . $this->route()->user->id],
                     'jabatan_id' => 'required',
                     'entitas_id' => 'required',

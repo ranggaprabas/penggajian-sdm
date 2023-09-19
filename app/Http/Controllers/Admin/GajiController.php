@@ -18,7 +18,7 @@ class GajiController extends Controller
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $items = DB::table('users')
-                ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'absensi.alpha', 'absensi.izin', 'entitas.nama as nama_entitas')
+                ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'absensi.alpha', 'absensi.izin', 'entitas.nama as nama_entitas', 'users.is_admin')
                 ->join('absensi', 'absensi.user_id', '=', 'users.id')
                 ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
                 ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
@@ -26,7 +26,7 @@ class GajiController extends Controller
                 ->get();
         } else {
             $items = DB::table('users')
-                ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'absensi.alpha', 'absensi.izin', 'entitas.nama as nama_entitas')
+                ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'absensi.alpha', 'absensi.izin', 'entitas.nama as nama_entitas', 'users.is_admin')
                 ->join('absensi', 'absensi.user_id', '=', 'users.id')
                 ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
                 ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
@@ -45,7 +45,7 @@ class GajiController extends Controller
         $potongan_izin = PotonganGaji::where('jenis_potongan', 'izin')->get();
 
         $items = DB::table('users')
-            ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'absensi.alpha', 'absensi.izin', 'entitas.nama as nama_entitas')
+            ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'absensi.alpha', 'absensi.izin', 'entitas.nama as nama_entitas', 'users.is_admin')
             ->join('absensi', 'absensi.user_id', '=', 'users.id')
             ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
             ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')

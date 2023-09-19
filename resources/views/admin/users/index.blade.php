@@ -42,34 +42,44 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $counter = 1;
+                                        @endphp
                                         @foreach ($users as $user)
-                                            <tr id="_index{{ $user->id  }}">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $user->nama }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ $user->nik }}</td>
-                                                <td>{{ $user->jenis_kelamin }}</td>
-                                                <td>{{ $user->entitas->nama ?? '-' }}</td>
-                                                <td>{{ $user->jabatan->nama ?? '-' }}</td>
-                                                <td>
-                                                    @if ($user->status)
-                                                        <span class="badge bg-success">pegawai tetap</span>
-                                                    @else
-                                                        <span class="badge bg-warning">pegawai tidak tetap</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('admin.users.show', $user->id) }}"
-                                                        class="btn-sm btn-warning d-inline-block mx-1"> <i
-                                                            class="text-white fa fa-eye"></i> </a>
-                                                    <a href="{{ route('admin.users.edit', $user->id) }}"
-                                                        class="btn-sm btn-info d-inline-block"> <i class="fa fa-edit"></i>
-                                                    </a>
-                                                    <a href="javascript:void(0)" id="btn-delete-users"
-                                                        data-id="{{ $user->id }}" data-nama="{{ $user->nama }}" class="btn-sm btn-danger d-inline-block"> <i
-                                                            class="fa fa-trash"></i></a>
-                                                </td>
-                                            </tr>
+                                            @if ($user->is_admin != 1)
+                                                <tr id="_index{{ $user->id }}">
+                                                    <td>{{ $counter }}</td>
+                                                    <td>{{ $user->nama }}</td>
+                                                    <td>{{ $user->email }}</td>
+                                                    <td>{{ $user->nik }}</td>
+                                                    <td>{{ $user->jenis_kelamin }}</td>
+                                                    <td>{{ $user->entitas->nama ?? '-' }}</td>
+                                                    <td>{{ $user->jabatan->nama ?? '-' }}</td>
+                                                    <td>
+                                                        @if ($user->status)
+                                                            <span class="badge bg-success">pegawai tetap</span>
+                                                        @else
+                                                            <span class="badge bg-warning">pegawai tidak tetap</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('admin.users.show', $user->id) }}"
+                                                            class="btn-sm btn-warning d-inline-block mx-1"> <i
+                                                                class="text-white fa fa-eye"></i> </a>
+                                                        <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                            class="btn-sm btn-info d-inline-block"> <i
+                                                                class="fa fa-edit"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" id="btn-delete-users"
+                                                            data-id="{{ $user->id }}" data-nama="{{ $user->nama }}"
+                                                            class="btn-sm btn-danger d-inline-block"> <i
+                                                                class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                                @php
+                                                    $counter++;
+                                                @endphp
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>

@@ -103,18 +103,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $counter = 1;
+                                            @endphp
                                             @forelse($absensis as $absensi)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $absensi->user->nik }}</td>
-                                                    <td>{{ $absensi->user->nama }}</td>
-                                                    <td>{{ $absensi->user->jenis_kelamin }}</td>
-                                                    <td>{{ $absensi->user->entitas->nama ?? '-' }}</td>
-                                                    <td>{{ $absensi->user->jabatan->nama ?? '-' }}</td>
-                                                    <td>{{ $absensi->hadir }}</td>
-                                                    <td>{{ $absensi->izin }}</td>
-                                                    <td>{{ $absensi->alpha }}</td>
-                                                </tr>
+                                                @if ($absensi->user->is_admin != 1)
+                                                    <tr>
+                                                        <td>{{ $counter }}</td>
+                                                        <td>{{ $absensi->user->nik }}</td>
+                                                        <td>{{ $absensi->user->nama }}</td>
+                                                        <td>{{ $absensi->user->jenis_kelamin }}</td>
+                                                        <td>{{ $absensi->user->entitas->nama ?? '-' }}</td>
+                                                        <td>{{ $absensi->user->jabatan->nama ?? '-' }}</td>
+                                                        <td>{{ $absensi->hadir }}</td>
+                                                        <td>{{ $absensi->izin }}</td>
+                                                        <td>{{ $absensi->alpha }}</td>
+                                                    </tr>
+                                                    @php
+                                                        $counter++;
+                                                    @endphp
+                                                @endif
                                             @empty
                                                 <tr>
                                                     <td colspan="9" class="text-center">Data Kosong</td>
@@ -126,7 +134,8 @@
                             @else
                                 <div class="text-center">
                                     <span class="badge bg-danger"> Data Kosong!, Diperlukan Mengisi <a
-                                            href="{{ route('admin.absensis.show') }}" style="color: #000000 !important; text-decoration: underline;">Input
+                                            href="{{ route('admin.absensis.show') }}"
+                                            style="color: #000000 !important; text-decoration: underline;">Input
                                             Kehadiran</a> terlebih dahulu</span>
                                 </div>
                             @endif

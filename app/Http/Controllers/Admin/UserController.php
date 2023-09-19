@@ -38,9 +38,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        if($request->validated()) {
-            User::create($request->except('password') + ['password' => bcrypt($request->password)]);
-        }
+        User::create($request->validated());
 
         return redirect()->route('admin.users.index')->with([
             'message' => 'berhasil di buat',
@@ -76,9 +74,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        if($request->validated()) {
-            $user->update($request->except('password') + ['password' => bcrypt($request->password)]);
-        }
+        $user->update($request->validated());
         return redirect()->route('admin.users.index')->with([
             'message' => 'berhasil di edit',
             'alert-info' => 'info'

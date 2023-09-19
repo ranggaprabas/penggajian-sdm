@@ -70,12 +70,6 @@
                                 </div>
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="password">Password</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="password"
-                                        value="{{ old('password', $user->password) }}">
-                                </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label class="m-0" for="nik">Nik</label>
                                     <input class="form-control" style="width: 80%;" type="number" name="nik"
                                         value="{{ old('nik', $user->nik) }}">
