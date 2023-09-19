@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Penggajian SDM</title>
+
+    <link rel="icon" href="{{ asset('images/tamanmedia.png') }}" type="image/png">
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
