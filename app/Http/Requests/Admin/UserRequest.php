@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
             case 'POST': {
                 return [
                     'nama' => 'required',
-                    'email' => 'required',
+                    'email' => 'required|unique:users',
                     'password' => 'required',
                     'nik' => 'required|unique:users',
                     'jabatan_id' => 'required',
