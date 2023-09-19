@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.jabatan.index') }}">{{ $pages }}</a></li>
-                        <li class="breadcrumb-item active">Create Jabatan</li>
+                        <li class="breadcrumb-item active">Add Jabatan</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->

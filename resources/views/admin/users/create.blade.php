@@ -11,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.users.index') }}">{{ $pages }}</a></li>
-                        <li class="breadcrumb-item active">Create SDM</li>
+                        <li class="breadcrumb-item active">Add SDM</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
