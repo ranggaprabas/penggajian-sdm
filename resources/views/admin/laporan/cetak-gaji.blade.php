@@ -37,7 +37,7 @@
             <tr>
                 <td>Entitas</td>
                 <td>:</td>
-                <td>{{ $item->nama_entitas }}</td>
+                <td>{{ $item->nama_entitas ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Jabatan</td>
