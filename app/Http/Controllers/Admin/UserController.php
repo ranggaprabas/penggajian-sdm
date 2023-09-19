@@ -92,9 +92,10 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->back()->with([
-            'message' => 'berhasil di hapus',
-            'alert-info' => 'danger'
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Data SDM Berhasil Dihapus!.',
         ]);
     }
 }

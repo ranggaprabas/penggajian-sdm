@@ -120,8 +120,8 @@
                                                         <td>{{ $absensi->nik }}</td>
                                                         <td>{{ $absensi->nama }}</td>
                                                         <td>{{ $absensi->jenis_kelamin }}</td>
-                                                        <td>{{ $absensi->nama_entitas ?? '-'}}</td>
-                                                        <td>{{ $absensi->nama_jabatan ?? '-'}}</td>
+                                                        <td>{{ $absensi->nama_entitas ?? '-' }}</td>
+                                                        <td>{{ $absensi->nama_jabatan ?? '-' }}</td>
                                                         <td width="10%">
                                                             <input name="hadir[]" style="width: 100%" type="number">
                                                         </td>
@@ -145,7 +145,9 @@
                                     </div>
                                 @else
                                     <div class="text-center">
-                                        <span class="badge bg-danger">Data Kosong</span>
+                                        <span class="badge bg-danger"> Data Kosong, Data Bulan ini sudah masuk di <a
+                                                href="{{ route('admin.absensis.index') }}"
+                                                style="color: #000000 !important; text-decoration: underline;">Data Absensi</a></span>
                                     </div>
                                 @endif
                             </div>

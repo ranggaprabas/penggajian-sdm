@@ -3,7 +3,7 @@
 @section('content')
     <!-- Content Header (Page header) -->
 
-      
+
 
 
     <div class="content-header">
@@ -13,7 +13,7 @@
                     <h1 class="m-0">{{ __('SDM') }}</h1>
 
                     <a href="{{ route('admin.users.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
-                </div><!-- /.col --> 
+                </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -42,33 +42,35 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($users as $user)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $user->nama }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>{{ $user->nik }}</td>
-                                            <td>{{ $user->jenis_kelamin }}</td>
-                                            <td>{{ $user->entitas->nama ?? '-' }}</td>
-                                            <td>{{ $user->jabatan->nama ?? '-' }}</td>
-                                            <td>
-                                                @if($user->status)
-                                                    <span class="badge bg-success">pegawai tetap</span>
-                                                @else
-                                                    <span class="badge bg-warning">pegawai tidak tetap</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('admin.users.show', $user->id) }}" class="btn-sm btn-warning d-inline-block mx-1"> <i class="text-white fa fa-eye"></i> </a>
-                                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn-sm btn-info d-inline-block"> <i class="fa fa-edit"></i> </a>
-                                                <form class="d-inline-block m-1" onclick="return confirm('anda yakin ? ');"  action="{{ route('admin.users.destroy', $user->id) }}" method="post">
-                                                    @csrf 
-                                                    @method('delete')
-                                                    <button type="submit" class="btn-sm btn-danger"> <i class="fa fa-trash"></i> </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach ($users as $user)
+                                            <tr id="_index{{ $user->id  }}">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $user->nama }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td>{{ $user->nik }}</td>
+                                                <td>{{ $user->jenis_kelamin }}</td>
+                                                <td>{{ $user->entitas->nama ?? '-' }}</td>
+                                                <td>{{ $user->jabatan->nama ?? '-' }}</td>
+                                                <td>
+                                                    @if ($user->status)
+                                                        <span class="badge bg-success">pegawai tetap</span>
+                                                    @else
+                                                        <span class="badge bg-warning">pegawai tidak tetap</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('admin.users.show', $user->id) }}"
+                                                        class="btn-sm btn-warning d-inline-block mx-1"> <i
+                                                            class="text-white fa fa-eye"></i> </a>
+                                                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                        class="btn-sm btn-info d-inline-block"> <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0)" id="btn-delete-users"
+                                                        data-id="{{ $user->id }}" class="btn-sm btn-danger d-inline-block"> <i
+                                                            class="fa fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
