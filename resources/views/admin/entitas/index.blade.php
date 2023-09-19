@@ -49,7 +49,7 @@
                                                 </form> --}}
                                                 <a href="javascript:void(0)" id="btn-delete-post"
                                                     data-id="{{ $item->id }}"
-                                                    class="btn btn-danger btn-sm">DELETE</a>
+                                                    class="btn btn-danger"> <i class="fa fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

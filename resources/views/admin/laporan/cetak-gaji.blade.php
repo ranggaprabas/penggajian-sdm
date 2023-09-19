@@ -42,7 +42,7 @@
             <tr>
                 <td>Jabatan</td>
                 <td>:</td>
-                <td>{{ $item->nama_jabatan }}</td>
+                <td>{{ $item->nama_jabatan ?? '-' }}</td>
             </tr>
             <tr>
                 <td>Bulan</td>

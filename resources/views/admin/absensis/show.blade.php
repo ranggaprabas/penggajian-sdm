@@ -121,7 +121,7 @@
                                                         <td>{{ $absensi->nama }}</td>
                                                         <td>{{ $absensi->jenis_kelamin }}</td>
                                                         <td>{{ $absensi->nama_entitas ?? '-'}}</td>
-                                                        <td>{{ $absensi->nama_jabatan }}</td>
+                                                        <td>{{ $absensi->nama_jabatan ?? '-'}}</td>
                                                         <td width="10%">
                                                             <input name="hadir[]" style="width: 100%" type="number">
                                                         </td>

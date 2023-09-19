@@ -110,7 +110,7 @@
                                                     <td>{{ $absensi->user->nama }}</td>
                                                     <td>{{ $absensi->user->jenis_kelamin }}</td>
                                                     <td>{{ $absensi->user->entitas->nama ?? '-' }}</td>
-                                                    <td>{{ $absensi->user->jabatan->nama }}</td>
+                                                    <td>{{ $absensi->user->jabatan->nama ?? '-' }}</td>
                                                     <td>{{ $absensi->hadir }}</td>
                                                     <td>{{ $absensi->izin }}</td>
                                                     <td>{{ $absensi->alpha }}</td>
