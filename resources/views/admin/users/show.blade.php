@@ -47,12 +47,22 @@
                                             <td>{{ $user->jenis_kelamin }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Entitas</th>
+                                            <td>{{ $user->entitas->nama ?? '-' }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>Jabatan</th>
                                             <td>{{ $user->jabatan->nama ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Status</th>
-                                            <td>{{ $user->status ? 'Pegawai Tetap' : 'Pegawai Tidak Tetap' }}</td>
+                                            <td>
+                                                @if ($user->status)
+                                                    <span class="badge bg-success">Pegawai Tetap</span>
+                                                @else
+                                                    <span class="badge bg-warning">Pegawai Tidak Tetap</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
