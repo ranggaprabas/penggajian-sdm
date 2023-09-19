@@ -93,9 +93,10 @@ class JabatanController extends Controller
         // Menghapus jabatan
         $jabatan->delete();
 
-        return redirect()->back()->with([
-            'message' => 'berhasil di delete',
-            'alert-info' => 'danger'
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Jabatan Berhasil Dihapus!.',
         ]);
     }
 }

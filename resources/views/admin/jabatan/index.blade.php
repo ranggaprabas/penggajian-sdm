@@ -41,7 +41,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach($items as $item)
-                                        <tr>
+                                        <tr id="index_{{ $item->id }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
@@ -51,11 +51,7 @@
                                             <td>Rp. {{ number_format($total_gaji,0,'','.') }}</td>
                                             <td>
                                                 <a href="{{ route('admin.jabatan.edit', $item->id) }}" class="btn btn-info"> <i class="fa fa-edit"></i> </a>
-                                                <form onclick="return confirm('anda yakin ? ');" class="d-inline-block" action="{{ route('admin.jabatan.destroy', $item->id) }}" method="post">
-                                                    @csrf 
-                                                    @method('delete')
-                                                    <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
-                                                </form>
+                                                <a href="javascript:void(0)" id="btn-delete-jabatan" data-id="{{ $item->id }}" class="btn btn-danger"> <i class="fa fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
