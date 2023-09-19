@@ -25,7 +25,8 @@ class JabatanController extends Controller
      */
     public function create()
     {
-        return view('admin.jabatan.create');
+        $pages = 'Jabatan';
+        return view('admin.jabatan.create', compact('pages'));
     }
 
     /**
@@ -54,7 +55,8 @@ class JabatanController extends Controller
      */
     public function edit(Jabatan $jabatan)
     {
-        return view('admin.jabatan.edit', compact('jabatan'));
+        $pages = "Jabatan";
+        return view('admin.jabatan.edit', compact('jabatan', 'pages'));
     }
 
     /**
