@@ -95,7 +95,7 @@ class UserController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data SDM Berhasil Dihapus!.',
+            'message' => 'Data SDM ' .$user->nama. ' Berhasil Dihapus!.',
         ]);
     }
 }

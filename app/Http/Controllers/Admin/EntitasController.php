@@ -94,7 +94,7 @@ class EntitasController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data Entitas Berhasil Dihapus!.',
+            'message' => 'Data Entitas ' . $entita->nama . ' Berhasil Dihapus!.',
         ]);
     }
 }

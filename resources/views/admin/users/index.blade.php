@@ -66,7 +66,7 @@
                                                         class="btn-sm btn-info d-inline-block"> <i class="fa fa-edit"></i>
                                                     </a>
                                                     <a href="javascript:void(0)" id="btn-delete-users"
-                                                        data-id="{{ $user->id }}" class="btn-sm btn-danger d-inline-block"> <i
+                                                        data-id="{{ $user->id }}" data-nama="{{ $user->nama }}" class="btn-sm btn-danger d-inline-block"> <i
                                                             class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>

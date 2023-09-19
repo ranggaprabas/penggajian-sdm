@@ -96,7 +96,7 @@ class JabatanController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data Jabatan Berhasil Dihapus!.',
+            'message' => 'Data Jabatan ' .$jabatan->nama. ' Berhasil Dihapus!.',
         ]);
     }
 }
