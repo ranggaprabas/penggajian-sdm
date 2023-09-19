@@ -25,7 +25,9 @@ class EntitasController extends Controller
      */
     public function create()
     {
-        return view('admin.entitas.create');
+        $title = 'Add Entitas';
+        $pages = "Entitas";
+        return view('admin.entitas.create', compact('pages', 'title'));
     }
 
     /**
@@ -54,7 +56,9 @@ class EntitasController extends Controller
      */
     public function edit(Entitas $entita)
     {
-        return view('admin.entitas.edit', compact('entita'));
+        $title = 'Edit Entitas';
+        $pages = "Entitas";
+        return view('admin.entitas.edit', compact('entita', 'pages', 'title'));
     }
 
     /**

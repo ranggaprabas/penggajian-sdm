@@ -25,10 +25,12 @@ class UserController extends Controller
      */
     public function create()
     {
+        $title = 'Add SDM';
+        $pages = 'SDM';
         $jabatans = Jabatan::get(['id', 'nama']);
         $entita = Entitas::get(['id', 'nama']);
 
-        return view('admin.users.create', compact('jabatans', 'entita'));
+        return view('admin.users.create', compact('jabatans', 'entita', 'pages', 'title'));
     }
 
     /**
@@ -51,7 +53,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.users.show', compact('user'));
+        $title = 'Show SDM';
+        $pages = 'SDM';
+        return view('admin.users.show', compact('user', 'title', 'pages'));
     }
 
     /**
@@ -59,10 +63,12 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $title = 'Edit SDM';
+        $pages = 'SDM';
         $jabatans = Jabatan::get(['id', 'nama']);
         $entita = Entitas::get(['id', 'nama']);
 
-        return view('admin.users.edit', compact('user', 'jabatans', 'entita'));
+        return view('admin.users.edit', compact('user', 'jabatans', 'entita', 'pages', 'title'));
     }
 
     /**
