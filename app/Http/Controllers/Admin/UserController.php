@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $title = 'Show SDM';
+        $title = 'Detail SDM';
         $pages = 'SDM';
         return view('admin.users.show', compact('user', 'title', 'pages'));
     }
