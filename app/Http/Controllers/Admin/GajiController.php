@@ -20,6 +20,7 @@ class GajiController extends Controller
                 ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
                 ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
                 ->where('absensi.bulan', $bulanSaatIni)
+                ->where('users.is_admin', '!=', 1)
                 ->get();
         } else {
             $items = DB::table('users')
@@ -28,6 +29,7 @@ class GajiController extends Controller
                 ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
                 ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
                 ->where('absensi.bulan', $bulan)
+                ->where('users.is_admin', '!=', 1)
                 ->get();
         }
 
@@ -44,6 +46,7 @@ class GajiController extends Controller
             ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
             ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
             ->where('absensi.bulan', $tanggal)
+            ->where('users.is_admin', '!=', 1)
             ->get();
 
         return view('admin.gaji.cetak', compact('items', 'bulan', 'tahun'));

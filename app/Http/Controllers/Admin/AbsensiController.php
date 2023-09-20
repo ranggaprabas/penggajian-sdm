@@ -15,9 +15,13 @@ class AbsensiController extends Controller
 
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
-            $absensis = Absensi::with('user')->where('bulan', $bulanSaatIni)->get();
+            $absensis = Absensi::with('user')->where('bulan', $bulanSaatIni)->whereHas('user', function ($query) {
+                $query->where('is_admin', '!=', 1); // Menambahkan kondisi ini untuk menghindari user dengan is_admin = 1
+            })->get();
         } else {
-            $absensis = Absensi::with('user')->where('bulan', $bulan)->get();
+            $absensis = Absensi::with('user')->where('bulan', $bulan)->whereHas('user', function ($query) {
+                $query->where('is_admin', '!=', 1); // Menambahkan kondisi ini untuk menghindari user dengan is_admin = 1
+            })->get();
         }
 
         return view('admin.absensis.index', compact('absensis'));
@@ -39,6 +43,7 @@ class AbsensiController extends Controller
                         ->whereRaw('users.id = absensi.user_id')
                         ->where('bulan', $bulanSaatIni);
                 })
+                ->where('is_admin', '!=', 1)
                 ->get();
         } else {
             $absensis = DB::table('users')
@@ -51,6 +56,7 @@ class AbsensiController extends Controller
                         ->whereRaw('users.id = absensi.user_id')
                         ->where('bulan', $bulan);
                 })
+                ->where('is_admin', '!=', 1)
                 ->get();
         }
 
