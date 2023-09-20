@@ -158,6 +158,10 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
+    {{-- Donuts Chart --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+
     {{-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -262,119 +266,143 @@
         });
     </script>
 
-<script>
-    //button create post event
-    $('body').on('click', '#btn-delete-jabatan', function() {
+    <script>
+        //button create post event
+        $('body').on('click', '#btn-delete-jabatan', function() {
 
-        let item_id = $(this).data('id');
-        let token = $("meta[name='csrf-token']").attr("content");
+            let item_id = $(this).data('id');
+            let token = $("meta[name='csrf-token']").attr("content");
 
-        Swal.fire({
-            title: 'Apakah Kamu Yakin?',
-            text: `Ingin menghapus data Jabatan '${$(this).data('nama')}'! `,
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'TIDAK',
-            confirmButtonText: 'YA, HAPUS!'
-        }).then((result) => {
-            if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: `Ingin menghapus data Jabatan '${$(this).data('nama')}'! `,
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
 
-                console.log('test');
+                    console.log('test');
 
-                //fetch to delete data
-                $.ajax({
+                    //fetch to delete data
+                    $.ajax({
 
-                    url: `/admin/jabatan/${item_id}`,
-                    type: "DELETE",
-                    cache: false,
-                    data: {
-                        "_token": token
-                    },
-                    success: function(response) {
+                        url: `/admin/jabatan/${item_id}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(response) {
 
-                        //show success message
-                        Swal.fire({
-                            type: 'success',
-                            icon: 'success',
-                            title: `${response.message}`,
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
+                            //show success message
+                            Swal.fire({
+                                type: 'success',
+                                icon: 'success',
+                                title: `${response.message}`,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
 
-                        //remove post on table
-                        $(`#index_${item_id}`).remove();
+                            //remove post on table
+                            $(`#index_${item_id}`).remove();
 
-                        // Kembali ke halaman sebelumnya
-                        setTimeout(function() {
-                            window.location.href =
-                                "{{ route('admin.jabatan.index') }}";
-                        }, 2000);
-                    }
-                });
-
-
-            }
-        })
-
-    });
-</script>
-
-<script>
-    //button create post event
-    $('body').on('click', '#btn-delete-users', function() {
-
-        let user_id = $(this).data('id');
-        let token = $("meta[name='csrf-token']").attr("content");
-
-        Swal.fire({
-            title: 'Apakah Kamu Yakin?',
-            text: `Ingin menghapus data SDM '${$(this).data('nama')}'! `,
-            icon: 'warning',
-            showCancelButton: true,
-            cancelButtonText: 'TIDAK',
-            confirmButtonText: 'YA, HAPUS!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-
-                console.log('test');
-
-                //fetch to delete data
-                $.ajax({
-
-                    url: `/admin/users/${user_id}`,
-                    type: "DELETE",
-                    cache: false,
-                    data: {
-                        "_token": token
-                    },
-                    success: function(response) {
-
-                        //show success message
-                        Swal.fire({
-                            type: 'success',
-                            icon: 'success',
-                            title: `${response.message}`,
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-
-                        //remove post on table
-                        $(`#index_${user_id}`).remove();
-
-                        // Kembali ke halaman sebelumnya
-                        setTimeout(function() {
-                            window.location.href =
-                                "{{ route('admin.users.index') }}";
-                        }, 2000);
-                    }
-                });
+                            // Kembali ke halaman sebelumnya
+                            setTimeout(function() {
+                                window.location.href =
+                                    "{{ route('admin.jabatan.index') }}";
+                            }, 2000);
+                        }
+                    });
 
 
-            }
-        })
+                }
+            })
 
-    });
-</script>
+        });
+    </script>
+
+    <script>
+        //button create post event
+        $('body').on('click', '#btn-delete-users', function() {
+
+            let user_id = $(this).data('id');
+            let token = $("meta[name='csrf-token']").attr("content");
+
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: `Ingin menghapus data SDM '${$(this).data('nama')}'! `,
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    console.log('test');
+
+                    //fetch to delete data
+                    $.ajax({
+
+                        url: `/admin/users/${user_id}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(response) {
+
+                            //show success message
+                            Swal.fire({
+                                type: 'success',
+                                icon: 'success',
+                                title: `${response.message}`,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            //remove post on table
+                            $(`#index_${user_id}`).remove();
+
+                            // Kembali ke halaman sebelumnya
+                            setTimeout(function() {
+                                window.location.href =
+                                    "{{ route('admin.users.index') }}";
+                            }, 2000);
+                        }
+                    });
+
+
+                }
+            })
+
+        });
+    </script>
+
+    <script>
+        @if (isset($maleCount) && isset($femaleCount))
+            // Mendapatkan elemen canvas
+            var donutChartCanvas = $("#donutChart").get(0).getContext("2d");
+
+            // Membuat donut chart
+            var donutChart = new Chart(donutChartCanvas, {
+                type: "doughnut",
+                data: {
+                    labels: ["Laki-laki", "Perempuan"],
+                    datasets: [{
+                        data: [{{ $maleCount }}, {{ $femaleCount }}],
+                        backgroundColor: ["#00c0ef", "#ec49a6"],
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                },
+            });
+        @endif
+    </script>
+
 
     <!-- Page specific script -->
 

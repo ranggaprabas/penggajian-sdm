@@ -27,10 +27,16 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Menghitung jumlah pria (Laki-laki)
+        $maleCount = User::where('jenis_kelamin', 'laki-laki')->where('is_admin', '!=', 1)->count();
+
+        // Menghitung jumlah wanita (Perempuan)
+        $femaleCount = User::where('jenis_kelamin', 'perempuan')->where('is_admin', '!=', 1)->count();
+
         $employee_count = User::where('is_admin', '!=', 1)->count();
         $entita_count = Entitas::count();
         $jabatan_count = Jabatan::count();
-        return view('home',compact('employee_count', 'entita_count', 'jabatan_count'));
 
+        return view('home', compact('employee_count', 'entita_count', 'jabatan_count', 'maleCount', 'femaleCount'));
     }
 }
