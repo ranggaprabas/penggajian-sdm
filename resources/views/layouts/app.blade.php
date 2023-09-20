@@ -40,7 +40,7 @@
     <div class="wrapper">
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <nav class="main-header navbar navbar-expand navbar-dark navbar-light">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -48,9 +48,21 @@
                             class="fas fa-bars"></i></a>
                 </li>
             </ul>
-
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <div class="dark-mode-toggle" class="dropdown-item">
+                            <input type="checkbox" id="dark-mode-toggle-checkbox">
+                            {{ __('Dark Mode') }}
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
                         {{ Auth::user()->nama }}
@@ -69,6 +81,8 @@
                                 {{ __('Log Out') }}
                             </a>
                         </form>
+                        <div class="dropdown-divider"></div>
+
                     </div>
                 </li>
             </ul>
@@ -401,6 +415,44 @@
                 },
             });
         @endif
+    </script>
+
+    <script>
+        // Temukan tombol mode gelap dan checkbox-nya
+        const darkModeToggle = document.querySelector('.dark-mode-toggle');
+        const darkModeCheckbox = document.getElementById('dark-mode-toggle-checkbox');
+
+        // Fungsi untuk mengaktifkan mode gelap
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            // Simpan status mode gelap di penyimpanan lokal
+            localStorage.setItem('darkMode', 'enabled');
+        }
+
+        // Fungsi untuk menonaktifkan mode gelap
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            // Simpan status mode gelap di penyimpanan lokal
+            localStorage.setItem('darkMode', 'disabled');
+        }
+
+        // Periksa status mode gelap saat halaman dimuat
+        window.addEventListener('load', () => {
+            const darkModeStatus = localStorage.getItem('darkMode');
+            if (darkModeStatus === 'enabled') {
+                enableDarkMode();
+                darkModeCheckbox.checked = true;
+            }
+        });
+
+        // Tambahkan event listener untuk mengubah mode saat tombol dinyalakan atau dimatikan
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeCheckbox.checked) {
+                enableDarkMode();
+            } else {
+                disableDarkMode();
+            }
+        });
     </script>
 
 
