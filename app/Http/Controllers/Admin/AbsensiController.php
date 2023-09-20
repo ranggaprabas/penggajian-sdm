@@ -60,21 +60,14 @@ class AbsensiController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'hadir[]' => 'nullable|number',
-            'izin[]' => 'nullable|number',
-            'alpha[]' => 'nullable|number'
-        ]);
-
-        foreach ($request->karyawan_id as $key => $id) {
+        foreach ($request->karyawan_id as $id) {
             $input['user_id'] = $id;
             $input['bulan'] = $request->bulan;
-            $input['hadir'] = $request->hadir[$key];
-            $input['izin'] = $request->izin[$key];
-            $input['alpha'] = $request->alpha[$key];
-            if ($input['hadir'] === 0 || $input['hadir'] || $input['izin'] === 0 || $input['izin'] || $input['alpha'] === 0 || $input['alpha']) {
-                Absensi::create($input);
-            }
+
+            // Hapus validasi dan pengambilan data hadir, izin, alpha
+            // Hapus juga pengkondisian if
+
+            Absensi::create($input);
         }
 
         return redirect()->back()->with([
