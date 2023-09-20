@@ -67,7 +67,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            Menampilkan data kehadiran karyawan bulan <span class="text-bold">{{ date('m') }}</span>
+                            Menampilkan data kehadiran SDM bulan <span class="text-bold">{{ date('m') }}</span>
                             tahun <span class="text-bold">{{ date('Y') }}</span>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            Menampilkan data kehadiran karyawan bulan <span
+                            Menampilkan data kehadiran SDM bulan <span
                                 class="text-bold">{{ request()->get('bulan') }}</span> tahun <span
                                 class="text-bold">{{ request()->get('tahun') }}</span>
                         </div>

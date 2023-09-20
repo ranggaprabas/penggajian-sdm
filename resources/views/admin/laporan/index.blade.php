@@ -24,9 +24,9 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label for="karyawan_id">Nama Karyawan</label>
+                                        <label for="karyawan_id">Nama SDM</label>
                                         <select class="form-control" name="karyawan_id" id="karyawan_id">
-                                            <option value="#">-- Pilih Karyawan --</option>
+                                            <option value="#">-- Pilih SDM --</option>
                                             @foreach ($users as $user)
                                                 @if ($user->is_admin != 1 )
                                                     <option value="{{ $user->id }}">{{ $user->nama }}</option>
