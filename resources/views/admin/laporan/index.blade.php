@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 d-flex justify-content-center">
-                    <h1 class="m-0 text-center">{{ __('Data Laporan') }}</h1>
+                    <h1 class="m-0 text-center">{{ __('Data Laporan Slip Gaji SDM') }}</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
