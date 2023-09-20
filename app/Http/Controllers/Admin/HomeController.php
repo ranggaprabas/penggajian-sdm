@@ -27,7 +27,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $employee_count = User::count();
+        $employee_count = User::where('is_admin', '!=', 1)->count();
         $entita_count = Entitas::count();
         $jabatan_count = Jabatan::count();
         return view('home',compact('employee_count', 'entita_count', 'jabatan_count'));
