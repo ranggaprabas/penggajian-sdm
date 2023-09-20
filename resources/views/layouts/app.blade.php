@@ -455,6 +455,27 @@
         });
     </script>
 
+    <!-- Tambahkan ini di dalam tag <head> -->
+    <script>
+        // Fungsi untuk menambahkan pemisah koma saat mengisi input number
+        function addCommas(input) {
+            var value = input.value.replace(/\D/g, "");
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Fungsi untuk menghapus pemisah koma sebelum mengirimkan formulir
+        function removeCommas() {
+            var gajiPokokInput = document.getElementsByName('gaji_pokok')[0];
+            var transportasiInput = document.getElementsByName('transportasi')[0];
+            var uangMakanInput = document.getElementsByName('uang_makan')[0];
+
+            gajiPokokInput.value = gajiPokokInput.value.replace(/,/g, '');
+            transportasiInput.value = transportasiInput.value.replace(/,/g, '');
+            uangMakanInput.value = uangMakanInput.value.replace(/,/g, '');
+        }
+    </script>
+
+
 
     <!-- Page specific script -->
 
