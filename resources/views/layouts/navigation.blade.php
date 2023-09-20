@@ -57,9 +57,9 @@
                 </li> -->
 
                 <li
-                    class="nav-item {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') || Route::is('admin.potongan-gaji.*') ? 'menu-open' : '' }}">
+                    class="nav-item {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
                     <a href="#"
-                        class="nav-link {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') || Route::is('admin.potongan-gaji.*') ? 'active' : '' }}">
+                        class="nav-link {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-clock"></i>
                         <p>
                             Absensi
@@ -67,7 +67,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview"
-                        {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') || Route::is('admin.potongan-gaji.*') ? 'style=display:block;' : '' }}>
+                        {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'style=display:block;' : '' }}>
                         <li class="nav-item {{ Route::is('admin.absensis.index') ? 'menu-open' : '' }}">
                             <a href="{{ route('admin.absensis.index') }}"
                                 class="nav-link {{ Route::is('admin.absensis.index') ? 'active' : '' }}">
@@ -80,13 +80,6 @@
                                 class="nav-link {{ Route::is('admin.absensis.show') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Input Kehadiran</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ Route::is('admin.potongan-gaji.*') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.potongan-gaji.index') }}"
-                                class="nav-link {{ Route::is('admin.potongan-gaji.*') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Potongan Gaji</p>
                             </a>
                         </li>
                     </ul>

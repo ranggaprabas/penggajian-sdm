@@ -27,7 +27,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
         Route::resource('entitas', App\Http\Controllers\Admin\EntitasController::class);
         Route::resource('jabatan', App\Http\Controllers\Admin\JabatanController::class);
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
-        Route::resource('potongan-gaji', App\Http\Controllers\Admin\PotonganGajiController::class);
         Route::get('absensis', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('absensis.index');
         Route::get('absensis/kehadiran', [App\Http\Controllers\Admin\AbsensiController::class, 'show'])->name('absensis.show');
         Route::post('absensis/kehadiran', [App\Http\Controllers\Admin\AbsensiController::class, 'store'])->name('absensis.store');
