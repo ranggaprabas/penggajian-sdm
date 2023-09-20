@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
-    <title>Cetak Slip Gaji</title>
+    <title>Cetak Slip Gaji SDM</title>
     <style>
         body {
             font-family: Aria;
@@ -17,15 +17,15 @@
 <body>
 
     <center>
-        <h1>PT. INDONESIA DAMAI</h1>
-        <h2>Slip Gaji Pegawai</h2>
+        <h1>PT. TAMAN MEDIA INDONESIA</h1>
+        <h2>Slip Gaji SDM</h2>
         <hr style="width: 50%;border-width: 5px;color:black" />
     </center>
 
     @foreach ($items as $item)
         <table style="width:100%">
             <tr>
-                <td width="20%">Nama Karyawan</td>
+                <td width="20%">Nama SDM</td>
                 <td width="30px">:</td>
                 <td>{{ $item->nama }}</td>
             </tr>
@@ -98,13 +98,13 @@
             <tr>
                 <td></td>
                 <td>
-                    <p>Pegawai</p>
+                    <p>SDM</p>
                     <br>
                     <br>
                     <p class="font-weight-bold">{{ $item->nama }}</p>
                 </td>
                 <td width="200px">
-                    <p class="font-weight-bold">Lombok, {{ date('d M Y') }} Web Agency,</p>
+                    <p class="font-weight-bold">Semarang, {{ date('d M Y') }} WManager,</p>
                     <br>
                     <br>
                     <p>_________________</p>

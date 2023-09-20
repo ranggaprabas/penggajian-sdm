@@ -5,13 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
-    <title>Cetak Gaji</title>
+    <title>Cetak Gaji SDM</title>
+    <style>
+        body {
+            font-family: 'Times new roman';
+            color: black;
+        }
+    </style>
 </head>
 
 <body>
+    <div style="position: absolute; top: 20px; right: 20px;">
+        <img src="{{ asset('images/tamanmediaindonesia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="180">
+    </div>
     <center>
-        <h1>PT. INDONESIA DAMAI</h1>
-        <h2>Daftar Gaji Pegawai</h2>
+        <h1>PT. TAMAN MEDIA INDONESIA</h1>
+        <h2>Daftar Gaji SDM</h2>
+        <hr style="width: 50%;border-width: 5px;color:black" />
     </center>
 
     <table>
@@ -84,7 +94,7 @@
         <tr>
             <td></td>
             <td width="200px">
-                <p>Lombok, {{ date('d M Y') }} <br /> Web Agency</p>
+                <p>Semarang, {{ date('d M Y') }} <br /> Manager</p>
                 <br />
                 <br />
                 <p>________________________</p>
