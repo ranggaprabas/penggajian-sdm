@@ -60,11 +60,18 @@
                 <li class="nav-item">
                     <a class="nav-link">
                         <div class="dark-mode-toggle" class="dropdown-item">
-                            <input type="checkbox" id="dark-mode-toggle-checkbox">
-                            {{ __('Dark Mode') }}
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                                <span class="toggle-icon toggle-icon-left"><i class="fa fa-sun"></i></span>
+                                <label class="custom-control-label" for="customSwitch1"></label>
+                                <span class="toggle-icon toggle-icon-center"><i class="fa fa-adjust"></i></span>
+                            </div>
                         </div>
                     </a>
                 </li>
+
+
+
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -433,7 +440,7 @@
     <script>
         // Temukan tombol mode gelap dan checkbox-nya
         const darkModeToggle = document.querySelector('.dark-mode-toggle');
-        const darkModeCheckbox = document.getElementById('dark-mode-toggle-checkbox');
+        const darkModeCheckbox = document.getElementById('customSwitch1');
 
         // Fungsi untuk mengaktifkan mode gelap
         function enableDarkMode() {
@@ -467,6 +474,7 @@
             }
         });
     </script>
+
 
     <!-- Tambahkan ini di dalam tag <head> -->
     <script>

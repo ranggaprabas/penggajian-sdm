@@ -8,6 +8,7 @@
     box-shadow: none;
     /* Hapus bayangan default jika ada */
 }
+
 .custom-outline-entitas {
     border-top: 4px solid #007bff;
     /* Warna outline, ganti dengan warna yang Anda inginkan */
@@ -18,6 +19,7 @@
     box-shadow: none;
     /* Hapus bayangan default jika ada */
 }
+
 .custom-outline-jabatan {
     border-top: 4px solid #dc3545;
     /* Warna outline, ganti dengan warna yang Anda inginkan */
@@ -27,4 +29,21 @@
     /* Padding di dalam outline */
     box-shadow: none;
     /* Hapus bayangan default jika ada */
+}
+
+/* Styling for the left icon (sun) */
+.toggle-icon-left {
+    float: left;
+    margin-right: 50px;
+    /* Optional: Adjust the margin as needed */
+}
+
+/* Styling for the center icon (adjust) */
+.toggle-icon-center {
+    display: inline-block;
+    /* Optional: Add margin or padding to center it vertically */
+}
+
+.custom-control-label {
+    cursor: pointer;
 }
