@@ -59,7 +59,7 @@
 
                             <button class="btn btn-primary">Filter</button>
                             <div class="alert alert-warning mt-3">
-                                <i class="fa fa-info-circle"></i> Silakan pilih bulan dan tahun terlebih dahulu untuk
+                                <i class="fa fa-info-circle"></i> Silahkan pilih bulan dan tahun terlebih dahulu untuk
                                 melakukan filter.
                             </div>
                         </form>
