@@ -20,6 +20,11 @@
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet" />
 
+    <!-- DateTimePicker CSS For Calendar -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+
+
 
     {{-- sweet alert --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -174,6 +179,12 @@
 
     {{-- Donuts Chart --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+    <!-- DateTimePicker JS For Calendar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
+    </script>
 
 
     {{-- sweet alert --}}
@@ -473,6 +484,16 @@
             transportasiInput.value = transportasiInput.value.replace(/,/g, '');
             uangMakanInput.value = uangMakanInput.value.replace(/,/g, '');
         }
+    </script>
+
+
+    {{-- calendar --}}
+    <script>
+        // Inisialisasi DateTimePicker
+        $('#calendar').datetimepicker({
+            format: 'L',
+            inline: true
+        });
     </script>
 
 
