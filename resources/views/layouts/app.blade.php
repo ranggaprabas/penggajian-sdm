@@ -475,6 +475,19 @@
         }
     </script>
 
+    <script>
+        document.getElementById('filterButton').addEventListener('click', function() {
+            var bulan = document.getElementById('bulan').value;
+            var tahun = document.getElementById('tahun').value;
+
+            // Validasi untuk memastikan kedua input telah diisi
+            if (bulan === "" || tahun === "") {
+                alert("Silakan pilih bulan dan tahun terlebih dahulu untuk melakukan filter.");
+                return false; // Menghentikan tindakan filter
+            }
+        });
+    </script>
+
 
 
     <!-- Page specific script -->

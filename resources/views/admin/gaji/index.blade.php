@@ -24,8 +24,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="bulan">Bulan</label>
-                                        <select class="form-control" name="bulan" id="bulan">
-                                            <option value="#">-- Pilih Bulan --</option>
+                                        <select class="form-control" name="bulan" id="bulan" required>
+                                            <option value=""disabled selected>-- Pilih Bulan --</option>
                                             <option value="1">Januari</option>
                                             <option value="2">Februari</option>
                                             <option value="3">Maret</option>
@@ -44,8 +44,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="tahun">Tahun</label>
-                                        <select class="form-control" name="tahun" id="tahun">
-                                            <option value="#">-- Pilih Tahun --</option>
+                                        <select class="form-control" name="tahun" id="tahun" required>
+                                            <option value=""disabled selected>-- Pilih Tahun --</option>
                                             {{ $last = date('Y') - 5 }}
                                             {{ $now = date('Y') }}
 
@@ -65,6 +65,10 @@
                                 <a href="{{ route('admin.gaji.cetak', [request()->get('bulan'), request()->get('tahun')]) }}"
                                     class="btn btn-info"> Cetak <i class="fa fa-print"></i> </a>
                             @endif
+                            <div class="alert alert-warning mt-3">
+                                <i class="fa fa-info-circle"></i> Silakan pilih bulan dan tahun terlebih dahulu untuk
+                                melakukan filter.
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -73,7 +77,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            Menampilkan data kehadiran SDM bulan <span class="text-bold">{{ date('m') }}</span>
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data kehadiran SDM bulan <span class="text-bold">{{ date('F') }}</span>
                             tahun <span class="text-bold">{{ date('Y') }}</span>
                         </div>
                     </div>
@@ -82,9 +86,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            Menampilkan data kehadiran SDM bulan <span
-                                class="text-bold">{{ request()->get('bulan') }}</span> tahun <span
-                                class="text-bold">{{ request()->get('tahun') }}</span>
+                            @php
+                                $bulan = request()->get('bulan');
+                                $namaBulan = date('F', mktime(0, 0, 0, $bulan, 1));
+                            @endphp
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data kehadiran SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
+                            <span class="text-bold">{{ request()->get('tahun') }}</span>
                         </div>
                     </div>
                 </div>

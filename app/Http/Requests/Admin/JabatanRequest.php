@@ -21,24 +21,33 @@ class JabatanRequest extends FormRequest
      */
     public function rules(): array
     {
-        switch($this->method()){
+        switch ($this->method()) {
             case 'POST': {
-                return [
-                    'nama' => 'required|unique:jabatan',
-                    'gaji_pokok' => 'required',
-                    'transportasi' => 'required',
-                    'uang_makan' => 'required'
-                ];
-            }
+                    return [
+                        'nama' => 'required|unique:jabatan',
+                        'gaji_pokok' => 'required|integer|max:2147483647',
+                        'transportasi' => 'required|integer|max:2147483647',
+                        'uang_makan' => 'required|integer|max:2147483647'
+                    ];
+                }
             case 'PUT':
             case 'PATCH': {
-                return [
-                    'nama' => ['required', 'unique:jabatan,nama,' . $this->route()->jabatan->id],
-                    'gaji_pokok' => 'required',
-                    'transportasi' => 'required',
-                    'uang_makan' => 'required'
-                ];
-            }
-        }  
+                    return [
+                        'nama' => ['required', 'unique:jabatan,nama,' . $this->route()->jabatan->id],
+                        'gaji_pokok' => 'required|integer|max:2147483647',
+                        'transportasi' => 'required|integer|max:2147483647',
+                        'uang_makan' => 'required|integer|max:2147483647'
+                    ];
+                }
+        }
+    }
+
+    public function messages(): array
+    {
+        return [
+            'gaji_pokok.max' => 'Nilai Gaji Pokok tidak boleh melebihi 2,147,483,647.',
+            'transportasi.max' => 'Nilai Transportasi tidak boleh melebihi 2,147,483,647.',
+            'uang_makan.max' => 'Nilai Uang Makan tidak boleh melebihi 2,147,483,647.',
+        ];
     }
 }

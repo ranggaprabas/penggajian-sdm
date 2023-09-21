@@ -18,10 +18,31 @@ class LaporanController extends Controller
         return view('admin.laporan.index', compact('users'));
     }
 
+    public function konversiBulan($bulan)
+    {
+        $daftarBulan = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+
+        return $daftarBulan[$bulan] ?? '';
+    }
+    
     public function store(Request $request)
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        $namaBulan = $this->konversiBulan($bulan);
         $tanggal = $bulan . $tahun;
         $items = DB::table('users')
             ->select('users.nik', 'users.nama', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas')
@@ -32,7 +53,7 @@ class LaporanController extends Controller
             ->where('absensi.user_id', $request->karyawan_id)
             ->get();
 
-        return view('admin.laporan.cetak-gaji', compact('bulan', 'tahun', 'items'));
+        return view('admin.laporan.cetak-gaji', compact('bulan', 'namaBulan', 'tahun', 'items'));
     }
 
 

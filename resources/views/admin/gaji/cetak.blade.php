@@ -28,7 +28,7 @@
         <tr>
             <td>Bulan</td>
             <td>:</td>
-            <td>{{ $bulan }}</td>
+            <td>{{ $namaBulan }}</td>
         </tr>
         <tr>
             <td>Tahun</td>
