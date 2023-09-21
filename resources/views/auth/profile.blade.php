@@ -18,7 +18,7 @@
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <div class="card">
+                    <div class="card custom-outline-entitas">
 
                         <form action="{{ route('admin.profile.update') }}" method="POST">
                             @csrf

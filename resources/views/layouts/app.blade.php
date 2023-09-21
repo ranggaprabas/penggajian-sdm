@@ -16,6 +16,9 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
 
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+
     <!-- Data Tables -->
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet" />
@@ -23,7 +26,6 @@
     <!-- DateTimePicker CSS For Calendar -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
-
 
 
     {{-- sweet alert --}}
