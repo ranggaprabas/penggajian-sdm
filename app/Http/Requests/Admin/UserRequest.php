@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
             case 'POST': {
                 return [
                     'nama' => 'required',
-                    'email' => 'required|unique:users',
+                    'email' => 'required|email|unique:users',
                     'nik' => 'required|unique:users',
                     'jabatan_id' => 'required',
                     'entitas_id' => 'required',
@@ -37,7 +37,7 @@ class UserRequest extends FormRequest
             case 'PATCH': {
                 return [
                     'nama' => 'required',
-                    'email' => ['required','unique:users,email,' . $this->route()->user->id],
+                    'email' => ['required','email','unique:users,email,' . $this->route()->user->id],
                     'nik' => ['required','unique:users,nik,' . $this->route()->user->id],
                     'jabatan_id' => 'required',
                     'entitas_id' => 'required',
