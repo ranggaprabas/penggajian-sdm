@@ -256,16 +256,12 @@
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
-                cancelButtonColor: '#FF5733',
+                cancelButtonColor: '#d33',
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
-
-                    console.log('test');
-
                     //fetch to delete data
                     $.ajax({
-
                         url: `/admin/entitas/${item_id}`,
                         type: "DELETE",
                         cache: false,
@@ -273,7 +269,6 @@
                             "_token": token
                         },
                         success: function(response) {
-
                             //show success message
                             Swal.fire({
                                 type: 'success',
@@ -282,10 +277,8 @@
                                 showConfirmButton: false,
                                 timer: 3000
                             });
-
                             //remove post on table
                             $(`#index_${item_id}`).remove();
-
                             // Kembali ke halaman sebelumnya
                             setTimeout(function() {
                                 window.location.href =
@@ -293,13 +286,18 @@
                             }, 2000);
                         }
                     });
-
-
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Jika pengguna memilih untuk tidak menghapus
+                    Swal.fire(
+                        'Dibatalkan',
+                        `Data Entitas ${$(this).data('nama')} anda aman :)`,
+                        'error'
+                    );
                 }
-            })
-
+            });
         });
     </script>
+
 
     <script>
         //button create post event
@@ -314,7 +312,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
-                cancelButtonColor: '#FF5733',
+                cancelButtonColor: '#d33',
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -352,7 +350,13 @@
                         }
                     });
 
-
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Jika pengguna memilih untuk tidak menghapus
+                    Swal.fire(
+                        'Dibatalkan',
+                        `Data Jabatan ${$(this).data('nama')} anda aman :)`,
+                        'error'
+                    );
                 }
             })
 
@@ -372,7 +376,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
-                cancelButtonColor: '#FF5733',
+                cancelButtonColor: '#d33',
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -409,8 +413,13 @@
                             }, 2000);
                         }
                     });
-
-
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Jika pengguna memilih untuk tidak menghapus
+                    Swal.fire(
+                        'Dibatalkan',
+                        `Data SDM ${$(this).data('nama')} anda aman :)`,
+                        'error'
+                    );
                 }
             })
 
