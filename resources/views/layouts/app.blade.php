@@ -64,7 +64,7 @@
                                 <input type="checkbox" class="custom-control-input" id="customSwitch1">
                                 <span class="toggle-icon toggle-icon-left"><i class="fa fa-sun"></i></span>
                                 <label class="custom-control-label" for="customSwitch1"></label>
-                                <span class="toggle-icon toggle-icon-center"><i class="fa fa-adjust"></i></span>
+                                <span class="toggle-icon toggle-icon-center"><i class="fa fa-moon"></i></span>
                             </div>
                         </div>
                     </a>
@@ -256,6 +256,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
+                cancelButtonColor: '#FF5733',
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -313,6 +314,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
+                cancelButtonColor: '#FF5733',
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -370,6 +372,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
+                cancelButtonColor: '#FF5733',
                 confirmButtonText: 'YA, HAPUS!'
             }).then((result) => {
                 if (result.isConfirmed) {
