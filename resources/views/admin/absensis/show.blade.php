@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 d-flex justify-content-between">
-                    <h1 class="m-0">{{ __('Absensi kehadiran') }}</h1>
+                    <h1 class="m-0">{{ __('Input kehadiran SDM') }}</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -150,7 +150,7 @@
                                         <span class="badge bg-danger"> Data Kosong!, Data Bulan ini sudah masuk di <a
                                                 href="{{ route('admin.absensis.index') }}"
                                                 style="color: #000000 !important; text-decoration: underline;">Data
-                                                Absensi</a></span>
+                                                Kehadiran</a></span>
                                     </div>
                                 @endif
                             </div>

@@ -62,7 +62,7 @@
                         class="nav-link {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-clock"></i>
                         <p>
-                            Absensi
+                            Kehadiran 
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -72,7 +72,7 @@
                             <a href="{{ route('admin.absensis.index') }}"
                                 class="nav-link {{ Route::is('admin.absensis.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Data Absensi</p>
+                                <p>Data Kehadiran</p>
                             </a>
                         </li>
                         <li class="nav-item {{ Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
