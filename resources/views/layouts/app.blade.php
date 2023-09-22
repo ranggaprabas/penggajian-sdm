@@ -252,7 +252,7 @@
 
             Swal.fire({
                 title: 'Apakah Kamu Yakin?',
-                text: `Ingin menghapus data Entitas '${$(this).data('nama')}'! `,
+                text: `Ingin menghapus data Entitas ${$(this).data('nama')}! `,
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
@@ -310,7 +310,7 @@
 
             Swal.fire({
                 title: 'Apakah Kamu Yakin?',
-                text: `Ingin menghapus data Jabatan '${$(this).data('nama')}'! `,
+                text: `Ingin menghapus data Jabatan ${$(this).data('nama')}! `,
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
@@ -368,7 +368,7 @@
 
             Swal.fire({
                 title: 'Apakah Kamu Yakin?',
-                text: `Ingin menghapus data SDM '${$(this).data('nama')}'! `,
+                text: `Ingin menghapus data SDM ${$(this).data('nama')}! `,
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
