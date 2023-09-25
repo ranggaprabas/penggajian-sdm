@@ -27,7 +27,8 @@
                     <div class="card">
                         <div class="card-body p-3">
 
-                            <form action="{{ route('admin.jabatan.update', $jabatan->id) }}" method="POST" onsubmit="removeCommas()">
+                            <form action="{{ route('admin.jabatan.update', $jabatan->id) }}" method="POST"
+                                onsubmit="removeCommas()">
                                 @csrf
                                 @method('put')
                                 <div style="gap: .5rem;flex-wrap: wrap;"
@@ -39,25 +40,39 @@
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label class="m-0" for="gaji_pokok">Gaji Pokok</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="gaji_pokok"
-                                        oninput="addCommas(this)"
-                                        value="{{ old('gaji_pokok', number_format($jabatan->gaji_pokok)) }}">
+                                    <div class="input-group" style="width: 80%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Rp.</span>
+                                        </div>
+                                        <input class="form-control" style="width: 80%;" type="text" name="gaji_pokok"
+                                            oninput="addCommas(this)"
+                                            value="{{ old('gaji_pokok', number_format($jabatan->gaji_pokok)) }}">
+                                    </div>
                                 </div>
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label class="m-0" for="transportasi">Transportasi</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="transportasi"
-                                        oninput="addCommas(this)"
-                                        value="{{ old('transportasi', number_format($jabatan->transportasi)) }}">
+                                    <div class="input-group" style="width: 80%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Rp.</span>
+                                        </div>
+                                        <input class="form-control" style="width: 80%;" type="text" name="transportasi"
+                                            oninput="addCommas(this)"
+                                            value="{{ old('transportasi', number_format($jabatan->transportasi)) }}">
+                                    </div>
                                 </div>
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label class="m-0" for="uang_makan">Uang Makan</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="uang_makan"
-                                        oninput="addCommas(this)"
-                                        value="{{ old('uang_makan', number_format($jabatan->uang_makan)) }}">
+                                    <div class="input-group" style="width: 80%">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Rp.</span>
+                                        </div>
+                                        <input class="form-control" style="width: 80%;" type="text" name="uang_makan"
+                                            oninput="addCommas(this)"
+                                            value="{{ old('uang_makan', number_format($jabatan->uang_makan)) }}">
+                                    </div>
                                 </div>
-
                                 <button class="btn btn-primary" type="submit">Simpan</button>
                             </form>
 
