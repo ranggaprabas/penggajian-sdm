@@ -47,9 +47,9 @@
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
                                                 </form> --}}
-                                                <a href="javascript:void(0)" id="btn-delete-post"
+                                                {{-- <a href="javascript:void(0)" id="btn-delete-post"
                                                     data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                                    class="btn btn-danger"> <i class="fa fa-trash"></i></a>
+                                                    class="btn btn-danger"> <i class="fa fa-trash"></i></a> --}}
                                             </td>
                                         </tr>
                                     @endforeach

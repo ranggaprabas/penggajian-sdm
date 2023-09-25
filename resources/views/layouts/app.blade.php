@@ -450,6 +450,30 @@
     </script>
 
     <script>
+        @if (isset($maleCount) && isset($femaleCount))
+            // Mendapatkan elemen canvas
+            var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+
+            // Membuat pie chart
+            var pieChart = new Chart(pieChartCanvas, {
+                type: "pie",
+                data: {
+                    labels: ["Crocodic", "Eventy", "Reprime"],
+                    datasets: [{
+                        data: [{{ $crocodicCount }}, {{ $eventyCount }}, {{ $reprimeCount }}],
+                        backgroundColor: ["#3c8dbc", "#f39c12", "#1F3775"],
+                    }],
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                },
+            });
+        @endif
+    </script>
+
+
+    <script>
         // Temukan tombol mode gelap dan checkbox-nya
         const darkModeToggle = document.querySelector('.dark-mode-toggle');
         const darkModeCheckbox = document.getElementById('customSwitch1');
