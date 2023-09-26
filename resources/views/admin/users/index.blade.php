@@ -87,9 +87,11 @@
                         </div>
                         <!-- /.card-body -->
 
-                        <div class="card-footer clearfix">
+                        <!-- previous and next default adminlte -->
+                        
+                        {{-- <div class="card-footer clearfix">
                             {{ $users->links() }}
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>
