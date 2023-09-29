@@ -33,7 +33,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">SDM</span>
-                            <span class="info-box-number">{{ $employee_count }}</span>
+                            <span class="info-box-number" id="employeeCount">0</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -45,7 +45,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Entitas</span>
-                            <span class="info-box-number">{{ $entita_count }}</span>
+                            <span class="info-box-number" id="entitaCount">0</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -57,7 +57,7 @@
 
                         <div class="info-box-content">
                             <span class="info-box-text">Jabatan</span>
-                            <span class="info-box-number">{{ $jabatan_count }}</span>
+                            <span class="info-box-number" id="jabatanCount">0</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
