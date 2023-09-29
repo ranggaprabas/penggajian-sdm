@@ -5,8 +5,6 @@
     /* Bentuk sudut outline */
     padding: 10px;
     /* Padding di dalam outline */
-    box-shadow: none;
-    /* Hapus bayangan default jika ada */
 }
 
 .custom-outline-entitas {
@@ -16,8 +14,6 @@
     /* Bentuk sudut outline */
     padding: 10px;
     /* Padding di dalam outline */
-    box-shadow: none;
-    /* Hapus bayangan default jika ada */
 }
 
 .custom-outline-jabatan {
@@ -27,8 +23,6 @@
     /* Bentuk sudut outline */
     padding: 10px;
     /* Padding di dalam outline */
-    box-shadow: none;
-    /* Hapus bayangan default jika ada */
 }
 
 /* Styling for the left icon (sun) */
