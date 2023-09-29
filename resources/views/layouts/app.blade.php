@@ -563,7 +563,7 @@
                 } else {
                     clearInterval(intervalId);
                 }
-            }, 100); // Tingkatkan angka ini untuk memperlambat animasi
+            }, 200); // Tingkatkan angka ini untuk memperlambat animasi
         }
     </script>
 
