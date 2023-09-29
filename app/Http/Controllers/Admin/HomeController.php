@@ -37,11 +37,12 @@ class HomeController extends Controller
         $crocodicCount = User::where('entitas_id', '1')->where('is_admin', '!=', 1)->count();
         $eventyCount = User::where('entitas_id', '2')->where('is_admin', '!=', 1)->count();
         $reprimeCount = User::where('entitas_id', '3')->where('is_admin', '!=', 1)->count();
+        $taarufCount = User::where('entitas_id', '4')->where('is_admin', '!=', 1)->count();
 
         $employee_count = User::where('is_admin', '!=', 1)->count();
         $entita_count = Entitas::count();
         $jabatan_count = Jabatan::count();
 
-        return view('home', compact('employee_count', 'entita_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount'));
+        return view('home', compact('employee_count', 'entita_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount', 'taarufCount'));
     }
 }

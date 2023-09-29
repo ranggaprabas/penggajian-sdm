@@ -458,10 +458,10 @@
             var pieChart = new Chart(pieChartCanvas, {
                 type: "pie",
                 data: {
-                    labels: ["Crocodic", "Eventy", "Reprime"],
+                    labels: ["Crocodic", "Eventy", "Reprime", "Ta'aruf"],
                     datasets: [{
-                        data: [{{ $crocodicCount }}, {{ $eventyCount }}, {{ $reprimeCount }}],
-                        backgroundColor: ["#3c8dbc", "#f39c12", "#1F3775"],
+                        data: [{{ $crocodicCount }}, {{ $eventyCount }}, {{ $reprimeCount }}, {{ $taarufCount }}],
+                        backgroundColor: ["#3c8dbc", "#f39c12", "#1F3775", "#EF4043"],
                     }],
                 },
                 options: {

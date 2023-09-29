@@ -61,9 +61,9 @@
                         </div>
                         <!-- /.card-body -->
 
-                        <div class="card-footer clearfix">
+                        {{-- <div class="card-footer clearfix">
                             {{ $items->links() }}
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>

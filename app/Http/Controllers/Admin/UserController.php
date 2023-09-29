@@ -40,8 +40,10 @@ class UserController extends Controller
     {
         User::create($request->validated());
 
+        $userNama = $request->input('nama');
+
         return redirect()->route('admin.users.index')->with([
-            'message' => 'Data SDM berhasil ditambahkan!',
+            'message' => 'Data SDM ' .$userNama. ' berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -75,8 +77,11 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $user->update($request->validated());
+
+        $message = 'Data SDM ' . $user->nama  . ' berhasil diperbarui!';
+
         return redirect()->route('admin.users.index')->with([
-            'message' => 'Data SDM berhasil diperbarui!',
+            'message' => $message,
             'alert-info' => 'info'
         ]);
     }
