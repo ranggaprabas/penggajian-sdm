@@ -134,7 +134,7 @@
                                 </div>
                             @else
                                 <div class="text-center">
-                                    <span class="badge bg-danger"> Data Kosong!, Diperlukan Mengisi <a
+                                    <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Mengisi <a
                                             href="{{ route('admin.absensis.show') }}"
                                             style="color: #000000 !important; text-decoration: underline;">Input
                                             Kehadiran</a> terlebih dahulu</span>

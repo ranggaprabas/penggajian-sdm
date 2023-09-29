@@ -155,7 +155,7 @@
                                     </div>
                                 @else
                                     <div class="text-center">
-                                        <span class="badge bg-danger">Data Kosong</span>
+                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!</span>
                                     </div>
                                 @endif
                             </div>

@@ -147,7 +147,7 @@
                                     </div>
                                 @else
                                     <div class="text-center">
-                                        <span class="badge bg-danger"> Data Kosong!, Data Bulan ini sudah masuk di <a
+                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Data Bulan ini sudah masuk di <a
                                                 href="{{ route('admin.absensis.index') }}"
                                                 style="color: #000000 !important; text-decoration: underline;">Data
                                                 Kehadiran</a></span>
