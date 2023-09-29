@@ -37,8 +37,10 @@ class JabatanController extends Controller
     {
         Jabatan::create($request->validated());
 
+        $jabatanNama = $request->input('nama'); // Mendapatkan nama jabatan dari request
+
         return redirect()->route('admin.jabatan.index')->with([
-            'message' => 'berhasil di buat',
+            'message' => 'Data Jabatan ' . $jabatanNama . ' berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -68,9 +70,12 @@ class JabatanController extends Controller
     {
         $jabatan->update($request->validated());
 
+        // Membuat pesan sukses
+        $message = 'Data Jabatan ' . $jabatan->nama . ' berhasil diperbarui!';
+
         return redirect()->route('admin.jabatan.index')->with([
-            'message' => 'berhasil di edit',
-            'alert-info' => 'info'
+            'message' => $message,
+            'alert-info' => 'info',
         ]);
     }
 
@@ -96,7 +101,7 @@ class JabatanController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data Jabatan ' .$jabatan->nama. ' Berhasil Dihapus!.',
+            'message' => 'Data Jabatan ' . $jabatan->nama . ' Berhasil Dihapus!.',
         ]);
     }
 }

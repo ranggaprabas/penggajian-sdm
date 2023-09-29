@@ -41,7 +41,7 @@ class UserController extends Controller
         User::create($request->validated());
 
         return redirect()->route('admin.users.index')->with([
-            'message' => 'berhasil di buat',
+            'message' => 'Data SDM berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -76,7 +76,7 @@ class UserController extends Controller
     {
         $user->update($request->validated());
         return redirect()->route('admin.users.index')->with([
-            'message' => 'berhasil di edit',
+            'message' => 'Data SDM berhasil diperbarui!',
             'alert-info' => 'info'
         ]);
     }

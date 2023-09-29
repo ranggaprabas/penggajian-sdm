@@ -37,8 +37,10 @@ class EntitasController extends Controller
     {
         Entitas::create($request->validated());
 
+        $entitasNama = $request->input('nama');
+
         return redirect()->route('admin.entitas.index')->with([
-            'message' => 'berhasil di buat',
+            'message' => 'Data Entitas '. $entitasNama .' berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -68,8 +70,11 @@ class EntitasController extends Controller
     {
         $entita->update($request->validated());
 
+        // Membuat pesan sukses
+        $message = 'Data Entitas ' . $entita->nama. ' berhasil diperbarui!';
+
         return redirect()->route('admin.entitas.index')->with([
-            'message' => 'berhasil di edit',
+            'message' => $message,
             'alert-info' => 'info'
         ]);
     }
