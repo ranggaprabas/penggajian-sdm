@@ -77,7 +77,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data gaji SDM bulan <span class="text-bold">{{ date('F') }}</span>
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan Data Gaji SDM bulan <span class="text-bold">{{ date('F') }}</span>
                             tahun <span class="text-bold">{{ date('Y') }}</span>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                                 $bulan = request()->get('bulan');
                                 $namaBulan = date('F', mktime(0, 0, 0, $bulan, 1));
                             @endphp
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data gaji SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan Data Gaji SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
                             <span class="text-bold">{{ request()->get('tahun') }}</span>
                         </div>
                     </div>
@@ -154,9 +154,12 @@
                                         </table>
                                     </div>
                                 @else
-                                    <div class="text-center">
-                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!</span>
-                                    </div>
+                                <div class="text-center">
+                                    <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Mengisi <a
+                                            href="{{ route('admin.absensis.show') }}"
+                                            style="color: #000000 !important; text-decoration: underline;">Input
+                                            Gaji</a> terlebih dahulu</span>
+                                </div>
                                 @endif
                             </div>
                         </div>

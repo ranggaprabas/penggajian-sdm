@@ -56,7 +56,7 @@
                     
                 </li> -->
 
-                <li
+                {{-- <li
                     class="nav-item {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
                     <a href="#"
                         class="nav-link {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'active' : '' }}">
@@ -75,29 +75,30 @@
                                 <p>Data Kehadiran</p>
                             </a>
                         </li>
+                        
+                    </ul>
+                </li> --}}
+                <li
+                    class="nav-item {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show')? 'active' : '' }}">
+                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                        <p>
+                            Gaji
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'style=display:block;' : '' }}">
+                        <li class="nav-item {{ Route::is('admin.gaji.index') ? 'menu-open' : '' }}">
+                            <a href="{{ route('admin.gaji.index') }}" class="nav-link {{ Route::is('admin.gaji.index') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Data Gaji</p>
+                            </a>
+                        </li>
                         <li class="nav-item {{ Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
                             <a href="{{ route('admin.absensis.show') }}"
                                 class="nav-link {{ Route::is('admin.absensis.show') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Input Kehadiran</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li
-                    class="nav-item {{ Route::is('admin.gaji.index') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Route::is('admin.gaji.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                        <p>
-                            Data Gaji
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview {{ Route::is('admin.gaji.index') ? 'style=display:block;' : '' }}">
-                        <li class="nav-item {{ Route::is('admin.gaji.index') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.gaji.index') }}" class="nav-link {{ Route::is('admin.gaji.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Gaji</p>
+                                <p>Input Gaji</p>
                             </a>
                         </li>
                     </ul>
@@ -106,7 +107,7 @@
                     <a href="#" class="nav-link {{ Route::is('admin.laporan.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-file-invoice"></i>
                         <p>
-                            Laporan
+                            Laporan Slip
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>

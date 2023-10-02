@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-12 d-flex justify-content-between">
-                    <h1 class="m-0">{{ __('Input kehadiran SDM') }}</h1>
+                    <h1 class="m-0">{{ __('Input Gaji SDM') }}</h1>
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -70,7 +70,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data input kehadiran SDM bulan <span class="text-bold">{{ date('F') }}</span>
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data Input Gaji SDM bulan <span class="text-bold">{{ date('F') }}</span>
                             tahun <span class="text-bold">{{ date('Y') }}</span>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                                 $bulan = request()->get('bulan');
                                 $namaBulan = date('F', mktime(0, 0, 0, $bulan, 1));
                             @endphp
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data input kehadiran SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data Input Gaji SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
                             <span class="text-bold">{{ request()->get('tahun') }}</span>
                         </div>
                     </div>
@@ -148,9 +148,9 @@
                                 @else
                                     <div class="text-center">
                                         <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Data Bulan ini sudah masuk di <a
-                                                href="{{ route('admin.absensis.index') }}"
+                                                href="{{ route('admin.gaji.index') }}"
                                                 style="color: #000000 !important; text-decoration: underline;">Data
-                                                Kehadiran</a></span>
+                                                Gaji</a></span>
                                     </div>
                                 @endif
                             </div>
