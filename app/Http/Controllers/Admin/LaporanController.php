@@ -37,18 +37,28 @@ class LaporanController extends Controller
 
         return $daftarBulan[$bulan] ?? '';
     }
-    
+
     public function store(Request $request)
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $namaBulan = $this->konversiBulan($bulan);
         $tanggal = $bulan . $tahun;
-        $items = DB::table('users')
-            ->select('users.nik', 'users.nama', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas')
-            ->join('absensi', 'absensi.user_id', '=', 'users.id')
-            ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
-            ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
+        $items = DB::table('absensi')
+            ->select(
+                'absensi.user_id',
+                'absensi.bulan',
+                'absensi.nama',
+                'absensi.nik',
+                'absensi.jenis_kelamin',
+                'jabatan.nama as nama_jabatan',
+                'jabatan.gaji_pokok',
+                'jabatan.transportasi',
+                'jabatan.uang_makan',
+                'entitas.nama as nama_entitas'
+            )
+            ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan')
+            ->leftJoin('entitas', 'entitas.id', '=', 'absensi.entitas')
             ->where('absensi.bulan', $tanggal)
             ->where('absensi.user_id', $request->karyawan_id)
             ->get();

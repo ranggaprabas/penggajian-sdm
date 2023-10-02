@@ -25,12 +25,10 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="karyawan_id">Nama SDM</label>
-                                        <select class="form-control" name="karyawan_id" id="karyawan_id">
-                                            <option value="#">-- Pilih SDM --</option>
+                                        <select class="form-control" name="karyawan_id" id="karyawan_id" required>
+                                            <option value="" disabled selected>-- Pilih SDM --</option>
                                             @foreach ($users as $user)
-                                                @if ($user->is_admin != 1 )
-                                                    <option value="{{ $user->id }}">{{ $user->nama }}</option>
-                                                @endif
+                                                <option value="{{ $user->id }}">{{ $user->nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -38,8 +36,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="bulan">Bulan</label>
-                                        <select class="form-control" name="bulan" id="bulan">
-                                            <option value="#">-- Pilih Bulan --</option>
+                                        <select class="form-control" name="bulan" id="bulan" required>
+                                            <option value="" disabled selected>-- Pilih Bulan --</option>
                                             <option value="1">Januari</option>
                                             <option value="2">Februari</option>
                                             <option value="3">Maret</option>
@@ -58,8 +56,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="tahun">Tahun</label>
-                                        <select class="form-control" name="tahun" id="tahun">
-                                            <option value="#">-- Pilih Tahun --</option>
+                                        <select class="form-control" name="tahun" id="tahun" required>
+                                            <option value="" disabled selected>-- Pilih Tahun --</option>
                                             {{ $last = date('Y') - 5 }}
                                             {{ $now = date('Y') }}
 

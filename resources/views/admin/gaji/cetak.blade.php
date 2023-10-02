@@ -57,26 +57,24 @@
                 $counter = 1;
             @endphp
             @forelse($items as $item)
-                @if ($item->is_admin != 1)
-                    <tr>
-                        <td>{{ $counter }}</td>
-                        <td>{{ $item->nik }}</td>
-                        <td>{{ $item->nama }}</td>
-                        <td>{{ $item->jenis_kelamin }}</td>
-                        <td>{{ $item->nama_entitas ?? '-' }}</td>
-                        <td>{{ $item->nama_jabatan ?? '-' }}</td>
-                        <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
-                        <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}</td>
-                        <td>Rp. {{ number_format($item->uang_makan, 0, '', '.') }}</td>
-                        @php
-                            $total_gaji = $item->gaji_pokok + $item->transportasi + $item->uang_makan;
-                        @endphp
-                        <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ $counter }}</td>
+                    <td>{{ $item->nik }}</td>
+                    <td>{{ $item->nama }}</td>
+                    <td>{{ $item->jenis_kelamin }}</td>
+                    <td>{{ $item->nama_entitas ?? '-' }}</td>
+                    <td>{{ $item->nama_jabatan ?? '-' }}</td>
+                    <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
+                    <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}</td>
+                    <td>Rp. {{ number_format($item->uang_makan, 0, '', '.') }}</td>
                     @php
-                        $counter++;
+                        $total_gaji = $item->gaji_pokok + $item->transportasi + $item->uang_makan;
                     @endphp
-                @endif
+                    <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
+                </tr>
+                @php
+                    $counter++;
+                @endphp
             @empty
                 <tr>
                     <td colspan="9" class="text-center">Data Kosong</td>

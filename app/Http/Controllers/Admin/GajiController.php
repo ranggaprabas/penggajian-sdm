@@ -14,27 +14,26 @@ class GajiController extends Controller
         $bulan = $request->get('bulan') . $request->get('tahun');
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
-            $items = DB::table('users')
-                ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas', 'users.is_admin')
-                ->join('absensi', 'absensi.user_id', '=', 'users.id')
-                ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
-                ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
+            $items = DB::table('absensi')
+                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas')
+                ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan') // Sesuaikan nama kolomnya
+                ->leftJoin('entitas', 'entitas.id', '=', 'absensi.entitas') // Sesuaikan nama kolomnya
                 ->where('absensi.bulan', $bulanSaatIni)
-                ->where('users.is_admin', '!=', 1)
                 ->get();
         } else {
-            $items = DB::table('users')
-                ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas', 'users.is_admin')
-                ->join('absensi', 'absensi.user_id', '=', 'users.id')
-                ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
-                ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
+            $items = DB::table('absensi')
+                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas')
+                ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan') // Sesuaikan nama kolomnya
+                ->leftJoin('entitas', 'entitas.id', '=', 'absensi.entitas') // Sesuaikan nama kolomnya
                 ->where('absensi.bulan', $bulan)
-                ->where('users.is_admin', '!=', 1)
+
                 ->get();
         }
 
         return view('admin.gaji.index', compact('items'));
     }
+
+
 
     public function konversiBulan($bulan)
     {
@@ -62,14 +61,23 @@ class GajiController extends Controller
         $namaBulan = $this->konversiBulan($bulan);
 
         $tanggal = $bulan . $tahun;
-        $items = DB::table('users')
-            ->select('users.nik', 'users.nama', 'users.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas', 'users.is_admin')
-            ->join('absensi', 'absensi.user_id', '=', 'users.id')
-            ->join('jabatan', 'jabatan.id', '=', 'users.jabatan_id')
-            ->leftJoin('entitas', 'entitas.id', '=', 'users.entitas_id')
-            ->where('absensi.bulan', $tanggal)
-            ->where('users.is_admin', '!=', 1)
-            ->get();
+        $items = DB::table('absensi')
+        ->select(
+            'absensi.user_id',
+            'absensi.bulan',
+            'absensi.nama',
+            'absensi.nik',
+            'absensi.jenis_kelamin',
+            'jabatan.nama as nama_jabatan',
+            'jabatan.gaji_pokok',
+            'jabatan.transportasi',
+            'jabatan.uang_makan',
+            'entitas.nama as nama_entitas'
+        )
+        ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan')
+        ->leftJoin('entitas', 'entitas.id', '=', 'absensi.entitas')
+        ->where('absensi.bulan', $tanggal)
+        ->get();
 
         return view('admin.gaji.cetak', compact('items', 'bulan', 'namaBulan', 'tahun'));
     }

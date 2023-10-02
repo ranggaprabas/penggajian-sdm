@@ -123,7 +123,6 @@
                                             @endphp
                                             <tbody>
                                                 @forelse($items as $item)
-                                                    @if ($item->is_admin != 1)
                                                         <tr>
                                                             <td>{{ $counter }}</td>
                                                             <td>{{ $item->nik }}</td>
@@ -144,7 +143,6 @@
                                                         @php
                                                             $counter++;
                                                         @endphp
-                                                    @endif
                                                 @empty
                                                     <tr>
                                                         <td colspan="9" class="text-center">Data Kosong</td>

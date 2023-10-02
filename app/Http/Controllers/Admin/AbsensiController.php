@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class AbsensiController extends Controller
 {
@@ -67,11 +68,19 @@ class AbsensiController extends Controller
     public function store(Request $request)
     {
         foreach ($request->karyawan_id as $id) {
-            $input['user_id'] = $id;
-            $input['bulan'] = $request->bulan;
+            // Dapatkan semua informasi yang Anda butuhkan dari tabel users
+            $user = User::findOrFail($id);
 
-            // Hapus validasi dan pengambilan data hadir, izin, alpha
-            // Hapus juga pengkondisian if
+            $input = [
+                'user_id' => $user->id,
+                'bulan' => $request->bulan,
+                'nama' => $user->nama,
+                'nik' => $user->nik,
+                'jenis_kelamin' => $user->jenis_kelamin,
+                'jabatan' => $user->jabatan_id,
+                'entitas' => $user->entitas_id,
+                // Sisipkan kolom lain yang diperlukan
+            ];
 
             Absensi::create($input);
         }
