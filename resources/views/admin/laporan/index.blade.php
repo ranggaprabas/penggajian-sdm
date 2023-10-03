@@ -68,7 +68,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-info"> Cetak <i class="fa fa-print"></i> </button>
+                            <button type="submit" class="btn btn-info"><i class="fa fa-print"></i> Cetak</button>
                         </form>
                     </div>
                 </div>

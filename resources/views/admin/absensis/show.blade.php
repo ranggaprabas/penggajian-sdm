@@ -57,7 +57,7 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary">Filter</button>
+                            <button class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
                             <div class="alert alert-warning mt-3">
                                 <i class="fa fa-info-circle"></i> Silahkan pilih bulan dan tahun terlebih dahulu untuk
                                 melakukan filter.
@@ -143,11 +143,11 @@
                                         </table>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary mx-auto btn-block">Add</button>
+                                        <button type="submit" class="btn btn-primary mx-auto btn-block"> <i class="fa fa-check"></i> Gaji Semua</button>
                                     </div>
                                 @else
                                     <div class="text-center">
-                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Data Bulan ini sudah masuk di <a
+                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Data Input Gaji Bulan ini sudah masuk di <a
                                                 href="{{ route('admin.gaji.index') }}"
                                                 style="color: #000000 !important; text-decoration: underline;">Data
                                                 Gaji</a></span>

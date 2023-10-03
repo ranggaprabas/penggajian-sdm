@@ -57,10 +57,10 @@
                                 </div>
                             </div>
 
-                            <button class="btn btn-primary">Filter</button>
+                            <button class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
                             @if (request()->get('bulan') === null && request()->get('tahun') === null)
                                 <a href="{{ route('admin.gaji.cetak', [ltrim(date('m'), '0'), date('Y')]) }}"
-                                    class="btn btn-info"> Cetak <i class="fa fa-print"></i> </a>
+                                    class="btn btn-info"><i class="fa fa-print"></i> Cetak</a>
                             @else
                                 <a href="{{ route('admin.gaji.cetak', [request()->get('bulan'), request()->get('tahun')]) }}"
                                     class="btn btn-info"> Cetak <i class="fa fa-print"></i> </a>
