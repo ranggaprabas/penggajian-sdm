@@ -86,7 +86,7 @@ class AbsensiController extends Controller
         }
 
         return redirect()->back()->with([
-            'message' => 'berhasil di edit',
+            'message' => 'Gaji serentak berhasil dilakukan',
             'alert-info' => 'success'
         ]);
     }
