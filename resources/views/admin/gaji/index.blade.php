@@ -128,7 +128,7 @@
                                                             <td>{{ $item->nik }}</td>
                                                             <td>{{ $item->nama }}</td>
                                                             <td>{{ $item->jenis_kelamin }}</td>
-                                                            <td>{{ $item->nama_entitas ?? '-' }}</td>
+                                                            <td>{{ $item->entitas }}</td>
                                                             <td>{{ $item->nama_jabatan ?? '-' }}</td>
                                                             <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
                                                             <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}

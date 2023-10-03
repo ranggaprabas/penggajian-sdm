@@ -78,7 +78,7 @@ class AbsensiController extends Controller
                 'nik' => $user->nik,
                 'jenis_kelamin' => $user->jenis_kelamin,
                 'jabatan' => $user->jabatan_id,
-                'entitas' => $user->entitas_id,
+                'entitas' => $user->entitas->nama,
                 // Sisipkan kolom lain yang diperlukan
             ];
 
@@ -87,7 +87,7 @@ class AbsensiController extends Controller
 
         return redirect()->back()->with([
             'message' => 'Gaji serentak berhasil dilakukan',
-            'alert-info' => 'success'
+            'alert-info' => 'info'
         ]);
     }
 }

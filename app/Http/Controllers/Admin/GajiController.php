@@ -15,16 +15,14 @@ class GajiController extends Controller
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $items = DB::table('absensi')
-                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas')
+                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan')
                 ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan') // Sesuaikan nama kolomnya
-                ->leftJoin('entitas', 'entitas.id', '=', 'absensi.entitas') // Sesuaikan nama kolomnya
                 ->where('absensi.bulan', $bulanSaatIni)
                 ->get();
         } else {
             $items = DB::table('absensi')
-                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan', 'entitas.nama as nama_entitas')
+                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan')
                 ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan') // Sesuaikan nama kolomnya
-                ->leftJoin('entitas', 'entitas.id', '=', 'absensi.entitas') // Sesuaikan nama kolomnya
                 ->where('absensi.bulan', $bulan)
 
                 ->get();
@@ -68,14 +66,13 @@ class GajiController extends Controller
             'absensi.nama',
             'absensi.nik',
             'absensi.jenis_kelamin',
+            'absensi.entitas',
             'jabatan.nama as nama_jabatan',
             'jabatan.gaji_pokok',
             'jabatan.transportasi',
             'jabatan.uang_makan',
-            'entitas.nama as nama_entitas'
         )
         ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan')
-        ->leftJoin('entitas', 'entitas.id', '=', 'absensi.entitas')
         ->where('absensi.bulan', $tanggal)
         ->get();
 
