@@ -6,7 +6,9 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">{{ $title }}</h1>
+                    <h1 class="m-0">
+                        <label for="profile">{{ $title }}</label>
+                    </h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -22,79 +24,135 @@
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
+            <div class="col-lg-12">
+                <form action="{{ route('admin.users.store') }}" method="POST">
+                    @csrf
+                    <div class="card card-lightblue">
+                        <div class="card-header">
+                            <div class="card-title">Profile SDM</div>
+                        </div>
                         <div class="card-body p-3">
-
-                            <form action="{{ route('admin.users.store') }}" method="POST">
-                                @csrf
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="entitas">Entitas</label>
-                                    <select class="form-control" style="width: 80%;" name="entitas_id" id="entitas">
-                                        <option value="">--Choose Categories--</option>
-                                        @foreach ($entita as $entitas)
-                                            <option value="{{ $entitas->id }}"
-                                                @if (old('entitas_id') == $entitas->id) selected @endif>
-                                                {{ $entitas->nama }}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nama">Nama</label>
+                                        <input class="form-control" type="text" name="nama"
+                                            value="{{ old('nama') }}">
+                                    </div>
                                 </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="jabatan">Jabatan</label>
-                                    <select class="form-control" style="width: 80%;" name="jabatan_id" id="jabatan">
-                                        <option value="">--Choose Categories--</option>
-                                        @foreach ($jabatans as $jabatan)
-                                            <option value="{{ $jabatan->id }}"
-                                                @if (old('jabatan_id') == $jabatan->id) selected @endif>
-                                                {{ $jabatan->nama }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="entitas">Entitas</label>
+                                        <select class="form-control" name="entitas_id" id="entitas">
+                                            <option value="">--Choose Categories--</option>
+                                            @foreach ($entita as $entitas)
+                                                <option value="{{ $entitas->id }}"
+                                                    @if (old('entitas_id') == $entitas->id) selected @endif>
+                                                    {{ $entitas->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="nama">Nama</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="nama"
-                                        value="{{ old('nama') }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="jabatan">Jabatan</label>
+                                        <select class="form-control" name="jabatan_id" id="jabatan">
+                                            <option value="">--Choose Categories--</option>
+                                            @foreach ($jabatans as $jabatan)
+                                                <option value="{{ $jabatan->id }}"
+                                                    @if (old('jabatan_id') == $jabatan->id) selected @endif>
+                                                    {{ $jabatan->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="email">Email</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="email"
-                                        value="{{ old('email') }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input class="form-control" type="text" name="email"
+                                            value="{{ old('email') }}">
+                                    </div>
                                 </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="nik">Nik</label>
-                                    <input class="form-control" style="width: 80%;" type="number" name="nik"
-                                        value="{{ old('nik') }}">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="nik">Nik</label>
+                                        <input class="form-control" type="number" name="nik"
+                                            value="{{ old('nik') }}">
+                                    </div>
                                 </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="jenis_kelamin">Jenis Kelamin</label>
-                                    <select class="form-control" style="width: 80%;" name="jenis_kelamin"
-                                        id="jenis_kelamin">
-                                        <option value="laki-laki">Laki-Laki</option>
-                                        <option value="perempuan">Perempuan</option>
-                                    </select>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="jenis_kelamin">Jenis Kelamin</label>
+                                        <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
+                                            <option value="laki-laki">Laki-Laki</option>
+                                            <option value="perempuan">Perempuan</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="status">Status</label>
-                                    <select class="form-control" style="width: 80%;" name="status" id="status">
-                                        <option value="1">Pegawai Tetap</option>
-                                        <option value="0">Pegawai Tidak Tetap</option>
-                                    </select>
-                                </div>
-                                <button class="btn btn-primary" type="submit">Simpan</button>
-                            </form>
-
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="1">Pegawai Tetap</option>
+                                    <option value="0">Pegawai Tidak Tetap</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card card-lightblue">
+                                <div class="card-header">
+                                    <div class="card-title">Tunjangan</div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="form-group">
+                                        <label for="nama">Makan</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp.</div>
+                                            </div>
+                                            <input class="form-control" type="text" name="nama"
+                                                value="{{ old('nama') }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nama">Transportasi</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp.</div>
+                                            </div>
+                                            <input class="form-control" type="text" name="nama"
+                                                value="{{ old('nama') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-lightblue">
+                                <div class="card-header">
+                                    <div class="card-title">Potongan</div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="form-group">
+                                        <label for="nama">Pinjaman</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp.</div>
+                                            </div>
+                                            <input class="form-control" type="text" name="nama"
+                                                value="{{ old('nama') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Simpan</button>
+                </form>
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
