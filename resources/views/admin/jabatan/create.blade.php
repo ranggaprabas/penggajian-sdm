@@ -37,38 +37,15 @@
                                 </div>
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="gaji_pokok">Gaji Pokok</label>
+                                    <label class="m-0" for="tunjangan_jabatan">Tunjangan Jabatan</label>
                                     <div class="input-group" style="width: 80%;">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Rp.</span>
                                         </div>
-                                        <input class="form-control" style="width: 80%;" type="text" name="gaji_pokok"
-                                            id="gaji_pokok" oninput="addCommas(this)" value="{{ old('gaji_pokok') }}">
+                                        <input class="form-control" style="width: 80%;" type="text" name="tunjangan_jabatan"
+                                            id="tunjangan_jabatan" oninput="addCommas(this)" value="{{ old('tunjangan_jabatan') }}">
                                     </div>
                                 </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="transportasi">Transportasi</label>
-                                    <div class="input-group" style="width: 80%">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Rp.</span>
-                                        </div>
-                                        <input class="form-control" style="width: 80%;" type="text" name="transportasi"
-                                            id="transportasi" oninput="addCommas(this)" value="{{ old('transportasi') }}">
-                                    </div>
-                                </div>
-                                <div style="gap: .5rem;flex-wrap: wrap;"
-                                    class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label class="m-0" for="uang_makan">Uang Makan</label>
-                                    <div class="input-group" style="width: 80%">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Rp.</span>
-                                        </div>
-                                        <input class="form-control" style="width: 80%;" type="text" name="uang_makan"
-                                            id="uang_makan" oninput="addCommas(this)" value="{{ old('uang_makan') }}">
-                                    </div>
-                                </div>
-
                                 <button class="btn btn-primary" type="submit">Simpan</button>
                             </form>
 

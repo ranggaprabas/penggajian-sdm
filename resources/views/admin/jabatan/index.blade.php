@@ -3,7 +3,7 @@
 @section('content')
     <!-- Content Header (Page header) -->
 
-      
+
 
 
     <div class="content-header">
@@ -13,7 +13,7 @@
                     <h1 class="m-0">{{ __('Jabatan') }}</h1>
 
                     <a href="{{ route('admin.jabatan.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
-                </div><!-- /.col --> 
+                </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -32,29 +32,28 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            <th>Gaji Pokok</th>
-                                            <th>Transportasi</th>
-                                            <th>Uang Makan</th>
+                                            <th>Tunjangan Jabatan</th>
                                             <th>Total Gaji</th>
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($items as $item)
-                                        <tr id="index_{{ $item->id }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->nama }}</td>
-                                            <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
-                                            <td>Rp. {{ number_format($item->transportasi,0,'','.') }}</td>
-                                            <td>Rp. {{ number_format($item->uang_makan,0,'','.') }}</td>
-                                            @php $total_gaji =  $item->gaji_pokok + $item->transportasi + $item->uang_makan @endphp
-                                            <td>Rp. {{ number_format($total_gaji,0,'','.') }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.jabatan.edit', $item->id) }}" class="btn btn-info"> <i class="fa fa-edit"></i> </a>
-                                                <a href="javascript:void(0)" id="btn-delete-jabatan" data-id="{{ $item->id }}" data-nama="{{ $item->nama }}" class="btn btn-danger"> <i class="fa fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach ($items as $item)
+                                            <tr id="index_{{ $item->id }}">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->nama }}</td>
+                                                <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
+                                                @php $total_gaji =  $item->tunjangan_jabatan @endphp
+                                                <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
+                                                <td>
+                                                    <a href="{{ route('admin.jabatan.edit', $item->id) }}"
+                                                        class="btn btn-info"> <i class="fa fa-edit"></i> </a>
+                                                    <a href="javascript:void(0)" id="btn-delete-jabatan"
+                                                        data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                                        class="btn btn-danger"> <i class="fa fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

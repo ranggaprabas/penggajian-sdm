@@ -522,13 +522,9 @@
 
         // Fungsi untuk menghapus pemisah koma sebelum mengirimkan formulir
         function removeCommas() {
-            var gajiPokokInput = document.getElementsByName('gaji_pokok')[0];
-            var transportasiInput = document.getElementsByName('transportasi')[0];
-            var uangMakanInput = document.getElementsByName('uang_makan')[0];
+            var tunjanganJabatanInput = document.getElementsByName('tunjangan_jabatan')[0];
 
-            gajiPokokInput.value = gajiPokokInput.value.replace(/,/g, '');
-            transportasiInput.value = transportasiInput.value.replace(/,/g, '');
-            uangMakanInput.value = uangMakanInput.value.replace(/,/g, '');
+            tunjanganJabatanInput.value = tunjanganJabatanInput.value.replace(/,/g, '');
         }
     </script>
 
