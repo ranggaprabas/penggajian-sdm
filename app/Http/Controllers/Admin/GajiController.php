@@ -15,14 +15,12 @@ class GajiController extends Controller
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $items = DB::table('absensi')
-                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan')
-                ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan') // Sesuaikan nama kolomnya
+                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.jabatan', 'absensi.tunjangan_jabatan')
                 ->where('absensi.bulan', $bulanSaatIni)
                 ->get();
         } else {
             $items = DB::table('absensi')
-                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'jabatan.nama as nama_jabatan', 'jabatan.gaji_pokok', 'jabatan.transportasi', 'jabatan.uang_makan')
-                ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan') // Sesuaikan nama kolomnya
+                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.jabatan', 'absensi.tunjangan_jabatan')
                 ->where('absensi.bulan', $bulan)
 
                 ->get();
@@ -67,12 +65,9 @@ class GajiController extends Controller
             'absensi.nik',
             'absensi.jenis_kelamin',
             'absensi.entitas',
-            'jabatan.nama as nama_jabatan',
-            'jabatan.gaji_pokok',
-            'jabatan.transportasi',
-            'jabatan.uang_makan',
+            'absensi.jabatan',
+            'absensi.tunjangan_jabatan'
         )
-        ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan')
         ->where('absensi.bulan', $tanggal)
         ->get();
 

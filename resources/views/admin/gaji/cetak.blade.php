@@ -46,9 +46,7 @@
                 <th class="text-center">Jenis Kelamin</th>
                 <th class="text-center">Entitas</th>
                 <th class="text-center">Jabatan</th>
-                <th class="text-center">Gaji Pokok</th>
-                <th class="text-center">Transportasi</th>
-                <th class="text-center">Uang Makan</th>
+                <th class="text-center">Tunjangan Jabatan</th>
                 <th class="text-center">Total Gaji</th>
             </tr>
         </thead>
@@ -63,12 +61,10 @@
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->jenis_kelamin }}</td>
                     <td>{{ $item->entitas }}</td>
-                    <td>{{ $item->nama_jabatan ?? '-' }}</td>
-                    <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
-                    <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}</td>
-                    <td>Rp. {{ number_format($item->uang_makan, 0, '', '.') }}</td>
+                    <td>{{ $item->jabatan }}</td>
+                    <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
                     @php
-                        $total_gaji = $item->gaji_pokok + $item->transportasi + $item->uang_makan;
+                        $total_gaji = $item->tunjangan_jabatan;
                     @endphp
                     <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
                 </tr>

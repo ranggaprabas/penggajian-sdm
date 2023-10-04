@@ -52,12 +52,9 @@ class LaporanController extends Controller
                 'absensi.nik',
                 'absensi.jenis_kelamin',
                 'absensi.entitas',
-                'jabatan.nama as nama_jabatan',
-                'jabatan.gaji_pokok',
-                'jabatan.transportasi',
-                'jabatan.uang_makan',
+                'absensi.jabatan',
+                'absensi.tunjangan_jabatan'
             )
-            ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan')
             ->where('absensi.bulan', $tanggal)
             ->where('absensi.user_id', $request->karyawan_id)
             ->get();
@@ -85,12 +82,9 @@ class LaporanController extends Controller
                 'absensi.nik',
                 'absensi.jenis_kelamin',
                 'absensi.entitas',
-                'jabatan.nama as nama_jabatan',
-                'jabatan.gaji_pokok',
-                'jabatan.transportasi',
-                'jabatan.uang_makan',
+                'absensi.jabatan',
+                'absensi.tunjangan_jabatan'
             )
-            ->join('jabatan', 'jabatan.id', '=', 'absensi.jabatan')
             ->where('absensi.bulan', $tanggal)
             ->where('absensi.user_id', $request->karyawan_id)
             ->get();

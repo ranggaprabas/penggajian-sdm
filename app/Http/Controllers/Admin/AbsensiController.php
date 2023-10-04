@@ -77,7 +77,8 @@ class AbsensiController extends Controller
                 'nama' => $user->nama,
                 'nik' => $user->nik,
                 'jenis_kelamin' => $user->jenis_kelamin,
-                'jabatan' => $user->jabatan_id,
+                'jabatan' => $user->jabatan->nama,
+                'tunjangan_jabatan' => $user->jabatan->tunjangan_jabatan,
                 'entitas' => $user->entitas->nama,
                 // Sisipkan kolom lain yang diperlukan
             ];

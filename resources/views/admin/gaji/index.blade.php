@@ -112,9 +112,7 @@
                                                     <th>Jenis Kelamin</th>
                                                     <th>Entitas</th>
                                                     <th>Jabatan</th>
-                                                    <th>Gaji Pokok</th>
-                                                    <th>Transportasi</th>
-                                                    <th>Uang Makan</th>
+                                                    <th>Tunjangan Jabatan</th>
                                                     <th>Total Gaji</th>
                                                 </tr>
                                             </thead>
@@ -129,14 +127,11 @@
                                                             <td>{{ $item->nama }}</td>
                                                             <td>{{ $item->jenis_kelamin }}</td>
                                                             <td>{{ $item->entitas }}</td>
-                                                            <td>{{ $item->nama_jabatan ?? '-' }}</td>
-                                                            <td>Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}</td>
-                                                            <td>Rp. {{ number_format($item->transportasi, 0, '', '.') }}
-                                                            </td>
-                                                            <td>Rp. {{ number_format($item->uang_makan, 0, '', '.') }}</td>
+                                                            <td>{{ $item->jabatan }}</td>
+                                                            <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
                                                             @php
                                                                 // Hapus perhitungan potongan gaji
-                                                                $total_gaji = $item->gaji_pokok + $item->transportasi + $item->uang_makan;
+                                                                $total_gaji = $item->tunjangan_jabatan;
                                                             @endphp
                                                             <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
                                                         </tr>
