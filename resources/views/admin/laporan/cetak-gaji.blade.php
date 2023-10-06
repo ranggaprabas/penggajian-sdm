@@ -86,7 +86,7 @@
             <tr>
                 <td>4</td>
                 <td>Potongan</td>
-                <td><span style="color: red;">- </span>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
+                <td><span style="color: red;">(-) </span>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
             </tr>
             <tr>
                 <th colspan="2" style="text-align: right;">Take Home Pay</th>

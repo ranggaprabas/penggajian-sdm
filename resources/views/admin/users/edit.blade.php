@@ -62,8 +62,10 @@
                                             <option value="">-- Choose Categories --</option>
                                             @foreach ($jabatans as $jabatan)
                                                 <option value="{{ $jabatan->id }}"
+                                                    data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
                                                     {{ $user->jabatan && $user->jabatan->id == $jabatan->id ? 'selected' : '' }}>
-                                                    {{ $jabatan->nama }}
+                                                    {{ $jabatan->nama }} - Rp.
+                                                    {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}
                                                 </option>
                                             @endforeach
                                         </select>

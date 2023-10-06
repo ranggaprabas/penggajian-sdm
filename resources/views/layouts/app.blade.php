@@ -196,6 +196,9 @@
     {{-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="{{ asset('jquery-3.7.1.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('jqueryui/jquery-ui.min.js') }}" type="text/javascript" ></script>
+
 
     <script>
         $(document).ready(function() {

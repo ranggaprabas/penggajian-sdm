@@ -58,8 +58,10 @@
                                             <option value="">--Choose Categories--</option>
                                             @foreach ($jabatans as $jabatan)
                                                 <option value="{{ $jabatan->id }}"
+                                                    data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
                                                     @if (old('jabatan_id') == $jabatan->id) selected @endif>
-                                                    {{ $jabatan->nama }}</option>
+                                                    {{ $jabatan->nama }} - Rp.
+                                                    {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -112,7 +114,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan"
+                                            <input class="form-control" type="text" name="tunjangan_makan" 
                                                 value="{{ old('tunjangan_makan') }}">
                                         </div>
                                     </div>

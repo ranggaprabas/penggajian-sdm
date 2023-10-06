@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         $title = 'Add SDM';
         $pages = 'SDM';
-        $jabatans = Jabatan::get(['id', 'nama']);
+        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan']);
         $entita = Entitas::get(['id', 'nama']);
 
         return view('admin.users.create', compact('jabatans', 'entita', 'pages', 'title'));
@@ -65,7 +65,7 @@ class UserController extends Controller
     {
         $title = 'Edit SDM';
         $pages = 'SDM';
-        $jabatans = Jabatan::get(['id', 'nama']);
+        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan']);
         $entita = Entitas::get(['id', 'nama']);
 
         return view('admin.users.edit', compact('user', 'jabatans', 'entita', 'pages', 'title'));
