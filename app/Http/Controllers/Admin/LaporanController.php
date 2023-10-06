@@ -53,7 +53,10 @@ class LaporanController extends Controller
                 'absensi.jenis_kelamin',
                 'absensi.entitas',
                 'absensi.jabatan',
-                'absensi.tunjangan_jabatan'
+                'absensi.tunjangan_jabatan',
+                'absensi.tunjangan_makan',
+                'absensi.tunjangan_transportasi',
+                'absensi.potongan_pinjaman'
             )
             ->where('absensi.bulan', $tanggal)
             ->where('absensi.user_id', $request->karyawan_id)
@@ -83,7 +86,10 @@ class LaporanController extends Controller
                 'absensi.jenis_kelamin',
                 'absensi.entitas',
                 'absensi.jabatan',
-                'absensi.tunjangan_jabatan'
+                'absensi.tunjangan_jabatan',
+                'absensi.tunjangan_makan',
+                'absensi.tunjangan_transportasi',
+                'absensi.potongan_pinjaman'
             )
             ->where('absensi.bulan', $tanggal)
             ->where('absensi.user_id', $request->karyawan_id)

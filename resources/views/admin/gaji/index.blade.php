@@ -113,7 +113,10 @@
                                                     <th>Entitas</th>
                                                     <th>Jabatan</th>
                                                     <th>Tunjangan Jabatan</th>
-                                                    <th>Total Gaji</th>
+                                                    <th>Tunjangan Makan</th>
+                                                    <th>Tunjangan Transportasi</th>
+                                                    <th>Potongan</th>
+                                                    <th>Take Home Pay</th>
                                                 </tr>
                                             </thead>
                                             @php
@@ -129,10 +132,14 @@
                                                             <td>{{ $item->entitas }}</td>
                                                             <td>{{ $item->jabatan }}</td>
                                                             <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
+                                                            <td>Rp. {{ number_format($item->tunjangan_makan, 0, '', '.') }}</td>
+                                                            <td>Rp. {{ number_format($item->tunjangan_transportasi, 0, '', '.') }}</td>
                                                             @php
                                                                 // Hapus perhitungan potongan gaji
-                                                                $total_gaji = $item->tunjangan_jabatan;
+                                                                $total_potongan = $item->potongan_pinjaman;
+                                                                $total_gaji = $item->tunjangan_jabatan + $item->tunjangan_makan + $item->tunjangan_transportasi - $total_potongan;
                                                             @endphp
+                                                            <td>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
                                                             <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
                                                         </tr>
                                                         @php

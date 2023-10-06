@@ -6,9 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">
-                        <label for="profile">{{ $title }}</label>
-                    </h1>
+                    <h1 class="m-0">{{ $title }}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -109,23 +107,23 @@
                                 </div>
                                 <div class="card-body p-3">
                                     <div class="form-group">
-                                        <label for="nama">Makan</label>
+                                        <label for="tunjangan_makan">Makan</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="nama"
-                                                value="{{ old('nama') }}">
+                                            <input class="form-control" type="text" name="tunjangan_makan"
+                                                value="{{ old('tunjangan_makan') }}">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="nama">Transportasi</label>
+                                        <label for="tunjangan_transportasi">Transportasi</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="nama"
-                                                value="{{ old('nama') }}">
+                                            <input class="form-control" type="text" name="tunjangan_transportasi"
+                                                value="{{ old('tunjangan_transportasi') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -138,13 +136,13 @@
                                 </div>
                                 <div class="card-body p-3">
                                     <div class="form-group">
-                                        <label for="nama">Pinjaman</label>
+                                        <label for="potongan_pinjaman">Pinjaman</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="nama"
-                                                value="{{ old('nama') }}">
+                                            <input class="form-control" type="text" name="potongan_pinjaman"
+                                                value="{{ old('potongan_pinjaman') }}">
                                         </div>
                                     </div>
                                 </div>

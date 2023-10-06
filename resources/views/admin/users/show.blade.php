@@ -55,6 +55,71 @@
                                             <td>{{ $user->jabatan->nama ?? '-' }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Tunjangan Jabatan</th>
+                                            <td>
+                                                <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
+                                                @if ($user->jabatan)
+                                                    Rp. {{ number_format($user->jabatan->tunjangan_jabatan, 0, '', '.') }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Tunjangan Makan</th>
+                                            <td>
+                                                <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
+                                                @if ($user->tunjangan_makan)
+                                                    Rp. {{ number_format($user->tunjangan_makan, 0, '', '.') }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Tunjangan Transportasi</th>
+                                            <td>
+                                                <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
+                                                @if ($user->tunjangan_transportasi)
+                                                    Rp. {{ number_format($user->tunjangan_transportasi, 0, '', '.') }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                        @php
+                                            $total_potongan = $user->potongan_pinjaman;
+                                            $total_gaji = $user->jabatan ? $user->jabatan->tunjangan_jabatan + $user->tunjangan_makan + $user->tunjangan_transportasi - $total_potongan : null;
+                                        @endphp
+
+                                        <tr>
+                                            <th>Total Potongan</th>
+                                            <td>
+                                                <span class="badge bg-danger"><i class="fa fa-minus"></i></span>
+                                                @if ($total_potongan)
+                                                    Rp. {{ number_format($total_potongan, 0, '', '.') }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Take Home Pay</th>
+                                            <td>
+                                                <i class="fa fa-money-bill"></i>
+                                                @if ($total_gaji !== null)
+                                                    Rp. {{ number_format($total_gaji, 0, '', '.') }}
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                        <tr>
                                             <th>Status</th>
                                             <td>
                                                 @if ($user->status)

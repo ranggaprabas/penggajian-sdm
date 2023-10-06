@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::table('absensi', function (Blueprint $table) {
             //
-            $table->integer('tunjangan_jabatan')->nullable()->after('jabatan');
+            $table->integer('tunjangan_makan')->nullable()->after('tunjangan_jabatan');
+            $table->integer('tunjangan_transportasi')->nullable()->after('tunjangan_makan');
+            $table->integer('potongan_pinjaman')->nullable()->after('tunjangan_transportasi');
         });
     }
 

@@ -31,6 +31,9 @@ class UserRequest extends FormRequest
                     'entitas_id' => 'required',
                     'jenis_kelamin' => 'required',
                     'status' => 'required',
+                    'tunjangan_makan' => 'required|integer|max:2147483647',
+                    'tunjangan_transportasi' => 'required|integer|max:2147483647',
+                    'potongan_pinjaman' => 'required|integer|max:2147483647'
                 ];
             }
             case 'PUT':
@@ -42,7 +45,10 @@ class UserRequest extends FormRequest
                     'jabatan_id' => 'required',
                     'entitas_id' => 'required',
                     'jenis_kelamin' => 'required',
-                    'status' => 'required'
+                    'status' => 'required',
+                    'tunjangan_makan' => 'required|integer|max:2147483647',
+                    'tunjangan_transportasi' => 'required|integer|max:2147483647',
+                    'potongan_pinjaman' => 'required|integer|max:2147483647'
                 ];
             }
         }

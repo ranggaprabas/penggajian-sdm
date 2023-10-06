@@ -69,11 +69,27 @@
                 <td>Tunjangan Jabatan</td>
                 <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
             </tr>
+            <tr>
+                <td>2</td>
+                <td>Tunjangan Makan</td>
+                <td>Rp. {{ number_format($item->tunjangan_makan, 0, '', '.') }}</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Tunjangan Transportasi</td>
+                <td>Rp. {{ number_format($item->tunjangan_transportasi, 0, '', '.') }}</td>
+            </tr>
             @php
-                $total_gaji = $item->tunjangan_jabatan;
+                $total_potongan = $item->potongan_pinjaman;
+                $total_gaji = $item->tunjangan_jabatan + $item->tunjangan_makan + $item->tunjangan_transportasi - $total_potongan;
             @endphp
             <tr>
-                <th colspan="2" style="text-align: right;">Total Gaji</th>
+                <td>4</td>
+                <td>Potongan</td>
+                <td><span style="color: red;">- </span>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
+            </tr>
+            <tr>
+                <th colspan="2" style="text-align: right;">Take Home Pay</th>
                 <th>Rp. {{ number_format($total_gaji, 0, '', '.') }}</th>
             </tr>
         </table>
