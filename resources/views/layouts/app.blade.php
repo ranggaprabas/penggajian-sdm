@@ -173,6 +173,9 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
+    <!-- Jquery Auto Complete -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
     <!-- Data Tables -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -196,8 +199,45 @@
     {{-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="{{ asset('jquery-3.7.1.min.js') }}" type="text/javascript" ></script>
-    <script src="{{ asset('jqueryui/jquery-ui.min.js') }}" type="text/javascript" ></script>
+    {{-- <script src="{{ asset('jquery-3.7.1.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('jqueryui/jquery-ui.min.js') }}" type="text/javascript" ></script> --}}
+
+    <script>
+        $(document).ready(function() {
+
+            $('#tunjangan_makan').keyup(function() {
+                var query = $(this).val();
+                if (query != '') {
+                    var _token = $('input[name="_token"]').val();
+                    $.ajax({
+                        url: "{{ route('autocomplete.fetch') }}",
+                        method: "POST",
+                        data: {
+                            query: query,
+                            _token: _token
+                        },
+                        success: function(data) {
+                            $('#tunjanganMakanList').fadeIn();
+                            $('#tunjanganMakanList').html(data);
+                        }
+                    });
+                }
+            });
+
+            $(document).on('click', 'li', function() {
+                var namaTunjangan = $(this).text().split(' - ');
+                var tunjanganMakan = namaTunjangan[1].trim();
+
+                // Anda dapat menyimpan nilai tunjanganMakan di dalam variabel atau elemen lainnya sesuai kebutuhan
+                // Di sini kita akan menyimpannya dalam input #tunjangan_makan
+                $('#tunjangan_makan').val(tunjanganMakan);
+
+                $('#tunjanganMakanList').fadeOut();
+            });
+
+        });
+    </script>
+
 
 
     <script>
@@ -460,7 +500,9 @@
                 data: {
                     labels: ["Crocodic", "Eventy", "Reprime", "Ta'aruf"],
                     datasets: [{
-                        data: [{{ $crocodicCount }}, {{ $eventyCount }}, {{ $reprimeCount }}, {{ $taarufCount }}],
+                        data: [{{ $crocodicCount }}, {{ $eventyCount }}, {{ $reprimeCount }},
+                            {{ $taarufCount }}
+                        ],
                         backgroundColor: ["#3c8dbc", "#f39c12", "#1F3775", "#EF4043"],
                     }],
                 },

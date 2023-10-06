@@ -7,6 +7,8 @@ use App\Models\Jabatan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\Entitas;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -19,6 +21,26 @@ class UserController extends Controller
 
         return view('admin.users.index', compact('users'));
     }
+
+    function fetch(Request $request)
+    {
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $data = DB::table('users')
+                ->where('nama', 'LIKE', "%{$query}%")->orWhere('tunjangan_makan', 'LIKE', "%{$query}%")
+                ->get();
+            $output = '<ul class="dropdown-menu" style="display:block; position:relative;width:100%;">';
+            foreach ($data as $row) {
+                $output .= '
+            <li><a class="dropdown-item" href="#">' . $row->nama . ' - ' . $row->tunjangan_makan . '</a></li>
+            ';
+            }
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -43,7 +65,7 @@ class UserController extends Controller
         $userNama = $request->input('nama');
 
         return redirect()->route('admin.users.index')->with([
-            'message' => 'Data SDM ' .$userNama. ' berhasil ditambahkan!',
+            'message' => 'Data SDM ' . $userNama . ' berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -96,7 +118,7 @@ class UserController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data SDM ' .$user->nama. ' Berhasil Dihapus!.',
+            'message' => 'Data SDM ' . $user->nama . ' Berhasil Dihapus!.',
         ]);
     }
 }

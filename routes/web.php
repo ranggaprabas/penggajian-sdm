@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,8 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
+
+Route::post('/users/create/fetch', [UserController::class, 'fetch'])->name('autocomplete.fetch');
 
 
 

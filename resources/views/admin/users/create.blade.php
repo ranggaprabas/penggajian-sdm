@@ -114,10 +114,12 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan" 
-                                                value="{{ old('tunjangan_makan') }}">
+                                            <input class="form-control" type="text" name="tunjangan_makan"
+                                                id="tunjangan_makan" value="{{ old('tunjangan_makan') }}">
                                         </div>
+                                        <div id="tunjanganMakanList"></div>
                                     </div>
+                                    {{ csrf_field() }}
                                     <div class="form-group">
                                         <label for="tunjangan_transportasi">Transportasi</label>
                                         <div class="input-group">
