@@ -205,7 +205,8 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.nama + ' - ' + item.tunjangan_makan; // Menampilkan nama dan tunjangan_makan
+                        return item.nama + ' - ' + item
+                        .tunjangan_makan; // Menampilkan nama dan tunjangan_makan
                     });
                     return process(formattedData);
                 });
@@ -213,7 +214,7 @@
             updater: function(item) {
                 var namaTunjangan = item.split(' - ');
                 var tunjanganMakan = namaTunjangan[1].trim();
-                
+
                 $('#search').val(tunjanganMakan); // Menyimpan hanya tunjangan_makan ke dalam input
                 return tunjanganMakan;
             }
@@ -225,7 +226,8 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.nama + ' - ' + item.tunjangan_transportasi; // Menampilkan nama dan tunjangan_transportasi
+                        return item.nama + ' - ' + item
+                        .tunjangan_transportasi; // Menampilkan nama dan tunjangan_transportasi
                     });
                     return process(formattedData);
                 });
@@ -233,8 +235,9 @@
             updater: function(item) {
                 var namaTunjangan = item.split(' - ');
                 var tunjanganTransportasi = namaTunjangan[1].trim();
-                
-                $('#search2').val(tunjanganTransportasi); // Menyimpan hanya tunjangan_transportasi ke dalam input
+
+                $('#search2').val(
+                tunjanganTransportasi); // Menyimpan hanya tunjangan_transportasi ke dalam input
                 return tunjanganTransportasi;
             }
         });
@@ -245,21 +248,22 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.nama + ' - ' + item.potongan_pinjaman; // Menampilkan nama dan potongan_pinjaman
+                        return item.nama + ' - ' + item
+                        .potongan_pinjaman; // Menampilkan nama dan potongan_pinjaman
                     });
                     return process(formattedData);
                 });
             },
             updater: function(item) {
-                var namaPotongan = item.split(' - ');   
+                var namaPotongan = item.split(' - ');
                 var potonganPinjaman = namaPotongan[1].trim();
-                
+
                 $('#search3').val(potonganPinjaman); // Menyimpan hanya potongan_pinjaman ke dalam input
                 return potonganPinjaman;
             }
         });
     </script>
-    
+
 
 
 
