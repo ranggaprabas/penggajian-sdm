@@ -214,11 +214,14 @@
             updater: function(item) {
                 var namaTunjangan = item.split(' - ');
                 var tunjanganMakan = namaTunjangan[1].trim();
-
-                $('#search').val(tunjanganMakan); // Menyimpan hanya tunjangan_makan ke dalam input
-                return tunjanganMakan;
+                var formattedValue = tunjanganMakan.replace(/\./g, ''); // Menghapus semua titik
+                formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g,
+                    "."); // Menambahkan titik pada angka
+                $('#search').val(formattedValue); // Menyimpan nilai dengan pemisah titik ke dalam input
+                return formattedValue;
             }
         });
+
         $('#search2').typeahead({
             source: function(query, process) {
                 return $.get(route, {
@@ -235,12 +238,14 @@
             updater: function(item) {
                 var namaTunjangan = item.split(' - ');
                 var tunjanganTransportasi = namaTunjangan[1].trim();
-
-                $('#search2').val(
-                    tunjanganTransportasi); // Menyimpan hanya tunjangan_transportasi ke dalam input
-                return tunjanganTransportasi;
+                var formattedValue = tunjanganTransportasi.replace(/\./g, ''); // Menghapus semua titik
+                formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g,
+                    "."); // Menambahkan titik pada angka
+                $('#search2').val(formattedValue); // Menyimpan nilai dengan pemisah titik ke dalam input
+                return formattedValue;
             }
         });
+
         $('#search3').typeahead({
             source: function(query, process) {
                 return $.get(route, {
@@ -257,9 +262,11 @@
             updater: function(item) {
                 var namaPotongan = item.split(' - ');
                 var potonganPinjaman = namaPotongan[1].trim();
-
-                $('#search3').val(potonganPinjaman); // Menyimpan hanya potongan_pinjaman ke dalam input
-                return potonganPinjaman;
+                var formattedValue = potonganPinjaman.replace(/\./g, ''); // Menghapus semua titik
+                formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g,
+                    "."); // Menambahkan titik pada angka
+                $('#search3').val(formattedValue); // Menyimpan nilai dengan pemisah titik ke dalam input
+                return formattedValue;
             }
         });
     </script>
