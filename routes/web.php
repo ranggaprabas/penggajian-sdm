@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::post('/users/create/fetch', [UserController::class, 'fetch'])->name('autocomplete.fetch');
+Route::get('/users/create/autocomplete-search', [UserController::class, 'autocompleteSearch'])->name('autocomplete.search');
 
 
 

@@ -22,23 +22,28 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    function fetch(Request $request)
+    public function autocompleteSearch(Request $request)
     {
-        if ($request->get('query')) {
-            $query = $request->get('query');
-            $data = DB::table('users')
-                ->where('nama', 'LIKE', "%{$query}%")->orWhere('tunjangan_makan', 'LIKE', "%{$query}%")
-                ->get();
-            $output = '<ul class="dropdown-menu" style="display:block; position:relative;width:100%;">';
-            foreach ($data as $row) {
-                $output .= '
-            <li><a class="dropdown-item" href="#">' . $row->nama . ' - ' . $row->tunjangan_makan . '</a></li>
-            ';
-            }
-            $output .= '</ul>';
-            echo $output;
-        }
+        $query = $request->get('query');
+
+        $filterResult = User::where('nama', 'LIKE', '%' . $query . '%')
+            ->orWhere('tunjangan_makan', 'LIKE', '%' . $query . '%')
+            ->orWhere('tunjangan_transportasi', 'LIKE', '%' . $query . '%')
+            ->orWhere('potongan_pinjaman', 'LIKE', '%' . $query . '%')
+            ->get();
+
+        $formattedResult = $filterResult->map(function ($item) {
+            return [
+                'nama' => $item->nama,
+                'tunjangan_makan' => $item->tunjangan_makan,
+                'tunjangan_transportasi' => $item->tunjangan_transportasi,
+                'potongan_pinjaman' => $item->potongan_pinjaman,
+            ];
+        });
+
+        return response()->json($formattedResult);
     }
+
 
 
 

@@ -23,9 +23,6 @@
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet" />
 
-    <!-- DateTimePicker CSS For Calendar -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 
 
     {{-- sweet alert --}}
@@ -173,8 +170,6 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
-    <!-- Jquery Auto Complete -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 
     <!-- Data Tables -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -189,54 +184,85 @@
     {{-- Donuts Chart --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
-    <!-- DateTimePicker JS For Calendar -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
-    </script>
+
 
 
     {{-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    {{-- <script src="{{ asset('jquery-3.7.1.min.js') }}" type="text/javascript" ></script>
-    <script src="{{ asset('jqueryui/jquery-ui.min.js') }}" type="text/javascript" ></script> --}}
+    <!-- Jquery Auto Complete -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
 
-            $('#tunjangan_makan').keyup(function() {
-                var query = $(this).val();
-                if (query != '') {
-                    var _token = $('input[name="_token"]').val();
-                    $.ajax({
-                        url: "{{ route('autocomplete.fetch') }}",
-                        method: "POST",
-                        data: {
-                            query: query,
-                            _token: _token
-                        },
-                        success: function(data) {
-                            $('#tunjanganMakanList').fadeIn();
-                            $('#tunjanganMakanList').html(data);
-                        }
+    <!-- Jquery Auto Complete -->
+    <script type="text/javascript">
+        var route = "{{ route('autocomplete.search') }}"; // Menggunakan nama rute
+        $('#search').typeahead({
+            source: function(query, process) {
+                return $.get(route, {
+                    query: query
+                }, function(data) {
+                    // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
+                    var formattedData = $.map(data, function(item) {
+                        return item.nama + ' - ' + item.tunjangan_makan; // Menampilkan nama dan tunjangan_makan
                     });
-                }
-            });
-
-            $(document).on('click', 'li', function() {
-                var namaTunjangan = $(this).text().split(' - ');
+                    return process(formattedData);
+                });
+            },
+            updater: function(item) {
+                var namaTunjangan = item.split(' - ');
                 var tunjanganMakan = namaTunjangan[1].trim();
-
-                // Anda dapat menyimpan nilai tunjanganMakan di dalam variabel atau elemen lainnya sesuai kebutuhan
-                // Di sini kita akan menyimpannya dalam input #tunjangan_makan
-                $('#tunjangan_makan').val(tunjanganMakan);
-
-                $('#tunjanganMakanList').fadeOut();
-            });
-
+                
+                $('#search').val(tunjanganMakan); // Menyimpan hanya tunjangan_makan ke dalam input
+                return tunjanganMakan;
+            }
+        });
+        $('#search2').typeahead({
+            source: function(query, process) {
+                return $.get(route, {
+                    query: query
+                }, function(data) {
+                    // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
+                    var formattedData = $.map(data, function(item) {
+                        return item.nama + ' - ' + item.tunjangan_transportasi; // Menampilkan nama dan tunjangan_transportasi
+                    });
+                    return process(formattedData);
+                });
+            },
+            updater: function(item) {
+                var namaTunjangan = item.split(' - ');
+                var tunjanganTransportasi = namaTunjangan[1].trim();
+                
+                $('#search2').val(tunjanganTransportasi); // Menyimpan hanya tunjangan_transportasi ke dalam input
+                return tunjanganTransportasi;
+            }
+        });
+        $('#search3').typeahead({
+            source: function(query, process) {
+                return $.get(route, {
+                    query: query
+                }, function(data) {
+                    // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
+                    var formattedData = $.map(data, function(item) {
+                        return item.nama + ' - ' + item.potongan_pinjaman; // Menampilkan nama dan potongan_pinjaman
+                    });
+                    return process(formattedData);
+                });
+            },
+            updater: function(item) {
+                var namaPotongan = item.split(' - ');   
+                var potonganPinjaman = namaPotongan[1].trim();
+                
+                $('#search3').val(potonganPinjaman); // Menyimpan hanya potongan_pinjaman ke dalam input
+                return potonganPinjaman;
+            }
         });
     </script>
+    
+
+
+
 
 
 
@@ -606,14 +632,7 @@
     </script>
 
 
-    {{-- calendar --}}
-    <script>
-        // Inisialisasi DateTimePicker
-        $('#calendar').datetimepicker({
-            format: 'L',
-            inline: true
-        });
-    </script>
+
 
 
 

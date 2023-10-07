@@ -123,7 +123,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan"
+                                            <input class="form-control" type="text" name="tunjangan_makan" id="search"
                                                 value="{{ old('tunjangan_makan', $user->tunjangan_makan) }}">
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_transportasi"
+                                            <input class="form-control" type="text" name="tunjangan_transportasi" id="search2"
                                                 value="{{ old('tunjangan_transportasi', $user->tunjangan_transportasi) }}">
                                         </div>
                                     </div>
@@ -152,7 +152,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="potongan_pinjaman"
+                                            <input class="form-control" type="text" name="potongan_pinjaman" id="search3"
                                                 value="{{ old('potongan_pinjaman', $user->potongan_pinjaman) }}">
                                         </div>
                                     </div>
