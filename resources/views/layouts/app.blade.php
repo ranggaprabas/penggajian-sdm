@@ -588,7 +588,7 @@
     <script>
         // Fungsi untuk menambahkan pemisah titik saat mengisi input number
         function addCommas(input) {
-            var value = input.value.replace(/\./g, ''); // Menghapus semua titik
+            var value = input.value.replace(/\D/g, ''); // Menghapus semua titik
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Menambahkan titik pada angka
         }
 
