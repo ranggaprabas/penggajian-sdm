@@ -32,7 +32,12 @@ class UserController extends Controller
             ->orWhere('potongan_pinjaman', 'LIKE', '%' . $query . '%')
             ->get();
 
-        $formattedResult = $filterResult->map(function ($item) {
+        // Filter hasil kueri untuk menghindari 'is_admin' = 1
+        $filteredResult = $filterResult->filter(function ($item) {
+            return $item->is_admin != 1;
+        });
+
+        $formattedResult = $filteredResult->map(function ($item) {
             return [
                 'nama' => $item->nama,
                 'tunjangan_makan' => $item->tunjangan_makan,
