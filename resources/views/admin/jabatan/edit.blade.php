@@ -44,9 +44,9 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Rp.</span>
                                         </div>
-                                        <input class="form-control" style="width: 80%;" type="text" name="tunjangan_jabatan"
-                                            oninput="addCommas(this)"
-                                            value="{{ old('tunjangan_jabatan', number_format($jabatan->tunjangan_jabatan)) }}">
+                                        <input class="form-control" style="width: 80%;" type="text"
+                                            name="tunjangan_jabatan" oninput="addCommas(this)"
+                                            value="{{ old('tunjangan_jabatan', str_replace(',', '.', number_format($jabatan->tunjangan_jabatan))) }}">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Simpan</button>

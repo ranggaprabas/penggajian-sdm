@@ -23,7 +23,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <form action="{{ route('admin.users.store') }}" method="POST">
+                <form action="{{ route('admin.users.store') }}" method="POST" onsubmit="removeCommas2()">
                     @csrf
                     <div class="card card-lightblue">
                         <div class="card-header">
@@ -114,7 +114,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan" id="search"
+                                            <input class="form-control" type="text" name="tunjangan_makan" id="search" oninput="addCommas2(this)"
                                                 value="{{ old('tunjangan_makan') }}">
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_transportasi" id="search2"
+                                            <input class="form-control" type="text" name="tunjangan_transportasi" id="search2" oninput="addCommas2(this)"
                                                 value="{{ old('tunjangan_transportasi') }}">
                                         </div>
                                     </div>
@@ -143,7 +143,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="potongan_pinjaman" id="search3"
+                                            <input class="form-control" type="text" name="potongan_pinjaman" id="search3" oninput="addCommas2(this)"
                                                 value="{{ old('potongan_pinjaman') }}">
                                         </div>
                                     </div>

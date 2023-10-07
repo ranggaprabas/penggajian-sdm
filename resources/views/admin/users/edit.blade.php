@@ -23,7 +23,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
+                <form action="{{ route('admin.users.update', $user->id) }}" method="POST" onsubmit="removeCommas2()">
                     @csrf
                     @method('put')
                     <div class="card card-lightblue">
@@ -123,8 +123,8 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan" id="search"
-                                                value="{{ old('tunjangan_makan', $user->tunjangan_makan) }}">
+                                            <input class="form-control" type="text" name="tunjangan_makan" id="search" oninput="addCommas2(this)"
+                                                value="{{ old('tunjangan_makan', str_replace(',', '.', number_format($user->tunjangan_makan))) }}">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -133,8 +133,8 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_transportasi" id="search2"
-                                                value="{{ old('tunjangan_transportasi', $user->tunjangan_transportasi) }}">
+                                            <input class="form-control" type="text" name="tunjangan_transportasi" id="search2" oninput="addCommas2(this)"
+                                                value="{{ old('tunjangan_transportasi', str_replace(',', '.', number_format($user->tunjangan_transportasi))) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -152,8 +152,8 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="potongan_pinjaman" id="search3"
-                                                value="{{ old('potongan_pinjaman', $user->potongan_pinjaman) }}">
+                                            <input class="form-control" type="text" name="potongan_pinjaman" id="search3" oninput="addCommas2(this)"
+                                                value="{{ old('potongan_pinjaman', str_replace(',', '.', number_format($user->potongan_pinjaman))) }}">
                                         </div>
                                     </div>
                                 </div>

@@ -206,7 +206,7 @@
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
                         return item.nama + ' - ' + item
-                        .tunjangan_makan; // Menampilkan nama dan tunjangan_makan
+                            .tunjangan_makan; // Menampilkan nama dan tunjangan_makan
                     });
                     return process(formattedData);
                 });
@@ -227,7 +227,7 @@
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
                         return item.nama + ' - ' + item
-                        .tunjangan_transportasi; // Menampilkan nama dan tunjangan_transportasi
+                            .tunjangan_transportasi; // Menampilkan nama dan tunjangan_transportasi
                     });
                     return process(formattedData);
                 });
@@ -237,7 +237,7 @@
                 var tunjanganTransportasi = namaTunjangan[1].trim();
 
                 $('#search2').val(
-                tunjanganTransportasi); // Menyimpan hanya tunjangan_transportasi ke dalam input
+                    tunjanganTransportasi); // Menyimpan hanya tunjangan_transportasi ke dalam input
                 return tunjanganTransportasi;
             }
         });
@@ -249,7 +249,7 @@
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
                         return item.nama + ' - ' + item
-                        .potongan_pinjaman; // Menampilkan nama dan potongan_pinjaman
+                            .potongan_pinjaman; // Menampilkan nama dan potongan_pinjaman
                     });
                     return process(formattedData);
                 });
@@ -584,21 +584,44 @@
     </script>
 
 
-    <!-- Tambahkan ini di dalam tag <head> -->
+    <!-- Untuk menambahkan koma di jabatan -->
     <script>
-        // Fungsi untuk menambahkan pemisah koma saat mengisi input number
+        // Fungsi untuk menambahkan pemisah titik saat mengisi input number
         function addCommas(input) {
-            var value = input.value.replace(/\D/g, "");
-            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            var value = input.value.replace(/\./g, ''); // Menghapus semua titik
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Menambahkan titik pada angka
         }
 
-        // Fungsi untuk menghapus pemisah koma sebelum mengirimkan formulir
+        // Fungsi untuk menghapus pemisah titik sebelum mengirimkan formulir
         function removeCommas() {
             var tunjanganJabatanInput = document.getElementsByName('tunjangan_jabatan')[0];
 
-            tunjanganJabatanInput.value = tunjanganJabatanInput.value.replace(/,/g, '');
+            tunjanganJabatanInput.value = tunjanganJabatanInput.value.replace(/\./g, ''); // Menghapus semua titik
         }
     </script>
+
+
+
+    <script>
+        // Fungsi untuk menambahkan pemisah titik saat mengisi input number atau teks
+        function addCommas2(input) {
+            var value = input.value.replace(/\./g, ''); // Menghapus semua titik
+            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Menambahkan titik pada angka
+        }
+
+        // Fungsi untuk menghapus pemisah titik sebelum mengirimkan formulir
+        function removeCommas2() {
+            var tunjanganMakanInput = document.getElementsByName('tunjangan_makan')[0];
+            var tunjanganTransportasiInput = document.getElementsByName('tunjangan_transportasi')[0];
+            var potonganPinjamanInput = document.getElementsByName('potongan_pinjaman')[0];
+
+            tunjanganMakanInput.value = tunjanganMakanInput.value.replace(/\./g, ''); // Menghapus semua titik
+            tunjanganTransportasiInput.value = tunjanganTransportasiInput.value.replace(/\./g, ''); // Menghapus semua titik
+            potonganPinjamanInput.value = potonganPinjamanInput.value.replace(/\./g, ''); // Menghapus semua titik
+        }
+    </script>
+
+
 
 
     <!-- Number Counting Animation -->
