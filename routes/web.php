@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\EntitasController;
+use App\Http\Controllers\Admin\JabatanController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,10 +27,13 @@ Route::get('/users/create/autocomplete-search', [UserController::class, 'autocom
 
 
 
-Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function() {
-    Route::group(['middleware' => ['is_admin']], function() {
+Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::group(['middleware' => ['is_admin']], function () {
+        Route::get('entitas/edit/{id}', [EntitasController::class, 'edit'])->name('edit-entitas');
         Route::resource('entitas', App\Http\Controllers\Admin\EntitasController::class);
+        Route::get('jabatan/edit/{id}', [JabatanController::class, 'edit'])->name('edit-jabatan');
         Route::resource('jabatan', App\Http\Controllers\Admin\JabatanController::class);
+        Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('edit-users');
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
         Route::get('kehadiran', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('absensis.index');
         Route::get('gaji/input-gaji', [App\Http\Controllers\Admin\AbsensiController::class, 'show'])->name('absensis.show');
@@ -41,7 +46,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
     Route::get('laporan/slip-gaji/karyawan', [App\Http\Controllers\Admin\LaporanController::class, 'show'])->name('laporan.show');
     Route::post('laporan/slip-gaji/karyawan', [App\Http\Controllers\Admin\LaporanController::class, 'cekGaji'])->name('laporan.karyawan');
-    
+
     Route::get('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');
 });

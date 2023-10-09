@@ -27,7 +27,7 @@
                     <div class="card">
                         <div class="card-body p-3">
 
-                            <form action="{{ route('admin.jabatan.update', $jabatan->id) }}" method="POST"
+                            <form action="{{ route('admin.jabatan.update', $data->id) }}" method="POST"
                                 onsubmit="removeCommas()">
                                 @csrf
                                 @method('put')
@@ -35,7 +35,7 @@
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label class="m-0" for="name">Nama</label>
                                     <input class="form-control" style="width: 80%;" type="text" name="nama"
-                                        value="{{ old('nama', $jabatan->nama) }}">
+                                        value="{{ old('nama', $data->nama) }}">
                                 </div>
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
@@ -46,7 +46,7 @@
                                         </div>
                                         <input class="form-control" style="width: 80%;" type="text"
                                             name="tunjangan_jabatan" oninput="addCommas(this)"
-                                            value="{{ old('tunjangan_jabatan', str_replace(',', '.', number_format($jabatan->tunjangan_jabatan))) }}">
+                                            value="{{ old('tunjangan_jabatan', str_replace(',', '.', number_format($data->tunjangan_jabatan))) }}">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Simpan</button>

@@ -3,7 +3,7 @@
 @section('content')
     <!-- Content Header (Page header) -->
 
-      
+
 
 
     <div class="content-header">
@@ -13,7 +13,7 @@
                     <h1 class="m-0">{{ __('Entitas') }}</h1>
 
                     <a href="{{ route('admin.entitas.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
-                </div><!-- /.col --> 
+                </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
@@ -36,23 +36,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($items as $item)
-                                        <tr id="index_{{ $item->id }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->nama }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.entitas.edit', ['entita' => $item->id]) }}" class="btn btn-info"> <i class="fa fa-edit"></i> </a>
-                                                {{-- <form onclick="return confirm('anda yakin ? ');" class="d-inline-block" action="{{ route('admin.entitas.destroy', $item->id) }}" method="post">
+                                        @foreach ($items as $item)
+                                            <tr id="index_{{ $item->id }}">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->nama }}</td>
+                                                <td>
+                                                    <a href="{{ route('admin.edit-entitas', $item->id) }}"
+                                                        class="btn btn-info"> <i class="fa fa-edit"></i> </a>
+                                                    {{-- <form onclick="return confirm('anda yakin ? ');" class="d-inline-block" action="{{ route('admin.entitas.destroy', $item->id) }}" method="post">
                                                     @csrf 
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
                                                 </form> --}}
-                                                {{-- <a href="javascript:void(0)" id="btn-delete-post"
+                                                    {{-- <a href="javascript:void(0)" id="btn-delete-post"
                                                     data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
                                                     class="btn btn-danger"> <i class="fa fa-trash"></i></a> --}}
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

@@ -46,7 +46,7 @@
                                                 @php $total_gaji =  $item->tunjangan_jabatan @endphp
                                                 <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
                                                 <td>
-                                                    <a href="{{ route('admin.jabatan.edit', $item->id) }}"
+                                                    <a href="{{ route('admin.edit-jabatan', $item->id) }}"
                                                         class="btn btn-info"> <i class="fa fa-edit"></i> </a>
                                                     <a href="javascript:void(0)" id="btn-delete-jabatan"
                                                         data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"

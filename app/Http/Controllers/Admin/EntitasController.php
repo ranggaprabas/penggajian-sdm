@@ -56,11 +56,12 @@ class EntitasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Entitas $entita)
+    public function edit(string $id)
     {
         $title = 'Edit Entitas';
         $pages = "Entitas";
-        return view('admin.entitas.edit', compact('entita', 'pages', 'title'));
+        $data = Entitas::findOrFail($id);
+        return view('admin.entitas.edit', compact('pages', 'title', 'data'));
     }
 
     /**
