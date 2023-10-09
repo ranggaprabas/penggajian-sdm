@@ -23,7 +23,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <form action="{{ route('admin.users.update', $user->id) }}" method="POST" onsubmit="removeCommas2()">
+                <form action="{{ route('admin.users.update', $data->id) }}" method="POST" onsubmit="removeCommas2()">
                     @csrf
                     @method('put')
                     <div class="card card-lightblue">
@@ -38,7 +38,7 @@
                                     <div class="form-group">
                                         <label for="nama">Nama</label>
                                         <input class="form-control" type="text" name="nama"
-                                            value="{{ old('nama', $user->nama) }}">
+                                            value="{{ old('nama', $data->nama) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -48,7 +48,7 @@
                                             <option value="">-- Choose Categories --</option>
                                             @foreach ($entita as $entitas)
                                                 <option value="{{ $entitas->id }}"
-                                                    {{ $user->entitas && $user->entitas->id == $entitas->id ? 'selected' : '' }}>
+                                                    {{ $data->entitas && $data->entitas->id == $entitas->id ? 'selected' : '' }}>
                                                     {{ $entitas->nama }}
                                                 </option>
                                             @endforeach
@@ -63,7 +63,7 @@
                                             @foreach ($jabatans as $jabatan)
                                                 <option value="{{ $jabatan->id }}"
                                                     data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
-                                                    {{ $user->jabatan && $user->jabatan->id == $jabatan->id ? 'selected' : '' }}>
+                                                    {{ $data->jabatan && $data->jabatan->id == $jabatan->id ? 'selected' : '' }}>
                                                     {{ $jabatan->nama }} - Rp.
                                                     {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}
                                                 </option>
@@ -75,23 +75,23 @@
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input class="form-control" type="text" name="email"
-                                            value="{{ old('email', $user->email) }}">
+                                            value="{{ old('email', $data->email) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nik">Nik</label>
                                         <input class="form-control" type="number" name="nik"
-                                            value="{{ old('nik', $user->nik) }}">
+                                            value="{{ old('nik', $data->nik) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jenis_kelamin">Jenis Kelamin</label>
                                         <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                                            <option {{ $user->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
+                                            <option {{ $data->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
                                                 value="laki-laki">Laki-Laki</option>
-                                            <option {{ $user->jenis_kelamin === 'perempuan' ? 'selected' : null }}
+                                            <option {{ $data->jenis_kelamin === 'perempuan' ? 'selected' : null }}
                                                 value="perempuan">Perempuan</option>
                                         </select>
                                     </div>
@@ -100,10 +100,10 @@
                             <div class="form-group">
                                 <label for="status">Status</label>
                                 <select class="form-control" name="status" id="status">
-                                    <option {{ $user->status === 1 ? 'selected' : null }} value="1">Pegawai
+                                    <option {{ $data->status === 1 ? 'selected' : null }} value="1">Pegawai
                                         Tetap
                                     </option>
-                                    <option {{ $user->status === 0 ? 'selected' : null }} value="0">Pegawai
+                                    <option {{ $data->status === 0 ? 'selected' : null }} value="0">Pegawai
                                         Tidak
                                         Tetap</option>
                                 </select>
@@ -124,7 +124,7 @@
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
                                             <input class="form-control" type="text" name="tunjangan_makan" id="search" oninput="addCommas2(this)"
-                                                value="{{ old('tunjangan_makan', str_replace(',', '.', number_format($user->tunjangan_makan))) }}">
+                                                value="{{ old('tunjangan_makan', str_replace(',', '.', number_format($details->komponenGaji->tunjangan_makan))) }}">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -134,7 +134,7 @@
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
                                             <input class="form-control" type="text" name="tunjangan_transportasi" id="search2" oninput="addCommas2(this)"
-                                                value="{{ old('tunjangan_transportasi', str_replace(',', '.', number_format($user->tunjangan_transportasi))) }}">
+                                                value="{{ old('tunjangan_transportasi', str_replace(',', '.', number_format($details->komponenGaji->tunjangan_transportasi))) }}">
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +153,7 @@
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
                                             <input class="form-control" type="text" name="potongan_pinjaman" id="search3" oninput="addCommas2(this)"
-                                                value="{{ old('potongan_pinjaman', str_replace(',', '.', number_format($user->potongan_pinjaman))) }}">
+                                                value="{{ old('potongan_pinjaman', str_replace(',', '.', number_format($details->komponenGaji->potongan_pinjaman))) }}">
                                         </div>
                                     </div>
                                 </div>

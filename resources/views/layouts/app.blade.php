@@ -197,7 +197,7 @@
 
     <!-- Jquery Auto Complete -->
     <script type="text/javascript">
-        var route = "{{ route('autocomplete.search') }}"; // Menggunakan nama rute
+        var route = "{{ route('autocomplete.search') }}"; // Menggunakan user_nama rute
         $('#search').typeahead({
             source: function(query, process) {
                 return $.get(route, {
@@ -205,8 +205,8 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.nama + ' - ' + item
-                            .tunjangan_makan; // Menampilkan nama dan tunjangan_makan
+                        return item.user_nama + ' - ' + item
+                            .tunjangan_makan; // Menampilkan user_nama dan tunjangan_makan
                     });
                     return process(formattedData);
                 });
@@ -229,8 +229,8 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.nama + ' - ' + item
-                            .tunjangan_transportasi; // Menampilkan nama dan tunjangan_transportasi
+                        return item.user_nama + ' - ' + item
+                            .tunjangan_transportasi; // Menampilkan user_nama dan tunjangan_transportasi
                     });
                     return process(formattedData);
                 });
@@ -253,8 +253,8 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.nama + ' - ' + item
-                            .potongan_pinjaman; // Menampilkan nama dan potongan_pinjaman
+                        return item.user_nama + ' - ' + item
+                            .potongan_pinjaman; // Menampilkan user_nama dan potongan_pinjaman
                     });
                     return process(formattedData);
                 });

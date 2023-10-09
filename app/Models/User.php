@@ -47,4 +47,20 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Entitas::class);
     }
+
+    public function komponenGaji()
+    {
+        return $this->hasOne(KomponenGaji::class);
+    }
+
+    public function delete()
+    {
+        // Hapus terlebih dahulu komponen gaji (jika ada)
+        if ($this->komponenGaji) {
+            $this->komponenGaji->delete();
+        }
+
+        // Hapus user
+        return parent::delete();
+    }
 }

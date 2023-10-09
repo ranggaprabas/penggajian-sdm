@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\KomponenGaji;
 use App\Models\User;
 
 class AbsensiController extends Controller
@@ -70,6 +71,7 @@ class AbsensiController extends Controller
         foreach ($request->karyawan_id as $id) {
             // Dapatkan semua informasi yang Anda butuhkan dari tabel users
             $user = User::findOrFail($id);
+            $komponenGaji = KomponenGaji::where('user_id', $user->id)->first();
 
             $input = [
                 'user_id' => $user->id,
@@ -79,9 +81,9 @@ class AbsensiController extends Controller
                 'jenis_kelamin' => $user->jenis_kelamin,
                 'jabatan' => $user->jabatan->nama,
                 'tunjangan_jabatan' => $user->jabatan->tunjangan_jabatan,
-                'tunjangan_makan' => $user->tunjangan_makan,
-                'tunjangan_transportasi' => $user->tunjangan_transportasi,
-                'potongan_pinjaman' => $user->potongan_pinjaman,
+                'tunjangan_makan' => $komponenGaji->tunjangan_makan,
+                'tunjangan_transportasi' => $komponenGaji->tunjangan_transportasi,
+                'potongan_pinjaman' => $komponenGaji->potongan_pinjaman,
                 'entitas' => $user->entitas->nama,
                 // Sisipkan kolom lain yang diperlukan
             ];

@@ -7,6 +7,7 @@ use App\Models\Jabatan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\Entitas;
+use App\Models\KomponenGaji;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +27,7 @@ class UserController extends Controller
     {
         $query = $request->get('query');
 
-        $filterResult = User::where('nama', 'LIKE', '%' . $query . '%')
+        $filterResult = KomponenGaji::where('user_nama', 'LIKE', '%' . $query . '%')
             ->orWhere('tunjangan_makan', 'LIKE', '%' . $query . '%')
             ->orWhere('tunjangan_transportasi', 'LIKE', '%' . $query . '%')
             ->orWhere('potongan_pinjaman', 'LIKE', '%' . $query . '%')
@@ -39,7 +40,7 @@ class UserController extends Controller
 
         $formattedResult = $filteredResult->map(function ($item) {
             return [
-                'nama' => $item->nama,
+                'user_nama' => $item->user_nama,
                 'tunjangan_makan' => $item->tunjangan_makan,
                 'tunjangan_transportasi' => $item->tunjangan_transportasi,
                 'potongan_pinjaman' => $item->potongan_pinjaman,
@@ -70,7 +71,15 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        User::create($request->validated());
+        $user = User::create($request->validated());
+
+        // Simpan data ke tabel komponen_gaji
+        $user->komponenGaji()->create([
+            'tunjangan_makan' => $request->input('tunjangan_makan'),
+            'tunjangan_transportasi' => $request->input('tunjangan_transportasi'),
+            'potongan_pinjaman' => $request->input('potongan_pinjaman'),
+            'user_nama' => $request->input('nama'),
+        ]);
 
         $userNama = $request->input('nama');
 
@@ -83,24 +92,28 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(string $id)
     {
         $title = 'Detail SDM';
         $pages = 'SDM';
-        return view('admin.users.show', compact('user', 'title', 'pages'));
+        $data = User::findOrFail($id);
+        $details = User::with('komponenGaji')->findOrFail($id);
+        return view('admin.users.show', compact('title', 'pages', 'data', 'details'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(string $id)
     {
         $title = 'Edit SDM';
         $pages = 'SDM';
+        $data = User::findOrFail($id);
+        $details = User::with('komponenGaji')->findOrFail($id);
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan']);
         $entita = Entitas::get(['id', 'nama']);
 
-        return view('admin.users.edit', compact('user', 'jabatans', 'entita', 'pages', 'title'));
+        return view('admin.users.edit', compact('data', 'details',  'jabatans', 'entita', 'pages', 'title'));
     }
 
     /**
@@ -109,6 +122,16 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $user->update($request->validated());
+
+        // Perbarui data komponen_gaji jika ada
+        if ($user->komponenGaji) {
+            $user->komponenGaji->update([
+                'tunjangan_makan' => $request->input('tunjangan_makan'),
+                'tunjangan_transportasi' => $request->input('tunjangan_transportasi'),
+                'potongan_pinjaman' => $request->input('potongan_pinjaman'),
+                'user_nama' => $request->input('nama'), // Perbarui user_nama dengan nilai dari input nama
+            ]);
+        }
 
         $message = 'Data SDM ' . $user->nama  . ' berhasil diperbarui!';
 

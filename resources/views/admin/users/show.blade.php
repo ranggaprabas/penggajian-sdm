@@ -32,34 +32,34 @@
                                     <tbody>
                                         <tr>
                                             <th>Nama</th>
-                                            <td>{{ $user->nama }}</td>
+                                            <td>{{ $data->nama }}</td>
                                         </tr>
                                         <tr>
                                             <th>Email</th>
-                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $data->email }}</td>
                                         </tr>
                                         <tr>
                                             <th>Nik</th>
-                                            <td>{{ $user->nik }}</td>
+                                            <td>{{ $data->nik }}</td>
                                         </tr>
                                         <tr>
                                             <th>Jenis Kelamin</th>
-                                            <td>{{ $user->jenis_kelamin }}</td>
+                                            <td>{{ $data->jenis_kelamin }}</td>
                                         </tr>
                                         <tr>
                                             <th>Entitas</th>
-                                            <td>{{ $user->entitas->nama ?? '-' }}</td>
+                                            <td>{{ $data->entitas->nama ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Jabatan</th>
-                                            <td>{{ $user->jabatan->nama ?? '-' }}</td>
+                                            <td>{{ $data->jabatan->nama ?? '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Tunjangan Jabatan</th>
                                             <td>
                                                 <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
-                                                @if ($user->jabatan)
-                                                    Rp. {{ number_format($user->jabatan->tunjangan_jabatan, 0, '', '.') }}
+                                                @if ($data->jabatan)
+                                                    Rp. {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
                                                 @else
                                                     -
                                                 @endif
@@ -70,8 +70,8 @@
                                             <th>Tunjangan Makan</th>
                                             <td>
                                                 <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
-                                                @if ($user->tunjangan_makan)
-                                                    Rp. {{ number_format($user->tunjangan_makan, 0, '', '.') }}
+                                                @if ($details->komponenGaji->tunjangan_makan)
+                                                    Rp. {{ number_format($details->komponenGaji->tunjangan_makan, 0, '', '.') }}
                                                 @else
                                                     -
                                                 @endif
@@ -82,8 +82,8 @@
                                             <th>Tunjangan Transportasi</th>
                                             <td>
                                                 <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
-                                                @if ($user->tunjangan_transportasi)
-                                                    Rp. {{ number_format($user->tunjangan_transportasi, 0, '', '.') }}
+                                                @if ($details->komponenGaji->tunjangan_transportasi)
+                                                    Rp. {{ number_format($details->komponenGaji->tunjangan_transportasi, 0, '', '.') }}
                                                 @else
                                                     -
                                                 @endif
@@ -91,8 +91,8 @@
                                         </tr>
 
                                         @php
-                                            $total_potongan = $user->potongan_pinjaman;
-                                            $total_gaji = $user->jabatan ? $user->jabatan->tunjangan_jabatan + $user->tunjangan_makan + $user->tunjangan_transportasi - $total_potongan : null;
+                                            $total_potongan = $details->komponenGaji->potongan_pinjaman;
+                                            $total_gaji = $data->jabatan ? $data->jabatan->tunjangan_jabatan + $details->komponenGaji->tunjangan_makan + $details->komponenGaji->tunjangan_transportasi - $total_potongan : null;
                                         @endphp
 
                                         <tr>
@@ -122,7 +122,7 @@
                                         <tr>
                                             <th>Status</th>
                                             <td>
-                                                @if ($user->status)
+                                                @if ($data->status)
                                                     <span class="badge bg-success">Pegawai Tetap</span>
                                                 @else
                                                     <span class="badge bg-warning">Pegawai Tidak Tetap</span>
