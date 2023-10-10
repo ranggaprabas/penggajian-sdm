@@ -143,7 +143,7 @@
                                         </table>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary mx-auto btn-block"> <i class="fa fa-check"></i> Gaji Semua</button>
+                                        <button type="submit" class="btn btn-primary mx-auto btn-block"> <i class="fa fa-check"></i>Gaji</button>
                                     </div>
                                 @else
                                     <div class="text-center">
