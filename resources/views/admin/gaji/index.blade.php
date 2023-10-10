@@ -77,7 +77,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan Data Gaji SDM bulan <span class="text-bold">{{ date('F') }}</span>
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan Data Gaji SDM
+                            bulan <span class="text-bold">{{ date('F') }}</span>
                             tahun <span class="text-bold">{{ date('Y') }}</span>
                         </div>
                     </div>
@@ -90,7 +91,8 @@
                                 $bulan = request()->get('bulan');
                                 $namaBulan = date('F', mktime(0, 0, 0, $bulan, 1));
                             @endphp
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan Data Gaji SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan Data Gaji SDM
+                            bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
                             <span class="text-bold">{{ request()->get('tahun') }}</span>
                         </div>
                     </div>
@@ -117,6 +119,7 @@
                                                     <th>Tunjangan Transportasi</th>
                                                     <th>Potongan</th>
                                                     <th>Take Home Pay</th>
+                                                    <th class="action-column">Action</th>
                                                 </tr>
                                             </thead>
                                             @php
@@ -124,27 +127,38 @@
                                             @endphp
                                             <tbody>
                                                 @forelse($items as $item)
-                                                        <tr>
-                                                            <td>{{ $counter }}</td>
-                                                            <td>{{ $item->nik }}</td>
-                                                            <td>{{ $item->nama }}</td>
-                                                            <td>{{ $item->jenis_kelamin }}</td>
-                                                            <td>{{ $item->entitas }}</td>
-                                                            <td>{{ $item->jabatan }}</td>
-                                                            <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
-                                                            <td>Rp. {{ number_format($item->tunjangan_makan, 0, '', '.') }}</td>
-                                                            <td>Rp. {{ number_format($item->tunjangan_transportasi, 0, '', '.') }}</td>
-                                                            @php
-                                                                // Hapus perhitungan potongan gaji
-                                                                $total_potongan = $item->potongan_pinjaman;
-                                                                $total_gaji = $item->tunjangan_jabatan + $item->tunjangan_makan + $item->tunjangan_transportasi - $total_potongan;
-                                                            @endphp
-                                                            <td>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
-                                                            <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
-                                                        </tr>
+                                                    <tr id="_index{{ $item->id }}">
+                                                        <td>{{ $counter }}</td>
+                                                        <td>{{ $item->nik }}</td>
+                                                        <td>{{ $item->nama }}</td>
+                                                        <td>{{ $item->jenis_kelamin }}</td>
+                                                        <td>{{ $item->entitas }}</td>
+                                                        <td>{{ $item->jabatan }}</td>
+                                                        <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}
+                                                        </td>
+                                                        <td>Rp. {{ number_format($item->tunjangan_makan, 0, '', '.') }}
+                                                        </td>
+                                                        <td>Rp.
+                                                            {{ number_format($item->tunjangan_transportasi, 0, '', '.') }}
+                                                        </td>
                                                         @php
-                                                            $counter++;
+                                                            // Hapus perhitungan potongan gaji
+                                                            $total_potongan = $item->potongan_pinjaman;
+                                                            $total_gaji = $item->tunjangan_jabatan + $item->tunjangan_makan + $item->tunjangan_transportasi - $total_potongan;
                                                         @endphp
+                                                        <td>Rp. {{ number_format($total_potongan, 0, '', '.') }}</td>
+                                                        <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
+                                                        <td>
+                                                            <a href="javascript:void(0)" id="btn-delete-gaji"
+                                                                data-id="{{ $item->id }}"
+                                                                data-nama="{{ $item->nama }}"
+                                                                class="btn-sm btn-danger d-inline-block"> <i
+                                                                    class="fa fa-undo"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                    @php
+                                                        $counter++;
+                                                    @endphp
                                                 @empty
                                                     <tr>
                                                         <td colspan="9" class="text-center">Data Kosong</td>
@@ -154,12 +168,12 @@
                                         </table>
                                     </div>
                                 @else
-                                <div class="text-center">
-                                    <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Mengisi <a
-                                            href="{{ route('admin.absensis.show') }}"
-                                            style="color: #000000 !important; text-decoration: underline;">Input
-                                            Gaji</a> terlebih dahulu</span>
-                                </div>
+                                    <div class="text-center">
+                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data
+                                            Kosong!, Diperlukan Mengisi <a href="{{ route('admin.absensis.show') }}"
+                                                style="color: #000000 !important; text-decoration: underline;">Input
+                                                Gaji</a> terlebih dahulu</span>
+                                    </div>
                                 @endif
                             </div>
                         </div>

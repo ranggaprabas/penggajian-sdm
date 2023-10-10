@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Absensi;
 use App\Models\PotonganGaji;
 
 class GajiController extends Controller
@@ -15,12 +16,12 @@ class GajiController extends Controller
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $items = DB::table('absensi')
-                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan_makan', 'absensi.tunjangan_transportasi', 'absensi.potongan_pinjaman')
+                ->select('absensi.id',  'absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan_makan', 'absensi.tunjangan_transportasi', 'absensi.potongan_pinjaman')
                 ->where('absensi.bulan', $bulanSaatIni)
                 ->get();
         } else {
             $items = DB::table('absensi')
-                ->select('absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan_makan', 'absensi.tunjangan_transportasi', 'absensi.potongan_pinjaman')
+                ->select('absensi.id', 'absensi.user_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan_makan', 'absensi.tunjangan_transportasi', 'absensi.potongan_pinjaman')
                 ->where('absensi.bulan', $bulan)
 
                 ->get();
@@ -58,22 +59,35 @@ class GajiController extends Controller
 
         $tanggal = $bulan . $tahun;
         $items = DB::table('absensi')
-        ->select(
-            'absensi.user_id',
-            'absensi.bulan',
-            'absensi.nama',
-            'absensi.nik',
-            'absensi.jenis_kelamin',
-            'absensi.entitas',
-            'absensi.jabatan',
-            'absensi.tunjangan_jabatan',
-            'absensi.tunjangan_makan',
-            'absensi.tunjangan_transportasi',
-            'absensi.potongan_pinjaman'
-        )
-        ->where('absensi.bulan', $tanggal)
-        ->get();
+            ->select(
+                'absensi.user_id',
+                'absensi.bulan',
+                'absensi.nama',
+                'absensi.nik',
+                'absensi.jenis_kelamin',
+                'absensi.entitas',
+                'absensi.jabatan',
+                'absensi.tunjangan_jabatan',
+                'absensi.tunjangan_makan',
+                'absensi.tunjangan_transportasi',
+                'absensi.potongan_pinjaman'
+            )
+            ->where('absensi.bulan', $tanggal)
+            ->get();
 
         return view('admin.gaji.cetak', compact('items', 'bulan', 'namaBulan', 'tahun'));
+    }
+
+    public function destroy($id)
+    {
+        $gaji = Absensi::findOrFail($id);
+
+        $gaji->delete();
+
+        //return response
+        return response()->json([
+            'success' => true,
+            'message' => 'Data SDM ' . $gaji->nama . ' Berhasil Diundo!.',
+        ]);
     }
 }
