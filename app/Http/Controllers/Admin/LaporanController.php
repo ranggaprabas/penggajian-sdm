@@ -6,18 +6,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Absensi;
 use App\Models\PotonganGaji;
 
 class LaporanController extends Controller
 {
     public function index()
     {
-        // Ambil semua data absensi yang ada user_id-nya
-        $absensi = Absensi::select('user_id')->distinct()->get();
-
-        // Ambil data pengguna yang terkait dengan user_id dalam absensi
-        $users = User::whereIn('id', $absensi->pluck('user_id'))->get(['nama', 'id']);
+        // Ambil semua pengguna yang bukan admin (is_admin != 1)
+        $users = User::where('is_admin', '!=', 1)->get(['nama', 'id']);
 
         return view('admin.laporan.index', compact('users'));
     }
