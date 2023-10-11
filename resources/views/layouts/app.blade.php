@@ -317,8 +317,14 @@
     </script>
 
     <script>
-        new DataTable('#example1');
+        document.addEventListener('DOMContentLoaded', function() {
+            new DataTable('#example1', {
+                "pageLength": 100, // Mengatur jumlah default entri menjadi 100
+                "lengthMenu": [10, 25, 50, 100] // Menampilkan opsi untuk mengubah jumlah entri
+            });
+        });
     </script>
+
 
     <script>
         //button create post event
