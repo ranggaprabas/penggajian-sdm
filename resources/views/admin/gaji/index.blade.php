@@ -165,6 +165,22 @@
                                                     </tr>
                                                 @endforelse
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nik</th>
+                                                    <th>Nama</th>
+                                                    <th>Jenis Kelamin</th>
+                                                    <th>Entitas</th>
+                                                    <th>Jabatan</th>
+                                                    <th>Tunjangan Jabatan</th>
+                                                    <th>Tunjangan Makan</th>
+                                                    <th>Tunjangan Transportasi</th>
+                                                    <th>Potongan</th>
+                                                    <th>Take Home Pay</th>
+                                                    <th class="action-column">Action</th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                 @else

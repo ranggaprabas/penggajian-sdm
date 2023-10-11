@@ -70,7 +70,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="alert alert-success }}">
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data Input Gaji SDM bulan <span class="text-bold">{{ date('F') }}</span>
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data Input Gaji
+                            SDM bulan <span class="text-bold">{{ date('F') }}</span>
                             tahun <span class="text-bold">{{ date('Y') }}</span>
                         </div>
                     </div>
@@ -83,7 +84,8 @@
                                 $bulan = request()->get('bulan');
                                 $namaBulan = date('F', mktime(0, 0, 0, $bulan, 1));
                             @endphp
-                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data Input Gaji SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Menampilkan data Input Gaji
+                            SDM bulan <span class="text-bold">{{ $namaBulan }}</span> tahun
                             <span class="text-bold">{{ request()->get('tahun') }}</span>
                         </div>
                     </div>
@@ -140,14 +142,26 @@
                                                     </tr>
                                                 @endforelse
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Nik</th>
+                                                    <th>Nama</th>
+                                                    <th>Jenis Kelamin</th>
+                                                    <th>Entitas</th>
+                                                    <th>Jabatan</th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-primary mx-auto btn-block"> <i class="fa fa-check"></i> Gaji</button>
+                                        <button type="submit" class="btn btn-primary mx-auto btn-block"> <i
+                                                class="fa fa-check"></i> Gaji</button>
                                     </div>
                                 @else
                                     <div class="text-center">
-                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data Kosong!, Data Input Gaji Bulan ini sudah masuk di <a
+                                        <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data
+                                            Kosong!, Data Input Gaji Bulan ini sudah masuk di <a
                                                 href="{{ route('admin.gaji.index') }}"
                                                 style="color: #000000 !important; text-decoration: underline;">Data
                                                 Gaji</a></span>

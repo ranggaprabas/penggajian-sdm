@@ -82,13 +82,26 @@
                                             @endif
                                         @endforeach
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>Email</th>
+                                            <th>Nik</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Entitas</th>
+                                            <th>Jabatan</th>
+                                            <th>Status</th>
+                                            <th class="action-column">Action</th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>
                         <!-- /.card-body -->
 
                         <!-- previous and next default adminlte -->
-                        
+
                         {{-- <div class="card-footer clearfix">
                             {{ $users->links() }}
                         </div> --}}
