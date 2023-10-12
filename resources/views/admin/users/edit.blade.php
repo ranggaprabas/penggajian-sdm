@@ -61,12 +61,14 @@
                                         <select class="form-control" name="jabatan_id" id="jabatan">
                                             <option value="">-- Choose Categories --</option>
                                             @foreach ($jabatans as $jabatan)
-                                                <option value="{{ $jabatan->id }}"
-                                                    data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
-                                                    {{ $data->jabatan && $data->jabatan->id == $jabatan->id ? 'selected' : '' }}>
-                                                    {{ $jabatan->nama }} - Rp.
-                                                    {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}
-                                                </option>
+                                                @if ($jabatan->deleted != 1)
+                                                    <option value="{{ $jabatan->id }}"
+                                                        data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
+                                                        {{ $data->jabatan && $data->jabatan->id == $jabatan->id ? 'selected' : '' }}>
+                                                        {{ $jabatan->nama }} - Rp.
+                                                        {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}
+                                                    </option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -123,7 +125,8 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan" id="search" oninput="addCommas2(this)"
+                                            <input class="form-control" type="text" name="tunjangan_makan" id="search"
+                                                oninput="addCommas2(this)"
                                                 value="{{ old('tunjangan_makan', str_replace(',', '.', number_format($details->komponenGaji->tunjangan_makan))) }}">
                                         </div>
                                     </div>
@@ -133,7 +136,8 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="tunjangan_transportasi" id="search2" oninput="addCommas2(this)"
+                                            <input class="form-control" type="text" name="tunjangan_transportasi"
+                                                id="search2" oninput="addCommas2(this)"
                                                 value="{{ old('tunjangan_transportasi', str_replace(',', '.', number_format($details->komponenGaji->tunjangan_transportasi))) }}">
                                         </div>
                                     </div>
@@ -152,7 +156,8 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">Rp.</div>
                                             </div>
-                                            <input class="form-control" type="text" name="potongan_pinjaman" id="search3" oninput="addCommas2(this)"
+                                            <input class="form-control" type="text" name="potongan_pinjaman"
+                                                id="search3" oninput="addCommas2(this)"
                                                 value="{{ old('potongan_pinjaman', str_replace(',', '.', number_format($details->komponenGaji->potongan_pinjaman))) }}">
                                         </div>
                                     </div>

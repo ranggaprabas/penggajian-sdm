@@ -38,21 +38,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                            $counter = 1;
+                                        @endphp
                                         @foreach ($items as $item)
-                                            <tr id="index_{{ $item->id }}">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->nama }}</td>
-                                                <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
-                                                @php $total_gaji =  $item->tunjangan_jabatan @endphp
-                                                <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
-                                                <td>
-                                                    <a href="{{ route('admin.edit-jabatan', $item->id) }}"
-                                                        class="btn btn-info"> <i class="fa fa-edit"></i> </a>
-                                                    <a href="javascript:void(0)" id="btn-delete-jabatan"
-                                                        data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                                        class="btn btn-danger"> <i class="fa fa-trash"></i></a>
-                                                </td>
-                                            </tr>
+                                            @if ($item->deleted == 0)
+                                                {{-- Hanya tampilkan jabatan yang belum dihapus --}}
+                                                <tr id="index_{{ $item->id }}">
+                                                    <td>{{ $counter }}</td>
+                                                    <td>{{ $item->nama }}</td>
+                                                    <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
+                                                    @php $total_gaji =  $item->tunjangan_jabatan @endphp
+                                                    <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
+                                                    <td>
+                                                        <a href="{{ route('admin.edit-jabatan', $item->id) }}"
+                                                            class="btn btn-info"> <i class="fa fa-edit"></i> </a>
+                                                        <a href="javascript:void(0)" id="btn-delete-jabatan"
+                                                            data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                                            class="btn btn-danger"> <i class="fa fa-trash"></i></a>
+                                                    </td>
+                                                </tr>
+                                                @php
+                                                    $counter++;
+                                                @endphp
+                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>

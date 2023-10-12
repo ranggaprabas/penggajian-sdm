@@ -87,17 +87,9 @@ class JabatanController extends Controller
     {
         $jabatan = Jabatan::findOrFail($id);
 
-        // Mendapatkan semua user yang terkait dengan jabatan
-        $users = User::where('jabatan_id', $jabatan->id)->get();
-
-        // Menghapus hubungan jabatan pada setiap user
-        foreach ($users as $user) {
-            $user->jabatan_id = null;
-            $user->save();
-        }
-
-        // Menghapus jabatan
-        $jabatan->delete();
+        // Mengubah nilai "deleted" menjadi 1 (true) alih-alih menghapus data
+        $jabatan->deleted = 1;
+        $jabatan->save();
 
         //return response
         return response()->json([

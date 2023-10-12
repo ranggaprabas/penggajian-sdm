@@ -52,13 +52,19 @@
                                         </tr>
                                         <tr>
                                             <th>Jabatan</th>
-                                            <td>{{ $data->jabatan->nama ?? '-' }}</td>
+                                            <td>
+                                                @if ($data->jabatan->deleted == 1)
+                                                    {{ $data->jabatan->nama }} (jabatan deleted)
+                                                @else
+                                                    {{ $data->jabatan->nama ?? '-' }}
+                                                @endif
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Tunjangan Jabatan</th>
                                             <td>
-                                                <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
-                                                @if ($data->jabatan)
+                                                @if ($data->jabatan && $data->jabatan->deleted != 1)
+                                                    <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
                                                     Rp. {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
                                                 @else
                                                     -
@@ -71,7 +77,8 @@
                                             <td>
                                                 <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
                                                 @if ($details->komponenGaji->tunjangan_makan)
-                                                    Rp. {{ number_format($details->komponenGaji->tunjangan_makan, 0, '', '.') }}
+                                                    Rp.
+                                                    {{ number_format($details->komponenGaji->tunjangan_makan, 0, '', '.') }}
                                                 @else
                                                     -
                                                 @endif
@@ -83,7 +90,8 @@
                                             <td>
                                                 <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
                                                 @if ($details->komponenGaji->tunjangan_transportasi)
-                                                    Rp. {{ number_format($details->komponenGaji->tunjangan_transportasi, 0, '', '.') }}
+                                                    Rp.
+                                                    {{ number_format($details->komponenGaji->tunjangan_transportasi, 0, '', '.') }}
                                                 @else
                                                     -
                                                 @endif
@@ -92,7 +100,12 @@
 
                                         @php
                                             $total_potongan = $details->komponenGaji->potongan_pinjaman;
-                                            $total_gaji = $data->jabatan ? $data->jabatan->tunjangan_jabatan + $details->komponenGaji->tunjangan_makan + $details->komponenGaji->tunjangan_transportasi - $total_potongan : null;
+                                            // Perhitungan tunjangan_jabatan hanya jika jabatan deleted tidak sama dengan 1
+                                            if ($data->jabatan && $data->jabatan->deleted != 1) {
+                                                $total_gaji = $data->jabatan->tunjangan_jabatan + $details->komponenGaji->tunjangan_makan + $details->komponenGaji->tunjangan_transportasi - $total_potongan;
+                                            } else {
+                                                $total_gaji = $details->komponenGaji->tunjangan_makan + $details->komponenGaji->tunjangan_transportasi - $total_potongan;
+                                            }
                                         @endphp
 
                                         <tr>

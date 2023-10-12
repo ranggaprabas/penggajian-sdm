@@ -54,7 +54,13 @@
                                                     <td>{{ $user->nik }}</td>
                                                     <td>{{ $user->jenis_kelamin }}</td>
                                                     <td>{{ $user->entitas->nama ?? '-' }}</td>
-                                                    <td>{{ $user->jabatan->nama ?? '-' }}</td>
+                                                    <td>
+                                                        @if ($user->jabatan->deleted == 1)
+                                                            {{ $user->jabatan->nama }} (jabatan deleted)
+                                                        @else
+                                                            {{ $user->jabatan->nama ?? '-' }}
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         @if ($user->status)
                                                             <span class="badge bg-success">pegawai tetap</span>

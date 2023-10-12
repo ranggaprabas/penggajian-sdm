@@ -60,7 +60,7 @@ class UserController extends Controller
     {
         $title = 'Add SDM';
         $pages = 'SDM';
-        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan']);
+        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
 
         return view('admin.users.create', compact('jabatans', 'entita', 'pages', 'title'));
@@ -110,7 +110,7 @@ class UserController extends Controller
         $pages = 'SDM';
         $data = User::findOrFail($id);
         $details = User::with('komponenGaji')->findOrFail($id);
-        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan']);
+        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
 
         return view('admin.users.edit', compact('data', 'details',  'jabatans', 'entita', 'pages', 'title'));
