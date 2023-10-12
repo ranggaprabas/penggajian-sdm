@@ -18,10 +18,23 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('jabatan', 'entitas')->get();
-
-        return view('admin.users.index', compact('users'));
+        $users = User::with('jabatan', 'entitas')
+            ->where('deleted', 0)
+            ->get();
+        $isDeletedPage = false;
+        return view('admin.users.index', compact('users', 'isDeletedPage'));
     }
+
+    public function indexDeleted()
+    {
+        $users = User::with('jabatan', 'entitas')
+            ->where('deleted', 1)
+            ->get();
+
+        $isDeletedPage = true;
+        return view('admin.users.index', compact('users', 'isDeletedPage'));
+    }
+
 
     public function autocompleteSearch(Request $request)
     {
@@ -146,7 +159,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        // Mengubah nilai "deleted" menjadi 1 (true) alih-alih menghapus data
+        $user->deleted = 1;
+        $user->save();
 
         //return response
         return response()->json([

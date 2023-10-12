@@ -15,6 +15,17 @@
                     <a href="{{ route('admin.users.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
                 </div><!-- /.col -->
             </div><!-- /.row -->
+            @if (Request::is('admin/users/deleted'))
+                <!-- Cek apakah berada di halaman "deleted" -->
+                <a href="{{ route('admin.users.index') }}" class="btn btn-success ml-auto">
+                    <i class="fa fa-arrow-left"></i> Kembali <!-- Ganti teks tombol menjadi "Kembali" -->
+                </a>
+            @else
+                <a href="{{ route('admin.users.index.deleted') }}" class="btn btn-success ml-auto">
+                    <i class="fa fa-power-off"></i> Lihat Data Yang Dihapus
+                    <!-- Teks tombol tetap "Lihat Data Yang Dihapus" -->
+                </a>
+            @endif
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -26,6 +37,8 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
+                            <div class="d-flex justify-content-end mb-2">
+                            </div>
                             <div class="table-responsive">
                                 <table id="example" class="display nowrap" style="width:100%">
                                     <thead>
@@ -76,10 +89,20 @@
                                                             class="btn-sm btn-info d-inline-block"> <i
                                                                 class="fa fa-edit"></i>
                                                         </a>
-                                                        <a href="javascript:void(0)" id="btn-delete-users"
-                                                            data-id="{{ $user->id }}" data-nama="{{ $user->nama }}"
-                                                            class="btn-sm btn-danger d-inline-block"> <i
-                                                                class="fa fa-trash"></i></a>
+                                                        @if ($isDeletedPage)
+                                                            <a href="javascript:void(0)" id="btn-restore-users"
+                                                                data-id="{{ $user->id }}"
+                                                                data-nama="{{ $user->nama }}"
+                                                                class="btn-sm btn-success d-inline-block">
+                                                                <i class="fa fa-undo"></i>
+                                                            </a>
+                                                        @else
+                                                            <a href="javascript:void(0)" id="btn-delete-users"
+                                                                data-id="{{ $user->id }}"
+                                                                data-nama="{{ $user->nama }}"
+                                                                class="btn-sm btn-danger d-inline-block"> <i
+                                                                    class="fa fa-power-off"></i></a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @php
