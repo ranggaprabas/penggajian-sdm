@@ -117,25 +117,17 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @php
-                                                    $counter = 1;
-                                                @endphp
                                                 @forelse($absensis as $absensi)
-                                                    @if ($absensi->is_admin != 1 && $absensi->deleted != 1)
-                                                        <tr>
-                                                            <input type="hidden" name="karyawan_id[]"
-                                                                value="{{ $absensi->id }}">
-                                                            <td>{{ $counter }}</td>
-                                                            <td>{{ $absensi->nik }}</td>
-                                                            <td>{{ $absensi->nama }}</td>
-                                                            <td>{{ $absensi->jenis_kelamin }}</td>
-                                                            <td>{{ $absensi->nama_entitas ?? '-' }}</td>
-                                                            <td>{{ $absensi->nama_jabatan ?? '-' }}</td>
-                                                        </tr>
-                                                        @php
-                                                            $counter++;
-                                                        @endphp
-                                                    @endif
+                                                    <tr>
+                                                        <input type="hidden" name="karyawan_id[]"
+                                                            value="{{ $absensi->id }}">
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $absensi->nik }}</td>
+                                                        <td>{{ $absensi->nama }}</td>
+                                                        <td>{{ $absensi->jenis_kelamin }}</td>
+                                                        <td>{{ $absensi->nama_entitas ?? '-' }}</td>
+                                                        <td>{{ $absensi->nama_jabatan ?? '-' }}</td>
+                                                    </tr>
                                                 @empty
                                                     <tr>
                                                         <td colspan="9" class="text-center">Data Kosong</td>
