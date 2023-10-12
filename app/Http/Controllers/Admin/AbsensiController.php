@@ -36,7 +36,7 @@ class AbsensiController extends Controller
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $absensis = DB::table('users')
-                ->select('users.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
+                ->select('users.*', 'jabatan.nama as nama_jabatan', 'jabatan.deleted', 'entitas.nama as nama_entitas')
                 ->join('jabatan', 'users.jabatan_id', '=', 'jabatan.id')
                 ->leftJoin('entitas', 'users.entitas_id', '=', 'entitas.id')
                 ->whereNotExists(function ($query) use ($bulanSaatIni) {

@@ -121,7 +121,7 @@
                                                     $counter = 1;
                                                 @endphp
                                                 @forelse($absensis as $absensi)
-                                                    @if ($absensi->is_admin != 1)
+                                                    @if ($absensi->is_admin != 1 && $absensi->deleted != 1)
                                                         <tr>
                                                             <input type="hidden" name="karyawan_id[]"
                                                                 value="{{ $absensi->id }}">
