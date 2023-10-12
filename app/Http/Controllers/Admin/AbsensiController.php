@@ -46,6 +46,7 @@ class AbsensiController extends Controller
                         ->where('bulan', $bulanSaatIni);
                 })
                 ->where('is_admin', '!=', 1)
+                ->where('users.deleted', '!=', 1)
                 ->where('jabatan.deleted', '!=', 1)
                 ->get();
         } else {
@@ -60,6 +61,7 @@ class AbsensiController extends Controller
                         ->where('bulan', $bulan);
                 })
                 ->where('is_admin', '!=', 1)
+                ->where('users.deleted', '!=', 1)
                 ->where('jabatan.deleted', '!=', 1)
                 ->get();
         }

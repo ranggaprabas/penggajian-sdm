@@ -82,13 +82,15 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.users.show', $user->id) }}"
-                                                            class="btn-sm btn-warning d-inline-block mx-1"> <i
-                                                                class="text-white fa fa-eye"></i> </a>
-                                                        <a href="{{ route('admin.edit-users', $user->id) }}"
-                                                            class="btn-sm btn-info d-inline-block"> <i
-                                                                class="fa fa-edit"></i>
-                                                        </a>
+                                                        @if ($user->deleted == 0)
+                                                            <a href="{{ route('admin.users.show', $user->id) }}"
+                                                                class="btn-sm btn-warning d-inline-block mx-1"> <i
+                                                                    class="text-white fa fa-eye"></i> </a>
+                                                            <a href="{{ route('admin.edit-users', $user->id) }}"
+                                                                class="btn-sm btn-info d-inline-block"> <i
+                                                                    class="fa fa-edit"></i>
+                                                            </a>
+                                                        @endif
                                                         @if ($isDeletedPage)
                                                             <a href="javascript:void(0)" id="btn-restore-users"
                                                                 data-id="{{ $user->id }}"

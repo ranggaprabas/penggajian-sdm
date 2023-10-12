@@ -48,7 +48,7 @@ class UserController extends Controller
 
         // Filter hasil kueri untuk menghindari 'is_admin' = 1
         $filteredResult = $filterResult->filter(function ($item) {
-            return $item->is_admin != 1;
+            return $item->user->is_admin != 1 && $item->user->deleted != 1;
         });
 
         $formattedResult = $filteredResult->map(function ($item) {
@@ -153,6 +153,14 @@ class UserController extends Controller
             'alert-info' => 'info'
         ]);
     }
+
+    public function restore(User $user)
+    {
+        $user->update(['deleted' => 0]);
+
+        return response()->json(['message' => 'Data SDM ' . $user->nama . ' telah dikembalikan.']);
+    }
+
 
     /**
      * Remove the specified resource from storage.
