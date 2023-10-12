@@ -28,18 +28,18 @@ class HomeController extends Controller
     public function index()
     {
         // Menghitung jumlah pria (Laki-laki)
-        $maleCount = User::where('jenis_kelamin', 'laki-laki')->where('is_admin', '!=', 1)->count();
+        $maleCount = User::where('jenis_kelamin', 'laki-laki')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
 
         // Menghitung jumlah wanita (Perempuan)
-        $femaleCount = User::where('jenis_kelamin', 'perempuan')->where('is_admin', '!=', 1)->count();
+        $femaleCount = User::where('jenis_kelamin', 'perempuan')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
 
         // Menghitung jumlah entitas
-        $crocodicCount = User::where('entitas_id', '1')->where('is_admin', '!=', 1)->count();
-        $eventyCount = User::where('entitas_id', '2')->where('is_admin', '!=', 1)->count();
-        $reprimeCount = User::where('entitas_id', '3')->where('is_admin', '!=', 1)->count();
-        $taarufCount = User::where('entitas_id', '4')->where('is_admin', '!=', 1)->count();
+        $crocodicCount = User::where('entitas_id', '1')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
+        $eventyCount = User::where('entitas_id', '2')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
+        $reprimeCount = User::where('entitas_id', '3')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
+        $taarufCount = User::where('entitas_id', '4')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
 
-        $employee_count = User::where('is_admin', '!=', 1)->count();
+        $employee_count = User::where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
         $entita_count = Entitas::count();
         $jabatan_count = Jabatan::count();
 
