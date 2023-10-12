@@ -12,8 +12,10 @@ class LaporanController extends Controller
 {
     public function index()
     {
-        // Ambil semua pengguna yang bukan admin (is_admin != 1)
-        $users = User::where('is_admin', '!=', 1)->get(['nama', 'id']);
+        // Ambil semua pengguna yang bukan admin (is_admin != 1) dan urutkan berdasarkan nama
+        $users = User::where('is_admin', '!=', 1)
+            ->orderBy('nama', 'asc')
+            ->get(['nama', 'id']);
 
         return view('admin.laporan.index', compact('users'));
     }

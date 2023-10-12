@@ -69,7 +69,8 @@
                                                     <td>{{ $user->entitas->nama ?? '-' }}</td>
                                                     <td>
                                                         @if ($user->jabatan->deleted == 1)
-                                                            {{ $user->jabatan->nama }} (jabatan deleted)
+                                                            {{ $user->jabatan->nama }} <span style="color: red;"> (jabatan
+                                                                deleted) </span>
                                                         @else
                                                             {{ $user->jabatan->nama ?? '-' }}
                                                         @endif
