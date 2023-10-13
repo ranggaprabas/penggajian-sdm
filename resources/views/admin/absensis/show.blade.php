@@ -60,7 +60,8 @@
                             <button class="btn btn-primary"><i class="fa fa-filter"></i> Filter</button>
                             <div class="alert alert-warning mt-3">
                                 <i class="fa fa-info-circle"></i> Silahkan pilih bulan dan tahun terlebih dahulu untuk
-                                melakukan filter.
+                                melakukan filter. <button type="button" class="close" data-dismiss="alert">
+                                    <span aria-hidden="true">&times;</span>
                             </div>
                         </form>
                     </div>
