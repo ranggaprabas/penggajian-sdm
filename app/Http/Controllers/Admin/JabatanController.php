@@ -40,7 +40,7 @@ class JabatanController extends Controller
         $jabatanNama = $request->input('nama'); // Mendapatkan nama jabatan dari request
 
         return redirect()->route('admin.jabatan.index')->with([
-            'message' => 'Data Jabatan ' . $jabatanNama . ' berhasil ditambahkan!',
+            'success' => 'Data Jabatan ' . $jabatanNama . ' berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -75,7 +75,7 @@ class JabatanController extends Controller
         $message = 'Data Jabatan ' . $jabatan->nama . ' berhasil diperbarui!';
 
         return redirect()->route('admin.jabatan.index')->with([
-            'message' => $message,
+            'success' => $message,
             'alert-info' => 'info',
         ]);
     }

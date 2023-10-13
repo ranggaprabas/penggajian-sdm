@@ -97,7 +97,7 @@ class UserController extends Controller
         $userNama = $request->input('nama');
 
         return redirect()->route('admin.users.index')->with([
-            'message' => 'Data SDM ' . $userNama . ' berhasil ditambahkan!',
+            'success' => 'Data SDM ' . $userNama . ' berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -149,7 +149,7 @@ class UserController extends Controller
         $message = 'Data SDM ' . $user->nama  . ' berhasil diperbarui!';
 
         return redirect()->route('admin.users.index')->with([
-            'info' => $message,
+            'success' => $message,
             'alert-info' => 'info'
         ]);
     }
@@ -158,7 +158,7 @@ class UserController extends Controller
     {
         $user->update(['deleted' => 0]);
 
-        return response()->json(['message' => 'Data SDM ' . $user->nama . ' telah dikembalikan.']);
+        return response()->json(['message' => 'Data SDM ' . $user->nama . ' Berhasil diaktifkan.']);
     }
 
 
@@ -174,7 +174,7 @@ class UserController extends Controller
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data SDM ' . $user->nama . ' Berhasil Dihapus!.',
+            'message' => 'Data SDM ' . $user->nama . ' Berhasil Dinonaktifkan!.',
         ]);
     }
 }

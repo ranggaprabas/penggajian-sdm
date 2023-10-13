@@ -440,12 +440,12 @@
 
             Swal.fire({
                 title: 'Apakah Kamu Yakin?',
-                text: `Ingin menghapus data SDM '${$(this).data('nama')}'! `,
+                text: `Ingin Nonaktifkan data SDM '${$(this).data('nama')}'! `,
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'YA, HAPUS!'
+                confirmButtonText: 'YA, BENAR!'
             }).then((result) => {
                 if (result.isConfirmed) {
 
@@ -498,7 +498,7 @@
 
             Swal.fire({
                 title: 'Apakah Kamu Yakin?',
-                text: `Ingin mengembalikan data SDM '${$(this).data('nama')}'! `,
+                text: `Ingin aktifkan data SDM '${$(this).data('nama')}'! `,
                 icon: 'warning',
                 showCancelButton: true,
                 cancelButtonText: 'TIDAK',
@@ -763,6 +763,8 @@
         }
     </script>
 
+
+    <!-- Timer message -->
     <script>
         // Tunggu sampai dokumen selesai dimuat
         document.addEventListener('DOMContentLoaded', function() {

@@ -24,6 +24,11 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
+                    @if (session('success'))
+                        <div class="alert alert-success" id="info-message">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">

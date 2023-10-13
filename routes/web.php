@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
         Route::get('jabatan/edit/{id}', [JabatanController::class, 'edit'])->name('edit-jabatan');
         Route::resource('jabatan', App\Http\Controllers\Admin\JabatanController::class);
         Route::delete('users/restore/{user}', [UserController::class, 'restore'])->name('admin.users.restore');
-        Route::get('users/deleted', [UserController::class, 'indexDeleted'])->name('users.index.deleted');
+        Route::get('users/resign', [UserController::class, 'indexDeleted'])->name('users.index.deleted');
         Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('edit-users');
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
         Route::get('kehadiran', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('absensis.index');

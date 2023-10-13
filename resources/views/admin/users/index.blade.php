@@ -27,7 +27,7 @@
                 <div class="col-lg-12">
                     @if ($isDeletedPage)
                         <div class="alert alert-info">
-                            Menampilkan data SDM dengan status tidak aktif
+                            Menampilkan data SDM dengan status resign
                             <button type="button" class="close" data-dismiss="alert"><span
                                     aria-hidden="true">&times;</span></button>
                         </div>
@@ -40,9 +40,9 @@
                             </button>
                         </div>
                     @endif
-                    @if (session('info'))
-                        <div class="alert alert-info" id="info-message">
-                            {{ session('info') }}
+                    @if (session('success'))
+                        <div class="alert alert-success" id="info-message">
+                            {{ session('success') }}
                         </div>
                     @endif
                     <div class="card">
@@ -53,8 +53,7 @@
                                 <button type="button" class="btn btn-outline-success ml-2"
                                     onclick="window.location.href='{{ route('admin.users.index') }}'">Aktif</button>
                                 <button type="button" class="btn btn-outline-danger ml-2"
-                                    onclick="window.location.href='{{ route('admin.users.index.deleted') }}'">Tidak
-                                    Aktif</button>
+                                    onclick="window.location.href='{{ route('admin.users.index.deleted') }}'">Resign</button>
                                 </a>
                             </div>
                             <div class="d-flex justify-content-end mb-2">
@@ -117,7 +116,7 @@
                                                                 data-id="{{ $user->id }}"
                                                                 data-nama="{{ $user->nama }}"
                                                                 class="btn-sm btn-success d-inline-block">
-                                                                <i class="fa fa-undo"></i>
+                                                                <i class="fa fa-power-off"></i>
                                                             </a>
                                                         @else
                                                             <a href="javascript:void(0)" id="btn-delete-users"

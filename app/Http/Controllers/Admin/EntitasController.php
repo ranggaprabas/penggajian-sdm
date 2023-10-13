@@ -75,7 +75,7 @@ class EntitasController extends Controller
         $message = 'Data Entitas ' . $entita->nama. ' berhasil diperbarui!';
 
         return redirect()->route('admin.entitas.index')->with([
-            'message' => $message,
+            'success' => $message,
             'alert-info' => 'info'
         ]);
     }
