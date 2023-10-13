@@ -149,7 +149,7 @@ class UserController extends Controller
         $message = 'Data SDM ' . $user->nama  . ' berhasil diperbarui!';
 
         return redirect()->route('admin.users.index')->with([
-            'message' => $message,
+            'info' => $message,
             'alert-info' => 'info'
         ]);
     }

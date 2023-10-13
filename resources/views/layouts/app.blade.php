@@ -763,6 +763,14 @@
         }
     </script>
 
+    <script>
+        // Hapus pesan setelah 5 detik (5000 milidetik)
+        setTimeout(function() {
+            document.getElementById('info-message').style.display = 'none';
+        }, 3000);
+    </script>
+
+
 
 
 

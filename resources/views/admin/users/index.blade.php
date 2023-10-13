@@ -11,21 +11,11 @@
             <div class="row mb-2">
                 <div class="col-12 d-flex justify-content-between">
                     <h1 class="m-0">{{ __('SDM') }}</h1>
-
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
+                    @if (!$isDeletedPage)
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
+                    @endif
                 </div><!-- /.col -->
             </div><!-- /.row -->
-            @if (Request::is('admin/users/deleted'))
-                <!-- Cek apakah berada di halaman "deleted" -->
-                <a href="{{ route('admin.users.index') }}" class="btn btn-success ml-auto">
-                    <i class="fa fa-arrow-left"></i> Kembali <!-- Ganti teks tombol menjadi "Kembali" -->
-                </a>
-            @else
-                <a href="{{ route('admin.users.index.deleted') }}" class="btn btn-success ml-auto">
-                    <i class="fa fa-power-off"></i> Lihat Data Yang Dihapus
-                    <!-- Teks tombol tetap "Lihat Data Yang Dihapus" -->
-                </a>
-            @endif
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -35,8 +25,38 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
+                    @if ($isDeletedPage)
+                        <div class="alert alert-info">
+                            Menampilkan data SDM dengan status tidak aktif
+                            <button type="button" class="close" data-dismiss="alert"><span
+                                    aria-hidden="true">&times;</span></button>
+                        </div>
+                    @endif
+                    @if (!$isDeletedPage)
+                        <div class="alert alert-info">
+                            Menampilkan data SDM dengan status aktif
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+                    @if (session('info'))
+                        <div class="alert alert-info" id="info-message">
+                            {{ session('info') }}
+                        </div>
+                    @endif
                     <div class="card">
                         <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <p class="mr-2 mb-0">Lihat berdasarkan status</p>
+                                <!-- Cek apakah berada di halaman "deleted" -->
+                                <button type="button" class="btn btn-outline-success ml-2"
+                                    onclick="window.location.href='{{ route('admin.users.index') }}'">Aktif</button>
+                                <button type="button" class="btn btn-outline-danger ml-2"
+                                    onclick="window.location.href='{{ route('admin.users.index.deleted') }}'">Tidak
+                                    Aktif</button>
+                                </a>
+                            </div>
                             <div class="d-flex justify-content-end mb-2">
                             </div>
                             <div class="table-responsive">
