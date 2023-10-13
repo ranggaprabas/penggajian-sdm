@@ -764,11 +764,21 @@
     </script>
 
     <script>
-        // Hapus pesan setelah 5 detik (5000 milidetik)
-        setTimeout(function() {
-            document.getElementById('info-message').style.display = 'none';
-        }, 3000);
+        // Tunggu sampai dokumen selesai dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cari elemen dengan ID 'info-message'
+            var infoMessage = document.getElementById('info-message');
+
+            // Periksa apakah elemen ditemukan sebelum mencoba mengakses properti 'style'
+            if (infoMessage) {
+                // Hapus pesan setelah 3 detik (3000 milidetik)
+                setTimeout(function() {
+                    infoMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
     </script>
+
 
 
 
