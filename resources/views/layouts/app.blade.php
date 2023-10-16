@@ -201,15 +201,15 @@
 
             function addTunjanganInput() {
                 var newTunjangan = `
-                    <div class="form-group">
-                        <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
-                        <input class="form-control" type="text" required name="nama_tunjangan[]>
-                    </div>
-                    <div class="form-group">
-                        <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
-                        <input class="form-control" type="text" name="nilai_tunjangan[]" required>
-                    </div>
-                `;
+            <div class="form-group">
+                <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
+                <input class="form-control" type="text" name="nama_tunjangan[]" required>
+            </div>
+            <div class="form-group">
+                <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
+                <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
+            </div>
+        `;
                 $("#tunjanganContainer").append(newTunjangan);
                 counter++;
             }

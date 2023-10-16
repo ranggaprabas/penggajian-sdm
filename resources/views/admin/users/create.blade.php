@@ -117,7 +117,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="nilai_tunjangan[]">Nilai Tunjangan</label>
-                                        <input type="text" name="nilai_tunjangan[]" class="form-control" required> 
+                                        <input type="text" name="nilai_tunjangan[]" class="form-control nilai-tunjangan" required> 
                                     </div>
 
                                     <div id="tunjanganContainer"></div>
