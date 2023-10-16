@@ -273,25 +273,21 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.nama_tunjangan
+                        return item.nama_tunjangan;
                     });
-                    return process(formattedData);
+
+                    // Menampilkan hanya satu hasil pertama
+                    var firstResult = [formattedData[0]]; // Ambil hanya hasil pertama
+
+                    return process(firstResult);
                 });
             },
             updater: function(item) {
-                var namaTunjangan = item.split(' - ');
-
-                $('#search').val(namaTunjangan); // Menyimpan hanya tunjangan_makan ke dalam input
-                return namaTunjangan;
+                $('#search').val(item); // Menyimpan hasil yang dipilih ke dalam input
+                return item;
             }
         });
     </script>
-
-
-
-
-
-
 
 
 
