@@ -125,18 +125,26 @@
                                                 @foreach ($user->komponenGaji as $tunjangan)
                                                     <div class="form-group">
                                                         <label for="nama_tunjangan">Nama Tunjangan</label>
-                                                        <input type="text" class="form-control" name="nama_tunjangan[]" id="search" required
+                                                        <input type="text" class="form-control" name="nama_tunjangan[]"
+                                                            id="search" required
                                                             value="{{ $tunjangan->nama_tunjangan }}">
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="nilai_tunjangan">Nilai Tunjangan</label>
-                                                        <input type="text" class="form-control" name="nilai_tunjangan[]" required
-                                                            value="{{ $tunjangan->nilai_tunjangan }}">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Rp.</div>
+                                                            </div>
+                                                            <input type="text" class="form-control"
+                                                                name="nilai_tunjangan[]" required
+                                                                value="{{ $tunjangan->nilai_tunjangan }}">
+                                                        </div>
                                                     </div>
                                                 @endforeach
                                             @endif
                                         </div>
-                                        <button type="button" id="addTunjanganEdit" class="btn btn-outline-success"> <i class="fa fa-plus"></i> Tambah Tunjangan</button>
+                                        <button type="button" id="addTunjanganEdit" class="btn btn-outline-success"> <i
+                                                class="fa fa-plus"></i> Tambah Tunjangan</button>
                                     </div>
                                 </div>
                             </div>

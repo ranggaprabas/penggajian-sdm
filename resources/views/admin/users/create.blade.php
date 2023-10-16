@@ -118,7 +118,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="nilai_tunjangan[]">Nilai Tunjangan</label>
-                                        <input type="text" name="nilai_tunjangan[]" class="form-control nilai-tunjangan" required>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Rp.</div>
+                                            </div>
+                                            <input type="text" name="nilai_tunjangan[]"
+                                                class="form-control nilai-tunjangan" required>
+                                        </div>
                                     </div>
 
                                     <div id="tunjanganContainer"></div>

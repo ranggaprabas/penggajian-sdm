@@ -208,7 +208,12 @@
                         </div>
                         <div class="form-group">
                             <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
-                            <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                                <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-outline-danger removeTunjangan"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
                     </div>
@@ -259,9 +264,15 @@
                         <label for="nama_tunjangan">Nama Tunjangan</label>
                         <input class="form-control" type="text" required name="nama_tunjangan[]>
                     </div>
+                    
                     <div class="form-group">
                         <label for="nilai_tunjangan">Nilai Tunjangan</label>
-                        <input class="form-control" type="text" name="nilai_tunjangan[]" required>
+                        <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                            <input class="form-control" type="text" name="nilai_tunjangan[]" required>
+                        </div>
                     </div>
                     <button type="button" class="btn btn-outline-danger removeTunjangan"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
                 </div>
