@@ -201,15 +201,18 @@
 
             function addTunjanganInput() {
                 var newTunjangan = `
-            <div class="form-group">
-                <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
-                <input class="form-control" type="text" name="nama_tunjangan[]" required>
-            </div>
-            <div class="form-group">
-                <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
-                <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
-            </div>
-        `;
+                    <div class="tunjangan">
+                        <div class="form-group">
+                            <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
+                            <input class="form-control" type="text" name="nama_tunjangan[]" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
+                            <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger removeTunjangan"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
+                    </div>
+                `;
                 $("#tunjanganContainer").append(newTunjangan);
                 counter++;
             }
@@ -232,8 +235,16 @@
             $(document).on("input", ".nilai-tunjangan", function() {
                 calculateTotalTunjangan();
             });
+
+            $(document).on("click", ".removeTunjangan", function() {
+                $(this).closest('.tunjangan')
+            .remove(); // Menghapus elemen yang mengandung elemen yang akan dihapus
+                calculateTotalTunjangan(); // Rekalkulasi total
+            });
         });
     </script>
+
+
 
 
     <script>

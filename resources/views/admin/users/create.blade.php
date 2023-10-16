@@ -113,15 +113,17 @@
                                 <div class="card-body p-3">
                                     <div class="form-group">
                                         <label for="nama_tunjangan[]">Nama Tunjangan</label>
-                                        <input type="text" name="nama_tunjangan[]" class="form-control" id="search" required>
+                                        <input type="text" name="nama_tunjangan[]" class="form-control" id="search"
+                                            required>
                                     </div>
                                     <div class="form-group">
                                         <label for="nilai_tunjangan[]">Nilai Tunjangan</label>
-                                        <input type="text" name="nilai_tunjangan[]" class="form-control nilai-tunjangan" required> 
+                                        <input type="text" name="nilai_tunjangan[]" class="form-control nilai-tunjangan" required>
                                     </div>
 
                                     <div id="tunjanganContainer"></div>
-                                    <button type="button" id="addTunjangan" class="btn btn-outline-success"> <i class="fa fa-plus"></i> Tambah Tunjangan</button>
+                                    <button type="button" id="addTunjangan" class="btn btn-outline-success"> <i
+                                            class="fa fa-plus"></i> Tambah Tunjangan</button>
                                     <p id="totalTunjangan">Total Tunjangan: Rp. 0</p>
                                 </div>
                             </div>
