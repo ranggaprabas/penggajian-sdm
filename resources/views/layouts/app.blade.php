@@ -215,7 +215,7 @@
                                 <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-outline-danger removeTunjangan"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
+                        <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
                     </div>
                 `;
                 $("#tunjanganContainer").append(newTunjangan);
@@ -274,7 +274,7 @@
                             <input class="form-control" type="text" name="nilai_tunjangan[]" required>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-danger removeTunjangan"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
+                    <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
                 </div>
             `;
                 $("#tunjanganContainer").append(newTunjangan);
