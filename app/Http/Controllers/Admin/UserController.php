@@ -40,28 +40,18 @@ class UserController extends Controller
     {
         $query = $request->get('query');
 
-        $filterResult = KomponenGaji::where('user_nama', 'LIKE', '%' . $query . '%')
-            ->orWhere('tunjangan_makan', 'LIKE', '%' . $query . '%')
-            ->orWhere('tunjangan_transportasi', 'LIKE', '%' . $query . '%')
-            ->orWhere('potongan_pinjaman', 'LIKE', '%' . $query . '%')
+        $filterResult = KomponenGaji::where('nama_tunjangan', 'LIKE', '%' . $query . '%')
             ->get();
 
-        // Filter hasil kueri untuk menghindari 'is_admin' = 1
-        $filteredResult = $filterResult->filter(function ($item) {
-            return $item->user->is_admin != 1 && $item->user->deleted != 1;
-        });
-
-        $formattedResult = $filteredResult->map(function ($item) {
+        $formattedResult = $filterResult->map(function ($item) {
             return [
-                'user_nama' => $item->user_nama,
-                'tunjangan_makan' => $item->tunjangan_makan,
-                'tunjangan_transportasi' => $item->tunjangan_transportasi,
-                'potongan_pinjaman' => $item->potongan_pinjaman,
+                'nama_tunjangan' => $item->nama_tunjangan,
             ];
         });
 
         return response()->json($formattedResult);
     }
+
 
 
 
@@ -86,13 +76,29 @@ class UserController extends Controller
     {
         $user = User::create($request->validated());
 
-        // Simpan data ke tabel komponen_gaji
-        $user->komponenGaji()->create([
-            'tunjangan_makan' => $request->input('tunjangan_makan'),
-            'tunjangan_transportasi' => $request->input('tunjangan_transportasi'),
-            'potongan_pinjaman' => $request->input('potongan_pinjaman'),
-            'user_nama' => $request->input('nama'),
-        ]);
+        $namaTunjangan = $request->input('nama_tunjangan');
+        $nilaiTunjangan = $request->input('nilai_tunjangan');
+
+        $totalTunjangan = 0; // Inisialisasi total tunjangan
+
+        // Loop melalui data tunjangan dan simpan dalam model KomponenGaji
+        for ($i = 0; $i < count($namaTunjangan); $i++) {
+            $nama = $namaTunjangan[$i];
+            $nilai = $nilaiTunjangan[$i];
+
+            $tunjangan = new KomponenGaji([
+                'nama_tunjangan' => $nama,
+                'nilai_tunjangan' => $nilai,
+                'total_tunjangan' => $nilai, // Simpan total tunjangan pada setiap tunjangan
+            ]);
+
+            $user->komponenGajis()->save($tunjangan); // Sambungkan tunjangan ke user
+            $totalTunjangan += $nilai; // Tambahkan nilai tunjangan ke total
+        }
+
+        // Simpan total tunjangan ke model User
+        $user->komponenGajis->total_tunjangan = $totalTunjangan;
+        $user->komponenGajis->save();
 
         $userNama = $request->input('nama');
 
@@ -121,12 +127,16 @@ class UserController extends Controller
     {
         $title = 'Edit SDM';
         $pages = 'SDM';
-        $data = User::findOrFail($id);
-        $details = User::with('komponenGaji')->findOrFail($id);
+        // Ambil data pengguna berdasarkan ID
+        $user = User::findOrFail($id);
+
+        // Ambil data tunjangan yang terkait dengan pengguna
+        $tunjangan = $user->komponenGaji;
+
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
 
-        return view('admin.users.edit', compact('data', 'details',  'jabatans', 'entita', 'pages', 'title'));
+        return view('admin.users.edit', compact('user', 'tunjangan',  'jabatans', 'entita', 'pages', 'title'));
     }
 
     /**
@@ -136,15 +146,51 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
-        // Perbarui data komponen_gaji jika ada
-        if ($user->komponenGaji) {
-            $user->komponenGaji->update([
-                'tunjangan_makan' => $request->input('tunjangan_makan'),
-                'tunjangan_transportasi' => $request->input('tunjangan_transportasi'),
-                'potongan_pinjaman' => $request->input('potongan_pinjaman'),
-                'user_nama' => $request->input('nama'), // Perbarui user_nama dengan nilai dari input nama
-            ]);
+        // Ambil data tunjangan yang ada di database untuk pengguna yang bersangkutan
+        $existingTunjangan = $user->komponenGaji;
+
+        $namaTunjangan = $request->input('nama_tunjangan');
+        $nilaiTunjangan = $request->input('nilai_tunjangan');
+
+        $totalTunjangan = 0;
+
+        // Loop melalui data tunjangan yang dikirim dalam request
+        for ($i = 0; $i < count($namaTunjangan); $i++) {
+            $nama = $namaTunjangan[$i];
+            $nilai = $nilaiTunjangan[$i];
+
+            // Jika tunjangan sudah ada, update nilainya; jika tidak, buat yang baru
+            if (isset($existingTunjangan[$i])) {
+                $existingTunjangan[$i]->update([
+                    'nama_tunjangan' => $nama,
+                    'nilai_tunjangan' => $nilai,
+                    'total_tunjangan' => $nilai,
+                ]);
+            } else {
+                $tunjangan = new KomponenGaji([
+                    'nama_tunjangan' => $nama,
+                    'nilai_tunjangan' => $nilai,
+                    'total_tunjangan' => $nilai,
+                ]);
+
+                $user->komponenGaji()->save($tunjangan);
+            }
+
+            $totalTunjangan += $nilai;
         }
+
+        // Hapus tunjangan yang tidak ada dalam request
+        foreach ($existingTunjangan as $existing) {
+            if (!in_array($existing->id, $request->input('tunjangan_ids', []))) {
+                $existing->delete();
+            }
+        }
+
+        foreach ($user->komponenGaji as $tunjangan) {
+            $tunjangan->total_tunjangan = $totalTunjangan;
+            $tunjangan->save();
+        }
+
 
         $message = 'Data SDM ' . $user->nama  . ' berhasil diperbarui!';
 

@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('komponen_gajis', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('user_nama')->nullable();
-            $table->integer('tunjangan_makan')->nullable();
-            $table->integer('tunjangan_transportasi')->nullable();
-            $table->integer('potongan_pinjaman')->nullable();
+            $table->string('nama_tunjangan')->nullable();
+            $table->integer('nilai_tunjangan')->nullable();
+            $table->integer('total_tunjangan')->nullable();
             $table->timestamps();
         });
     }

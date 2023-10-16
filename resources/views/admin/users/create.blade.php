@@ -112,30 +112,21 @@
                                 </div>
                                 <div class="card-body p-3">
                                     <div class="form-group">
-                                        <label for="tunjangan_makan">Makan</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Rp.</div>
-                                            </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan" id="search"
-                                                oninput="addCommas2(this)" value="{{ old('tunjangan_makan') }}">
-                                        </div>
+                                        <label for="nama_tunjangan[]">Nama Tunjangan</label>
+                                        <input type="text" name="nama_tunjangan[]" class="form-control" id="search" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="tunjangan_transportasi">Transportasi</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Rp.</div>
-                                            </div>
-                                            <input class="form-control" type="text" name="tunjangan_transportasi"
-                                                id="search2" oninput="addCommas2(this)"
-                                                value="{{ old('tunjangan_transportasi') }}">
-                                        </div>
+                                        <label for="nilai_tunjangan[]">Nilai Tunjangan</label>
+                                        <input type="text" name="nilai_tunjangan[]" class="form-control" required> 
                                     </div>
+
+                                    <div id="tunjanganContainer"></div>
+                                    <button type="button" id="addTunjangan">Tambah Tunjangan</button>
+                                    <p id="totalTunjangan">Total Tunjangan: Rp. 0</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <div class="card card-lightblue">
                                 <div class="card-header">
                                     <div class="card-title">Potongan</div>
@@ -154,7 +145,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <button class="btn btn-primary" type="submit">Simpan</button>
                 </form>

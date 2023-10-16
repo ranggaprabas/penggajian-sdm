@@ -23,7 +23,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <form action="{{ route('admin.users.update', $data->id) }}" method="POST" onsubmit="removeCommas2()">
+                <form action="{{ route('admin.users.update', $user->id) }}" method="POST" onsubmit="removeCommas2()">
                     @csrf
                     @method('put')
                     <div class="card card-lightblue">
@@ -38,7 +38,7 @@
                                     <div class="form-group">
                                         <label for="nama">Nama</label>
                                         <input class="form-control" type="text" name="nama"
-                                            value="{{ old('nama', $data->nama) }}">
+                                            value="{{ old('nama', $user->nama) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -48,7 +48,7 @@
                                             <option value="">-- Choose Categories --</option>
                                             @foreach ($entita as $entitas)
                                                 <option value="{{ $entitas->id }}"
-                                                    {{ $data->entitas && $data->entitas->id == $entitas->id ? 'selected' : '' }}>
+                                                    {{ $user->entitas && $user->entitas->id == $entitas->id ? 'selected' : '' }}>
                                                     {{ $entitas->nama }}
                                                 </option>
                                             @endforeach
@@ -64,7 +64,7 @@
                                                 @if ($jabatan->deleted != 1)
                                                     <option value="{{ $jabatan->id }}"
                                                         data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
-                                                        {{ $data->jabatan && $data->jabatan->id == $jabatan->id ? 'selected' : '' }}>
+                                                        {{ $user->jabatan && $user->jabatan->id == $jabatan->id ? 'selected' : '' }}>
                                                         {{ $jabatan->nama }} - Rp.
                                                         {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}
                                                     </option>
@@ -77,23 +77,23 @@
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input class="form-control" type="text" name="email"
-                                            value="{{ old('email', $data->email) }}">
+                                            value="{{ old('email', $user->email) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nik">Nik</label>
                                         <input class="form-control" type="number" name="nik"
-                                            value="{{ old('nik', $data->nik) }}">
+                                            value="{{ old('nik', $user->nik) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jenis_kelamin">Jenis Kelamin</label>
                                         <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                                            <option {{ $data->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
+                                            <option {{ $user->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
                                                 value="laki-laki">Laki-Laki</option>
-                                            <option {{ $data->jenis_kelamin === 'perempuan' ? 'selected' : null }}
+                                            <option {{ $user->jenis_kelamin === 'perempuan' ? 'selected' : null }}
                                                 value="perempuan">Perempuan</option>
                                         </select>
                                     </div>
@@ -102,10 +102,10 @@
                             <div class="form-group">
                                 <label for="status">Status</label>
                                 <select class="form-control" name="status" id="status">
-                                    <option {{ $data->status === 1 ? 'selected' : null }} value="1">Pegawai
+                                    <option {{ $user->status === 1 ? 'selected' : null }} value="1">Pegawai
                                         Tetap
                                     </option>
-                                    <option {{ $data->status === 0 ? 'selected' : null }} value="0">Pegawai
+                                    <option {{ $user->status === 0 ? 'selected' : null }} value="0">Pegawai
                                         Tidak
                                         Tetap</option>
                                 </select>
@@ -120,46 +120,23 @@
                                 </div>
                                 <div class="card-body p-3">
                                     <div class="form-group">
-                                        <label for="tunjangan_makan">Makan</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Rp.</div>
-                                            </div>
-                                            <input class="form-control" type="text" name="tunjangan_makan" id="search"
-                                                oninput="addCommas2(this)"
-                                                value="{{ old('tunjangan_makan', str_replace(',', '.', number_format($details->komponenGaji->tunjangan_makan))) }}">
+                                        <div id="tunjanganContainer">
+                                            @if ($user->komponenGaji)
+                                                @foreach ($user->komponenGaji as $tunjangan)
+                                                    <div class="form-group">
+                                                        <label for="nama_tunjangan">Nama Tunjangan</label>
+                                                        <input type="text" class="form-control" name="nama_tunjangan[]" id="search" required
+                                                            value="{{ $tunjangan->nama_tunjangan }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nilai_tunjangan">Nilai Tunjangan</label>
+                                                        <input type="text" class="form-control" name="nilai_tunjangan[]" required
+                                                            value="{{ $tunjangan->nilai_tunjangan }}">
+                                                    </div>
+                                                @endforeach
+                                            @endif
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="tunjangan_transportasi">Transportasi</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Rp.</div>
-                                            </div>
-                                            <input class="form-control" type="text" name="tunjangan_transportasi"
-                                                id="search2" oninput="addCommas2(this)"
-                                                value="{{ old('tunjangan_transportasi', str_replace(',', '.', number_format($details->komponenGaji->tunjangan_transportasi))) }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-lightblue">
-                                <div class="card-header">
-                                    <div class="card-title">Potongan</div>
-                                </div>
-                                <div class="card-body p-3">
-                                    <div class="form-group">
-                                        <label for="potongan_pinjaman">Pinjaman</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Rp.</div>
-                                            </div>
-                                            <input class="form-control" type="text" name="potongan_pinjaman"
-                                                id="search3" oninput="addCommas2(this)"
-                                                value="{{ old('potongan_pinjaman', str_replace(',', '.', number_format($details->komponenGaji->potongan_pinjaman))) }}">
-                                        </div>
+                                        <button type="button" id="addTunjanganEdit" class="btn btn-primary">Tambah Tunjangan</button>
                                     </div>
                                 </div>
                             </div>

@@ -60,74 +60,29 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        <!-- Tampilkan total tunjangan -->
                                         <tr>
-                                            <th>Tunjangan Jabatan</th>
+                                            <th>Total Tunjangan:</th>
                                             <td>
-                                                @if ($data->jabatan && $data->jabatan->deleted != 1)
-                                                    <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
-                                                    Rp. {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
+                                                @php
+                                                    $totalTunjangan = 0;
+                                                @endphp
 
-                                        <tr>
-                                            <th>Tunjangan Makan</th>
-                                            <td>
-                                                <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
-                                                @if ($details->komponenGaji->tunjangan_makan)
-                                                    Rp.
-                                                    {{ number_format($details->komponenGaji->tunjangan_makan, 0, '', '.') }}
+                                                @if ($details->komponenGaji->count() > 0)
+                                                    <ul>
+                                                        @foreach ($details->komponenGaji as $tunjangan)
+                                                            <li>{{ $tunjangan->nama_tunjangan }}: Rp.
+                                                                {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
+                                                            </li>
+                                                            @php
+                                                                $totalTunjangan += $tunjangan->nilai_tunjangan;
+                                                            @endphp
+                                                        @endforeach
+                                                    </ul>
+                                                    <strong>Total: Rp.
+                                                        {{ number_format($totalTunjangan, 0, '', '.') }}</strong>
                                                 @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>Tunjangan Transportasi</th>
-                                            <td>
-                                                <span class="badge bg-primary"><i class="fa fa-plus"></i></span>
-                                                @if ($details->komponenGaji->tunjangan_transportasi)
-                                                    Rp.
-                                                    {{ number_format($details->komponenGaji->tunjangan_transportasi, 0, '', '.') }}
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-
-                                        @php
-                                            $total_potongan = $details->komponenGaji->potongan_pinjaman;
-                                            // Perhitungan tunjangan_jabatan hanya jika jabatan deleted tidak sama dengan 1
-                                            if ($data->jabatan && $data->jabatan->deleted != 1) {
-                                                $total_gaji = $data->jabatan->tunjangan_jabatan + $details->komponenGaji->tunjangan_makan + $details->komponenGaji->tunjangan_transportasi - $total_potongan;
-                                            } else {
-                                                $total_gaji = $details->komponenGaji->tunjangan_makan + $details->komponenGaji->tunjangan_transportasi - $total_potongan;
-                                            }
-                                        @endphp
-
-                                        <tr>
-                                            <th>Total Potongan</th>
-                                            <td>
-                                                <span class="badge bg-danger"><i class="fa fa-minus"></i></span>
-                                                @if ($total_potongan)
-                                                    Rp. {{ number_format($total_potongan, 0, '', '.') }}
-                                                @else
-                                                    -
-                                                @endif
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <th>Take Home Pay</th>
-                                            <td>
-                                                <i class="fa fa-money-bill"></i>
-                                                @if ($total_gaji !== null)
-                                                    Rp. {{ number_format($total_gaji, 0, '', '.') }}
-                                                @else
-                                                    -
+                                                    Tidak ada tunjangan.
                                                 @endif
                                             </td>
                                         </tr>

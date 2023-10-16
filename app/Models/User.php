@@ -50,6 +50,10 @@ class User extends Authenticatable
 
     public function komponenGaji()
     {
+        return $this->hasMany(KomponenGaji::class);
+    }
+    public function komponenGajis()
+    {
         return $this->hasOne(KomponenGaji::class);
     }
 

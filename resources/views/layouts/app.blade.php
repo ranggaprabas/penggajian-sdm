@@ -195,9 +195,77 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
 
-    <!-- Jquery Auto Complete -->
+    <script>
+        $(document).ready(function() {
+            var counter = 0;
+
+            function addTunjanganInput() {
+                var newTunjangan = `
+                    <div class="form-group">
+                        <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
+                        <input class="form-control" type="text" required name="nama_tunjangan[]>
+                    </div>
+                    <div class="form-group">
+                        <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
+                        <input class="form-control" type="text" name="nilai_tunjangan[]" required>
+                    </div>
+                `;
+                $("#tunjanganContainer").append(newTunjangan);
+                counter++;
+            }
+
+            $("#addTunjangan").click(function() {
+                addTunjanganInput();
+            });
+
+            function calculateTotalTunjangan() {
+                var total = 0;
+                $(".nilai-tunjangan").each(function() {
+                    var nilai = parseFloat($(this).val().replace(/\D/g, ''));
+                    if (!isNaN(nilai)) {
+                        total += nilai;
+                    }
+                });
+                $("#totalTunjangan").text("Total Tunjangan: Rp. " + total.toLocaleString());
+            }
+
+            $(document).on("input", ".nilai-tunjangan", function() {
+                calculateTotalTunjangan();
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            var counter =
+                {{ isset($user) ? $user->komponenGaji->count() : 0 }}; // Hitung jumlah tunjangan yang ada
+
+            function addTunjanganInput() {
+                var newTunjangan = `
+                <div class="form-group">
+                    <label for="nama_tunjangan">Nama Tunjangan</label>
+                    <input class="form-control" type="text" required name="nama_tunjangan[]>
+                </div>
+                <div class="form-group">
+                    <label for="nilai_tunjangan">Nilai Tunjangan</label>
+                    <input class="form-control" type="text" name="nilai_tunjangan[]" required>
+                </div>
+            `;
+                $("#tunjanganContainer").append(newTunjangan);
+                counter++;
+            }
+
+            $("#addTunjanganEdit").click(function() {
+                addTunjanganInput();
+            });
+        });
+    </script>
+
+
+
     <script type="text/javascript">
-        var route = "{{ route('autocomplete.search') }}"; // Menggunakan user_nama rute
+        var route = "{{ route('autocomplete.search') }}"; // Menggunakan nama rute
         $('#search').typeahead({
             source: function(query, process) {
                 return $.get(route, {
@@ -205,71 +273,21 @@
                 }, function(data) {
                     // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
                     var formattedData = $.map(data, function(item) {
-                        return item.user_nama + ' - ' + item
-                            .tunjangan_makan; // Menampilkan user_nama dan tunjangan_makan
+                        return item.nama_tunjangan
                     });
                     return process(formattedData);
                 });
             },
             updater: function(item) {
                 var namaTunjangan = item.split(' - ');
-                var tunjanganMakan = namaTunjangan[1].trim();
-                var formattedValue = tunjanganMakan.replace(/\./g, ''); // Menghapus semua titik
-                formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g,
-                    "."); // Menambahkan titik pada angka
-                $('#search').val(formattedValue); // Menyimpan nilai dengan pemisah titik ke dalam input
-                return formattedValue;
-            }
-        });
 
-        $('#search2').typeahead({
-            source: function(query, process) {
-                return $.get(route, {
-                    query: query
-                }, function(data) {
-                    // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
-                    var formattedData = $.map(data, function(item) {
-                        return item.user_nama + ' - ' + item
-                            .tunjangan_transportasi; // Menampilkan user_nama dan tunjangan_transportasi
-                    });
-                    return process(formattedData);
-                });
-            },
-            updater: function(item) {
-                var namaTunjangan = item.split(' - ');
-                var tunjanganTransportasi = namaTunjangan[1].trim();
-                var formattedValue = tunjanganTransportasi.replace(/\./g, ''); // Menghapus semua titik
-                formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g,
-                    "."); // Menambahkan titik pada angka
-                $('#search2').val(formattedValue); // Menyimpan nilai dengan pemisah titik ke dalam input
-                return formattedValue;
-            }
-        });
-
-        $('#search3').typeahead({
-            source: function(query, process) {
-                return $.get(route, {
-                    query: query
-                }, function(data) {
-                    // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
-                    var formattedData = $.map(data, function(item) {
-                        return item.user_nama + ' - ' + item
-                            .potongan_pinjaman; // Menampilkan user_nama dan potongan_pinjaman
-                    });
-                    return process(formattedData);
-                });
-            },
-            updater: function(item) {
-                var namaPotongan = item.split(' - ');
-                var potonganPinjaman = namaPotongan[1].trim();
-                var formattedValue = potonganPinjaman.replace(/\./g, ''); // Menghapus semua titik
-                formattedValue = formattedValue.replace(/\B(?=(\d{3})+(?!\d))/g,
-                    "."); // Menambahkan titik pada angka
-                $('#search3').val(formattedValue); // Menyimpan nilai dengan pemisah titik ke dalam input
-                return formattedValue;
+                $('#search').val(namaTunjangan); // Menyimpan hanya tunjangan_makan ke dalam input
+                return namaTunjangan;
             }
         });
     </script>
+
+
 
 
 

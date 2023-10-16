@@ -21,36 +21,34 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        switch($this->method()){
+        switch ($this->method()) {
             case 'POST': {
-                return [
-                    'nama' => 'required',
-                    'email' => 'required|email|unique:users',
-                    'nik' => 'required|unique:users',
-                    'jabatan_id' => 'required',
-                    'entitas_id' => 'required',
-                    'jenis_kelamin' => 'required',
-                    'status' => 'required',
-                    'tunjangan_makan' => 'required|integer|max:2147483647',
-                    'tunjangan_transportasi' => 'required|integer|max:2147483647',
-                    'potongan_pinjaman' => 'required|integer|max:2147483647'
-                ];
-            }
+                    return [
+                        'nama' => 'required',
+                        'email' => 'required|email|unique:users',
+                        'nik' => 'required|unique:users',
+                        'jabatan_id' => 'required',
+                        'entitas_id' => 'required',
+                        'jenis_kelamin' => 'required',
+                        'status' => 'required',
+                        'nama_tunjangan' => 'required|array',
+                        'nilai_tunjangan' => 'required|array',
+                    ];
+                }
             case 'PUT':
             case 'PATCH': {
-                return [
-                    'nama' => 'required',
-                    'email' => ['required','email','unique:users,email,' . $this->route()->user->id],
-                    'nik' => ['required','unique:users,nik,' . $this->route()->user->id],
-                    'jabatan_id' => 'required',
-                    'entitas_id' => 'required',
-                    'jenis_kelamin' => 'required',
-                    'status' => 'required',
-                    'tunjangan_makan' => 'required|integer|max:2147483647',
-                    'tunjangan_transportasi' => 'required|integer|max:2147483647',
-                    'potongan_pinjaman' => 'required|integer|max:2147483647'
-                ];
-            }
+                    return [
+                        'nama' => 'required',
+                        'email' => ['required', 'email', 'unique:users,email,' . $this->route()->user->id],
+                        'nik' => ['required', 'unique:users,nik,' . $this->route()->user->id],
+                        'jabatan_id' => 'required',
+                        'entitas_id' => 'required',
+                        'jenis_kelamin' => 'required',
+                        'status' => 'required',
+                        'nama_tunjangan' => 'required|array',
+                        'nilai_tunjangan' => 'required|array',
+                    ];
+                }
         }
     }
 }
