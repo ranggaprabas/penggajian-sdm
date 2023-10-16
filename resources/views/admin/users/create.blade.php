@@ -121,7 +121,7 @@
                                     </div>
 
                                     <div id="tunjanganContainer"></div>
-                                    <button type="button" id="addTunjangan">Tambah Tunjangan</button>
+                                    <button type="button" id="addTunjangan" class="btn btn-outline-success"> <i class="fa fa-plus"></i> Tambah Tunjangan</button>
                                     <p id="totalTunjangan">Total Tunjangan: Rp. 0</p>
                                 </div>
                             </div>

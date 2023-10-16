@@ -136,7 +136,7 @@
                                                 @endforeach
                                             @endif
                                         </div>
-                                        <button type="button" id="addTunjanganEdit" class="btn btn-primary">Tambah Tunjangan</button>
+                                        <button type="button" id="addTunjanganEdit" class="btn btn-outline-success"> <i class="fa fa-plus"></i> Tambah Tunjangan</button>
                                     </div>
                                 </div>
                             </div>
