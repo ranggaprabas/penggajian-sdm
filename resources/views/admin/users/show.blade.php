@@ -70,8 +70,11 @@
 
                                                 @if ($details->komponenGaji->count() > 0)
                                                     <ul>
+                                                        <li>
+                                                            Tj. Jabatan: {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
+                                                        </li>
                                                         @foreach ($details->komponenGaji as $tunjangan)
-                                                            <li>{{ $tunjangan->nama_tunjangan }}: Rp.
+                                                            <li>Tj. {{ $tunjangan->nama_tunjangan }}: Rp.
                                                                 {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
                                                             </li>
                                                             @php
@@ -79,8 +82,11 @@
                                                             @endphp
                                                         @endforeach
                                                     </ul>
+                                                    @php
+                                                        $total_tunjangan = $data->jabatan->tunjangan_jabatan + $totalTunjangan;
+                                                    @endphp
                                                     <strong>Total: Rp.
-                                                        {{ number_format($totalTunjangan, 0, '', '.') }}</strong>
+                                                        {{ number_format($total_tunjangan, 0, '', '.') }}</strong>
                                                 @else
                                                     Tidak ada tunjangan.
                                                 @endif
