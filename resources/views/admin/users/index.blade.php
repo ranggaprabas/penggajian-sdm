@@ -96,7 +96,11 @@
                                                     </td>
                                                     <td>
                                                         @if ($user->status)
-                                                            <span class="badge bg-success">pegawai tetap</span>
+                                                            @if ($isDeletedPage)
+                                                                <span class="badge bg-danger">pegawai resign</span>
+                                                            @else
+                                                                <span class="badge bg-success">pegawai tetap</span>
+                                                            @endif
                                                         @else
                                                             <span class="badge bg-warning">pegawai tidak tetap</span>
                                                         @endif
