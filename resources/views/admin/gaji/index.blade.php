@@ -63,7 +63,7 @@
                                     class="btn btn-info" target="_blank"><i class="fa fa-print"></i> Cetak</a>
                             @else
                                 <a href="{{ route('admin.gaji.cetak', [request()->get('bulan'), request()->get('tahun')]) }}"
-                                    class="btn btn-info" target="_blank"> Cetak <i class="fa fa-print"></i> </a>
+                                    class="btn btn-info" target="_blank"><i class="fa fa-print"></i> Cetak</a>
                             @endif
                             <div class="alert alert-warning mt-3">
                                 <i class="fa fa-info-circle"></i> Silahkan pilih bulan dan tahun terlebih dahulu untuk

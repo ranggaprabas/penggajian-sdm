@@ -123,11 +123,17 @@
                                         <div id="tunjanganContainer">
                                             @if ($user->komponenGaji)
                                                 @foreach ($user->komponenGaji as $tunjangan)
+                                                <div class="tunjangan">
                                                     <div class="form-group">
                                                         <label for="nama_tunjangan">Nama Tunjangan</label>
-                                                        <input type="text" class="form-control" name="nama_tunjangan[]"
-                                                            id="search" required
-                                                            value="{{ $tunjangan->nama_tunjangan }}">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">Tj.</div>
+                                                            </div>
+                                                            <input type="text" class="form-control"
+                                                                name="nama_tunjangan[]" id="search" required
+                                                                value="{{ $tunjangan->nama_tunjangan }}">
+                                                        </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="nilai_tunjangan">Nilai Tunjangan</label>
@@ -140,6 +146,7 @@
                                                                 value="{{ $tunjangan->nilai_tunjangan }}">
                                                         </div>
                                                     </div>
+                                                </div>
                                                 @endforeach
                                             @endif
                                         </div>

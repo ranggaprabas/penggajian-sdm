@@ -45,8 +45,6 @@ class UserRequest extends FormRequest
                         'entitas_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
-                        'nama_tunjangan' => 'required|array',
-                        'nilai_tunjangan' => 'required|array',
                     ];
                 }
         }

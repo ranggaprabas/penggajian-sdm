@@ -56,9 +56,7 @@ class LaporanController extends Controller
                 'absensi.entitas',
                 'absensi.jabatan',
                 'absensi.tunjangan_jabatan',
-                'absensi.tunjangan_makan',
-                'absensi.tunjangan_transportasi',
-                'absensi.potongan_pinjaman'
+                'absensi.tunjangan',
             )
             ->where('absensi.bulan', $tanggal)
             ->where('absensi.user_id', $request->karyawan_id)

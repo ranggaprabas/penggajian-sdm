@@ -113,8 +113,13 @@
                                 <div class="card-body p-3">
                                     <div class="form-group">
                                         <label for="nama_tunjangan[]">Nama Tunjangan</label>
-                                        <input type="text" name="nama_tunjangan[]" class="form-control" id="search"
-                                            required>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">Tj.</div>
+                                            </div>
+                                            <input type="text" name="nama_tunjangan[]" class="form-control"
+                                                id="search" required>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="nilai_tunjangan[]">Nilai Tunjangan</label>
