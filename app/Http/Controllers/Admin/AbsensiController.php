@@ -72,29 +72,39 @@ class AbsensiController extends Controller
 
     public function store(Request $request)
     {
-        foreach ($request->karyawan_id as $id) {
-            // Dapatkan semua informasi yang Anda butuhkan dari tabel users
-            $user = User::findOrFail($id);
-            $komponenGaji = KomponenGaji::where('user_id', $user->id)->first();
+        foreach ($request->karyawan_id as $user_id) {
+            // Mendapatkan semua informasi yang Anda butuhkan dari tabel users
+            $user = User::findOrFail($user_id);
 
-            $input = [
-                'user_id' => $user->id,
-                'bulan' => $request->bulan,
-                'nama' => $user->nama,
-                'nik' => $user->nik,
-                'jenis_kelamin' => $user->jenis_kelamin,
-                'jabatan' => $user->jabatan->nama,
-                'tunjangan_jabatan' => $user->jabatan->tunjangan_jabatan,
-                'tunjangan_makan' => $komponenGaji->tunjangan_makan,
-                'tunjangan_transportasi' => $komponenGaji->tunjangan_transportasi,
-                'potongan_pinjaman' => $komponenGaji->potongan_pinjaman,
-                'entitas' => $user->entitas->nama,
-                // Sisipkan kolom lain yang diperlukan
-            ];
+            // Mendapatkan data komponen gaji untuk pengguna (user) saat ini
+            $komponenGaji = KomponenGaji::where('user_id', $user->id)->get();
 
-            Absensi::create($input);
+            // komponen gaji ditemukan
+            if ($komponenGaji) {
+                // Menyusun data absensi beserta data komponen gaji dalam format JSON
+                $tunjanganDinamis = [];
+
+                // Mengambil semua data tunjangan dari model KomponenGaji dan tambahkan ke array tunjangan dinamis
+                $tunjanganDinamis = $komponenGaji->toArray();
+
+
+                $dataAbsensi = [
+                    'user_id' => $user->id,
+                    'bulan' => $request->bulan,
+                    'nama' => $user->nama,
+                    'nik' => $user->nik,
+                    'jenis_kelamin' => $user->jenis_kelamin,
+                    'jabatan' => $user->jabatan->nama,
+                    'tunjangan_jabatan' => $user->jabatan->tunjangan_jabatan,
+                    'tunjangan' => json_encode($tunjanganDinamis),
+                    'entitas' => $user->entitas->nama,
+                    // Sisipkan kolom lain yang diperlukan
+                ];
+
+                // Simpan data absensi ke dalam tabel
+                Absensi::create($dataAbsensi);
+            }
         }
-
         return redirect()->back()->with([
             'message' => 'Gaji berhasil dilakukan',
             'alert-info' => 'info'
