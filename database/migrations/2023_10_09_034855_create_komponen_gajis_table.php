@@ -16,7 +16,6 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('nama_tunjangan')->nullable();
             $table->integer('nilai_tunjangan')->nullable();
-            $table->integer('total_tunjangan')->nullable();
             $table->timestamps();
         });
     }
