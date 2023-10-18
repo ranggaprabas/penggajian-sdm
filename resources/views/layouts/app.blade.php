@@ -327,7 +327,6 @@
 
                     // Menampilkan hanya satu hasil pertama
                     var firstResult = [formattedData[0]]; // Ambil hanya hasil pertama
-
                     return process(firstResult);
                 });
             },
