@@ -315,6 +315,8 @@
 
     <script type="text/javascript">
         var route = "{{ route('autocomplete.search') }}"; // Menggunakan nama rute
+
+        // Inisialisasi Typeahead pada input "Nama Tunjangan" di kode Blade
         $('#search').typeahead({
             source: function(query, process) {
                 return $.get(route, {
@@ -325,15 +327,10 @@
                         return item.nama_tunjangan;
                     });
 
-                    // Menampilkan hanya satu hasil pertama
-                    var firstResult = [formattedData[0]]; // Ambil hanya hasil pertama
-                    return process(firstResult);
+                    return process(formattedData);
                 });
             },
-            updater: function(item) {
-                $('#search').val(item); // Menyimpan hasil yang dipilih ke dalam input
-                return item;
-            }
+            items: 1, // Mengatur jumlah maksimum opsi yang akan ditampilkan (misalnya, 5 opsi)
         });
     </script>
 
