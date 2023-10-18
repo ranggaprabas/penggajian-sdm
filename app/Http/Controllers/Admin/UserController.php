@@ -81,7 +81,7 @@ class UserController extends Controller
 
         // Loop melalui data tunjangan dan simpan dalam model KomponenGaji
         for ($i = 0; $i < count($namaTunjangan); $i++) {
-            $nama = $namaTunjangan[$i];
+            $nama = ucwords($namaTunjangan[$i]); // ucwords berfungsi Mengubah huruf pertama menjadi besar
             $nilai = $nilaiTunjangan[$i];
 
             $tunjangan = new KomponenGaji([
@@ -156,6 +156,7 @@ class UserController extends Controller
         // Loop melalui data tunjangan yang dikirim dalam request
         foreach ($request->input('nama_tunjangan', []) as $key => $nama) {
             $nilai = $request->input('nilai_tunjangan')[$key];
+            $nama = ucwords($nama); // ucwords berfungsi menngubah nama depan menjadi besar
 
             if (isset($existingTunjangan[$key])) {
                 $existingTunjangan[$key]->update([
