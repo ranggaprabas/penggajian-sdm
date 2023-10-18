@@ -220,7 +220,7 @@
                                 <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
+                        <button type="button" class="btn btn-outline-danger removeTunjanganAdd mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
                     </div>
                 `;
                 $("#tunjanganContainer").append(newTunjangan);
@@ -246,7 +246,7 @@
                 calculateTotalTunjangan();
             });
 
-            $(document).on("click", ".removeTunjangan", function() {
+            $(document).on("click", ".removeTunjanganAdd", function() {
                 $(this).closest('.tunjangan')
                     .remove(); // Menghapus elemen yang mengandung elemen yang akan dihapus
                 calculateTotalTunjangan(); // Rekalkulasi total
@@ -304,12 +304,7 @@
                     return id !== tunjanganId.toString();
                 });
                 $("#tunjangan_ids").val(tunjanganIds.join(','));
-
-                calculateTotalTunjangan(); // Rekalkulasi total
             });
-
-
-
         });
     </script>
 

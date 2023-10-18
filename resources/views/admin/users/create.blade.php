@@ -111,27 +111,30 @@
                                     <div class="card-title">Tunjangan</div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <div class="form-group">
-                                        <label for="nama_tunjangan[]">Nama Tunjangan</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Tj.</div>
+                                    <div class="tunjangan">
+                                        <div class="form-group">
+                                            <label for="nama_tunjangan[]">Nama Tunjangan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Tj.</div>
+                                                </div>
+                                                <input type="text" name="nama_tunjangan[]" class="form-control"
+                                                    id="search" required>
                                             </div>
-                                            <input type="text" name="nama_tunjangan[]" class="form-control"
-                                                id="search" required>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="nilai_tunjangan[]">Nilai Tunjangan</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">Rp.</div>
+                                        <div class="form-group">
+                                            <label for="nilai_tunjangan[]">Nilai Tunjangan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Rp.</div>
+                                                </div>
+                                                <input type="text" name="nilai_tunjangan[]"
+                                                    class="form-control nilai-tunjangan" required>
                                             </div>
-                                            <input type="text" name="nilai_tunjangan[]"
-                                                class="form-control nilai-tunjangan" required>
                                         </div>
+                                        <button type="button" class="btn btn-outline-danger removeTunjanganAdd mb-3"> <i
+                                                class="fa fa-trash"></i> Hapus Tunjangan</button>
                                     </div>
-
                                     <div id="tunjanganContainer"></div>
                                     <button type="button" id="addTunjangan" class="btn btn-outline-success"> <i
                                             class="fa fa-plus"></i> Tambah Tunjangan</button>
