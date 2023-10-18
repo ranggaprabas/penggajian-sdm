@@ -195,6 +195,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
 
+    {{-- Komponen Add Tunjangan --}}
+
     <script>
         $(document).ready(function() {
             var counter = 0;
@@ -255,7 +257,7 @@
     </script>
 
 
-
+    {{-- Komponen Edit Tunjangan --}}
 
     <script>
         $(document).ready(function() {
@@ -309,6 +311,7 @@
     </script>
 
 
+    {{-- Auto Complete Tunjangan --}}
 
     <script type="text/javascript">
         var route = "{{ route('autocomplete.search') }}"; // Menggunakan nama rute
@@ -336,6 +339,7 @@
     </script>
 
 
+    {{-- Hide Data Tables Action Export --}}
 
     <script>
         $(document).ready(function() {
@@ -376,6 +380,9 @@
         });
     </script>
 
+
+    {{-- Default Entries 100 in input gaji --}}
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             new DataTable('#example1', {
@@ -385,6 +392,8 @@
         });
     </script>
 
+
+    {{-- Delete swall entitas --}}
 
     <script>
         //button create post event
@@ -434,6 +443,7 @@
         });
     </script>
 
+    {{-- Delete swall jabatan --}}
 
     <script>
         //button create post event
@@ -490,6 +500,8 @@
 
         });
     </script>
+
+    {{-- Delete swall Users --}}
 
     <script>
         //button create post event
@@ -548,6 +560,7 @@
     </script>
 
 
+    {{-- Restore swall users --}}
 
     <script>
         //button create post event
@@ -605,6 +618,8 @@
         });
     </script>
 
+    {{-- Undo swall gaji --}}
+
     <script>
         //button create post event
         $('body').on('click', '#btn-delete-gaji', function() {
@@ -661,6 +676,8 @@
         });
     </script>
 
+    {{-- Donut chart --}}
+
     <script>
         @if (isset($maleCount) && isset($femaleCount))
             // Mendapatkan elemen canvas
@@ -683,6 +700,9 @@
             });
         @endif
     </script>
+
+
+    {{-- Pie Chart --}}
 
     <script>
         @if (isset($maleCount) && isset($femaleCount))
@@ -709,6 +729,7 @@
         @endif
     </script>
 
+    {{-- Dark Mode --}}
 
     <script>
         // Temukan tombol mode gelap dan checkbox-nya
@@ -749,7 +770,7 @@
     </script>
 
 
-    <!-- Untuk menambahkan koma di jabatan -->
+    <!-- Untuk menambahkan titik pemisah rupiah Jabatan -->
     <script>
         // Fungsi untuk menambahkan pemisah titik saat mengisi input number
         function addCommas(input) {
@@ -766,6 +787,7 @@
     </script>
 
 
+    <!-- Untuk menambahkan titik pemisah rupiah dan remove saat dikirim ke server  -->
 
     <script>
         // Fungsi untuk menambahkan pemisah titik saat mengisi input number atau teks
