@@ -79,8 +79,6 @@ class UserController extends Controller
         $namaTunjangan = $request->input('nama_tunjangan');
         $nilaiTunjangan = $request->input('nilai_tunjangan');
 
-        $totalTunjangan = 0; // Inisialisasi total tunjangan
-
         // Loop melalui data tunjangan dan simpan dalam model KomponenGaji
         for ($i = 0; $i < count($namaTunjangan); $i++) {
             $nama = $namaTunjangan[$i];
@@ -89,16 +87,10 @@ class UserController extends Controller
             $tunjangan = new KomponenGaji([
                 'nama_tunjangan' => $nama,
                 'nilai_tunjangan' => $nilai,
-                'total_tunjangan' => $nilai, // Simpan total tunjangan pada setiap tunjangan
             ]);
 
             $user->komponenGajis()->save($tunjangan); // Sambungkan tunjangan ke user
-            $totalTunjangan += $nilai; // Tambahkan nilai tunjangan ke total
         }
-
-        // Simpan total tunjangan ke model User
-        $user->komponenGajis->total_tunjangan = $totalTunjangan;
-        $user->komponenGajis->save();
 
         $userNama = $request->input('nama');
 
@@ -146,51 +138,39 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
-        // Ambil data tunjangan yang ada di database untuk pengguna yang bersangkutan
+        // Ambil daftar ID tunjangan yang dikirimkan dalam permintaan
+        $tunjanganIds = $request->input('tunjangan_ids', []);
+
         $existingTunjangan = $user->komponenGaji;
 
-        $namaTunjangan = $request->input('nama_tunjangan');
-        $nilaiTunjangan = $request->input('nilai_tunjangan');
+        // Buat daftar tunjangan yang harus dihapus
+        $tunjanganToRemove = $existingTunjangan->filter(function ($tunjangan) use ($tunjanganIds) {
+            return !in_array($tunjangan->id, $tunjanganIds);
+        });
 
-        $totalTunjangan = 0;
+        // Hapus tunjangan yang ditandai untuk dihapus
+        foreach ($tunjanganToRemove as $tunjangan) {
+            $tunjangan->delete();
+        }
 
         // Loop melalui data tunjangan yang dikirim dalam request
-        for ($i = 0; $i < count($namaTunjangan); $i++) {
-            $nama = $namaTunjangan[$i];
-            $nilai = $nilaiTunjangan[$i];
+        foreach ($request->input('nama_tunjangan', []) as $key => $nama) {
+            $nilai = $request->input('nilai_tunjangan')[$key];
 
-            // Jika tunjangan sudah ada, update nilainya; jika tidak, buat yang baru
-            if (isset($existingTunjangan[$i])) {
-                $existingTunjangan[$i]->update([
+            if (isset($existingTunjangan[$key])) {
+                $existingTunjangan[$key]->update([
                     'nama_tunjangan' => $nama,
                     'nilai_tunjangan' => $nilai,
-                    'total_tunjangan' => $nilai,
                 ]);
             } else {
                 $tunjangan = new KomponenGaji([
                     'nama_tunjangan' => $nama,
                     'nilai_tunjangan' => $nilai,
-                    'total_tunjangan' => $nilai,
                 ]);
 
                 $user->komponenGaji()->save($tunjangan);
             }
-
-            $totalTunjangan += $nilai;
         }
-
-        // Hapus tunjangan yang tidak ada dalam request
-        foreach ($existingTunjangan as $existing) {
-            if (!in_array($existing->id, $request->input('tunjangan_ids', []))) {
-                $existing->delete();
-            }
-        }
-
-        foreach ($user->komponenGaji as $tunjangan) {
-            $tunjangan->total_tunjangan = $totalTunjangan;
-            $tunjangan->save();
-        }
-
 
         $message = 'Data SDM ' . $user->nama  . ' berhasil diperbarui!';
 
@@ -199,6 +179,10 @@ class UserController extends Controller
             'alert-info' => 'info'
         ]);
     }
+
+
+
+
 
     public function restore(User $user)
     {

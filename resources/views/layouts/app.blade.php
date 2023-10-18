@@ -295,10 +295,21 @@
             });
 
             $(document).on("click", ".removeTunjangan", function() {
-                $(this).closest('.tunjangan')
-                    .remove(); // Menghapus elemen yang mengandung elemen yang akan dihapus
+                var tunjanganElement = $(this).closest('.tunjangan');
+                var tunjanganId = tunjanganElement.data('id'); // Dapatkan ID tunjangan
+                tunjanganElement.remove(); // Hapus elemen secara visual
+
+                // Hapus ID tunjangan dari daftar tunjangan_ids
+                var tunjanganIds = $("#tunjangan_ids").val().split(',').filter(function(id) {
+                    return id !== tunjanganId.toString();
+                });
+                $("#tunjangan_ids").val(tunjanganIds.join(','));
+
                 calculateTotalTunjangan(); // Rekalkulasi total
             });
+
+
+
         });
     </script>
 
