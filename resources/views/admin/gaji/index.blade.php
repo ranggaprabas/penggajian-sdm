@@ -149,14 +149,14 @@
                                                                         @endforeach
                                                                         @php
                                                                             $total_tunjangan = array_sum(array_column($tunjangan, 'nilai_tunjangan'));
-                                                                            $take_home_pay = $item->tunjangan_jabatan + $total_tunjangan;
+                                                                            $jumlah_tunjangan = $item->tunjangan_jabatan + $total_tunjangan;
                                                                         @endphp
                                                                     @else
                                                                         <li>{{ $tunjangan->nama_tunjangan }}: Rp.
                                                                             {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
                                                                         </li>
                                                                         @php
-                                                                            $take_home_pay = $item->tunjangan_jabatan + $tunjangan->nilai_tunjangan;
+                                                                            $jumlah_tunjangan = $item->tunjangan_jabatan + $tunjangan->nilai_tunjangan;
                                                                         @endphp
                                                                     @endif
                                                                 </ul>
@@ -164,7 +164,7 @@
                                                                 Tidak ada tunjangan.
                                                             @endif
                                                         </td>
-                                                        <td>Rp. {{ number_format($take_home_pay, 0, '', '.') }}</td>
+                                                        <td>Rp. {{ number_format($jumlah_tunjangan, 0, '', '.') }}</td>
                                                         <td>
                                                             <a href="javascript:void(0)" id="btn-delete-gaji"
                                                                 data-id="{{ $item->id }}"
