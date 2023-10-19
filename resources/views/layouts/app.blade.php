@@ -19,6 +19,17 @@
     <!-- Custom style -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
+    {{-- Auto Complete --}}
+
+    <!-- Sertakan jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Sertakan jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    
+
     <!-- Data Tables -->
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet" />
@@ -171,8 +182,9 @@
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
 
+
     <!-- Data Tables -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.0.js"></script> --}}
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -190,9 +202,6 @@
     {{-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Jquery Auto Complete -->
-    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
 
 
     {{-- Komponen Add Tunjangan --}}
@@ -314,23 +323,27 @@
     {{-- Auto Complete Tunjangan --}}
 
     <script type="text/javascript">
-        var route = "{{ route('autocomplete.search') }}"; // Menggunakan nama rute
+        var path = "{{ route('autocomplete') }}";
 
-        // Inisialisasi Typeahead pada input "Nama Tunjangan" di kode Blade
-        $('#search').typeahead({
-            source: function(query, process) {
-                return $.get(route, {
-                    query: query
-                }, function(data) {
-                    // Menggunakan map untuk mengubah format data menjadi teks yang sesuai
-                    var formattedData = $.map(data, function(item) {
-                        return item.nama_tunjangan;
-                    });
-
-                    return process(formattedData);
+        $("#search").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: path,
+                    type: 'GET',
+                    dataType: "json",
+                    data: {
+                        search: request.term
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
                 });
             },
-            items: 1, // Mengatur jumlah maksimum opsi yang akan ditampilkan (misalnya, 5 opsi)
+            select: function(event, ui) {
+                $('#search').val(ui.item.label);
+                console.log(ui.item);
+                return false;
+            }
         });
     </script>
 

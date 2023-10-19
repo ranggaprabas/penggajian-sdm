@@ -36,20 +36,13 @@ class UserController extends Controller
     }
 
 
-    public function autocompleteSearch(Request $request)
+    public function autocomplete(Request $request)
     {
-        $query = $request->get('query');
-
-        $filterResult = KomponenGaji::where('nama_tunjangan', 'LIKE', '%' . $query . '%')
+        $data = KomponenGaji::select("nama_tunjangan as value", "id")
+            ->where('nama_tunjangan', 'LIKE', '%' . $request->get('search') . '%')
             ->get();
 
-        $formattedResult = $filterResult->map(function ($item) {
-            return [
-                'nama_tunjangan' => $item->nama_tunjangan,
-            ];
-        });
-
-        return response()->json($formattedResult);
+        return response()->json($data);
     }
 
 
