@@ -119,7 +119,7 @@
                                                     <div class="input-group-text">Tj.</div>
                                                 </div>
                                                 <input type="text" name="nama_tunjangan[]" class="form-control"
-                                                    id="search" required>
+                                                     required>
                                             </div>
                                         </div>
                                         <div class="form-group">
