@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    
+
 
     <!-- Data Tables -->
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -324,7 +324,7 @@
 
     <script type="text/javascript">
         var path = "{{ route('autocomplete') }}";
-    
+
         $('#search').autocomplete({
             source: function(request, response) {
                 $.ajax({
@@ -335,10 +335,14 @@
                         search: request.term
                     },
                     success: function(data) {
-                        response(data);
+                        // Batasi hasil hanya ke 1 item pertama
+                        var limitedResults = data.slice(0, 1);
+                        response(limitedResults);
                     }
                 });
             },
+            // Batasi hasil hanya ke 1 item pertama
+            minLength: 1,
             select: function(event, ui) {
                 $('#search').val(ui.item.label);
                 console.log(ui.item);
@@ -346,7 +350,8 @@
             }
         });
     </script>
-    
+
+
 
 
     {{-- Hide Data Tables Action Export --}}
