@@ -25,7 +25,7 @@
             <div class="col-lg-12">
                 <form action="{{ route('admin.users.store') }}" method="POST" onsubmit="removeCommas2()">
                     @csrf
-                    <div class="card card-lightblue">
+                    <div class="card card-primary">
                         <div class="card-header">
                             <div class="card-title">Profile SDM</div>
                         </div>
@@ -106,7 +106,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card card-lightblue">
+                            <div class="card card-primary">
                                 <div class="card-header">
                                     <div class="card-title">Tunjangan</div>
                                 </div>
