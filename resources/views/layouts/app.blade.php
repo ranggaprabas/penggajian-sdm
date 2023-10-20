@@ -325,7 +325,7 @@
     <script type="text/javascript">
         var path = "{{ route('autocomplete') }}";
     
-        $("input[name='nama_tunjangan[]']").autocomplete({
+        $('#search').autocomplete({
             source: function(request, response) {
                 $.ajax({
                     url: path,
@@ -340,7 +340,7 @@
                 });
             },
             select: function(event, ui) {
-                $("input[name='nama_tunjangan[]']").val(ui.item.label);
+                $('#search').val(ui.item.label);
                 console.log(ui.item);
                 return false;
             }
