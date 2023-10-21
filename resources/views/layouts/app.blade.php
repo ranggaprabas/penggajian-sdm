@@ -177,7 +177,9 @@
 
     <!-- REQUIRED SCRIPTS -->
 
-    @vite('resources/js/app.js')
+    <!-- dibawah ini bikin error -->
+    {{-- @vite('resources/js/app.js') --}}
+
     <!-- AdminLTE App -->
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
@@ -219,7 +221,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Tj.</div>
                                     </div>
-                                <input class="form-control" type="text" name="nama_tunjangan[]" required>
+                                <input class="form-control autocomplete_txt" type="text" name="nama_tunjangan[]" data-type='namatunjangan' required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -282,7 +284,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Tj.</div>
                                     </div>
-                                <input class="form-control" type="text" name="nama_tunjangan[]" required>
+                                <input class="form-control autocomplete_txt" type="text" name="nama_tunjangan[]" data-type="namatunjangan" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -323,31 +325,41 @@
     {{-- Auto Complete Tunjangan --}}
 
     <script type="text/javascript">
-        var path = "{{ route('autocomplete') }}";
+        //autocomplete script
+        $(document).on('focus', '.autocomplete_txt', function() {
+            type = $(this).data('type');
 
-        $('#search').autocomplete({
-            source: function(request, response) {
-                $.ajax({
-                    url: path,
-                    type: 'GET',
-                    dataType: "json",
-                    data: {
-                        search: request.term
-                    },
-                    success: function(data) {
-                        // Batasi hasil hanya ke 1 item pertama
-                        var limitedResults = data.slice(0, 1);
-                        response(limitedResults);
-                    }
-                });
-            },
-            // Batasi hasil hanya ke 1 item pertama
-            minLength: 1,
-            select: function(event, ui) {
-                $('#search').val(ui.item.label);
-                console.log(ui.item);
-                return false;
-            }
+            if (type == 'namatunjangan') autoType = 'nama_tunjangan';
+
+            $(this).autocomplete({
+                minLength: 0,
+                source: function(request, response) {
+                    $.ajax({
+                        url: "{{ route('searchajax') }}",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                            type: type,
+                        },
+                        success: function(data) {
+                            var array = $.map(data, function(item) {
+                                return {
+                                    label: item[autoType],
+                                    value: item[autoType],
+                                    data: item
+                                }
+                            });
+                            response(array)
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    var data = ui.item.data;
+
+                }
+            });
+
+
         });
     </script>
 

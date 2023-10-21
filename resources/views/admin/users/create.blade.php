@@ -118,7 +118,7 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Tj.</div>
                                                 </div>
-                                                <input type="text" name="nama_tunjangan[]" class="form-control" id="search"
+                                                <input type="text" name="nama_tunjangan[]" class="form-control autocomplete_txt" data-type='namatunjangan'
                                                      required>
                                             </div>
                                         </div>

@@ -36,13 +36,23 @@ class UserController extends Controller
     }
 
 
-    public function autocomplete(Request $request)
+    public function searchResponse(Request $request)
     {
-        $data = KomponenGaji::select("nama_tunjangan as value", "id")
-            ->where('nama_tunjangan', 'LIKE', '%' . $request->get('search') . '%')
-            ->get();
+        $query = $request->get('term', '');
+        $countries = KomponenGaji::query();
+        if ($request->type == 'namatunjangan') {
+            $countries->where('nama_tunjangan', 'LIKE', '%' . $query . '%');
+        }
 
-        return response()->json($data);
+        $countries = $countries->get();
+        $data = array();
+        foreach ($countries as $country) {
+            $data[] = array('nama_tunjangan' => $country->nama_tunjangan);
+        }
+        if (count($data))
+            return $data;
+        else
+            return ['nama_tunjangan' => ''];
     }
 
 

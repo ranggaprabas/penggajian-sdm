@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/users/create/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
+Route::get('/users/create/searchResponse', [UserController::class, 'searchResponse'])->name('searchajax');
 
 
 

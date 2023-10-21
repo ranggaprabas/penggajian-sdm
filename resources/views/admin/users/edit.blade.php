@@ -130,8 +130,8 @@
                                                                 <div class="input-group-prepend">
                                                                     <div class="input-group-text">Tj.</div>
                                                                 </div>
-                                                                <input type="text" class="form-control"
-                                                                    name="nama_tunjangan[]" id="search" required
+                                                                <input type="text" class="form-control autocomplete_txt"
+                                                                    name="nama_tunjangan[]" id="search" data-type='namatunjangan' required
                                                                     value="{{ $tunjangan->nama_tunjangan }}">
                                                             </div>
                                                         </div>
