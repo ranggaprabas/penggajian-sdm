@@ -267,8 +267,17 @@
                         total += nilai;
                     }
                 });
-                $("#totalTunjangan").text("Total Tunjangan: Rp. " + total.toLocaleString());
+
+                // Menggunakan metode toLocaleString() untuk memisahkan ribuan dengan titik
+                var formattedTotal = total.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                });
+
+                $("#totalTunjangan").text("Total Tunjangan: " + formattedTotal);
             }
+
+
 
             $(document).on("input", ".nilai-tunjangan", function() {
                 calculateTotalTunjangan();
