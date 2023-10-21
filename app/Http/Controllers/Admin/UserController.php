@@ -39,15 +39,15 @@ class UserController extends Controller
     public function searchResponse(Request $request)
     {
         $query = $request->get('term', '');
-        $countries = KomponenGaji::query();
+        $tunjangan = KomponenGaji::query();
         if ($request->type == 'namatunjangan') {
-            $countries->where('nama_tunjangan', 'LIKE', '%' . $query . '%');
+            $tunjangan->where('nama_tunjangan', 'LIKE', '%' . $query . '%');
         }
 
-        $countries = $countries->get();
+        $tunjangan = $tunjangan->get();
         $data = array();
-        foreach ($countries as $country) {
-            $data[] = array('nama_tunjangan' => $country->nama_tunjangan);
+        foreach ($tunjangan as $tunjangans) {
+            $data[] = array('nama_tunjangan' => $tunjangans->nama_tunjangan);
         }
         if (count($data))
             return $data;
