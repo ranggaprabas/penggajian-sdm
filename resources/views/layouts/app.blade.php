@@ -204,6 +204,21 @@
     {{-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Script JavaScript untuk mengaktifkan dropdown , but komen vite js-->
+    <script>
+        $(document).ready(function() {
+            $('.nav-item.dropdown').on('click', function() {
+                $(this).find('.dropdown-menu').toggleClass('show');
+            });
+
+            // Menutup dropdown saat mengklik di luar dropdown
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.nav-item.dropdown').length) {
+                    $('.dropdown-menu').removeClass('show');
+                }
+            });
+        });
+    </script>
 
 
     {{-- Komponen Add Tunjangan --}}
