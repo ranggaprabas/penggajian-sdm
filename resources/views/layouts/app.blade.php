@@ -325,14 +325,14 @@
     {{-- Auto Complete Tunjangan --}}
 
     <script type="text/javascript">
-        //autocomplete script
+        // Autocomplete script
         $(document).on('focus', '.autocomplete_txt', function() {
             type = $(this).data('type');
 
             if (type == 'namatunjangan') autoType = 'nama_tunjangan';
 
             $(this).autocomplete({
-                minLength: 0,
+                minLength: 1, // Set to 1 to display options after typing one character
                 source: function(request, response) {
                     $.ajax({
                         url: "{{ route('searchajax') }}",
@@ -349,19 +349,21 @@
                                     data: item
                                 }
                             });
-                            response(array)
+                            // Batasi hasil hanya ke 1 item pertama
+                            var limitedResults = array.slice(0, 1);
+                            response(limitedResults);
                         }
                     });
                 },
                 select: function(event, ui) {
                     var data = ui.item.data;
 
+                    // Do something with the selected data
                 }
             });
-
-
         });
     </script>
+
 
 
 
