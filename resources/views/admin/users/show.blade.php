@@ -67,12 +67,14 @@
                                                 @php
                                                     $totalTunjangan = 0;
                                                 @endphp
-
                                                 @if ($details->komponenGaji->count() > 0)
                                                     <ul>
-                                                        <li>
-                                                            Tj. Jabatan: {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
-                                                        </li>
+                                                        @if ($data->jabatan->deleted != 1)
+                                                            <li>
+                                                                Tj. Jabatan:
+                                                                {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
+                                                            </li>
+                                                        @endif
                                                         @foreach ($details->komponenGaji as $tunjangan)
                                                             <li>Tj. {{ $tunjangan->nama_tunjangan }}: Rp.
                                                                 {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
@@ -83,16 +85,18 @@
                                                         @endforeach
                                                     </ul>
                                                     @php
-                                                        $total_tunjangan = $data->jabatan->tunjangan_jabatan + $totalTunjangan;
+                                                        if ($data->jabatan->deleted != 1) {
+                                                            $totalTunjangan = $data->jabatan->tunjangan_jabatan + $totalTunjangan;
+                                                        }
                                                     @endphp
+
                                                     <strong>Total: Rp.
-                                                        {{ number_format($total_tunjangan, 0, '', '.') }}</strong>
-                                                @else
-                                                    Tidak ada tunjangan.
+                                                        {{ number_format($totalTunjangan, 0, '', '.') }}
+                                                    @else
+                                                        Tidak ada tunjangan.
                                                 @endif
                                             </td>
                                         </tr>
-
                                         <tr>
                                             <th>Status</th>
                                             <td>
