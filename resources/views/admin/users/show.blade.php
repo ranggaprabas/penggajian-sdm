@@ -54,7 +54,7 @@
                                             <th>Jabatan</th>
                                             <td>
                                                 @if ($data->jabatan->deleted == 1)
-                                                    {{ $data->jabatan->nama }} (jabatan deleted)
+                                                    {{ $data->jabatan->nama }} <span style="color: red;">(jabatan deleted)</span>
                                                 @else
                                                     {{ $data->jabatan->nama ?? '-' }}
                                                 @endif

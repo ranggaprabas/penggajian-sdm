@@ -130,7 +130,8 @@
                                                                 <div class="input-group-prepend">
                                                                     <div class="input-group-text">Tj.</div>
                                                                 </div>
-                                                                <input type="text" class="form-control autocomplete_txt"
+                                                                <input type="text"
+                                                                    class="form-control autocomplete_txt_tunjangan"
                                                                     name="nama_tunjangan[]" id="search"
                                                                     data-type='namatunjangan' required
                                                                     value="{{ $tunjangan->nama_tunjangan }}">
@@ -160,6 +161,53 @@
                                         </div>
                                         <button type="button" id="addTunjanganEdit" class="btn btn-outline-success"> <i
                                                 class="fa fa-plus"></i> Tambah Tunjangan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-lightblue">
+                                <div class="card-header">
+                                    <div class="card-title">Potongan</div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="form-group">
+                                        <div id="potonganContainer">
+                                            @if ($user->potonganGaji)
+                                                @foreach ($user->potonganGaji as $potongan)
+                                                    <div class="potongan">
+                                                        <div class="form-group">
+                                                            <label for="nama_potongan">Nama Potongan</label>
+                                                            <input type="text"
+                                                                class="form-control autocomplete_txt_potongan"
+                                                                name="nama_potongan[]" id="search"
+                                                                data-type='namapotongan' required
+                                                                value="{{ $potongan->nama_potongan }}">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="nilai_potongan">Nilai Potongan</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">Rp.</div>
+                                                                </div>
+                                                                <input type="text" class="form-control"
+                                                                    name="nilai_potongan[]" required
+                                                                    value="{{ old('nilai_potongan', str_replace(',', '.', number_format($potongan->nilai_potongan))) }}"
+                                                                    oninput="addCommas2(this)">
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="potongan_ids[]"
+                                                            value="{{ $potongan->id }}">
+                                                        <button type="button"
+                                                            class="btn btn-outline-danger removePotongan mb-3"><i
+                                                                class="fa fa-trash"></i> Hapus
+                                                            Potongan</button>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                        <button type="button" id="addPotonganEdit" class="btn btn-outline-success"> <i
+                                                class="fa fa-plus"></i> Tambah Potongan</button>
                                     </div>
                                 </div>
                             </div>

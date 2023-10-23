@@ -178,11 +178,14 @@ class UserController extends Controller
 
         // Ambil data tunjangan yang terkait dengan pengguna
         $tunjangan = $user->komponenGaji;
+        
+        // Ambil data potongan yang terkait dengan pengguna
+        $potongan = $user->potonganGaji;
 
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
 
-        return view('admin.users.edit', compact('user', 'tunjangan',  'jabatans', 'entita', 'pages', 'title'));
+        return view('admin.users.edit', compact('user', 'tunjangan', 'potongan',  'jabatans', 'entita', 'pages', 'title'));
     }
 
     /**
@@ -191,6 +194,9 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         $user->update($request->validated());
+
+
+        // Tunjangan Gaji
 
         // Ambil daftar ID tunjangan yang dikirimkan dalam permintaan
         $tunjanganIds = $request->input('tunjangan_ids', []);
@@ -226,6 +232,43 @@ class UserController extends Controller
                 $user->komponenGaji()->save($tunjangan);
             }
         }
+
+
+        // Potongan Gaji
+        $potonganIds = $request->input('potongan_ids', []);
+
+        $existingPotongan = $user->potonganGaji;
+
+        // Buat daftar potongan yang harus dihapus
+        $potonganToRemove = $existingPotongan->filter(function ($potongan) use ($potonganIds) {
+            return !in_array($potongan->id, $potonganIds);
+        });
+
+        // Hapus potongan yang ditandai untuk dihapus
+        foreach ($potonganToRemove as $potongan) {
+            $potongan->delete();
+        }
+
+        // Loop melalui data potongan yang dikirim dalam request
+        foreach ($request->input('nama_potongan', []) as $key => $nama) {
+            $nilai = $request->input('nilai_potongan')[$key];
+            $nama = ucwords($nama);
+
+            if (isset($existingPotongan[$key])) {
+                $existingPotongan[$key]->update([
+                    'nama_potongan' => $nama,
+                    'nilai_potongan' => $nilai,
+                ]);
+            } else {
+                $potongan = new PotonganGaji([
+                    'nama_potongan' => $nama,
+                    'nilai_potongan' => $nilai,
+                ]);
+
+                $user->potonganGaji()->save($potongan);
+            }
+        }
+
 
         $message = 'Data SDM ' . $user->nama  . ' berhasil diperbarui!';
 

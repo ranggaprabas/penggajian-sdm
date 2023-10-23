@@ -411,6 +411,55 @@
     </script>
 
 
+    {{-- Komponen Edit Potongan --}}
+
+    <script>
+        $(document).ready(function() {
+            var counter =
+                {{ isset($user) ? $user->komponenGaji->count() : 0 }}; // Hitung jumlah potongan yang ada
+
+            function addPotonganInput() {
+                var newPotongan = `
+                <div class="potongan">
+                        <div class="form-group">
+                            <label for="nama_potongan">Nama Potongan</label>
+                                <input class="form-control autocomplete_txt_potongan" type="text" name="nama_potongan[]" data-type="namapotongan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nilai_potongan">Nilai Potongan</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                                <input class="form-control nilai-potongan" type="text" name="nilai_potongan[]" oninput="addCommas2(this)" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger removePotongan mb-3"> <i class="fa fa-trash"></i>  Hapus Potongan</button>
+                    </div>
+            `;
+                $("#potonganContainer").append(newPotongan);
+                counter++;
+            }
+
+            $("#addPotonganEdit").click(function() {
+                addPotonganInput();
+            });
+
+            $(document).on("click", ".removePotongan", function() {
+                var potonganElement = $(this).closest('.potongan');
+                var potonganId = potonganElement.data('id'); // Dapatkan ID potongan
+                potonganElement.remove(); // Hapus elemen secara visual
+
+                // Hapus ID potongan dari daftar potongan_ids
+                var potonganIds = $("#potongan_ids").val().split(',').filter(function(id) {
+                    return id !== potonganId.toString();
+                });
+                $("#potongan_ids").val(potonganIds.join(','));
+            });
+        });
+    </script>
+
+
     {{-- Auto Complete Tunjangan --}}
 
     <script type="text/javascript">
@@ -953,7 +1002,7 @@
     <script>
         // Fungsi untuk menambahkan pemisah titik saat mengisi input number atau teks
         function addCommas2(input) {
-            var value = input.value.replace(/\./g, ''); // Menghapus semua titik
+            var value = input.value.replace(/\D/g, ''); // Menghapus semua titik
             input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, "."); // Menambahkan titik pada angka
         }
 
