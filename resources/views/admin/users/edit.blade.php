@@ -26,7 +26,7 @@
                 <form novalidate action="{{ route('admin.users.update', $user->id) }}" method="POST" onsubmit="return validateForm() && removeCommas2();">
                     @csrf
                     @method('put')
-                    <div class="card card-lightblue">
+                    <div class="card card-primary">
                         <div class="card-header">
                             <div class="card-title">
                                 Profile SDM
@@ -114,7 +114,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card card-lightblue">
+                            <div class="card card-primary">
                                 <div class="card-header">
                                     <div class="card-title">Tunjangan</div>
                                 </div>
@@ -166,7 +166,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card card-lightblue">
+                            <div class="card card-primary">
                                 <div class="card-header">
                                     <div class="card-title">Potongan</div>
                                 </div>
