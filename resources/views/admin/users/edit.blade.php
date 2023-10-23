@@ -131,7 +131,8 @@
                                                                     <div class="input-group-text">Tj.</div>
                                                                 </div>
                                                                 <input type="text" class="form-control autocomplete_txt"
-                                                                    name="nama_tunjangan[]" id="search" data-type='namatunjangan' required
+                                                                    name="nama_tunjangan[]" id="search"
+                                                                    data-type='namatunjangan' required
                                                                     value="{{ $tunjangan->nama_tunjangan }}">
                                                             </div>
                                                         </div>
@@ -143,13 +144,15 @@
                                                                 </div>
                                                                 <input type="text" class="form-control"
                                                                     name="nilai_tunjangan[]" required
-                                                                    value="{{ $tunjangan->nilai_tunjangan }}">
+                                                                    value="{{ old('nilai_tunjangan', str_replace(',', '.', number_format($tunjangan->nilai_tunjangan))) }}"
+                                                                    oninput="addCommas2(this)">
                                                             </div>
                                                         </div>
                                                         <input type="hidden" name="tunjangan_ids[]"
                                                             value="{{ $tunjangan->id }}">
                                                         <button type="button"
-                                                            class="btn btn-outline-danger removeTunjangan mb-3"><i class="fa fa-trash"></i> Hapus
+                                                            class="btn btn-outline-danger removeTunjangan mb-3"><i
+                                                                class="fa fa-trash"></i> Hapus
                                                             Tunjangan</button>
                                                     </div>
                                                 @endforeach

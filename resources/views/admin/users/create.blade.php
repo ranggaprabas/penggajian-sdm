@@ -129,7 +129,7 @@
                                                     <div class="input-group-text">Rp.</div>
                                                 </div>
                                                 <input type="text" name="nilai_tunjangan[]"
-                                                    class="form-control nilai-tunjangan" required>
+                                                    class="form-control nilai-tunjangan"  required oninput="addCommas2(this)">
                                             </div>
                                         </div>
                                         <button type="button" class="btn btn-outline-danger removeTunjanganAdd mb-3"> <i

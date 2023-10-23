@@ -245,7 +245,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp.</div>
                                 </div>
-                                <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
+                                <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" oninput="addCommas2(this)" required>
                             </div>
                         </div>
                         <button type="button" class="btn btn-outline-danger removeTunjanganAdd mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
@@ -317,7 +317,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp.</div>
                                 </div>
-                                <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" required>
+                                <input class="form-control nilai-tunjangan" type="text" name="nilai_tunjangan[]" oninput="addCommas2(this)" required>
                             </div>
                         </div>
                         <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
@@ -840,7 +840,7 @@
     </script>
 
 
-    <!-- Untuk menambahkan titik pemisah rupiah dan remove saat dikirim ke server  -->
+    <!-- Untuk menambahkan titik pemisah rupiah dan remove ditunjangan dinamis saat dikirim ke server  -->
 
     <script>
         // Fungsi untuk menambahkan pemisah titik saat mengisi input number atau teks
@@ -851,13 +851,13 @@
 
         // Fungsi untuk menghapus pemisah titik sebelum mengirimkan formulir
         function removeCommas2() {
-            var tunjanganMakanInput = document.getElementsByName('tunjangan_makan')[0];
-            var tunjanganTransportasiInput = document.getElementsByName('tunjangan_transportasi')[0];
-            var potonganPinjamanInput = document.getElementsByName('potongan_pinjaman')[0];
+            var tunjanganInputs = document.getElementsByName('nilai_tunjangan[]');
 
-            tunjanganMakanInput.value = tunjanganMakanInput.value.replace(/\./g, ''); // Menghapus semua titik
-            tunjanganTransportasiInput.value = tunjanganTransportasiInput.value.replace(/\./g, ''); // Menghapus semua titik
-            potonganPinjamanInput.value = potonganPinjamanInput.value.replace(/\./g, ''); // Menghapus semua titik
+            for (var i = 0; i < tunjanganInputs.length; i++) {
+                var value = tunjanganInputs[i].value;
+                value = value.replace(/\./g, ''); // Menghapus semua titik
+                tunjanganInputs[i].value = value;
+            }
         }
     </script>
 
