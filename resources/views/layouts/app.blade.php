@@ -204,6 +204,26 @@
     {{-- sweet alert --}}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+        function validateForm() {
+            // Implementasikan validasi JavaScript sesuai kebutuhan Anda
+            // Contoh: Periksa semua bidang yang diperlukan
+            const requiredFields = document.querySelectorAll('[required]');
+            for (const field of requiredFields) {
+                if (field.value.trim() === '') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Bidang wajib diisi',
+                        text: 'Harap isi semua bidang yang diperlukan.',
+                    });
+                    return false; // Menghentikan pengiriman formulir jika tidak valid
+                }
+            }
+            return true; // Kirim formulir jika valid
+        }
+    </script>
+
+
     <!-- Script JavaScript untuk mengaktifkan dropdown , but komen vite js-->
     <script>
         $(document).ready(function() {

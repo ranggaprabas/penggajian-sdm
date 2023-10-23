@@ -23,7 +23,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <form action="{{ route('admin.users.update', $user->id) }}" method="POST" onsubmit="removeCommas2()">
+                <form novalidate action="{{ route('admin.users.update', $user->id) }}" method="POST" onsubmit="return validateForm() && removeCommas2();">
                     @csrf
                     @method('put')
                     <div class="card card-lightblue">
