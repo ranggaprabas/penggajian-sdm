@@ -58,8 +58,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jabatan">Jabatan</label>
-                                        <select class="form-control" name="jabatan_id" id="jabatan">
-                                            <option value="">-- Choose Categories --</option>
+                                        <select class="form-control" name="jabatan_id" id="jabatan" required>
+                                            <option value="" disabled selected>-- Choose Categories --</option>
                                             @foreach ($jabatans as $jabatan)
                                                 @if ($jabatan->deleted != 1)
                                                     <option value="{{ $jabatan->id }}"
