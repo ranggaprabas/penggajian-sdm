@@ -41,7 +41,7 @@ class HomeController extends Controller
 
         $employee_count = User::where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
         $entita_count = Entitas::count();
-        $jabatan_count = Jabatan::count();
+        $jabatan_count = Jabatan::where('deleted', '!=', 1)->count();
 
         return view('home', compact('employee_count', 'entita_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount', 'taarufCount'));
     }
