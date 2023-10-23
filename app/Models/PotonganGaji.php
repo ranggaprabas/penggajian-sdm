@@ -8,7 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class PotonganGaji extends Model
 {
     use HasFactory;
-    protected $table = 'potongan_gaji';
+    protected $guarded = [];
+    public function potonganGaji()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-    protected $guarded = ['id'];
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 }

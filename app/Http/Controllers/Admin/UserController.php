@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\Entitas;
 use App\Models\KomponenGaji;
+use App\Models\PotonganGaji;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -55,6 +56,25 @@ class UserController extends Controller
             return ['nama_tunjangan' => ''];
     }
 
+    public function searchResponsePotongan(Request $request)
+    {
+        $query = $request->get('term', '');
+        $potongan = PotonganGaji::query();
+        if ($request->type == 'namapotongan') {
+            $potongan->where('nama_potongan', 'LIKE', '%' . $query . '%');
+        }
+
+        $potongan = $potongan->get();
+        $data = array();
+        foreach ($potongan as $potongans) {
+            $data[] = array('nama_potongan' => $potongans->nama_potongan);
+        }
+        if (count($data))
+            return $data;
+        else
+            return ['nama_potongan' => ''];
+    }
+
 
 
 
@@ -83,16 +103,47 @@ class UserController extends Controller
         $nilaiTunjangan = $request->input('nilai_tunjangan');
 
         // Loop melalui data tunjangan dan simpan dalam model KomponenGaji
-        for ($i = 0; $i < count($namaTunjangan); $i++) {
-            $nama = ucwords($namaTunjangan[$i]); // ucwords berfungsi Mengubah huruf pertama menjadi besar
-            $nilai = $nilaiTunjangan[$i];
+        if (is_array($namaTunjangan) && is_array($nilaiTunjangan)) {
+            for ($i = 0; $i < count($namaTunjangan); $i++) {
+                $nama = ucwords($namaTunjangan[$i]); // ucwords berfungsi Mengubah huruf pertama menjadi besar
+                $nilai = $nilaiTunjangan[$i];
 
-            $tunjangan = new KomponenGaji([
-                'nama_tunjangan' => $nama,
-                'nilai_tunjangan' => $nilai,
-            ]);
+                // Periksa apakah input adalah "Default Nama" atau "Default Nilai" atau kosong/null
+                if (empty($nama) || $nilai === null || $nilai === '') {
+                    continue; // Lewati jika nama kosong atau nilai adalah null atau kosong
+                }
 
-            $user->komponenGajis()->save($tunjangan); // Sambungkan tunjangan ke user
+                $tunjangan = new KomponenGaji([
+                    'nama_tunjangan' => $nama,
+                    'nilai_tunjangan' => $nilai,
+                ]);
+
+                $user->komponenGajis()->save($tunjangan); // Sambungkan tunjangan ke user
+            }
+        }
+
+        // Simpan juga potongan gaji dengan konsep yang serupa
+        $namaPotongan = $request->input('nama_potongan');
+        $nilaiPotongan = $request->input('nilai_potongan');
+
+        // Loop melalui data tunjangan dan simpan dalam model KomponenGaji
+        if (is_array($namaPotongan) && is_array($nilaiPotongan)) {
+            for ($i = 0; $i < count($namaPotongan); $i++) {
+                $nama = ucwords($namaPotongan[$i]);
+                $nilai = $nilaiPotongan[$i];
+
+                // Periksa apakah input adalah "Default Nama" atau "Default Nilai" atau kosong/null
+                if (empty($nama) || $nilai === null || $nilai === '') {
+                    continue; // Lewati jika nama kosong atau nilai adalah null atau kosong
+                }
+
+                $potongan = new PotonganGaji([
+                    'nama_potongan' => $nama,
+                    'nilai_potongan' => $nilai,
+                ]);
+
+                $user->potonganGajis()->save($potongan);
+            }
         }
 
         $userNama = $request->input('nama');
@@ -111,7 +162,7 @@ class UserController extends Controller
         $title = 'Detail SDM';
         $pages = 'SDM';
         $data = User::findOrFail($id);
-        $details = User::with('komponenGaji')->findOrFail($id);
+        $details = User::with('komponenGaji', 'potonganGaji')->findOrFail($id);
         return view('admin.users.show', compact('title', 'pages', 'data', 'details'));
     }
 

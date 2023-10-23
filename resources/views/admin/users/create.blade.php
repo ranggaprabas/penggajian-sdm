@@ -118,8 +118,9 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text">Tj.</div>
                                                 </div>
-                                                <input type="text" name="nama_tunjangan[]" class="form-control autocomplete_txt" data-type='namatunjangan'
-                                                     required>
+                                                <input type="text" name="nama_tunjangan[]"
+                                                    class="form-control autocomplete_txt_tunjangan" data-type='namatunjangan'
+                                                    required>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -129,7 +130,8 @@
                                                     <div class="input-group-text">Rp.</div>
                                                 </div>
                                                 <input type="text" name="nilai_tunjangan[]"
-                                                    class="form-control nilai-tunjangan"  required oninput="addCommas2(this)">
+                                                    class="form-control nilai-tunjangan" required
+                                                    oninput="addCommas2(this)">
                                             </div>
                                         </div>
                                         <button type="button" class="btn btn-outline-danger removeTunjanganAdd mb-3"> <i
@@ -139,6 +141,39 @@
                                     <button type="button" id="addTunjangan" class="btn btn-outline-success"> <i
                                             class="fa fa-plus"></i> Tambah Tunjangan</button>
                                     <p id="totalTunjangan">Total Tunjangan: Rp. 0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <div class="card-title">Potongan</div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="potongan">
+                                        <div class="form-group">
+                                            <label for="nama_potongan[]">Nama Potongan</label>
+                                            <input type="text" name="nama_potongan[]"
+                                                class="form-control autocomplete_txt_potongan" data-type='namapotongan' required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nilai_potongan[]">Nilai Potongan</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">Rp.</div>
+                                                </div>
+                                                <input type="text" name="nilai_potongan[]"
+                                                    class="form-control nilai-potongan" required
+                                                    oninput="addCommas2(this)">
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-danger removePotonganAdd mb-3"> <i
+                                                class="fa fa-trash"></i> Hapus Potongan</button>
+                                    </div>
+                                    <div id="potonganContainer"></div>
+                                    <button type="button" id="addPotongan" class="btn btn-outline-success"> <i
+                                            class="fa fa-plus"></i> Tambah Potongan</button>
+                                    <p id="totalPotongan">Total Potongan: Rp. 0</p>
                                 </div>
                             </div>
                         </div>

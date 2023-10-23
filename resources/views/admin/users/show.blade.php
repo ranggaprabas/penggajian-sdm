@@ -65,36 +65,70 @@
                                             <th>Total Tunjangan:</th>
                                             <td>
                                                 @php
-                                                    $totalTunjangan = 0;
+                                                    $totalTunjangan = 0; // Inisialisasi total tunjangan
                                                 @endphp
-                                                @if ($details->komponenGaji->count() > 0)
-                                                    <ul>
-                                                        @if ($data->jabatan->deleted != 1)
+                                            
+                                                <ul>
+                                                    @if ($data->jabatan->deleted != 1)
+                                                        @if ($data->jabatan->tunjangan_jabatan != 1)
                                                             <li>
                                                                 Tj. Jabatan:
                                                                 {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
                                                             </li>
+                                                            @php
+                                                                $totalTunjangan += $data->jabatan->tunjangan_jabatan;
+                                                            @endphp
                                                         @endif
-                                                        @foreach ($details->komponenGaji as $tunjangan)
-                                                            <li>Tj. {{ $tunjangan->nama_tunjangan }}: Rp.
-                                                                {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
+                                                    @endif
+                                            
+                                                    @foreach ($details->komponenGaji as $tunjangan)
+                                                        <li>
+                                                            Tj. {{ $tunjangan->nama_tunjangan }}: Rp.
+                                                            {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
+                                                        </li>
+                                                        @php
+                                                            $totalTunjangan += $tunjangan->nilai_tunjangan;
+                                                        @endphp
+                                                    @endforeach
+                                                </ul>
+                                            
+                                                <strong>Total: Rp.
+                                                    {{ number_format($totalTunjangan, 0, '', '.') }}
+                                                </strong>
+                                            </td>
+                                            
+                                        </tr>                                        
+                                        <tr>
+                                            <th>Total Potongan:</th>
+                                            <td>
+                                                @php
+                                                    $totalPotongan = 0;
+                                                @endphp
+                                                @if ($details->potonganGaji->count() > 0)
+                                                    <ul>
+                                                        @foreach ($details->potonganGaji as $potongan)
+                                                            <li> {{ $potongan->nama_potongan }}: Rp.
+                                                                {{ number_format($potongan->nilai_potongan, 0, '', '.') }}
                                                             </li>
                                                             @php
-                                                                $totalTunjangan += $tunjangan->nilai_tunjangan;
+                                                                $totalPotongan += $potongan->nilai_potongan;
                                                             @endphp
                                                         @endforeach
                                                     </ul>
-                                                    @php
-                                                        if ($data->jabatan->deleted != 1) {
-                                                            $totalTunjangan = $data->jabatan->tunjangan_jabatan + $totalTunjangan;
-                                                        }
-                                                    @endphp
-
                                                     <strong>Total: Rp.
-                                                        {{ number_format($totalTunjangan, 0, '', '.') }}
+                                                        {{ number_format($totalPotongan, 0, '', '.') }}
                                                     @else
-                                                        Tidak ada tunjangan.
+                                                        Tidak ada potongan.
                                                 @endif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Take Home Pay:</th>
+                                            @php
+                                                $takeHomePay = $totalTunjangan - $totalPotongan;
+                                            @endphp
+                                            <td>
+                                                <strong>Rp. {{ number_format($takeHomePay, 0, '', '.') }}
                                             </td>
                                         </tr>
                                         <tr>

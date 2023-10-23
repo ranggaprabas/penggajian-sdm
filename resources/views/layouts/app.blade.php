@@ -236,7 +236,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Tj.</div>
                                     </div>
-                                <input class="form-control autocomplete_txt" type="text" name="nama_tunjangan[]" data-type='namatunjangan' required>
+                                <input class="form-control autocomplete_txt_tunjangan" type="text" name="nama_tunjangan[]" data-type='namatunjangan' required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -291,6 +291,71 @@
         });
     </script>
 
+    {{-- Komponen Add Potongan --}}
+
+    <script>
+        $(document).ready(function() {
+            var counter = 0;
+
+            function addPotonganInput() {
+                var newPotongan = `
+                    <div class="potongan">
+                        <div class="form-group">
+                            <label for="nama_potongan${counter}">Nama Potongan</label>
+                                <input class="form-control autocomplete_txt_potongan" type="text" name="nama_potongan[]" data-type='namapotongan' required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nilai_potongan${counter}">Nilai Potongan</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                                <input class="form-control nilai-potongan" type="text" name="nilai_potongan[]" oninput="addCommas2(this)" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger removePotonganAdd mb-3"> <i class="fa fa-trash"></i>  Hapus Potongan</button>
+                    </div>
+                `;
+                $("#potonganContainer").append(newPotongan);
+                counter++;
+            }
+
+            $("#addPotongan").click(function() {
+                addPotonganInput();
+            });
+
+            function calculateTotalPotongan() {
+                var total = 0;
+                $(".nilai-potongan").each(function() {
+                    var nilai = parseFloat($(this).val().replace(/\D/g, ''));
+                    if (!isNaN(nilai)) {
+                        total += nilai;
+                    }
+                });
+
+                // Menggunakan metode toLocaleString() untuk memisahkan ribuan dengan titik
+                var formattedTotal = total.toLocaleString('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                });
+
+                $("#totalPotongan").text("Total Potongan: " + formattedTotal);
+            }
+
+
+
+            $(document).on("input", ".nilai-potongan", function() {
+                calculateTotalPotongan();
+            });
+
+            $(document).on("click", ".removePotonganAdd", function() {
+                $(this).closest('.potongan')
+                    .remove(); // Menghapus elemen yang mengandung elemen yang akan dihapus
+                calculateTotalPotongan(); // Rekalkulasi total
+            });
+        });
+    </script>
+
 
     {{-- Komponen Edit Tunjangan --}}
 
@@ -308,7 +373,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">Tj.</div>
                                     </div>
-                                <input class="form-control autocomplete_txt" type="text" name="nama_tunjangan[]" data-type="namatunjangan" required>
+                                <input class="form-control autocomplete_txt_tunjangan" type="text" name="nama_tunjangan[]" data-type="namatunjangan" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -350,7 +415,7 @@
 
     <script type="text/javascript">
         // Autocomplete script
-        $(document).on('focus', '.autocomplete_txt', function() {
+        $(document).on('focus', '.autocomplete_txt_tunjangan', function() {
             type = $(this).data('type');
 
             if (type == 'namatunjangan') autoType = 'nama_tunjangan';
@@ -360,6 +425,49 @@
                 source: function(request, response) {
                     $.ajax({
                         url: "{{ route('searchajax') }}",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                            type: type,
+                        },
+                        success: function(data) {
+                            var array = $.map(data, function(item) {
+                                return {
+                                    label: item[autoType],
+                                    value: item[autoType],
+                                    data: item
+                                }
+                            });
+                            // Batasi hasil hanya ke 1 item pertama
+                            var limitedResults = array.slice(0, 1);
+                            response(limitedResults);
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    var data = ui.item.data;
+
+                    // Do something with the selected data
+                }
+            });
+        });
+    </script>
+
+
+    {{-- Auto Complete Potongan --}}
+
+    <script type="text/javascript">
+        // Autocomplete script
+        $(document).on('focus', '.autocomplete_txt_potongan', function() {
+            type = $(this).data('type');
+
+            if (type == 'namapotongan') autoType = 'nama_potongan';
+
+            $(this).autocomplete({
+                minLength: 1, // Set to 1 to display options after typing one character
+                source: function(request, response) {
+                    $.ajax({
+                        url: "{{ route('searchajax-potongan') }}",
                         dataType: "json",
                         data: {
                             term: request.term,
@@ -851,12 +959,18 @@
 
         // Fungsi untuk menghapus pemisah titik sebelum mengirimkan formulir
         function removeCommas2() {
-            var tunjanganInputs = document.getElementsByName('nilai_tunjangan[]');
+            var inputsTunjangan = document.getElementsByName('nilai_tunjangan[]');
+            var inputsPotongan = document.getElementsByName('nilai_potongan[]');
 
-            for (var i = 0; i < tunjanganInputs.length; i++) {
-                var value = tunjanganInputs[i].value;
+            for (var i = 0; i < inputsTunjangan.length; i++) {
+                var value = inputsTunjangan[i].value;
                 value = value.replace(/\./g, ''); // Menghapus semua titik
-                tunjanganInputs[i].value = value;
+                inputsTunjangan[i].value = value;
+            }
+            for (var i = 0; i < inputsPotongan.length; i++) {
+                var value = inputsPotongan[i].value;
+                value = value.replace(/\./g, ''); // Menghapus semua titik
+                inputsPotongan[i].value = value;
             }
         }
     </script>
