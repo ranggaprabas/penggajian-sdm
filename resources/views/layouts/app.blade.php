@@ -183,6 +183,9 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
 
+    {{-- sweet alert file --}}
+    <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+
 
 
     <!-- Data Tables -->
@@ -202,7 +205,7 @@
 
 
     {{-- sweet alert --}}
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     <script>
         function validateForm() {
