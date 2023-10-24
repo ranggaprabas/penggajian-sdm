@@ -98,7 +98,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <a href="{{ route('logout') }}" class="dropdown-item"
-                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                onclick="event.preventDefault(); confirmLogout();">
                                 <i class="mr-2 fas fa-sign-out-alt"></i>
                                 {{ __('Log Out') }}
                             </a>
@@ -207,6 +207,27 @@
     {{-- sweet alert --}}
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
+
+    {{-- sweet alert confirm Logout--}}
+
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Konfirmasi Logout',
+                text: 'Anda yakin ingin keluar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Logout',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika pengguna menekan "Ya, Logout", maka formulir akan di-submit
+                    document.querySelector('form').submit();
+                }
+            });
+        }
+    </script>
 
     {{-- sweet alert in users input required --}}
 
