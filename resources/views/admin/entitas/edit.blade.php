@@ -27,13 +27,13 @@
                     <div class="card">
                         <div class="card-body p-3">
 
-                            <form action="{{ route('admin.entitas.update', $data->id) }}" method="POST">
+                            <form action="{{ route('admin.entitas.update', $data->id) }}" method="POST" onsubmit="return validateFormEntitas();">
                                 @csrf
                                 @method('put')
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label class="m-0" for="name">Nama</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="nama"
+                                    <input class="form-control" style="width: 80%;" type="text" id="entitas-input" name="nama"
                                         value="{{ old('nama', $data->nama) }}">
                                 </div>
                                 <button class="btn btn-primary" type="submit">Simpan</button>

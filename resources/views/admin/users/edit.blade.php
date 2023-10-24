@@ -37,7 +37,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nama">Nama</label>
-                                        <input class="form-control" type="text" name="nama"
+                                        <input class="form-control" type="text" id="nama" name="nama"
                                             value="{{ old('nama', $user->nama) }}">
                                     </div>
                                 </div>
@@ -76,14 +76,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email">Email</label>
-                                        <input class="form-control" type="text" name="email"
+                                        <input class="form-control" type="text" id="email" name="email"
                                             value="{{ old('email', $user->email) }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nik">Nik</label>
-                                        <input class="form-control" type="number" name="nik"
+                                        <input class="form-control" type="number" id="nik" name="nik"
                                             value="{{ old('nik', $user->nik) }}">
                                     </div>
                                 </div>

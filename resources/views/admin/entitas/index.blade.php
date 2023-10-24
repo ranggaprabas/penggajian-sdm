@@ -12,7 +12,8 @@
                 <div class="col-12 d-flex justify-content-between">
                     <h1 class="m-0">{{ __('Entitas') }}</h1>
 
-                    <a href="{{ route('admin.entitas.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a>
+                    {{-- <a href="{{ route('admin.entitas.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a> --}}
+                    
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->

@@ -208,20 +208,104 @@
         function validateForm() {
             // Implementasikan validasi JavaScript sesuai kebutuhan Anda
             // Contoh: Periksa semua bidang yang diperlukan
+            // Pemeriksaan tambahan untuk nama dengan ID tertentu
+            const namaField = document.getElementById('nama');
+            if (namaField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Wajib Diisi',
+                    text: 'Nama tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk select dengan ID 'entitas'
+            const entitasSelect = document.getElementById('entitas');
+            const selectedOption = entitasSelect.options[entitasSelect.selectedIndex];
+            if (selectedOption.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pilih Entitas',
+                    text: 'Anda harus memilih entitas!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk select dengan ID 'jabatan'
+            const jabatanSelect = document.getElementById('jabatan');
+            const selectedJabatan = jabatanSelect.options[jabatanSelect.selectedIndex];
+            if (selectedJabatan.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pilih Jabatan',
+                    text: 'Anda harus memilih jabatan!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk email dengan ID 'email'
+            const emailField = document.getElementById('email');
+            const emailValue = emailField.value.trim();
+            if (emailValue === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Email Wajib Diisi',
+                    text: 'Email tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email kosong
+            } else if (!isValidEmail(emailValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Format Email Tidak Valid',
+                    text: 'Masukkan email yang valid!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email tidak valid
+            }
+            const nikField = document.getElementById('nik');
+            if (nikField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'NIK Wajib Diisi',
+                    text: 'NIK tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
             const requiredFields = document.querySelectorAll('[required]');
             for (const field of requiredFields) {
                 if (field.value.trim() === '') {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Bidang wajib diisi',
-                        text: 'Harap isi semua bidang yang diperlukan.',
+                        title: 'Semua Inputan Wajib Diisi',
+                        text: 'Harap isi semua inputan yang diperlukan.',
                     });
                     return false; // Menghentikan pengiriman formulir jika tidak valid
                 }
             }
             return true; // Kirim formulir jika valid
         }
+
+        function isValidEmail(email) {
+            // Implementasikan pemeriksaan format email sesuai kebutuhan Anda
+            // Contoh sederhana: menggunakan ekspresi reguler
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
     </script>
+
+
+    <script>
+        function validateFormEntitas() {
+            const entitasInputField = document.getElementById('entitas-input');
+            if (entitasInputField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Entitas Wajib Diisi',
+                    text: 'Nama Entitas tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            return true; // Kirim formulir jika valid
+        }
+    </script>
+
+
 
 
     <!-- Script JavaScript untuk mengaktifkan dropdown , but komen vite js-->
