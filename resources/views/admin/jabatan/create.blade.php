@@ -27,12 +27,12 @@
                     <div class="card">
                         <div class="card-body p-3">
 
-                            <form action="{{ route('admin.jabatan.store') }}" method="POST" onsubmit="removeCommas()">
+                            <form action="{{ route('admin.jabatan.store') }}" method="POST" onsubmit="return validateFormJabatan() && removeCommas();">
                                 @csrf
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label class="m-0" for="name">Nama</label>
-                                    <input class="form-control" style="width: 80%;" type="text" name="nama"
+                                    <input class="form-control" style="width: 80%;" type="text" id="nama-jabatan" name="nama"
                                         value="{{ old('nama') }}">
                                 </div>
                                 <div style="gap: .5rem;flex-wrap: wrap;"
@@ -42,7 +42,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Rp.</span>
                                         </div>
-                                        <input class="form-control" style="width: 80%;" type="text" name="tunjangan_jabatan"
+                                        <input class="form-control" style="width: 80%;" type="text" id="nilai-jabatan" name="tunjangan_jabatan"
                                             id="tunjangan_jabatan" oninput="addCommas(this)" value="{{ old('tunjangan_jabatan') }}">
                                     </div>
                                 </div>

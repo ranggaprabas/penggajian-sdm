@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class JabatanRequest extends FormRequest
 {
@@ -21,19 +23,36 @@ class JabatanRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Aturan validasi untuk membuat (CREATE)
+        $createRules = [
+            'nama' => [
+                'required',
+                Rule::unique('jabatan')->where(function ($query) {
+                    return $query->where('deleted', 0);
+                })
+            ],
+            'tunjangan_jabatan' => 'required|integer|max:2147483647',
+        ];
+
+        // Aturan validasi untuk memperbarui (UPDATE)
+        $updateRules = [
+            'nama' => [
+                'required',
+                Rule::unique('jabatan')->ignore($this->route('jabatan'))->where(function ($query) {
+                    return $query->where('deleted', 0);
+                }),
+            ],
+            'tunjangan_jabatan' => 'required|integer|max:2147483647',
+        ];
+
+        // Gabungkan aturan validasi berdasarkan metode HTTP
         switch ($this->method()) {
             case 'POST': {
-                    return [
-                        'nama' => 'required|unique:jabatan',
-                        'tunjangan_jabatan' => 'required|integer|max:2147483647'
-                    ];
+                    return $createRules;
                 }
             case 'PUT':
             case 'PATCH': {
-                    return [
-                        'nama' => ['required', 'unique:jabatan,nama,' . $this->route()->jabatan->id],
-                        'tunjangan_jabatan' => 'required|integer|max:2147483647'
-                    ];
+                    return $updateRules;
                 }
         }
     }
@@ -41,7 +60,7 @@ class JabatanRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'tunjangan_jabatan.max' => 'Nilai Gaji Pokok tidak boleh melebihi 2,147,483,647.',
+            'tunjangan_jabatan.max' => 'Nilai Tunjangan Jabatan melebihi batas max.',
         ];
     }
 }

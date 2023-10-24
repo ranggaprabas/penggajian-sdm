@@ -207,6 +207,9 @@
     {{-- sweet alert --}}
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
+
+    {{-- sweet alert in users input required --}}
+
     <script>
         function validateForm() {
             // Implementasikan validasi JavaScript sesuai kebutuhan Anda
@@ -292,6 +295,7 @@
         }
     </script>
 
+    {{-- sweet alert in entitas input required --}}
 
     <script>
         function validateFormEntitas() {
@@ -301,6 +305,32 @@
                     icon: 'error',
                     title: 'Nama Entitas Wajib Diisi',
                     text: 'Nama Entitas tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            return true; // Kirim formulir jika valid
+        }
+    </script>
+
+    {{-- sweet alert in jabatan input required --}}
+
+    <script>
+        function validateFormJabatan() {
+            const jabatanInputField = document.getElementById('nama-jabatan');
+            if (jabatanInputField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Jabatan Wajib Diisi',
+                    text: 'Nama Jabatan tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            const jabatanNilaiField = document.getElementById('nilai-jabatan');
+            if (jabatanNilaiField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Tunjangan Jabatan Wajib Diisi',
+                    text: 'Tunjangan Jabatan tidak boleh kosong!',
                 });
                 return false; // Menghentikan pengiriman formulir jika tidak valid
             }
