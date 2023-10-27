@@ -20,9 +20,9 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ Route::is('admin.users.*') ? 'menu-open' : '' }}">
+                <li class="nav-item {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'menu-open' : '' }}">
                     <a href="{{ route('admin.users.index') }}"
-                        class="nav-link {{ Route::is('admin.users.*') ? 'active' : '' }}">
+                        class="nav-link {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             {{ __('SDM') }}
@@ -30,9 +30,9 @@
                     </a>
                 </li>
                 
-                <li class="nav-item {{ Route::is('admin.entitas.*') ? 'menu-open' : '' }}">
+                <li class="nav-item {{ Route::is('admin.entitas.*') || Route::is('admin.edit-entitas') ? 'menu-open' : '' }}">
                     <a href="{{ route('admin.entitas.index') }}"
-                        class="nav-link {{ Route::is('admin.entitas.*') ? 'active' : '' }}">
+                        class="nav-link {{ Route::is('admin.entitas.*') || Route::is('admin.edit-entitas') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
                         <p>
                             {{ __('Entitas') }}
@@ -40,9 +40,9 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ Route::is('admin.jabatan.*') ? 'menu-open' : '' }}">
+                <li class="nav-item {{ Route::is('admin.jabatan.*') || Route::is('admin.edit-jabatan') ? 'menu-open' : '' }}">
                     <a href="{{ route('admin.jabatan.index') }}"
-                        class="nav-link {{ Route::is('admin.jabatan.*') ? 'active' : '' }}">
+                        class="nav-link {{ Route::is('admin.jabatan.*') || Route::is('admin.edit-jabatan') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-tie"></i>
                         <p>
                             {{ __('Jabatan') }}
