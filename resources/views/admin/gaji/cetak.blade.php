@@ -46,8 +46,8 @@
                 <th class="text-center">Jenis Kelamin</th>
                 <th class="text-center">Entitas</th>
                 <th class="text-center">Jabatan</th>
-                <th class="text-center">Tunjangan Jabatan</th>
                 <th class="text-center">Tunjangan</th>
+                <th class="text-center">Potongan</th>
                 <th class="text-center">Take Home Pay</th>
             </tr>
         </thead>
@@ -63,29 +63,29 @@
                     <td>{{ $item->jenis_kelamin }}</td>
                     <td>{{ $item->entitas }}</td>
                     <td>{{ $item->jabatan }}</td>
-                    <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
                     <td>
                         @if ($item->tunjangan)
                             @php
-                                $tunjangan = json_decode($item->tunjangan);
+                                $tunjangan = json_decode($item->tunjangan, true);
                             @endphp
                             <ul>
+                                <li>
+                                    Jabatan:
+                                    Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}
+                                </li>
                                 @if (is_array($tunjangan) && count($tunjangan) > 0)
-                                    @foreach ($tunjangan as $t)
-                                        <li>{{ $t->nama_tunjangan }}: Rp.
-                                            {{ number_format($t->nilai_tunjangan, 0, '', '.') }}
-                                        </li>
-                                    @endforeach
                                     @php
                                         $total_tunjangan = array_sum(array_column($tunjangan, 'nilai_tunjangan'));
-                                        $take_home_pay = $item->tunjangan_jabatan + $total_tunjangan;
+                                        $jumlah_tunjangan = $item->tunjangan_jabatan + $total_tunjangan;
                                     @endphp
+                                    @foreach ($tunjangan as $t)
+                                        <li>{{ $t['nama_tunjangan'] ?? '-' }}: Rp.
+                                            {{ number_format($t['nilai_tunjangan'], 0, '', '.') }}
+                                        </li>
+                                    @endforeach
                                 @else
-                                    <li>{{ $tunjangan->nama_tunjangan }}: Rp.
-                                        {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
-                                    </li>
                                     @php
-                                        $take_home_pay = $item->tunjangan_jabatan + $tunjangan->nilai_tunjangan;
+                                        $jumlah_tunjangan = $item->tunjangan_jabatan;
                                     @endphp
                                 @endif
                             </ul>
@@ -93,6 +93,36 @@
                             Tidak ada tunjangan.
                         @endif
                     </td>
+                    <td>
+                        @if ($item->potongan)
+                            @php
+                                $potongan = json_decode($item->potongan, true);
+                            @endphp
+                            <ul>
+                                @if (is_array($potongan) && count($potongan) > 0)
+                                    @php
+                                        $total_potongan = array_sum(array_column($potongan, 'nilai_potongan'));
+                                        $jumlah_potongan = $total_potongan;
+                                    @endphp
+                                    @foreach ($potongan as $t)
+                                        <li>{{ $t['nama_potongan'] ?? '-' }}: Rp.
+                                            {{ number_format($t['nilai_potongan'], 0, '', '.') }}
+                                        </li>
+                                    @endforeach
+                                @else
+                                    @php
+                                        $jumlah_potongan = 0; // Set potongan menjadi 0 jika tidak ada data potongan
+                                    @endphp
+                                    <li>-: Rp. 0</li>
+                                @endif
+                            </ul>
+                        @else
+                            Tidak ada potongan.
+                        @endif
+                    </td>
+                    @php
+                        $take_home_pay = $jumlah_tunjangan - $jumlah_potongan;
+                    @endphp
                     <td>Rp. {{ number_format($take_home_pay, 0, '', '.') }}</td>
                 </tr>
                 @php

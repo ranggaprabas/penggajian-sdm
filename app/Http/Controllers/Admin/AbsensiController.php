@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\KomponenGaji;
+use App\Models\PotonganGaji;
 use App\Models\User;
 
 class AbsensiController extends Controller
@@ -79,13 +80,22 @@ class AbsensiController extends Controller
             // Mendapatkan data komponen gaji untuk pengguna (user) saat ini
             $komponenGaji = KomponenGaji::where('user_id', $user->id)->get();
 
+            // Mendapatkan data potongan gaji untuk pengguna (user) saat ini
+            $potonganGaji = PotonganGaji::where('user_id', $user->id)->get();
+
             // komponen gaji ditemukan
             if ($komponenGaji) {
-                // Menyusun data absensi beserta data komponen gaji dalam format JSON
-                $tunjanganDinamis = [];
-
-                // Mengambil semua data tunjangan dari model KomponenGaji dan tambahkan ke array tunjangan dinamis
+                // Menyusun data absensi beserta data komponen gaji (tunjangan) dalam format JSON
                 $tunjanganDinamis = $komponenGaji->toArray();
+
+                // Potongan gaji ditemukan
+                if ($potonganGaji) {
+                    // Menyusun data potongan gaji dalam format JSON
+                    $potonganDinamis = $potonganGaji->toArray();
+                } else {
+                    // Jika tidak ada potongan gaji, set data potongan menjadi array kosong
+                    $potonganDinamis = [];
+                }
 
 
                 $dataAbsensi = [
@@ -97,6 +107,7 @@ class AbsensiController extends Controller
                     'jabatan' => $user->jabatan->nama,
                     'tunjangan_jabatan' => $user->jabatan->tunjangan_jabatan,
                     'tunjangan' => json_encode($tunjanganDinamis),
+                    'potongan' => json_encode($potonganDinamis),
                     'entitas' => $user->entitas->nama,
                     // Sisipkan kolom lain yang diperlukan
                 ];

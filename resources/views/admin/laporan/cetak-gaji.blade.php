@@ -92,24 +92,24 @@
                 <th class="text-center">Jumlah</th>
             </tr>
             @php
-                $totalTunjangan = $item->tunjangan ? json_decode($item->tunjangan, true) : [];
+                $totalPotongan = $item->potongan ? json_decode($item->potongan, true) : [];
             @endphp
-            @foreach ($totalTunjangan as $key => $tun)
+            @foreach ($totalPotongan as $key => $tun)
                 <tr>
                     <td>{{ $loop->iteration + 0 }}</td>
-                    <td>{{ $tun['nama_tunjangan'] }}</td>
-                    <td>Rp. {{ number_format($tun['nilai_tunjangan'], 0, '', '.') }}</td>
+                    <td>{{ $tun['nama_potongan'] }}</td>
+                    <td>Rp. {{ number_format($tun['nilai_potongan'], 0, '', '.') }}</td>
                 </tr>
             @endforeach
             @php
-                $total_tunjangan = $item->tunjangan_jabatan + array_sum(array_column($totalTunjangan, 'nilai_tunjangan'));
+                $total_potongan = array_sum(array_column($totalPotongan, 'nilai_potongan'));
             @endphp
             <tr>
                 <th colspan="2" style="text-align: right;">Total Potongan</th>
-                <th>Rp. {{ number_format($total_tunjangan, 0, '', '.') }}</th>
+                <th>Rp. {{ number_format($total_potongan, 0, '', '.') }}</th>
             </tr>
             @php
-                $total_gaji = $item->tunjangan_jabatan + array_sum(array_column($totalTunjangan, 'nilai_tunjangan'));
+                $total_gaji = $total_tunjangan - $total_potongan;
             @endphp
             <tr>
                 <th colspan="2" style="text-align: right;">Take Home Pay</th>
