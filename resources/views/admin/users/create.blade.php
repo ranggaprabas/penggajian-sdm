@@ -41,7 +41,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="entitas">Entitas</label>
-                                        <select class="form-control" name="entitas_id" id="entitas">
+                                        <select class="form-control select2" name="entitas_id" id="entitas">
                                             <option value="">--Choose Categories--</option>
                                             @foreach ($entita as $entitas)
                                                 <option value="{{ $entitas->id }}"
@@ -54,7 +54,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="jabatan">Jabatan</label>
-                                        <select class="form-control" name="jabatan_id" id="jabatan">
+                                        <select class="form-control select2" name="jabatan_id" id="jabatan">
                                             <option value="">--Choose Categories--</option>
                                             @foreach ($jabatans as $jabatan)
                                                 @if ($jabatan->deleted != 1)

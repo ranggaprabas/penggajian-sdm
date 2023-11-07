@@ -19,10 +19,16 @@
     <!-- Custom style -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
+    <!-- select  -->
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/select2-bootstrap4.min.css') }}">
+
     {{-- Auto Complete --}}
 
     <!-- Sertakan jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+
 
     <!-- Sertakan jQuery UI -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -186,6 +192,9 @@
     {{-- sweet alert file --}}
     <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
 
+    {{-- select --}}
+    <script src="{{ asset('js/select2.full.min.js') }}"></script>
+
 
 
     <!-- Data Tables -->
@@ -207,8 +216,17 @@
     {{-- sweet alert --}}
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
+    <!-- Inisialisasi Select2 -->
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4' 
+            });
+        });
+    </script>
+    
 
-    {{-- sweet alert confirm Logout--}}
+    {{-- sweet alert confirm Logout --}}
 
     <script>
         function confirmLogout() {

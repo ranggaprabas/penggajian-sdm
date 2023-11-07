@@ -25,7 +25,7 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         <label for="karyawan_id">Nama SDM</label>
-                                        <select class="form-control" name="karyawan_id" id="karyawan_id" required>
+                                        <select class="form-control select2" name="karyawan_id" id="karyawan_id" style="width: 100%;" required>
                                             <option value="" disabled selected>-- Pilih SDM --</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}">{{ $user->nama }}</option>
@@ -36,7 +36,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="bulan">Bulan</label>
-                                        <select class="form-control" name="bulan" id="bulan" required>
+                                        <select class="form-control select2" name="bulan" id="bulan" required>
                                             <option value="" disabled selected>-- Pilih Bulan --</option>
                                             <option value="1">Januari</option>
                                             <option value="2">Februari</option>
@@ -56,9 +56,9 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label for="tahun">Tahun</label>
-                                        <select class="form-control" name="tahun" id="tahun" required>
+                                        <select class="form-control select2" name="tahun" id="tahun" required>
                                             <option value="" disabled selected>-- Pilih Tahun --</option>
-                                            {{ $last = date('Y') - 5 }}
+                                            {{ $last = date('Y') - 10 }}
                                             {{ $now = date('Y') }}
 
                                             @for ($i = $now; $i >= $last; $i--)
