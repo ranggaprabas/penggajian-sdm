@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>403 Forbidden</title>
+    <title>Penggajian SDM</title>
+    <link rel="icon" href="{{ asset('images/tamanmedia.png') }}" type="image/png">
+
     <style>
         body {
             background-color: #332851;
