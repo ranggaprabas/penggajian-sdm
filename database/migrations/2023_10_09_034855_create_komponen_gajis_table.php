@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('komponen_gajis', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->integer('sdm_id');
             $table->string('nama_tunjangan')->nullable();
             $table->integer('nilai_tunjangan')->nullable();
             $table->timestamps();

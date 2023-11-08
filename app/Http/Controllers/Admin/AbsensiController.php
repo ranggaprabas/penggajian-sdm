@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\KomponenGaji;
 use App\Models\PotonganGaji;
+use App\Models\Sdm;
 use App\Models\User;
 
 class AbsensiController extends Controller
@@ -36,33 +37,31 @@ class AbsensiController extends Controller
 
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
-            $absensis = DB::table('users')
-                ->select('users.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
-                ->join('jabatan', 'users.jabatan_id', '=', 'jabatan.id')
-                ->leftJoin('entitas', 'users.entitas_id', '=', 'entitas.id')
+            $absensis = DB::table('sdms')
+                ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
+                ->join('jabatan', 'sdms.jabatan_id', '=', 'jabatan.id')
+                ->leftJoin('entitas', 'sdms.entitas_id', '=', 'entitas.id')
                 ->whereNotExists(function ($query) use ($bulanSaatIni) {
                     $query->select(DB::raw(1))
                         ->from('absensi')
-                        ->whereRaw('users.id = absensi.user_id')
+                        ->whereRaw('sdms.id = absensi.sdm_id')
                         ->where('bulan', $bulanSaatIni);
                 })
-                ->where('is_admin', '!=', 1)
-                ->where('users.deleted', '!=', 1)
+                ->where('sdms.deleted', '!=', 1)
                 ->where('jabatan.deleted', '!=', 1)
                 ->get();
         } else {
-            $absensis = DB::table('users')
-                ->select('users.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
-                ->join('jabatan', 'users.jabatan_id', '=', 'jabatan.id')
-                ->leftJoin('entitas', 'users.entitas_id', '=', 'entitas.id')
+            $absensis = DB::table('sdms')
+                ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
+                ->join('jabatan', 'sdms.jabatan_id', '=', 'jabatan.id')
+                ->leftJoin('entitas', 'sdms.entitas_id', '=', 'entitas.id')
                 ->whereNotExists(function ($query) use ($bulan) {
                     $query->select(DB::raw(1))
                         ->from('absensi')
-                        ->whereRaw('users.id = absensi.user_id')
+                        ->whereRaw('sdms.id = absensi.sdm_id')
                         ->where('bulan', $bulan);
                 })
-                ->where('is_admin', '!=', 1)
-                ->where('users.deleted', '!=', 1)
+                ->where('sdms.deleted', '!=', 1)
                 ->where('jabatan.deleted', '!=', 1)
                 ->get();
         }
@@ -73,15 +72,15 @@ class AbsensiController extends Controller
 
     public function store(Request $request)
     {
-        foreach ($request->karyawan_id as $user_id) {
-            // Mendapatkan semua informasi yang Anda butuhkan dari tabel users
-            $user = User::findOrFail($user_id);
+        foreach ($request->karyawan_id as $sdm_id) {
+            // Mendapatkan semua informasi yang Anda butuhkan dari tabel sdms
+            $sdm = Sdm::findOrFail($sdm_id);
 
-            // Mendapatkan data komponen gaji untuk pengguna (user) saat ini
-            $komponenGaji = KomponenGaji::where('user_id', $user->id)->get();
+            // Mendapatkan data komponen gaji untuk pengguna (sdm) saat ini
+            $komponenGaji = KomponenGaji::where('sdm_id', $sdm->id)->get();
 
-            // Mendapatkan data potongan gaji untuk pengguna (user) saat ini
-            $potonganGaji = PotonganGaji::where('user_id', $user->id)->get();
+            // Mendapatkan data potongan gaji untuk pengguna (sdm) saat ini
+            $potonganGaji = PotonganGaji::where('sdm_id', $sdm->id)->get();
 
             // komponen gaji ditemukan
             if ($komponenGaji) {
@@ -99,16 +98,16 @@ class AbsensiController extends Controller
 
 
                 $dataAbsensi = [
-                    'user_id' => $user->id,
+                    'sdm_id' => $sdm->id,
                     'bulan' => $request->bulan,
-                    'nama' => $user->nama,
-                    'nik' => $user->nik,
-                    'jenis_kelamin' => $user->jenis_kelamin,
-                    'jabatan' => $user->jabatan->nama,
-                    'tunjangan_jabatan' => $user->jabatan->tunjangan_jabatan,
+                    'nama' => $sdm->nama,
+                    'nik' => $sdm->nik,
+                    'jenis_kelamin' => $sdm->jenis_kelamin,
+                    'jabatan' => $sdm->jabatan->nama,
+                    'tunjangan_jabatan' => $sdm->jabatan->tunjangan_jabatan,
                     'tunjangan' => json_encode($tunjanganDinamis),
                     'potongan' => json_encode($potonganDinamis),
-                    'entitas' => $user->entitas->nama,
+                    'entitas' => $sdm->entitas->nama,
                     // Sisipkan kolom lain yang diperlukan
                 ];
 

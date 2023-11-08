@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Entitas;
 use App\Models\Jabatan;
+use App\Models\Sdm;
 use App\Models\User;
 
 class HomeController extends Controller
@@ -28,18 +29,18 @@ class HomeController extends Controller
     public function index()
     {
         // Menghitung jumlah pria (Laki-laki)
-        $maleCount = User::where('jenis_kelamin', 'laki-laki')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
+        $maleCount = Sdm::where('jenis_kelamin', 'laki-laki')->where('deleted', '!=', 1)->count();
 
         // Menghitung jumlah wanita (Perempuan)
-        $femaleCount = User::where('jenis_kelamin', 'perempuan')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
+        $femaleCount = Sdm::where('jenis_kelamin', 'perempuan')->where('deleted', '!=', 1)->count();
 
         // Menghitung jumlah entitas
-        $crocodicCount = User::where('entitas_id', '1')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
-        $eventyCount = User::where('entitas_id', '2')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
-        $reprimeCount = User::where('entitas_id', '3')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
-        $taarufCount = User::where('entitas_id', '4')->where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
+        $crocodicCount = Sdm::where('entitas_id', '1')->where('deleted', '!=', 1)->count();
+        $eventyCount = Sdm::where('entitas_id', '2')->where('deleted', '!=', 1)->count();
+        $reprimeCount = Sdm::where('entitas_id', '3')->where('deleted', '!=', 1)->count();
+        $taarufCount = Sdm::where('entitas_id', '4')->where('deleted', '!=', 1)->count();
 
-        $employee_count = User::where('is_admin', '!=', 1)->where('deleted', '!=', 1)->count();
+        $employee_count = Sdm::where('deleted', '!=', 1)->count();
         $entita_count = Entitas::count();
         $jabatan_count = Jabatan::where('deleted', '!=', 1)->count();
 

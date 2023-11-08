@@ -18,7 +18,6 @@ class AdminSeeder extends Seeder
             'email' => 'admin@admin.com',
             'password' => bcrypt('123'),
             'is_admin' => true,
-            'nik' => '123',
             'jenis_kelamin' => 'laki-laki',
             'status' => 1
         ]);
@@ -28,9 +27,8 @@ class AdminSeeder extends Seeder
             'email' => 'ranggaprabaswara1405@gmail.com',
             'password' => bcrypt('123'),
             'is_admin' => true,
-            'nik' => '123',
             'jenis_kelamin' => 'laki-laki',
-            'status' => 1
+            'status' => 0
         ]);
     }
 }

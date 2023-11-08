@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class SdmRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,12 @@ class UserRequest extends FormRequest
             case 'POST': {
                     return [
                         'nama' => 'required',
-                        'email' => 'required|email|unique:users',
+                        'email' => 'required|email|unique:sdms',
+                        'nik' => 'required|unique:sdms',
+                        'jabatan_id' => 'required',
+                        'entitas_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
-                        'password' => 'required|min:3|confirmed',
   
                     ];
                 }
@@ -36,10 +38,12 @@ class UserRequest extends FormRequest
             case 'PATCH': {
                     return [
                         'nama' => 'required',
-                        'email' => ['required', 'email', 'unique:users,email,' . $this->route()->user->id],
+                        'email' => ['required', 'email', 'unique:sdms,email,' . $this->route()->sdm->id],
+                        'nik' => ['required', 'unique:sdms,nik,' . $this->route()->sdm->id],
+                        'jabatan_id' => 'required',
+                        'entitas_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
-                        'password' => 'nullable|min:3|confirmed',
  
                     ];
                 }

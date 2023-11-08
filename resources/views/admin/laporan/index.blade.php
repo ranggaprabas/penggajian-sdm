@@ -19,7 +19,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="card p-4">
-                        <form action="{{ route('admin.laporan.store') }}" method="post">
+                        <form action="{{ route('admin.laporan.store') }}" method="post" target="_blank">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-12">
@@ -27,8 +27,8 @@
                                         <label for="karyawan_id">Nama SDM</label>
                                         <select class="form-control select2" name="karyawan_id" id="karyawan_id" style="width: 100%;" required>
                                             <option value="" disabled selected>-- Pilih SDM --</option>
-                                            @foreach ($users as $user)
-                                                <option value="{{ $user->id }}">{{ $user->nama }}</option>
+                                            @foreach ($sdms as $sdm)
+                                                <option value="{{ $sdm->id }}">{{ $sdm->nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -61,8 +61,8 @@
         <table class="table table-striped table-bordered mt-3">
             <tr>
                 <th class="text-center" width="5%">No</th>
-                <th class="text-center">Tunjangan (+)</th>
-                <th class="text-center">Jumlah</th>
+                <th class="text-center" width="40%">Tunjangan (+)</th>
+                <th class="text-center" width="40%">Jumlah</th>
             </tr>
             <tr>
                 <td>1</td>
@@ -86,10 +86,14 @@
                 <th colspan="2" style="text-align: right;">Total Tunjangan</th>
                 <th>Rp. {{ number_format($total_tunjangan, 0, '', '.') }}</th>
             </tr>
+
+        </table>
+
+        <table class="table table-striped table-bordered mt-3">
             <tr>
                 <th class="text-center" width="5%">No</th>
-                <th class="text-center">Potongan (-)</th>
-                <th class="text-center">Jumlah</th>
+                <th class="text-center" width="40%">Potongan (-)</th>
+                <th class="text-center" width="40%">Jumlah</th>
             </tr>
             @php
                 $totalPotongan = $item->potongan ? json_decode($item->potongan, true) : [];

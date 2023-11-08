@@ -41,3 +41,24 @@
 .custom-control-label {
     cursor: pointer;
 }
+.form-group-password {
+    position: relative;
+  }
+
+.form-group-password .eye-toggle {
+    position: absolute;
+    top: 70%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.form-group-password-profile {
+    position: relative;
+  }
+.form-group-password-profile .eye-toggle {
+    position: absolute;
+    top: 55%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

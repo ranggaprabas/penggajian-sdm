@@ -17,14 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->string('nik');
             $table->string('jenis_kelamin');
             $table->boolean('status');
             $table->rememberToken();
             $table->boolean('is_admin')->default(false);
             $table->timestamps();
-            $table->unsignedBigInteger('jabatan_id')->nullable();
-            $table->foreign('jabatan_id')->references('id')->on('jabatan')->onDelete('cascade')->onUpdate('cascade');;
         });
     }
 

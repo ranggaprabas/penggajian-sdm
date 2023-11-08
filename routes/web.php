@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\EntitasController;
 use App\Http\Controllers\Admin\JabatanController;
+use App\Http\Controllers\Admin\SdmController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,8 +24,8 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/users/create/searchResponse', [UserController::class, 'searchResponse'])->name('searchajax');
-Route::get('/users/create/searchResponsePotongan', [UserController::class, 'searchResponsePotongan'])->name('searchajax-potongan');
+Route::get('/sdm/create/searchResponse', [SdmController::class, 'searchResponse'])->name('searchajax');
+Route::get('/sdm/create/searchResponsePotongan', [SdmController::class, 'searchResponsePotongan'])->name('searchajax-potongan');
 
 
 
@@ -34,8 +35,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
         Route::resource('entitas', App\Http\Controllers\Admin\EntitasController::class);
         Route::get('jabatan/edit/{id}', [JabatanController::class, 'edit'])->name('edit-jabatan');
         Route::resource('jabatan', App\Http\Controllers\Admin\JabatanController::class);
-        Route::delete('users/restore/{user}', [UserController::class, 'restore'])->name('admin.users.restore');
-        Route::get('users/resign', [UserController::class, 'indexDeleted'])->name('users.index.deleted');
+        Route::delete('sdm/restore/{sdm}', [SdmController::class, 'restore'])->name('admin.sdm.restore');
+        Route::get('sdm/resign', [SdmController::class, 'indexDeleted'])->name('sdm.index.deleted');
+        Route::get('sdm/edit/{id}', [SdmController::class, 'edit'])->name('edit-sdm');
+        Route::resource('sdm', App\Http\Controllers\Admin\SdmController::class);
         Route::get('users/edit/{id}', [UserController::class, 'edit'])->name('edit-users');
         Route::resource('users', App\Http\Controllers\Admin\UserController::class);
         Route::get('kehadiran', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('absensis.index');

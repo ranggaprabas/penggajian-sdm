@@ -11,8 +11,4 @@ class Entitas extends Model
     protected $table = 'entitas';
 
     protected $guarded = ['id'];
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
 }

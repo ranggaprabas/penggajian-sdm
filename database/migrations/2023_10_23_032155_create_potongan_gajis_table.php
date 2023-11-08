@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('potongan_gajis', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->integer('sdm_id');
             $table->string('nama_potongan')->nullable();
             $table->integer('nilai_potongan')->nullable();
             $table->timestamps();

@@ -7,17 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PotonganGaji;
+use App\Models\Sdm;
 
 class LaporanController extends Controller
 {
     public function index()
     {
-        // Ambil semua pengguna yang bukan admin (is_admin != 1) dan urutkan berdasarkan nama
-        $users = User::where('is_admin', '!=', 1)
-            ->orderBy('nama', 'asc')
+        $sdms = Sdm::orderBy('nama', 'asc')
             ->get(['nama', 'id']);
 
-        return view('admin.laporan.index', compact('users'));
+        return view('admin.laporan.index', compact('sdms'));
     }
 
     public function konversiBulan($bulan)
@@ -48,7 +47,7 @@ class LaporanController extends Controller
         $tanggal = $bulan . $tahun;
         $items = DB::table('absensi')
             ->select(
-                'absensi.user_id',
+                'absensi.sdm_id',
                 'absensi.bulan',
                 'absensi.nama',
                 'absensi.nik',
@@ -60,7 +59,7 @@ class LaporanController extends Controller
                 'absensi.potongan',
             )
             ->where('absensi.bulan', $tanggal)
-            ->where('absensi.user_id', $request->karyawan_id)
+            ->where('absensi.sdm_id', $request->karyawan_id)
             ->get();
 
         return view('admin.laporan.cetak-gaji', compact('bulan', 'namaBulan', 'tahun', 'items'));
@@ -80,7 +79,7 @@ class LaporanController extends Controller
         $karyawan_id = auth()->id();
         $items = DB::table('absensi')
             ->select(
-                'absensi.user_id',
+                'absensi.sdm_id',
                 'absensi.bulan',
                 'absensi.nama',
                 'absensi.nik',
@@ -92,7 +91,7 @@ class LaporanController extends Controller
                 'absensi.potongan',
             )
             ->where('absensi.bulan', $tanggal)
-            ->where('absensi.user_id', $request->karyawan_id)
+            ->where('absensi.sdm_id', $request->karyawan_id)
             ->get();
 
         return view('admin.laporan.cetak-gaji-karyawan', compact('bulan', 'tahun', 'items'));

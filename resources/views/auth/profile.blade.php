@@ -19,71 +19,62 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="card custom-outline-entitas">
-
-                        <form action="{{ route('admin.profile.update') }}" method="POST">
+                        <form novalidate action="{{ route('admin.profile.update') }}" method="POST" onsubmit="return validateFormAdminProfile();">
                             @csrf
                             @method('PUT')
 
                             <div class="card-body">
 
                                 <div class="input-group mb-3">
-                                    <input type="text" name="nama"
-                                           class="form-control @error('nama') is-invalid @enderror"
-                                           placeholder="{{ __('Nama') }}" value="{{ old('nama', auth()->user()->nama) }}" required>
+                                    <input type="text" name="nama" id="nama"
+                                        class="form-control @error('nama') is-invalid @enderror"
+                                        placeholder="{{ __('Nama') }}" value="{{ old('nama', auth()->user()->nama) }}"
+                                        required>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
                                             <span class="fas fa-user"></span>
                                         </div>
                                     </div>
                                     @error('name')
-                                    <span class="error invalid-feedback">
-                                        {{ $message }}
-                                    </span>
+                                        <span class="error invalid-feedback">
+                                            {{ $message }}
+                                        </span>
                                     @enderror
                                 </div>
 
                                 <div class="input-group mb-3">
-                                    <input type="email" name="email"
-                                           class="form-control @error('email') is-invalid @enderror"
-                                           placeholder="{{ __('Email') }}" value="{{ old('email', auth()->user()->email) }}" required>
+                                    <input type="email" name="email" id="email"
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        placeholder="{{ __('Email') }}" value="{{ old('email', auth()->user()->email) }}"
+                                        required>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
                                             <span class="fas fa-envelope"></span>
                                         </div>
                                     </div>
                                     @error('email')
-                                    <span class="error invalid-feedback">
-                                        {{ $message }}
-                                    </span>
+                                        <span class="error invalid-feedback">
+                                            {{ $message }}
+                                        </span>
                                     @enderror
                                 </div>
-
-                                <div class="input-group mb-3">
-                                    <input type="password" name="password"
-                                           class="form-control @error('password') is-invalid @enderror"
-                                           placeholder="{{ __('New password') }}">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-lock"></span>
-                                        </div>
-                                    </div>
+                                <div class="form-group-password-profile mb-3">
+                                    <input type="password" name="password" id="password"
+                                        class="form-control"
+                                        placeholder="{{ __('Password Baru') }}" maxlength="100">
+                                    <span class="eye-toggle"><i class="fas fa-eye" id="password-toggle"></i></span>
                                     @error('password')
-                                    <span class="error invalid-feedback">
-                                        {{ $message }}
-                                    </span>
+                                        <span class="error invalid-feedback">
+                                            {{ $message }}
+                                        </span>
                                     @enderror
                                 </div>
-
-                                <div class="input-group mb-3">
-                                    <input type="password" name="password_confirmation"
-                                           class="form-control @error('password_confirmation') is-invalid @enderror"
-                                           placeholder="{{ __('New password confirmation') }}"
-                                           autocomplete="new-password">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-lock"></span>
-                                        </div>
-                                    </div>
+                                <div class="form-group-password-profile mb-3">
+                                    <input type="password" name="password_confirmation" id="password_confirmation"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        placeholder="{{ __('Konfirmasi Password Baru') }}" autocomplete="new-password">
+                                    <span class="eye-toggle"><i class="fas fa-eye"
+                                            id="password-confirmation-toggle"></i></span>
                                 </div>
 
                             </div>

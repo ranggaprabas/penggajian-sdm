@@ -20,17 +20,30 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'menu-open' : '' }}">
-                    <a href="{{ route('admin.users.index') }}"
-                        class="nav-link {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'active' : '' }}">
+                @if (auth()->check() && auth()->user()->status == 1)
+                    <li
+                        class="nav-item {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'menu-open' : '' }}">
+                        <a href="{{ route('admin.users.index') }}"
+                            class="nav-link {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-cogs"></i>
+                            <p>
+                                {{ __('Admin') }}
+                            </p>
+                        </a>
+                    </li>
+                @endif
+                <li class="nav-item {{ Route::is('admin.sdm.*') || Route::is('admin.edit-sdm') ? 'menu-open' : '' }}">
+                    <a href="{{ route('admin.sdm.index') }}"
+                        class="nav-link {{ Route::is('admin.sdm.*') || Route::is('admin.edit-sdm') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             {{ __('SDM') }}
                         </p>
                     </a>
                 </li>
-                
-                <li class="nav-item {{ Route::is('admin.entitas.*') || Route::is('admin.edit-entitas') ? 'menu-open' : '' }}">
+
+                <li
+                    class="nav-item {{ Route::is('admin.entitas.*') || Route::is('admin.edit-entitas') ? 'menu-open' : '' }}">
                     <a href="{{ route('admin.entitas.index') }}"
                         class="nav-link {{ Route::is('admin.entitas.*') || Route::is('admin.edit-entitas') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
@@ -40,7 +53,8 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ Route::is('admin.jabatan.*') || Route::is('admin.edit-jabatan') ? 'menu-open' : '' }}">
+                <li
+                    class="nav-item {{ Route::is('admin.jabatan.*') || Route::is('admin.edit-jabatan') ? 'menu-open' : '' }}">
                     <a href="{{ route('admin.jabatan.index') }}"
                         class="nav-link {{ Route::is('admin.jabatan.*') || Route::is('admin.edit-jabatan') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-tie"></i>
@@ -80,16 +94,19 @@
                 </li> --}}
                 <li
                     class="nav-item {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show')? 'active' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-file-invoice-dollar"></i>
                         <p>
                             Gaji
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'style=display:block;' : '' }}">
+                    <ul
+                        class="nav nav-treeview {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'style=display:block;' : '' }}">
                         <li class="nav-item {{ Route::is('admin.gaji.index') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.gaji.index') }}" class="nav-link {{ Route::is('admin.gaji.index') ? 'active' : '' }}">
+                            <a href="{{ route('admin.gaji.index') }}"
+                                class="nav-link {{ Route::is('admin.gaji.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Data Gaji</p>
                             </a>
@@ -113,7 +130,8 @@
                     </a>
                     <ul class="nav nav-treeview {{ Route::is('admin.laporan.index') ? 'style=display:block;' : '' }}">
                         <li class="nav-item {{ Route::is('admin.laporan.index') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.laporan.index') }}" class="nav-link {{ Route::is('admin.laporan.index') ? 'active' : '' }}">
+                            <a href="{{ route('admin.laporan.index') }}"
+                                class="nav-link {{ Route::is('admin.laporan.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Slip Gaji</p>
                             </a>

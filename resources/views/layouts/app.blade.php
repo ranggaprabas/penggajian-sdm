@@ -216,15 +216,49 @@
     {{-- sweet alert --}}
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
+    <script>
+        // Select the password and password_confirmation inputs, and the toggle icons
+        const passwordInput = document.getElementById('password');
+        const passwordConfirmationInput = document.getElementById('password_confirmation');
+        const passwordToggle = document.getElementById('password-toggle');
+
+        // Add a click event listener to the toggle icon for password
+        passwordToggle.addEventListener('click', function() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.classList.remove('fa-eye');
+                passwordToggle.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                passwordToggle.classList.remove('fa-eye-slash');
+                passwordToggle.classList.add('fa-eye');
+            }
+        });
+
+        // Add a click event listener to the toggle icon for password_confirmation
+        const passwordConfirmationToggle = document.getElementById('password-confirmation-toggle');
+        passwordConfirmationToggle.addEventListener('click', function() {
+            if (passwordConfirmationInput.type === 'password') {
+                passwordConfirmationInput.type = 'text';
+                passwordConfirmationToggle.classList.remove('fa-eye');
+                passwordConfirmationToggle.classList.add('fa-eye-slash');
+            } else {
+                passwordConfirmationInput.type = 'password';
+                passwordConfirmationToggle.classList.remove('fa-eye-slash');
+                passwordConfirmationToggle.classList.add('fa-eye');
+            }
+        });
+    </script>
+
     <!-- Inisialisasi Select2 -->
     <script>
         $(document).ready(function() {
             $('.select2').select2({
-                theme: 'bootstrap4' 
+                theme: 'bootstrap4'
             });
         });
     </script>
-    
+
 
     {{-- sweet alert confirm Logout --}}
 
@@ -319,6 +353,192 @@
                         icon: 'error',
                         title: 'Semua Inputan Wajib Diisi',
                         text: 'Harap isi semua inputan yang diperlukan.',
+                    });
+                    return false; // Menghentikan pengiriman formulir jika tidak valid
+                }
+            }
+            return true; // Kirim formulir jika valid
+        }
+
+        function isValidEmail(email) {
+            // Implementasikan pemeriksaan format email sesuai kebutuhan Anda
+            // Contoh sederhana: menggunakan ekspresi reguler
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+
+    <script>
+        function validateFormAdmin() {
+            // Implementasikan validasi JavaScript sesuai kebutuhan Anda
+            // Contoh: Periksa semua bidang yang diperlukan
+            // Pemeriksaan tambahan untuk nama dengan ID tertentu
+            const namaField = document.getElementById('nama');
+            if (namaField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Wajib Diisi',
+                    text: 'Nama tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk email dengan ID 'email'
+            const emailField = document.getElementById('email');
+            const emailValue = emailField.value.trim();
+            if (emailValue === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Email Wajib Diisi',
+                    text: 'Email tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email kosong
+            } else if (!isValidEmail(emailValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Format Email Tidak Valid',
+                    text: 'Masukkan email yang valid!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email tidak valid
+            }
+            // Pemeriksaan tambahan untuk password dengan ID tertentu
+            const passwordField = document.getElementById('password');
+            if (passwordField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Wajib Diisi',
+                    text: 'Password tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk konfirmasi password dengan ID tertentu
+            const passwordConfirmationField = document.getElementById('password_confirmation');
+            if (passwordConfirmationField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Konfirmasi Password Wajib Diisi',
+                    text: 'Konfirmasi Password tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan apakah password dan konfirmasi password sama
+            if (passwordField.value !== passwordConfirmationField.value) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Tidak Sama',
+                    text: 'Password dan Konfirmasi Password harus cocok!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            return true; // Kirim formulir jika valid
+        }
+
+        function isValidEmail(email) {
+            // Implementasikan pemeriksaan format email sesuai kebutuhan Anda
+            // Contoh sederhana: menggunakan ekspresi reguler
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+
+    <script>
+        function validateFormAdminEdit() {
+            // Implementasikan validasi JavaScript sesuai kebutuhan Anda
+            // Contoh: Periksa semua bidang yang diperlukan
+            // Pemeriksaan tambahan untuk nama dengan ID tertentu
+            const namaField = document.getElementById('nama');
+            if (namaField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Wajib Diisi',
+                    text: 'Nama tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk email dengan ID 'email'
+            const emailField = document.getElementById('email');
+            const emailValue = emailField.value.trim();
+            if (emailValue === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Email Wajib Diisi',
+                    text: 'Email tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email kosong
+            } else if (!isValidEmail(emailValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Format Email Tidak Valid',
+                    text: 'Masukkan email yang valid!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email tidak valid
+            }
+            // Pemeriksaan untuk password dan konfirmasi password hanya jika password diisi
+            const passwordField = document.getElementById('password');
+            const passwordConfirmationField = document.getElementById('password_confirmation');
+
+            if (passwordField.value.trim() !== '' || passwordConfirmationField.value.trim() !== '') {
+                if (passwordField.value !== passwordConfirmationField.value) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Password Tidak Sama',
+                        text: 'Password Baru dan Konfirmasi Password Baru harus cocok!',
+                    });
+                    return false; // Menghentikan pengiriman formulir jika tidak valid
+                }
+            }
+            return true; // Kirim formulir jika valid
+        }
+
+        function isValidEmail(email) {
+            // Implementasikan pemeriksaan format email sesuai kebutuhan Anda
+            // Contoh sederhana: menggunakan ekspresi reguler
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+
+    <script>
+        function validateFormAdminProfile() {
+            // Implementasikan validasi JavaScript sesuai kebutuhan Anda
+            // Contoh: Periksa semua bidang yang diperlukan
+            // Pemeriksaan tambahan untuk nama dengan ID tertentu
+            const namaField = document.getElementById('nama');
+            if (namaField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Wajib Diisi',
+                    text: 'Nama tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk email dengan ID 'email'
+            const emailField = document.getElementById('email');
+            const emailValue = emailField.value.trim();
+            if (emailValue === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Email Wajib Diisi',
+                    text: 'Email tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email kosong
+            } else if (!isValidEmail(emailValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Format Email Tidak Valid',
+                    text: 'Masukkan email yang valid!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email tidak valid
+            }
+            // Pemeriksaan untuk password dan konfirmasi password hanya jika password diisi
+            const passwordField = document.getElementById('password');
+            const passwordConfirmationField = document.getElementById('password_confirmation');
+
+            if (passwordField.value.trim() !== '' || passwordConfirmationField.value.trim() !== '') {
+                if (passwordField.value !== passwordConfirmationField.value) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Password Tidak Sama',
+                        text: 'Password Baru dan Konfirmasi Password Baru harus cocok!',
                     });
                     return false; // Menghentikan pengiriman formulir jika tidak valid
                 }
@@ -538,7 +758,7 @@
     <script>
         $(document).ready(function() {
             var counter =
-                {{ isset($user) ? $user->komponenGaji->count() : 0 }}; // Hitung jumlah tunjangan yang ada
+                {{ isset($sdm) ? $sdm->komponenGaji->count() : 0 }}; // Hitung jumlah tunjangan yang ada
 
             function addTunjanganInput() {
                 var newTunjangan = `
@@ -592,7 +812,7 @@
     <script>
         $(document).ready(function() {
             var counter =
-                {{ isset($user) ? $user->komponenGaji->count() : 0 }}; // Hitung jumlah potongan yang ada
+                {{ isset($sdm) ? $sdm->komponenGaji->count() : 0 }}; // Hitung jumlah potongan yang ada
 
             function addPotonganInput() {
                 var newPotongan = `
@@ -887,13 +1107,13 @@
         });
     </script>
 
-    {{-- Delete swall Users --}}
+    {{-- Delete swall SDM --}}
 
     <script>
         //button create post event
         $('body').on('click', '#btn-delete-users', function() {
 
-            let user_id = $(this).data('id');
+            let sdm_id = $(this).data('id');
             let token = $("meta[name='csrf-token']").attr("content");
 
             Swal.fire({
@@ -912,7 +1132,7 @@
                     //fetch to delete data
                     $.ajax({
 
-                        url: `/admin/users/${user_id}`,
+                        url: `/admin/sdm/${sdm_id}`,
                         type: "DELETE",
                         cache: false,
                         data: {
@@ -930,12 +1150,12 @@
                             });
 
                             //remove post on table
-                            $(`#index_${user_id}`).remove();
+                            $(`#index_${sdm_id}`).remove();
 
                             // Kembali ke halaman sebelumnya
                             setTimeout(function() {
                                 window.location.href =
-                                    "{{ route('admin.users.index') }}";
+                                    "{{ route('admin.sdm.index') }}";
                             }, 2000);
                         }
                     });
@@ -945,14 +1165,74 @@
         });
     </script>
 
+    {{-- Delete swall Admin --}}
 
-    {{-- Restore swall users --}}
+    <script>
+        //button create post event
+        $('body').on('click', '#btn-delete-admin', function() {
+
+            let admin_id = $(this).data('id');
+            let token = $("meta[name='csrf-token']").attr("content");
+
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: `Ingin menghapus data Admin '${$(this).data('nama')}'! `,
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                cancelButtonColor: '#FF5733',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    console.log('test');
+
+                    //fetch to delete data
+                    $.ajax({
+
+                        url: `/admin/users/${admin_id}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(response) {
+
+                            //show success message
+                            Swal.fire({
+                                type: 'success',
+                                icon: 'success',
+                                title: `${response.message}`,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+
+                            //remove post on table
+                            $(`#index_${admin_id}`).remove();
+
+                            // Kembali ke halaman sebelumnya
+                            setTimeout(function() {
+                                window.location.href =
+                                    "{{ route('admin.users.index') }}";
+                            }, 2000);
+                        }
+                    });
+
+
+                }
+            })
+
+        });
+    </script>
+
+
+    {{-- Restore swall SDM --}}
 
     <script>
         //button create post event
         $('body').on('click', '#btn-restore-users', function() {
 
-            let user_id = $(this).data('id');
+            let sdm_id = $(this).data('id');
             let token = $("meta[name='csrf-token']").attr("content");
 
             Swal.fire({
@@ -971,7 +1251,7 @@
                     //fetch to delete data
                     $.ajax({
 
-                        url: `/admin/users/restore/${user_id}`,
+                        url: `/admin/sdm/restore/${sdm_id}`,
                         type: "DELETE",
                         cache: false,
                         data: {
@@ -989,12 +1269,12 @@
                             });
 
                             //remove post on table
-                            $(`#index_${user_id}`).remove();
+                            $(`#index_${sdm_id}`).remove();
 
                             // Kembali ke halaman sebelumnya
                             setTimeout(function() {
                                 window.location.href =
-                                    "{{ route('admin.users.index.deleted') }}";
+                                    "{{ route('admin.sdm.index.deleted') }}";
                             }, 2000);
                         }
                     });
