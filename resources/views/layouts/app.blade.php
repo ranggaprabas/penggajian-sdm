@@ -333,7 +333,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Format Email Tidak Valid',
-                    text: 'Masukkan email yang valid!',
+                    text: 'Email harus mengandung karakter "@" dan "." (titik)!',
                 });
                 return false; // Menghentikan pengiriman formulir jika email tidak valid
             }
@@ -396,7 +396,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Format Email Tidak Valid',
-                    text: 'Masukkan email yang valid!',
+                    text: 'Email harus mengandung karakter "@" dan "." (titik)!',
                 });
                 return false; // Menghentikan pengiriman formulir jika email tidak valid
             }
@@ -468,7 +468,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Format Email Tidak Valid',
-                    text: 'Masukkan email yang valid!',
+                    text: 'Email harus mengandung karakter "@" dan "." (titik)!',
                 });
                 return false; // Menghentikan pengiriman formulir jika email tidak valid
             }
@@ -525,7 +525,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Format Email Tidak Valid',
-                    text: 'Masukkan email yang valid!',
+                    text: 'Email harus mengandung karakter "@" dan "." (titik)!',
                 });
                 return false; // Menghentikan pengiriman formulir jika email tidak valid
             }
