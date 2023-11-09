@@ -15,7 +15,7 @@ class EntitasController extends Controller
      */
     public function index()
     {
-        $items = Entitas::paginate();
+        $items = Entitas::all();
 
         return view('admin.entitas.index', compact('items'));
     }
