@@ -222,32 +222,38 @@
         const passwordConfirmationInput = document.getElementById('password_confirmation');
         const passwordToggle = document.getElementById('password-toggle');
 
-        // Add a click event listener to the toggle icon for password
-        passwordToggle.addEventListener('click', function() {
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                passwordToggle.classList.remove('fa-eye');
-                passwordToggle.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                passwordToggle.classList.remove('fa-eye-slash');
-                passwordToggle.classList.add('fa-eye');
-            }
-        });
+        if (passwordInput && passwordToggle) {
+            // Add a click event listener to the toggle icon for password
+            passwordToggle.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordToggle.classList.remove('fa-eye');
+                    passwordToggle.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    passwordToggle.classList.remove('fa-eye-slash');
+                    passwordToggle.classList.add('fa-eye');
+                }
+            });
+        }
 
-        // Add a click event listener to the toggle icon for password_confirmation
-        const passwordConfirmationToggle = document.getElementById('password-confirmation-toggle');
-        passwordConfirmationToggle.addEventListener('click', function() {
-            if (passwordConfirmationInput.type === 'password') {
-                passwordConfirmationInput.type = 'text';
-                passwordConfirmationToggle.classList.remove('fa-eye');
-                passwordConfirmationToggle.classList.add('fa-eye-slash');
-            } else {
-                passwordConfirmationInput.type = 'password';
-                passwordConfirmationToggle.classList.remove('fa-eye-slash');
-                passwordConfirmationToggle.classList.add('fa-eye');
+        if (passwordConfirmationInput) {
+            // Add a click event listener to the toggle icon for password_confirmation
+            const passwordConfirmationToggle = document.getElementById('password-confirmation-toggle');
+            if (passwordConfirmationToggle) {
+                passwordConfirmationToggle.addEventListener('click', function() {
+                    if (passwordConfirmationInput.type === 'password') {
+                        passwordConfirmationInput.type = 'text';
+                        passwordConfirmationToggle.classList.remove('fa-eye');
+                        passwordConfirmationToggle.classList.add('fa-eye-slash');
+                    } else {
+                        passwordConfirmationInput.type = 'password';
+                        passwordConfirmationToggle.classList.remove('fa-eye-slash');
+                        passwordConfirmationToggle.classList.add('fa-eye');
+                    }
+                });
             }
-        });
+        }
     </script>
 
     <!-- Inisialisasi Select2 -->
