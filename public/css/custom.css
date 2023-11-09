@@ -24,6 +24,14 @@
     padding: 10px;
     /* Padding di dalam outline */
 }
+.custom-outline-divisi {
+    border-top: 4px solid #17a2b8;
+    /* Warna outline, ganti dengan warna yang Anda inginkan */
+    border-radius: 5px 5px 5px 5px;
+    /* Bentuk sudut outline */
+    padding: 10px;
+    /* Padding di dalam outline */
+}
 
 /* Styling for the left icon (sun) */
 .toggle-icon-left {

@@ -51,6 +51,10 @@
                                             <td>{{ $data->entitas->nama ?? '-' }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Divisi</th>
+                                            <td>{{ $data->divisi->nama ?? '-' }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>Jabatan</th>
                                             <td>
                                                 @if ($data->jabatan->deleted == 1)

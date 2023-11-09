@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Divisi extends Model
 {
     use HasFactory;
+    protected $table = 'divisis';
+
+    protected $guarded = ['id'];
 }

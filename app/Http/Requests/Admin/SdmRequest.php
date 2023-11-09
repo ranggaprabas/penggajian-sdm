@@ -29,6 +29,7 @@ class SdmRequest extends FormRequest
                         'nik' => 'required|unique:sdms',
                         'jabatan_id' => 'required',
                         'entitas_id' => 'required',
+                        'divisi_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
   
@@ -42,6 +43,7 @@ class SdmRequest extends FormRequest
                         'nik' => ['required', 'unique:sdms,nik,' . $this->route()->sdm->id],
                         'jabatan_id' => 'required',
                         'entitas_id' => 'required',
+                        'divisi_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
  

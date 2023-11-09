@@ -22,6 +22,12 @@ class Sdm extends Model
         return $this->belongsTo(Entitas::class);
     }
 
+    // for user_id
+    public function divisi()
+    {
+        return $this->belongsTo(Divisi::class);
+    }
+
     // for edit
     public function komponenGaji()
     {

@@ -23,7 +23,8 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <form novalidate action="{{ route('admin.sdm.update', $sdm->id) }}" method="POST" onsubmit="return validateForm() && removeCommas2();">
+                <form novalidate action="{{ route('admin.sdm.update', $sdm->id) }}" method="POST"
+                    onsubmit="return validateForm() && removeCommas2();">
                     @csrf
                     @method('put')
                     <div class="card card-primary">
@@ -50,6 +51,20 @@
                                                 <option value="{{ $entitas->id }}"
                                                     {{ $sdm->entitas && $sdm->entitas->id == $entitas->id ? 'selected' : '' }}>
                                                     {{ $entitas->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group ">
+                                        <label for="divisi">Divisi</label>
+                                        <select class="form-control select2" name="divisi_id" id="divisi">
+                                            <option value="">-- Choose Categories --</option>
+                                            @foreach ($divisis as $divisi)
+                                                <option value="{{ $divisi->id }}"
+                                                    {{ $sdm->divisi && $sdm->divisi->id == $divisi->id ? 'selected' : '' }}>
+                                                    {{ $divisi->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -98,17 +113,19 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="form-control" name="status" id="status">
-                                    <option {{ $sdm->status === 1 ? 'selected' : null }} value="1">Pegawai
-                                        Tetap
-                                    </option>
-                                    <option {{ $sdm->status === 0 ? 'selected' : null }} value="0">Pegawai
-                                        Tidak
-                                        Tetap</option>
-                                </select>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" name="status" id="status">
+                                            <option {{ $sdm->status === 1 ? 'selected' : null }} value="1">Pegawai
+                                                Tetap
+                                            </option>
+                                            <option {{ $sdm->status === 0 ? 'selected' : null }} value="0">Pegawai
+                                                Tidak
+                                                Tetap</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

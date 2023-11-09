@@ -62,6 +62,17 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" name="status" id="status">
+                                            <option {{ $user->status === 1 ? 'selected' : null }} value="1">superadmin
+                                            </option>
+                                            <option {{ $user->status === 0 ? 'selected' : null }} value="0">admin
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-group-password">
                                         <label for="password">Password Baru</label>
                                         <input class="form-control" type="password" id="password" name="password">
@@ -81,14 +92,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="form-control" name="status" id="status">
-                                    <option {{ $user->status === 1 ? 'selected' : null }} value="1">superadmin
-                                    </option>
-                                    <option {{ $user->status === 0 ? 'selected' : null }} value="0">admin</option>
-                                </select>
                             </div>
                         </div>
                     </div>

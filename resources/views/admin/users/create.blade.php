@@ -56,6 +56,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" name="status" id="status">
+                                            <option value="1">superadmin</option>
+                                            <option value="0">admin</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="form-group-password">
                                         <label for="password">Password</label>
                                         <input class="form-control" type="password" id="password" name="password">
@@ -73,13 +82,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="form-control" name="status" id="status">
-                                    <option value="1">superadmin</option>
-                                    <option value="0">admin</option>
-                                </select>
                             </div>
                         </div>
                     </div>

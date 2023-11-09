@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\EntitasController;
+use App\Http\Controllers\Admin\DivisiController;
 use App\Http\Controllers\Admin\JabatanController;
 use App\Http\Controllers\Admin\SdmController;
 use App\Http\Controllers\Admin\UserController;
@@ -31,6 +32,8 @@ Route::get('/sdm/create/searchResponsePotongan', [SdmController::class, 'searchR
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::group(['middleware' => ['is_admin']], function () {
+        Route::get('divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
+        Route::resource('divisi', App\Http\Controllers\Admin\DivisiController::class);
         Route::get('entitas/edit/{id}', [EntitasController::class, 'edit'])->name('edit-entitas');
         Route::resource('entitas', App\Http\Controllers\Admin\EntitasController::class);
         Route::get('jabatan/edit/{id}', [JabatanController::class, 'edit'])->name('edit-jabatan');

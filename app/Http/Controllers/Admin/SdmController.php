@@ -7,6 +7,7 @@ use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SdmRequest;
+use App\Models\Divisi;
 use App\Models\Entitas;
 use App\Models\KomponenGaji;
 use App\Models\PotonganGaji;
@@ -18,7 +19,7 @@ class SdmController extends Controller
      */
     public function index()
     {
-        $sdms = Sdm::with('jabatan', 'entitas')
+        $sdms = Sdm::with('jabatan', 'entitas', 'divisi')
             ->where('deleted', 0)
             ->get();
         $isDeletedPage = false;
@@ -27,7 +28,7 @@ class SdmController extends Controller
 
     public function indexDeleted()
     {
-        $sdms = Sdm::with('jabatan', 'entitas')
+        $sdms = Sdm::with('jabatan', 'entitas', 'divisi')
             ->where('deleted', 1)
             ->get();
 
@@ -96,8 +97,9 @@ class SdmController extends Controller
         $pages = 'SDM';
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
+        $divisis = Divisi::get(['id', 'nama']);
 
-        return view('admin.sdm.create', compact('jabatans', 'entita', 'pages', 'title'));
+        return view('admin.sdm.create', compact('jabatans', 'entita', 'divisis', 'pages', 'title'));
     }
 
     /**
@@ -192,8 +194,9 @@ class SdmController extends Controller
 
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
+        $divisis = Divisi::get(['id', 'nama']);
 
-        return view('admin.sdm.edit', compact('sdm', 'tunjangan', 'potongan',  'jabatans', 'entita', 'pages', 'title'));
+        return view('admin.sdm.edit', compact('sdm', 'tunjangan', 'potongan',  'jabatans', 'entita', 'divisis', 'pages', 'title'));
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Divisi;
 use App\Models\Entitas;
 use App\Models\Jabatan;
 use App\Models\Sdm;
@@ -42,8 +43,9 @@ class HomeController extends Controller
 
         $employee_count = Sdm::where('deleted', '!=', 1)->count();
         $entita_count = Entitas::count();
+        $divisi_count = Divisi::count();
         $jabatan_count = Jabatan::where('deleted', '!=', 1)->count();
 
-        return view('home', compact('employee_count', 'entita_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount', 'taarufCount'));
+        return view('home', compact('employee_count', 'entita_count','divisi_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount', 'taarufCount'));
     }
 }

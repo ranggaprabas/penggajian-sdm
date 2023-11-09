@@ -314,6 +314,17 @@
                 });
                 return false; // Menghentikan pengiriman formulir jika tidak valid
             }
+            // Pemeriksaan tambahan untuk select dengan ID 'divisi'
+            const divisiSelect = document.getElementById('divisi');
+            const selectedDivisi = divisiSelect.options[divisiSelect.selectedIndex];
+            if (selectedDivisi.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pilih Divisi',
+                    text: 'Anda harus memilih divisi!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
             // Pemeriksaan tambahan untuk select dengan ID 'jabatan'
             const jabatanSelect = document.getElementById('jabatan');
             const selectedJabatan = jabatanSelect.options[jabatanSelect.selectedIndex];
@@ -570,6 +581,23 @@
                     icon: 'error',
                     title: 'Nama Entitas Wajib Diisi',
                     text: 'Nama Entitas tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            return true; // Kirim formulir jika valid
+        }
+    </script>
+
+    {{-- sweet alert in divisi input required --}}
+
+    <script>
+        function validateFormDivisi() {
+            const divisiInputField = document.getElementById('divisi-input');
+            if (divisiInputField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Divisi Wajib Diisi',
+                    text: 'Nama Divisi tidak boleh kosong!',
                 });
                 return false; // Menghentikan pengiriman formulir jika tidak valid
             }
@@ -1055,6 +1083,54 @@
         });
     </script>
 
+    <script>
+        //button create divisi event
+        $('body').on('click', '#btn-delete-divisi', function() {
+
+            let item_id = $(this).data('id');
+            let token = $("meta[name='csrf-token']").attr("content");
+
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: `Ingin menghapus data Divisi '${$(this).data('nama')}'! `,
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //fetch to delete data
+                    $.ajax({
+                        url: `/admin/divisi/${item_id}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(response) {
+                            //show success message
+                            Swal.fire({
+                                type: 'success',
+                                icon: 'success',
+                                title: `${response.message}`,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            //remove post on table
+                            $(`#index_${item_id}`).remove();
+                            // Kembali ke halaman sebelumnya
+                            setTimeout(function() {
+                                window.location.href =
+                                    "{{ route('admin.divisi.index') }}";
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
     {{-- Delete swall jabatan --}}
 
     <script>
@@ -1501,6 +1577,10 @@
 
         @if (isset($jabatan_count))
             startCountingAnimation('jabatanCount', {{ $jabatan_count }}, 5000); // Animasi lebih lambat
+        @endif
+
+        @if (isset($divisi_count))
+            startCountingAnimation('divisiCount', {{ $jabatan_count }}, 5000); // Animasi lebih lambat
         @endif
 
         function startCountingAnimation(targetId, endValue, duration) {

@@ -52,6 +52,18 @@
                     <!-- /.info-box -->
                 </div>
                 <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3 custom-outline-divisi">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-user-tie"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Divisi</span>
+                            <span class="info-box-number" id="divisiCount">0</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
                     <div class="info-box mb-3 custom-outline-jabatan">
                         <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user-tie"></i></span>
 

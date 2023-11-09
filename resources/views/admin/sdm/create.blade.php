@@ -23,7 +23,8 @@
     <div class="content">
         <div class="container-fluid">
             <div class="col-lg-12">
-                <form novalidate action="{{ route('admin.sdm.store') }}" method="POST" onsubmit="return validateForm() && removeCommas2();">
+                <form novalidate action="{{ route('admin.sdm.store') }}" method="POST"
+                    onsubmit="return validateForm() && removeCommas2();">
                     @csrf
                     <div class="card card-primary">
                         <div class="card-header">
@@ -47,6 +48,19 @@
                                                 <option value="{{ $entitas->id }}"
                                                     @if (old('entitas_id') == $entitas->id) selected @endif>
                                                     {{ $entitas->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="divisi">Divisi</label>
+                                        <select class="form-control select2" name="divisi_id" id="divisi">
+                                            <option value="">--Choose Categories--</option>
+                                            @foreach ($divisis as $divisi)
+                                                <option value="{{ $divisi->id }}"
+                                                    @if (old('divisi_id') == $divisi->id) selected @endif>
+                                                    {{ $divisi->nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -92,13 +106,15 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="form-control" name="status" id="status">
-                                    <option value="1">Pegawai Tetap</option>
-                                    <option value="0">Pegawai Tidak Tetap</option>
-                                </select>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" name="status" id="status">
+                                            <option value="1">Pegawai Tetap</option>
+                                            <option value="0">Pegawai Tidak Tetap</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -119,8 +135,8 @@
                                                     <div class="input-group-text">Tj.</div>
                                                 </div>
                                                 <input type="text" name="nama_tunjangan[]"
-                                                    class="form-control autocomplete_txt_tunjangan" data-type='namatunjangan'
-                                                    required>
+                                                    class="form-control autocomplete_txt_tunjangan"
+                                                    data-type='namatunjangan' required>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -154,7 +170,8 @@
                                         <div class="form-group">
                                             <label for="nama_potongan[]">Nama Potongan</label>
                                             <input type="text" name="nama_potongan[]"
-                                                class="form-control autocomplete_txt_potongan" data-type='namapotongan' required>
+                                                class="form-control autocomplete_txt_potongan" data-type='namapotongan'
+                                                required>
                                         </div>
                                         <div class="form-group">
                                             <label for="nilai_potongan[]">Nilai Potongan</label>

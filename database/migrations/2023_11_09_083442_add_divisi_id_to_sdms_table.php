@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('divisis', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama')->nullable();
-            $table->timestamps();
+        Schema::table('sdms', function (Blueprint $table) {
+            //
+            $table->integer('divisi_id')->nullable()->after('jabatan_id');
         });
     }
 
@@ -23,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('divisis');
+        Schema::table('sdms', function (Blueprint $table) {
+            //
+        });
     }
 };

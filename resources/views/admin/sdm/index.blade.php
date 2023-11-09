@@ -68,6 +68,7 @@
                                             <th>Nik</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Entitas</th>
+                                            <th>Divisi</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
                                             <th class="action-column">Action</th>
@@ -85,6 +86,7 @@
                                                 <td>{{ $sdm->nik }}</td>
                                                 <td>{{ $sdm->jenis_kelamin }}</td>
                                                 <td>{{ $sdm->entitas->nama ?? '-' }}</td>
+                                                <td>{{ $sdm->divisi->nama ?? '-' }}</td>
                                                 <td>
                                                     @if ($sdm->jabatan->deleted == 1)
                                                         {{ $sdm->jabatan->nama }} <span style="color: red;"> (jabatan
@@ -141,6 +143,7 @@
                                             <th>Nik</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Entitas</th>
+                                            <th>Divisi</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
                                             <th class="action-column">Action</th>
