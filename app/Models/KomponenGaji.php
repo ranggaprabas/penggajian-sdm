@@ -9,13 +9,9 @@ class KomponenGaji extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function komponenGaji()
-    {
-        return $this->belongsTo(User::class);
-    }
 
-    public function user()
+    public function sdm()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Sdm::class);
     }
 }

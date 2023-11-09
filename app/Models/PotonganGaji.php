@@ -9,13 +9,9 @@ class PotonganGaji extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public function potonganGaji()
+ 
+    public function sdm()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Sdm::class);
     }
-
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
 }

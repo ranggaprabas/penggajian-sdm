@@ -40,6 +40,11 @@ class SdmController extends Controller
     {
         $query = $request->get('term', '');
         $tunjangan = KomponenGaji::query();
+
+        $tunjangan->whereHas('sdm', function($query){
+            $query->where('deleted', 0);
+        });
+
         if ($request->type == 'namatunjangan') {
             $tunjangan->where('nama_tunjangan', 'LIKE', '%' . $query . '%');
         }
@@ -59,6 +64,10 @@ class SdmController extends Controller
     {
         $query = $request->get('term', '');
         $potongan = PotonganGaji::query();
+
+        $potongan->whereHas('sdm', function ($query) {
+            $query->where('deleted', 0);
+        });
         if ($request->type == 'namapotongan') {
             $potongan->where('nama_potongan', 'LIKE', '%' . $query . '%');
         }
