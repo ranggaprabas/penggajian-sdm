@@ -120,7 +120,7 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="/" class="brand-link">
+            <a href="{{ route('admin.home') }}" class="brand-link">
                 <span class="brand-text font-weight-bold text-center d-block">Penggajian SDM</span>
             </a>
 
