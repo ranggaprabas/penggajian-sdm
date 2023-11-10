@@ -115,8 +115,8 @@
                                                     <th>Jenis Kelamin</th>
                                                     <th>Entitas</th>
                                                     <th>Divisi</th>
-                                                    <th>Action</th>
                                                     <th>Jabatan</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -134,7 +134,7 @@
                                                         <td>
                                                             {{-- <input type="hidden" name="karyawan_id[]" value="{{ $absensi->id }}"> --}}
                                                             <button type="submit" name="individual_submit" value="{{ $absensi->id }}"
-                                                                class="btn btn-primary"><i class="fas fa-check"></i> Gaji</button>
+                                                                class="btn btn-primary btn-sm"><i class="fas fa-check"></i> Gaji</button>
                                                         </td>
                                                     </tr>
                                                 @empty
@@ -151,8 +151,8 @@
                                                     <th>Jenis Kelamin</th>
                                                     <th>Entitas</th>
                                                     <th>Divisi</th>
-                                                    <th>Action</th>
                                                     <th>Jabatan</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </tfoot>
                                         </table>
