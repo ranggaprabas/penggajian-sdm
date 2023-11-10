@@ -38,9 +38,10 @@ class AbsensiController extends Controller
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $absensis = DB::table('sdms')
-                ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
+                ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas', 'divisis.nama as nama_divisi')
                 ->join('jabatan', 'sdms.jabatan_id', '=', 'jabatan.id')
                 ->leftJoin('entitas', 'sdms.entitas_id', '=', 'entitas.id')
+                ->leftJoin('divisis', 'sdms.divisi_id', '=', 'divisis.id')
                 ->whereNotExists(function ($query) use ($bulanSaatIni) {
                     $query->select(DB::raw(1))
                         ->from('absensi')
@@ -52,9 +53,10 @@ class AbsensiController extends Controller
                 ->get();
         } else {
             $absensis = DB::table('sdms')
-                ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas')
+                ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas', 'divisis.nama as nama_divisi')
                 ->join('jabatan', 'sdms.jabatan_id', '=', 'jabatan.id')
                 ->leftJoin('entitas', 'sdms.entitas_id', '=', 'entitas.id')
+                ->leftJoin('divisis', 'sdms.divisi_id', '=', 'divisis.id')
                 ->whereNotExists(function ($query) use ($bulan) {
                     $query->select(DB::raw(1))
                         ->from('absensi')
@@ -72,6 +74,61 @@ class AbsensiController extends Controller
 
     public function store(Request $request)
     {
+
+        // Check if individual_submit button is clicked
+        if ($request->has('individual_submit')) {
+            $sdm_id = $request->input('individual_submit');
+
+            // Rest of your existing logic for individual gaji
+            $sdm = Sdm::findOrFail($sdm_id);
+
+            // Mendapatkan data komponen gaji untuk pengguna (sdm) saat ini
+            $komponenGaji = KomponenGaji::where('sdm_id', $sdm->id)->get();
+
+            // Mendapatkan data potongan gaji untuk pengguna (sdm) saat ini
+            $potonganGaji = PotonganGaji::where('sdm_id', $sdm->id)->get();
+
+            // komponen gaji ditemukan
+            if ($komponenGaji) {
+                // Menyusun data absensi beserta data komponen gaji (tunjangan) dalam format JSON
+                $tunjanganDinamis = $komponenGaji->toArray();
+
+                // Potongan gaji ditemukan
+                if ($potonganGaji) {
+                    // Menyusun data potongan gaji dalam format JSON
+                    $potonganDinamis = $potonganGaji->toArray();
+                } else {
+                    // Jika tidak ada potongan gaji, set data potongan menjadi array kosong
+                    $potonganDinamis = [];
+                }
+
+
+                $dataAbsensi = [
+                    'sdm_id' => $sdm->id,
+                    'bulan' => $request->bulan,
+                    'nama' => $sdm->nama,
+                    'nik' => $sdm->nik,
+                    'jenis_kelamin' => $sdm->jenis_kelamin,
+                    'jabatan' => $sdm->jabatan->nama,
+                    'tunjangan_jabatan' => $sdm->jabatan->tunjangan_jabatan,
+                    'tunjangan' => json_encode($tunjanganDinamis),
+                    'potongan' => json_encode($potonganDinamis),
+                    'entitas' => $sdm->entitas->nama,
+                    // Sisipkan kolom lain yang diperlukan
+                ];
+
+                // Simpan data absensi ke dalam tabel
+                Absensi::create($dataAbsensi);
+            }
+
+            // Additional logic for individual gaji if needed
+
+            return redirect()->back()->with([
+                'message' => 'Gaji SDM ' . $sdm->nama . ' berhasil dilakukan',
+                'alert-info' => 'info'
+            ]);
+        }
+
         foreach ($request->karyawan_id as $sdm_id) {
             // Mendapatkan semua informasi yang Anda butuhkan dari tabel sdms
             $sdm = Sdm::findOrFail($sdm_id);
@@ -116,7 +173,7 @@ class AbsensiController extends Controller
             }
         }
         return redirect()->back()->with([
-            'message' => 'Gaji berhasil dilakukan',
+            'message' => 'Gaji serentak berhasil dilakukan',
             'alert-info' => 'info'
         ]);
     }

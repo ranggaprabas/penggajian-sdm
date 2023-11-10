@@ -114,6 +114,8 @@
                                                     <th>Nama</th>
                                                     <th>Jenis Kelamin</th>
                                                     <th>Entitas</th>
+                                                    <th>Divisi</th>
+                                                    <th>Action</th>
                                                     <th>Jabatan</th>
                                                 </tr>
                                             </thead>
@@ -127,7 +129,13 @@
                                                         <td>{{ $absensi->nama }}</td>
                                                         <td>{{ $absensi->jenis_kelamin }}</td>
                                                         <td>{{ $absensi->nama_entitas ?? '-' }}</td>
+                                                        <td>{{ $absensi->nama_divisi ?? '-' }}</td>
                                                         <td>{{ $absensi->nama_jabatan ?? '-' }}</td>
+                                                        <td>
+                                                            {{-- <input type="hidden" name="karyawan_id[]" value="{{ $absensi->id }}"> --}}
+                                                            <button type="submit" name="individual_submit" value="{{ $absensi->id }}"
+                                                                class="btn btn-primary"><i class="fas fa-check"></i> Gaji</button>
+                                                        </td>
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -142,6 +150,8 @@
                                                     <th>Nama</th>
                                                     <th>Jenis Kelamin</th>
                                                     <th>Entitas</th>
+                                                    <th>Divisi</th>
+                                                    <th>Action</th>
                                                     <th>Jabatan</th>
                                                 </tr>
                                             </tfoot>
@@ -149,7 +159,7 @@
                                     </div>
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-primary mx-auto btn-block"> <i
-                                                class="fa fa-check"></i> Gaji</button>
+                                                class="fa fa-check"></i> Gaji Serentak</button>
                                     </div>
                                 @else
                                     <div class="text-center">
