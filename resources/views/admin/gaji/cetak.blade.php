@@ -45,6 +45,7 @@
                 <th class="text-center">Nama</th>
                 <th class="text-center">Jenis Kelamin</th>
                 <th class="text-center">Entitas</th>
+                <th class="text-center">Divisi</th>
                 <th class="text-center">Jabatan</th>
                 <th class="text-center">Tunjangan</th>
                 <th class="text-center">Potongan</th>
@@ -62,6 +63,7 @@
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->jenis_kelamin }}</td>
                     <td>{{ $item->entitas }}</td>
+                    <td>{{ $item->divisi }}</td>
                     <td>{{ $item->jabatan }}</td>
                     <td>
                         @if ($item->tunjangan)
