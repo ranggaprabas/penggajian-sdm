@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $this->middleware(['auth', function ($request, $next) {
             if (auth()->user() && auth()->user()->status !== 1) {
-                abort(403, 'Unauthorized');
+                abort(404, 'Unauthorized');
             }
             return $next($request);
         }])->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
