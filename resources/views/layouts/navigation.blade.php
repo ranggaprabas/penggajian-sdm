@@ -2,9 +2,18 @@
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
+        <div class="info d-flex align-items-center">
             <a href="{{ route('admin.profile.show') }}" class="d-block">{{ Auth::user()->nama }}</a>
+            &nbsp;&nbsp;&nbsp;
+            @if (Auth::check())
+                @if (Auth::user()->status)
+                    <span class="badge bg-primary ms-2">Superadmin</span>
+                @else
+                    <span class="badge bg-warning ms-2">Admin</span>
+                @endif
+            @endif
         </div>
+        
     </div>
 
 
