@@ -42,6 +42,11 @@
                 <td>{{ $item->entitas }}</td>
             </tr>
             <tr>
+                <td>Divisi</td>
+                <td>:</td>
+                <td>{{ $item->divisi }}</td>
+            </tr>
+            <tr>
                 <td>Jabatan</td>
                 <td>:</td>
                 <td>{{ $item->jabatan }}</td>

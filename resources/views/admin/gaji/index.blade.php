@@ -114,6 +114,7 @@
                                                     <th>Nama</th>
                                                     <th>Jenis Kelamin</th>
                                                     <th>Entitas</th>
+                                                    <th>Divisi</th>
                                                     <th>Jabatan</th>
                                                     <th>Tunjangan</th>
                                                     <th>Potongan</th>
@@ -132,6 +133,7 @@
                                                         <td>{{ $item->nama }}</td>
                                                         <td>{{ $item->jenis_kelamin }}</td>
                                                         <td>{{ $item->entitas }}</td>
+                                                        <td>{{ $item->divisi }}</td>
                                                         <td>{{ $item->jabatan }}</td>
                                                         </td>
                                                         <td>
@@ -219,6 +221,7 @@
                                                     <th>Nama</th>
                                                     <th>Jenis Kelamin</th>
                                                     <th>Entitas</th>
+                                                    <th>Divisi</th>
                                                     <th>Jabatan</th>
                                                     <th>Tunjangan Jabatan</th>
                                                     <th>Tunjangan</th>

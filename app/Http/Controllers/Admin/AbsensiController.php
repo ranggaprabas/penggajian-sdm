@@ -40,8 +40,8 @@ class AbsensiController extends Controller
             $absensis = DB::table('sdms')
                 ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas', 'divisis.nama as nama_divisi')
                 ->join('jabatan', 'sdms.jabatan_id', '=', 'jabatan.id')
-                ->leftJoin('entitas', 'sdms.entitas_id', '=', 'entitas.id')
-                ->leftJoin('divisis', 'sdms.divisi_id', '=', 'divisis.id')
+                ->join('entitas', 'sdms.entitas_id', '=', 'entitas.id')
+                ->join('divisis', 'sdms.divisi_id', '=', 'divisis.id')
                 ->whereNotExists(function ($query) use ($bulanSaatIni) {
                     $query->select(DB::raw(1))
                         ->from('absensi')
@@ -55,8 +55,8 @@ class AbsensiController extends Controller
             $absensis = DB::table('sdms')
                 ->select('sdms.*', 'jabatan.nama as nama_jabatan', 'entitas.nama as nama_entitas', 'divisis.nama as nama_divisi')
                 ->join('jabatan', 'sdms.jabatan_id', '=', 'jabatan.id')
-                ->leftJoin('entitas', 'sdms.entitas_id', '=', 'entitas.id')
-                ->leftJoin('divisis', 'sdms.divisi_id', '=', 'divisis.id')
+                ->join('entitas', 'sdms.entitas_id', '=', 'entitas.id')
+                ->join('divisis', 'sdms.divisi_id', '=', 'divisis.id')
                 ->whereNotExists(function ($query) use ($bulan) {
                     $query->select(DB::raw(1))
                         ->from('absensi')
@@ -114,6 +114,7 @@ class AbsensiController extends Controller
                     'tunjangan' => json_encode($tunjanganDinamis),
                     'potongan' => json_encode($potonganDinamis),
                     'entitas' => $sdm->entitas->nama,
+                    'divisi' => $sdm->divisi->nama,
                     // Sisipkan kolom lain yang diperlukan
                 ];
 
@@ -165,6 +166,7 @@ class AbsensiController extends Controller
                     'tunjangan' => json_encode($tunjanganDinamis),
                     'potongan' => json_encode($potonganDinamis),
                     'entitas' => $sdm->entitas->nama,
+                    'divisi' => $sdm->divisi->nama,
                     // Sisipkan kolom lain yang diperlukan
                 ];
 
