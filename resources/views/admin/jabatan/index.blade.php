@@ -39,6 +39,10 @@
                                             <th>Nama</th>
                                             <th>Tunjangan Jabatan</th>
                                             <th>Total Gaji</th>
+                                            @if (Auth::user()->status == 1)
+                                                <th class="col-2">User</th>
+                                                <th class="col-2">Last Update</th>
+                                            @endif
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
@@ -55,6 +59,21 @@
                                                     <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
                                                     @php $total_gaji =  $item->tunjangan_jabatan @endphp
                                                     <td>Rp. {{ number_format($total_gaji, 0, '', '.') }}</td>
+                                                    @if (Auth::user()->status == 1)
+                                                        <td>{{ $item->username ?? 'Empty user last update' }}</td>
+                                                        <td>
+                                                            @if ($item->last_update)
+                                                                @php
+                                                                    $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
+                                                                @endphp
+                                                                {{ $last_update->format('Y-m-d H:i:s') }}
+                                                            @else
+                                                                No last updated date.
+                                                            @endif
+                                                            <br>
+                                                            <br>
+                                                        </td>
+                                                    @endif
                                                     <td>
                                                         <a href="{{ route('admin.edit-jabatan', $item->id) }}"
                                                             class="btn btn-info"> <i class="fa fa-edit"></i> </a>

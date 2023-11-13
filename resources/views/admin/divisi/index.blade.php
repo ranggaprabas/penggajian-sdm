@@ -38,6 +38,10 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
+                                            @if (Auth::user()->status == 1)
+                                            <th class="col-2">User</th>
+                                            <th class="col-2">Last Update</th>
+                                            @endif
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
@@ -46,12 +50,27 @@
                                             <tr id="index_{{ $item->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }}</td>
+                                                @if (Auth::user()->status == 1)      
+                                                <td>{{ $item->username ?? 'Empty user last update' }}</td>
+                                                <td>
+                                                    @if ($item->last_update)
+                                                        @php
+                                                            $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
+                                                        @endphp
+                                                        {{ $last_update->format('Y-m-d H:i:s') }}
+                                                    @else
+                                                        No last updated date.
+                                                    @endif
+                                                    <br>
+                                                    <br>
+                                                </td>
+                                                @endif
                                                 <td>
                                                     <a href="{{ route('admin.edit-divisi', $item->id) }}"
                                                         class="btn btn-info"> <i class="fa fa-edit"></i> </a>
                                                     <a href="javascript:void(0)" id="btn-delete-divisi"
-                                                    data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                                    class="btn btn-danger"> <i class="fa fa-trash"></i></a>
+                                                        data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                                        class="btn btn-danger"> <i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

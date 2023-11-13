@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\EntitasRequest;
 use App\Models\Entitas;
+use App\Models\LogActivity;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,15 @@ class EntitasController extends Controller
      */
     public function store(EntitasRequest $request)
     {
-        Entitas::create($request->validated());
+        $entitas = Entitas::create($request->validated());
+
+        LogActivity::create([
+            'table_name' => 'entitas',
+            'row_id' => $entitas->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'add',
+            'date_created' => now()->format('Y:m:d H:i:s'),
+        ]);
 
         $entitasNama = $request->input('nama');
 
