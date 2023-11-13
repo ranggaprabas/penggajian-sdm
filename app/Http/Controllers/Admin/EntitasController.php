@@ -16,7 +16,14 @@ class EntitasController extends Controller
      */
     public function index()
     {
-        $items = Entitas::all();
+        $items = Entitas::select('entitas.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
+            ->leftJoin('log_activities', function ($join) {
+                $join->on('log_activities.row_id', '=', 'entitas.id')
+                    ->where('log_activities.table_name', '=', 'entitas')
+                    ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = entitas.id AND log_activities.table_name = "entitas")');
+            })
+            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
+            ->get();
 
         return view('admin.entitas.index', compact('items'));
     }
@@ -49,7 +56,7 @@ class EntitasController extends Controller
         $entitasNama = $request->input('nama');
 
         return redirect()->route('admin.entitas.index')->with([
-            'message' => 'Data Entitas '. $entitasNama .' berhasil ditambahkan!',
+            'message' => 'Data Entitas ' . $entitasNama . ' berhasil ditambahkan!',
             'alert-info' => 'success'
         ]);
     }
@@ -80,8 +87,16 @@ class EntitasController extends Controller
     {
         $entita->update($request->validated());
 
+        LogActivity::create([
+            'table_name' => 'entitas',
+            'row_id' => $entita->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'edit',
+            'date_created' => now()->format('Y:m:d H:i:s')
+        ]);
+
         // Membuat pesan sukses
-        $message = 'Data Entitas ' . $entita->nama. ' berhasil diperbarui!';
+        $message = 'Data Entitas ' . $entita->nama . ' berhasil diperbarui!';
 
         return redirect()->route('admin.entitas.index')->with([
             'success' => $message,
@@ -105,7 +120,7 @@ class EntitasController extends Controller
 
         // Menghapus entitas
         $entita->delete();
-        
+
         //return response
         return response()->json([
             'success' => true,

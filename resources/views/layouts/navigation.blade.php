@@ -62,9 +62,9 @@
                     </a>
                 </li>
                 <li
-                    class="nav-item {{ Route::is('admin.divisi.*') || Route::is('admin.edit-entitas') ? 'menu-open' : '' }}">
+                    class="nav-item {{ Route::is('admin.divisi.*') || Route::is('admin.edit-divisi') ? 'menu-open' : '' }}">
                     <a href="{{ route('admin.divisi.index') }}"
-                        class="nav-link {{ Route::is('admin.divisi.*') || Route::is('admin.edit-entitas') ? 'active' : '' }}">
+                        class="nav-link {{ Route::is('admin.divisi.*') || Route::is('admin.edit-divisi') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-university"></i>
                         <p>
                             {{ __('Divisi') }}

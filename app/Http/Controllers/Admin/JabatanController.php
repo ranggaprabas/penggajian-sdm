@@ -123,14 +123,6 @@ class JabatanController extends Controller
         $jabatan->deleted = 1;
         $jabatan->save();
 
-        // Menambahkan log activity untuk tindakan hapus
-        LogActivity::create([
-            'table_name' => 'jabatan',
-            'row_id' => $jabatan->id,
-            'user_id' => auth()->user()->id,
-            'action' => 'delete',
-            'date_created' => now()->format('Y:m:d H:i:s')
-        ]);
 
         // Mengembalikan response JSON
         return response()->json([

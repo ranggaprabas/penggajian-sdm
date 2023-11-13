@@ -13,7 +13,7 @@
                     <h1 class="m-0">{{ __('Entitas') }}</h1>
 
                     {{-- <a href="{{ route('admin.entitas.create') }}" class="btn btn-success"> <i class="fa fa-plus"></i> </a> --}}
-                    
+
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -38,6 +38,10 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
+                                            @if (Auth::user()->status == 1)
+                                                <th>User</th>
+                                                <th>Last Update</th>
+                                            @endif
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
@@ -46,6 +50,21 @@
                                             <tr id="index_{{ $item->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }}</td>
+                                                @if (Auth::user()->status == 1)
+                                                    <td>{{ $item->username ?? 'Empty user last update' }}</td>
+                                                    <td>
+                                                        @if ($item->last_update)
+                                                            @php
+                                                                $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
+                                                            @endphp
+                                                            {{ $last_update->format('Y-m-d H:i:s') }}
+                                                        @else
+                                                            No last updated date.
+                                                        @endif
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                @endif
                                                 <td>
                                                     <a href="{{ route('admin.edit-entitas', $item->id) }}"
                                                         class="btn btn-info"> <i class="fa fa-edit"></i> </a>
