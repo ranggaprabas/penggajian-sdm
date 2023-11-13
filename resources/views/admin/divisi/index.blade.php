@@ -63,7 +63,8 @@
                                                         @endif
                                                         <br>
                                                         @if ($item->action)
-                                                            Action: {{ $item->action }}
+                                                            <span class="badge bg-primary">Action:
+                                                                {{ $item->action }}</span>
                                                         @endif
                                                         <br>
                                                         <br>
