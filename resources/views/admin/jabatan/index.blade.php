@@ -71,6 +71,10 @@
                                                                 No last updated date.
                                                             @endif
                                                             <br>
+                                                            @if ($item->action)
+                                                                Action: {{ $item->action }}
+                                                            @endif
+                                                            <br>
                                                             <br>
                                                         </td>
                                                     @endif

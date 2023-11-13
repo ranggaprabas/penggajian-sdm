@@ -39,8 +39,8 @@
                                             <th>No</th>
                                             <th>Nama</th>
                                             @if (Auth::user()->status == 1)
-                                            <th class="col-2">User</th>
-                                            <th class="col-2">Last Update</th>
+                                                <th class="col-2">User</th>
+                                                <th class="col-2">Last Update</th>
                                             @endif
                                             <th class="action-column">Action</th>
                                         </tr>
@@ -50,20 +50,24 @@
                                             <tr id="index_{{ $item->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }}</td>
-                                                @if (Auth::user()->status == 1)      
-                                                <td>{{ $item->username ?? 'Empty user last update' }}</td>
-                                                <td>
-                                                    @if ($item->last_update)
-                                                        @php
-                                                            $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
-                                                        @endphp
-                                                        {{ $last_update->format('Y-m-d H:i:s') }}
-                                                    @else
-                                                        No last updated date.
-                                                    @endif
-                                                    <br>
-                                                    <br>
-                                                </td>
+                                                @if (Auth::user()->status == 1)
+                                                    <td>{{ $item->username ?? 'Empty user last update' }}</td>
+                                                    <td>
+                                                        @if ($item->last_update)
+                                                            @php
+                                                                $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
+                                                            @endphp
+                                                            {{ $last_update->format('Y-m-d H:i:s') }}
+                                                        @else
+                                                            No last updated date.
+                                                        @endif
+                                                        <br>
+                                                        @if ($item->action)
+                                                            Action: {{ $item->action }}
+                                                        @endif
+                                                        <br>
+                                                        <br>
+                                                    </td>
                                                 @endif
                                                 <td>
                                                     <a href="{{ route('admin.edit-divisi', $item->id) }}"
