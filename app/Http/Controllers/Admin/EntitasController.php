@@ -87,6 +87,10 @@ class EntitasController extends Controller
     {
         $entita->update($request->validated());
 
+        LogActivity::where('table_name', 'entitas')
+            ->where('row_id', $entita->id)
+            ->delete();
+
         LogActivity::create([
             'table_name' => 'entitas',
             'row_id' => $entita->id,

@@ -43,6 +43,8 @@
                                             <th>Email</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Status</th>
+                                            <th>User</th>
+                                            <th>Last Update</th>
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
@@ -73,6 +75,25 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    {{ $admin->username ?? 'Empty user last update ' }}
+                                                </td>
+                                                <td>
+                                                    @if ($admin->last_update)
+                                                        @php
+                                                            $last_update = Carbon\Carbon::parse($admin->last_update)->tz('Asia/Jakarta');
+                                                        @endphp
+                                                        {{ $last_update->format('Y-m-d H:i:s') }}
+                                                    @else
+                                                        No last updated date
+                                                    @endif
+                                                    <br>
+                                                    @if ($admin->action)
+                                                        <span class="badge bg-primary">Action: {{ $admin->action }}</span>
+                                                    @endif
+                                                    <br>
+                                                    <br>
+                                                </td>
+                                                <td>
                                                     <a href="{{ route('admin.users.show', $admin->id) }}"
                                                         class="btn-sm btn-warning d-inline-block mx-1"> <i
                                                             class="text-white fa fa-eye"></i> </a>
@@ -97,6 +118,8 @@
                                             <th>Email</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Status</th>
+                                            <th>User</th>
+                                            <th>Last Update</th>
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </tfoot>

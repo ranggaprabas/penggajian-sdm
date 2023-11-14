@@ -71,16 +71,18 @@
                                             <th>Divisi</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
+                                            @if (Auth::user()->status == 1)
+                                                <th>User</th>
+                                                <th>Last Update</th>
+                                            @endif
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php
-                                            $counter = 1;
-                                        @endphp
+
                                         @foreach ($sdms as $sdm)
                                             <tr id="_index{{ $sdm->id }}">
-                                                <td>{{ $counter }}</td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $sdm->nama }}</td>
                                                 <td>{{ $sdm->email }}</td>
                                                 <td>{{ $sdm->nik }}</td>
@@ -110,6 +112,26 @@
                                                         @endif
                                                     @endif
                                                 </td>
+                                                @if (Auth::user()->status == 1)
+                                                    <td>{{ $sdm->username ?? 'Empty user last update' }}</td>
+                                                    <td>
+                                                        @if ($sdm->last_update)
+                                                            @php
+                                                                $last_update = \Carbon\Carbon::parse($sdm->last_update)->tz('Asia/Jakarta');
+                                                            @endphp
+                                                            {{ $last_update->format('Y-m-d H:i:s') }}
+                                                        @else
+                                                            No last updated date
+                                                        @endif
+                                                        <br>
+                                                        @if ($sdm->action)
+                                                            <span class="badge bg-primary">Action:
+                                                                {{ $sdm->action }}</span>
+                                                        @endif
+                                                        <br>
+                                                        <br>
+                                                    </td>
+                                                @endif
                                                 <td>
                                                     @if ($sdm->deleted == 0)
                                                         <a href="{{ route('admin.sdm.show', $sdm->id) }}"
@@ -134,9 +156,6 @@
                                                     @endif
                                                 </td>
                                             </tr>
-                                            @php
-                                                $counter++;
-                                            @endphp
                                         @endforeach
                                     </tbody>
                                     <tfoot>

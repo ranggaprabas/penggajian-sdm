@@ -89,6 +89,9 @@ class DivisiController extends Controller
     {
         $divisi->update($request->validated());
 
+        LogActivity::where('table_name', 'divisis')
+            ->where('row_id', $divisi->id)
+            ->delete();
 
         LogActivity::create([
             'table_name' => 'divisis',

@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\SdmRequest;
 use App\Models\Divisi;
 use App\Models\Entitas;
 use App\Models\KomponenGaji;
+use App\Models\LogActivity;
 use App\Models\PotonganGaji;
 
 class SdmController extends Controller
@@ -19,17 +20,32 @@ class SdmController extends Controller
      */
     public function index()
     {
-        $sdms = Sdm::with('jabatan', 'entitas', 'divisi')
+        $sdms = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
+            ->leftJoin('log_activities', function ($join) {
+                $join->on('log_activities.row_id', '=', 'sdms.id')
+                    ->where('log_activities.table_name', '=', 'sdms')
+                    ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = sdms.id AND log_activities.table_name = "sdms")');
+            })
+            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
             ->where('deleted', 0)
+            ->with('jabatan', 'entitas', 'divisi')
             ->get();
+
         $isDeletedPage = false;
         return view('admin.sdm.index', compact('sdms', 'isDeletedPage'));
     }
 
     public function indexDeleted()
     {
-        $sdms = Sdm::with('jabatan', 'entitas', 'divisi')
+        $sdms = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
+            ->leftJoin('log_activities', function ($join) {
+                $join->on('log_activities.row_id', '=', 'sdms.id')
+                    ->where('log_activities.table_name', '=', 'sdms')
+                    ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = sdms.id AND log_activities.table_name = "sdms")');
+            })
+            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
             ->where('deleted', 1)
+            ->with('jabatan', 'entitas', 'divisi')
             ->get();
 
         $isDeletedPage = true;
@@ -42,7 +58,7 @@ class SdmController extends Controller
         $query = $request->get('term', '');
         $tunjangan = KomponenGaji::query();
 
-        $tunjangan->whereHas('sdm', function($query){
+        $tunjangan->whereHas('sdm', function ($query) {
             $query->where('deleted', 0);
         });
 
@@ -108,6 +124,14 @@ class SdmController extends Controller
     public function store(SdmRequest $request)
     {
         $user = Sdm::create($request->validated());
+
+        LogActivity::create([
+            'table_name' => 'sdms',
+            'row_id' => $user->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'add',
+            'date_created' => now()->format('Y-m-d H:i:s'),
+        ]);
 
         $namaTunjangan = $request->input('nama_tunjangan');
         $nilaiTunjangan = $request->input('nilai_tunjangan');
@@ -206,6 +230,17 @@ class SdmController extends Controller
     {
         $sdm->update($request->validated());
 
+        LogActivity::where('table_name', 'sdms')
+            ->where('row_id', $sdm->id)
+            ->delete();
+
+        LogActivity::create([
+            'table_name' => 'sdms',
+            'row_id' => $sdm->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'edit',
+            'date_created' => now()->format('Y-m-d H:i:s')
+        ]);
 
         // Tunjangan Gaji
 
@@ -289,12 +324,20 @@ class SdmController extends Controller
         ]);
     }
 
-
-
-
-
     public function restore(Sdm $sdm)
     {
+        LogActivity::where('table_name', 'sdms')
+            ->where('row_id', $sdm->id)
+            ->delete();
+
+        LogActivity::create([
+            'table_name' => 'sdms',
+            'row_id' => $sdm->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'restore',
+            'date_created' => now()->format('Y-m-d H:i:s')
+        ]);
+
         $sdm->update(['deleted' => 0]);
 
         return response()->json(['message' => 'Data SDM ' . $sdm->nama . ' Berhasil diaktifkan.']);
@@ -307,6 +350,19 @@ class SdmController extends Controller
     public function destroy(Sdm $sdm)
     {
         // Mengubah nilai "deleted" menjadi 1 (true) alih-alih menghapus data
+        // Delete associated log activities
+        LogActivity::where('table_name', 'sdms')
+            ->where('row_id', $sdm->id)
+            ->delete();
+
+        LogActivity::create([
+            'table_name' => 'sdms',
+            'row_id' => $sdm->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'delete',
+            'date_created' => now()->format('Y-m-d H:i:s')
+        ]);
+
         $sdm->deleted = 1;
         $sdm->save();
 

@@ -87,6 +87,10 @@ class JabatanController extends Controller
     {
         $jabatan->update($request->validated());
 
+        LogActivity::where('table_name', 'jabatan')
+            ->where('row_id', $jabatan->id)
+            ->delete();
+
         LogActivity::create([
             'table_name' => 'jabatan',
             'row_id' => $jabatan->id,

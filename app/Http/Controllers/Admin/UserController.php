@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
+use App\Models\LogActivity;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,14 @@ class UserController extends Controller
 
     public function index()
     {
-        $admins = User::all();
+        $admins = User::select('users.*', 'log_activities.action', 'log_activities.date_created as last_update', 'u2.nama as username')
+            ->leftJoin('log_activities', function ($join) {
+                $join->on('log_activities.row_id', '=', 'users.id')
+                    ->where('log_activities.table_name', '=', 'users')
+                    ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = users.id AND log_activities.table_name = "users")');
+            })
+            ->leftJoin('users as u2', 'u2.id', '=', 'log_activities.user_id')
+            ->get();
         return view('admin.users.index', compact('admins'));
     }
 
@@ -49,7 +57,15 @@ class UserController extends Controller
         $data = $request->validated();
         $data['password'] = Hash::make($request->input('password')); // Hash the password
         $data['is_admin'] = 1;
-        User::create($data);
+        $user = User::create($data);
+
+        LogActivity::create([
+            'table_name' => 'users',
+            'row_id' => $user->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'add',
+            'date_created' => now()->format('Y-m-d H:i:s')
+        ]);
 
         $userNama = $request->input('nama');
 
@@ -100,6 +116,18 @@ class UserController extends Controller
 
         $user->update($data);
 
+        LogActivity::where('table_name', 'users')
+            ->where('row_id', $user->id)
+            ->delete();
+
+        LogActivity::create([
+            'table_name' => 'users',
+            'row_id' => $user->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'edit',
+            'date_created' => now()->format('Y-m-d H:i:s')
+        ]);
+
         $message = 'Data Admin ' . $user->nama  . ' berhasil diperbarui!';
 
         return redirect()->route('admin.users.index')->with([
@@ -114,12 +142,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+
+        LogActivity::where('table_name', 'users')
+            ->where('row_id', $user->id)
+            ->delete();
+
         $user->delete();
 
         //return response
         return response()->json([
             'success' => true,
-            'message' => 'Data Admin '. $user->nama .' Berhasil Dihapus!.',
+            'message' => 'Data Admin ' . $user->nama . ' Berhasil Dihapus!.',
         ]);
     }
 }
