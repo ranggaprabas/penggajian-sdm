@@ -169,6 +169,8 @@
                                             <th>Divisi</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
+                                            <th>User</th>
+                                            <th>Last Update</th>
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </tfoot>

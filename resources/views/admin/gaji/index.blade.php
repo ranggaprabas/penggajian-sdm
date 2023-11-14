@@ -223,8 +223,9 @@
                                                     <th>Entitas</th>
                                                     <th>Divisi</th>
                                                     <th>Jabatan</th>
-                                                    <th>Tunjangan Jabatan</th>
                                                     <th>Tunjangan</th>
+                                                    <th>Potongan</th>
+                                                    <th>Take Home Pay</th>
                                                     <th class="action-column">Action</th>
                                                 </tr>
                                             </tfoot>
