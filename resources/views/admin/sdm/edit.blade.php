@@ -2,128 +2,181 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">{{ $title }}</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.sdm.index') }}">{{ $pages }}</a></li>
-                        <li class="breadcrumb-item active">Edit SDM</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+    <div class="header">
+        <div class="header-content">
+            <nav class="navbar navbar-expand">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="header-left">
+                        <div class="dashboard_bar">
+                            SDM
+                        </div>
+                    </div>
+                    <!-- Right navbar links -->
+                    <ul class="navbar-nav header-right">
+                        <li class="nav-item dropdown notification_dropdown">
+                            <a class="btn btn-primary d-sm-inline-block" data-toggle="dropdown" aria-expanded="false">
+                                {{ Auth::user()->nama }} <i class="fa fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:200px;">
+                                    <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <div class="media me-2 media-info">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <a href="{{ route('admin.profile.show') }}" class="dropdown-item">
+                                                        <h6 class="mb-1">{{ __('My profile') }}</h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <div class="media me-2 media-success">
+                                                    <i class="fas fa-sign-out-alt"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <form method="POST" action="{{ route('logout') }}">
+                                                        @csrf
+                                                        <a href="{{ route('logout') }}" class="dropdown-item"
+                                                            onclick="event.preventDefault(); confirmLogout();">
+                                                            <h6 class="mb-1"> {{ __('Log Out') }}</h6>
+                                                        </a>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div> <!-- /.navbar -->
 
     <!-- Main content -->
-    <div class="content">
+    <div class="content-body">
         <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="{{ route('admin.sdm.index') }}">{{ $pages }}</a>
+                    </li>
+                    <li class="breadcrumb-item">{{ $title }}</li>
+                </ol>
+            </div>
             <div class="col-lg-12">
                 <form novalidate action="{{ route('admin.sdm.update', $sdm->id) }}" method="POST"
                     onsubmit="return validateForm() && removeCommas2();">
                     @csrf
                     @method('put')
-                    <div class="card card-primary">
+                    <div class="card">
                         <div class="card-header">
-                            <div class="card-title">
-                                Profile SDM
-                            </div>
+                            <h4 class="card-title">Profile SDM</h4>
                         </div>
-                        <div class="card-body p-3">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="nama">Nama</label>
-                                        <input class="form-control" type="text" id="nama" name="nama"
-                                            value="{{ old('nama', $sdm->nama) }}">
+                        <div class="card-body">
+                            <div class="basic-form">
+                                <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="nama">Nama</label>
+                                            <input class="form-control gray-border" type="text" id="nama"
+                                                name="nama" value="{{ old('nama', $sdm->nama) }}">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group ">
-                                        <label for="entitas">Entitas</label>
-                                        <select class="form-control select2" name="entitas_id" id="entitas">
-                                            <option value="">-- Choose Categories --</option>
-                                            @foreach ($entita as $entitas)
-                                                <option value="{{ $entitas->id }}"
-                                                    {{ $sdm->entitas && $sdm->entitas->id == $entitas->id ? 'selected' : '' }}>
-                                                    {{ $entitas->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group ">
-                                        <label for="divisi">Divisi</label>
-                                        <select class="form-control select2" name="divisi_id" id="divisi">
-                                            <option value="">-- Choose Categories --</option>
-                                            @foreach ($divisis as $divisi)
-                                                <option value="{{ $divisi->id }}"
-                                                    {{ $sdm->divisi && $sdm->divisi->id == $divisi->id ? 'selected' : '' }}>
-                                                    {{ $divisi->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jabatan">Jabatan</label>
-                                        <select class="form-control select2" name="jabatan_id" id="jabatan" required>
-                                            <option value="" disabled selected>-- Choose Categories --</option>
-                                            @foreach ($jabatans as $jabatan)
-                                                @if ($jabatan->deleted != 1)
-                                                    <option value="{{ $jabatan->id }}"
-                                                        data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
-                                                        {{ $sdm->jabatan && $sdm->jabatan->id == $jabatan->id ? 'selected' : '' }}>
-                                                        {{ $jabatan->nama }} - Rp.
-                                                        {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group ">
+                                            <label for="entitas">Entitas</label>
+                                            <select class="form-control gray-border select2" name="entitas_id"
+                                                id="entitas">
+                                                <option value="">-- Choose Categories --</option>
+                                                @foreach ($entita as $entitas)
+                                                    <option value="{{ $entitas->id }}"
+                                                        {{ $sdm->entitas && $sdm->entitas->id == $entitas->id ? 'selected' : '' }}>
+                                                        {{ $entitas->nama }}
                                                     </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input class="form-control" type="text" id="email" name="email"
-                                            value="{{ old('email', $sdm->email) }}">
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group ">
+                                            <label for="divisi">Divisi</label>
+                                            <select class="form-control gray-border select2" name="divisi_id"
+                                                id="divisi">
+                                                <option value="">-- Choose Categories --</option>
+                                                @foreach ($divisis as $divisi)
+                                                    <option value="{{ $divisi->id }}"
+                                                        {{ $sdm->divisi && $sdm->divisi->id == $divisi->id ? 'selected' : '' }}>
+                                                        {{ $divisi->nama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="nik">Nik</label>
-                                        <input class="form-control" type="number" id="nik" name="nik"
-                                            value="{{ old('nik', $sdm->nik) }}">
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="jabatan">Jabatan</label>
+                                            <select class="form-control gray-border select2" name="jabatan_id"
+                                                id="jabatan" required>
+                                                <option value="" disabled selected>-- Choose Categories --</option>
+                                                @foreach ($jabatans as $jabatan)
+                                                    @if ($jabatan->deleted != 1)
+                                                        <option value="{{ $jabatan->id }}"
+                                                            data-tunjangan_jabatan="{{ $jabatan->tunjangan_jabatan }}"
+                                                            {{ $sdm->jabatan && $sdm->jabatan->id == $jabatan->id ? 'selected' : '' }}>
+                                                            {{ $jabatan->nama }} - Rp.
+                                                            {{ number_format($jabatan->tunjangan_jabatan, 0, '', '.') }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="jenis_kelamin">Jenis Kelamin</label>
-                                        <select class="form-control" name="jenis_kelamin" id="jenis_kelamin">
-                                            <option {{ $sdm->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
-                                                value="laki-laki">Laki-Laki</option>
-                                            <option {{ $sdm->jenis_kelamin === 'perempuan' ? 'selected' : null }}
-                                                value="perempuan">Perempuan</option>
-                                        </select>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input class="form-control gray-border" type="text" id="email"
+                                                name="email" value="{{ old('email', $sdm->email) }}">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="form-control" name="status" id="status">
-                                            <option {{ $sdm->status === 1 ? 'selected' : null }} value="1">Pegawai
-                                                Tetap
-                                            </option>
-                                            <option {{ $sdm->status === 0 ? 'selected' : null }} value="0">Pegawai
-                                                Tidak
-                                                Tetap</option>
-                                        </select>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="nik">Nik</label>
+                                            <input class="form-control gray-border" type="number" id="nik"
+                                                name="nik" value="{{ old('nik', $sdm->nik) }}">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="jenis_kelamin">Jenis Kelamin</label>
+                                            <select class="default-select form-control wide gray-border"
+                                                name="jenis_kelamin" id="jenis_kelamin">
+                                                <option {{ $sdm->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
+                                                    value="laki-laki">Laki-Laki</option>
+                                                <option {{ $sdm->jenis_kelamin === 'perempuan' ? 'selected' : null }}
+                                                    value="perempuan">Perempuan</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <select class="default-select form-control wide gray-border" name="status"
+                                                id="status">
+                                                <option {{ $sdm->status === 1 ? 'selected' : null }} value="1">
+                                                    Pegawai
+                                                    Tetap
+                                                </option>
+                                                <option {{ $sdm->status === 0 ? 'selected' : null }} value="0">
+                                                    Pegawai
+                                                    Tidak
+                                                    Tetap</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +186,7 @@
                         <div class="col-md-6">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <div class="card-title">Tunjangan</div>
+                                    <h4 class="card-title">Tunjangan</h4>
                                 </div>
                                 <div class="card-body p-3">
                                     <div class="form-group">
@@ -141,26 +194,74 @@
                                             @if ($sdm->komponenGaji)
                                                 @foreach ($sdm->komponenGaji as $tunjangan)
                                                     <div class="tunjangan">
-                                                        <div class="form-group">
+                                                        <div class="form-group mb-3">
                                                             <label for="nama_tunjangan">Nama Tunjangan</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Tj.</div>
-                                                                </div>
-                                                                <input type="text"
-                                                                    class="form-control autocomplete_txt_tunjangan"
-                                                                    name="nama_tunjangan[]" id="search"
-                                                                    data-type='namatunjangan' required
-                                                                    value="{{ $tunjangan->nama_tunjangan }}">
-                                                            </div>
+                                                            <select class="form-control select2" name="nama_tunjangan[]"
+                                                                id="tunjangannew_id_{{ $tunjangan->id }}"
+                                                                style="width: 100%;" required>
+                                                                <option value="__create__">Lainnya</option>
+                                                                <option value="" disabled>-- Pilih Tunjangan --
+                                                                </option>
+                                                                @foreach ($sdm->komponenGaji as $optionTunjangan)
+                                                                    <option value="{{ $optionTunjangan->nama_tunjangan }}"
+                                                                        @if ($optionTunjangan->id == $tunjangan->id) selected @endif>
+                                                                        {{ $optionTunjangan->nama_tunjangan }}
+                                                                    </option>
+                                                                @endforeach
+                                                                {{-- Options from tunjangans --}}
+                                                                @foreach ($tunjangans as $optionTunjangan)
+                                                                    <option
+                                                                        value="{{ $optionTunjangan->nama_tunjangan }}">
+                                                                        {{ $optionTunjangan->nama_tunjangan }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <script>
+                                                            $(document).ready(function() {
+                                                                // Inisialisasi Select2
+                                                                $('#tunjangannew_id_{{ $tunjangan->id }}').select2();
+
+                                                                // Menangani perubahan nilai pada elemen select
+                                                                $('#tunjangannew_id_{{ $tunjangan->id }}').on('change', async function() {
+                                                                    // Mendapatkan nilai terpilih
+                                                                    var selectedValue = $(this).val();
+
+                                                                    // Cek apakah opsi "Buat Nilai Baru" dipilih
+                                                                    if (selectedValue === '__create__') {
+                                                                        // Tampilkan modal SweetAlert2 untuk memasukkan nama Tunjangan baru
+                                                                        const {
+                                                                            value: newTunjanganName
+                                                                        } = await Swal.fire({
+                                                                            input: 'text',
+                                                                            inputLabel: 'Nama Tunjangan Baru',
+                                                                            inputPlaceholder: 'Masukkan Nama Tunjangan Baru',
+                                                                            showCancelButton: true,
+                                                                            inputValidator: (value) => {
+                                                                                if (!value) {
+                                                                                    return 'Nama Tunjangan tidak boleh kosong!';
+                                                                                }
+                                                                            }
+                                                                        });
+
+                                                                        // Cek jika pengguna memasukkan nilai baru
+                                                                        if (newTunjanganName) {
+                                                                            // Tambahkan nilai baru ke dalam select
+                                                                            var newOption = new Option(newTunjanganName, newTunjanganName, true, true);
+                                                                            $(this).append(newOption).trigger('change');
+                                                                        } else {
+                                                                            // Batal jika pengguna membatalkan operasi
+                                                                            $(this).val('').trigger('change');
+                                                                        }
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
+                                                        <div class="form-group mb-3">
                                                             <label for="nilai_tunjangan">Nilai Tunjangan</label>
                                                             <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Rp.</div>
-                                                                </div>
-                                                                <input type="text" class="form-control"
+                                                                <span class="input-group-text">Rp.</span>
+                                                                <input type="text" class="form-control gray-border"
                                                                     name="nilai_tunjangan[]" required
                                                                     value="{{ old('nilai_tunjangan', str_replace(',', '.', number_format($tunjangan->nilai_tunjangan))) }}"
                                                                     oninput="addCommas2(this)">
@@ -185,7 +286,7 @@
                         <div class="col-md-6">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <div class="card-title">Potongan</div>
+                                    <h4 class="card-title">Potongan</h4>
                                 </div>
                                 <div class="card-body p-3">
                                     <div class="form-group">
@@ -193,21 +294,73 @@
                                             @if ($sdm->potonganGaji)
                                                 @foreach ($sdm->potonganGaji as $potongan)
                                                     <div class="potongan">
-                                                        <div class="form-group">
+                                                        <div class="form-group mb-3">
                                                             <label for="nama_potongan">Nama Potongan</label>
-                                                            <input type="text"
-                                                                class="form-control autocomplete_txt_potongan"
-                                                                name="nama_potongan[]" id="search"
-                                                                data-type='namapotongan' required
-                                                                value="{{ $potongan->nama_potongan }}">
+                                                            <select class="form-control select2" name="nama_potongan[]"
+                                                                id="potongannew_id_{{ $potongan->id }}"
+                                                                style="width: 100%;" required>
+                                                                <option value="__create__">Lainnya</option>
+                                                                <option value="" disabled>-- Pilih Potongan --
+                                                                </option>
+                                                                @foreach ($sdm->potonganGaji as $optionPotongan)
+                                                                    <option value="{{ $optionPotongan->nama_potongan }}"
+                                                                        @if ($optionPotongan->id == $potongan->id) selected @endif>
+                                                                        {{ $optionPotongan->nama_potongan }}
+                                                                    </option>
+                                                                @endforeach
+                                                                {{-- Options from potongans --}}
+                                                                @foreach ($potongans as $optionPotongan)
+                                                                    <option value="{{ $optionPotongan->nama_potongan }}">
+                                                                        {{ $optionPotongan->nama_potongan }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
-                                                        <div class="form-group">
+                                                        <script>
+                                                            $(document).ready(function() {
+                                                                // Inisialisasi Select2
+                                                                $('#potongannew_id_{{ $potongan->id }}').select2();
+
+                                                                // Menangani perubahan nilai pada elemen select
+                                                                $('#potongannew_id_{{ $potongan->id }}').on('change', async function() {
+                                                                    // Mendapatkan nilai terpilih
+                                                                    var selectedValue = $(this).val();
+
+                                                                    // Cek apakah opsi "Buat Nilai Baru" dipilih
+                                                                    if (selectedValue === '__create__') {
+                                                                        // Tampilkan modal SweetAlert2 untuk memasukkan nama Potongan baru
+                                                                        const {
+                                                                            value: newPotonganName
+                                                                        } = await Swal.fire({
+                                                                            input: 'text',
+                                                                            inputLabel: 'Nama Potongan Baru',
+                                                                            inputPlaceholder: 'Masukkan Nama Potongan Baru',
+                                                                            showCancelButton: true,
+                                                                            inputValidator: (value) => {
+                                                                                if (!value) {
+                                                                                    return 'Nama Potongan tidak boleh kosong!';
+                                                                                }
+                                                                            }
+                                                                        });
+
+                                                                        // Cek jika pengguna memasukkan nilai baru
+                                                                        if (newPotonganName) {
+                                                                            // Tambahkan nilai baru ke dalam select
+                                                                            var newOption = new Option(newPotonganName, newPotonganName, true, true);
+                                                                            $(this).append(newOption).trigger('change');
+                                                                        } else {
+                                                                            // Batal jika pengguna membatalkan operasi
+                                                                            $(this).val('').trigger('change');
+                                                                        }
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
+                                                        <div class="form-group mb-3">
                                                             <label for="nilai_potongan">Nilai Potongan</label>
                                                             <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <div class="input-group-text">Rp.</div>
-                                                                </div>
-                                                                <input type="text" class="form-control"
+                                                                <span class="input-group-text">Rp.</span>
+                                                                <input type="text" class="form-control gray-border"
                                                                     name="nilai_potongan[]" required
                                                                     value="{{ old('nilai_potongan', str_replace(',', '.', number_format($potongan->nilai_potongan))) }}"
                                                                     oninput="addCommas2(this)">
@@ -237,4 +390,199 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+    
+    {{-- Komponen Edit Tunjangan --}}
+
+    <script>
+        $(document).ready(function() {
+            var counter = 0;
+
+
+            function addTunjanganInput() {
+                var newTunjangan = `
+        <div class="tunjangan">
+            <div class="form-group mb-3">
+                <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
+                <select class="form-control select2" name="nama_tunjangan[]"
+                        id="tunjangannew_id${counter}" style="width: 100%;" required>
+                        <option value="__create__">Lainnya</option>
+                        <option value="" disabled selected>-- Pilih Tunjangan --</option>
+                        @foreach ($tunjangans as $tunjangan)
+                            <option value="{{ $tunjangan->nama_tunjangan }}">
+                                {{ $tunjangan->nama_tunjangan }}
+                            </option>
+                        @endforeach
+                    </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
+                <div class="input-group">
+                    <span class="input-group-text">Rp.</span>
+                    <input class="form-control nilai-tunjangan gray-border" type="text" name="nilai_tunjangan[]" oninput="addCommas2(this)" required>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
+        </div>
+    `;
+                $("#tunjanganContainer").append(newTunjangan);
+                counter++;
+
+                // Inisialisasi Select2 pada elemen yang baru ditambahkan
+                $('.select2').select2({
+                    theme: 'bootstrap4'
+                });
+            }
+
+            $("#addTunjanganEdit").click(function() {
+                addTunjanganInput();
+            });
+
+            $(document).on("click", ".removeTunjangan", function() {
+                var tunjanganElement = $(this).closest('.tunjangan');
+                var tunjanganId = tunjanganElement.data('id'); // Dapatkan ID tunjangan
+                tunjanganElement.remove(); // Hapus elemen secara visual
+
+                // Hapus ID tunjangan dari daftar tunjangan_ids
+                var tunjanganIds = $("#tunjangan_ids").val().split(',').filter(function(id) {
+                    return id !== tunjanganId.toString();
+                });
+                $("#tunjangan_ids").val(tunjanganIds.join(','));
+            });
+
+            // Inisialisasi Select2
+            $('.select2').select2();
+
+            // Menangani perubahan nilai pada elemen select
+            $(document).on('change', '[id^="tunjangannew_id"]', async function() {
+                // Mendapatkan nilai terpilih
+                var selectedValue = $(this).val();
+
+                // Cek apakah opsi "Buat Nilai Baru" dipilih
+                if (selectedValue === '__create__') {
+                    // Tampilkan modal SweetAlert2 untuk memasukkan nama Tunjangan baru
+                    const {
+                        value: newTunjanganName
+                    } = await Swal.fire({
+                        input: 'text',
+                        inputLabel: 'Nama Tunjangan Baru',
+                        inputPlaceholder: 'Masukkan Nama Tunjangan Baru',
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return 'Nama Tunjangan tidak boleh kosong!';
+                            }
+                        }
+                    });
+
+                    // Cek jika pengguna memasukkan nilai baru
+                    if (newTunjanganName) {
+                        // Tambahkan nilai baru ke dalam select
+                        var newOption = new Option(newTunjanganName, newTunjanganName, true, true);
+                        $(this).append(newOption).trigger('change');
+                    } else {
+                        // Batal jika pengguna membatalkan operasi
+                        $(this).val('').trigger('change');
+                    }
+                }
+            });
+        });
+    </script>
+
+    {{-- Komponen Edit Potongan --}}
+
+    <script>
+        $(document).ready(function() {
+            var counter = 0;
+
+            function addPotonganInput() {
+                var newPotongan = `
+        <div class="potongan">
+            <div class="form-group mb-3">
+                <label for="nama_potongan${counter}">Nama Potongan</label>
+                <select class="form-control select2" name="nama_potongan[]"
+                        id="potongannew_id${counter}" style="width: 100%;" required>
+                        <option value="__create__">Lainnya</option>
+                        <option value="" disabled selected>-- Pilih Potongan --</option>
+                        @foreach ($potongans as $potongan)
+                            <option value="{{ $potongan->nama_potongan }}">
+                                {{ $potongan->nama_potongan }}
+                            </option>
+                        @endforeach
+                    </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="nilai_potongan${counter}">Nilai Potongan</label>
+                <div class="input-group">
+                    <span class="input-group-text">Rp.</span>
+                    <input class="form-control nilai-potongan gray-border" type="text" name="nilai_potongan[]" oninput="addCommas2(this)" required>
+                </div>
+            </div>
+            <button type="button" class="btn btn-outline-danger removePotongan mb-3"> <i class="fa fa-trash"></i>  Hapus Potongan</button>
+        </div>
+    `;
+                $("#potonganContainer").append(newPotongan);
+                counter++;
+
+                // Inisialisasi Select2 pada elemen yang baru ditambahkan
+                $('.select2').select2({
+                    theme: 'bootstrap4'
+                });
+            }
+
+            $("#addPotonganEdit").click(function() {
+                addPotonganInput();
+            });
+
+            $(document).on("click", ".removePotongan", function() {
+                var potonganElement = $(this).closest('.potongan');
+                var potonganId = potonganElement.data('id'); // Dapatkan ID potongan
+                potonganElement.remove(); // Hapus elemen secara visual
+
+                // Hapus ID potongan dari daftar potongan_ids
+                var potonganIds = $("#potongan_ids").val().split(',').filter(function(id) {
+                    return id !== potonganId.toString();
+                });
+                $("#potongan_ids").val(potonganIds.join(','));
+            });
+
+            // Inisialisasi Select2
+            $('.select2').select2();
+
+            // Menangani perubahan nilai pada elemen select
+            $(document).on('change', '[id^="potongannew_id"]', async function() {
+                // Mendapatkan nilai terpilih
+                var selectedValue = $(this).val();
+
+                // Cek apakah opsi "Buat Nilai Baru" dipilih
+                if (selectedValue === '__create__') {
+                    // Tampilkan modal SweetAlert2 untuk memasukkan nama Potongan baru
+                    const {
+                        value: newPotonganName
+                    } = await Swal.fire({
+                        input: 'text',
+                        inputLabel: 'Nama Potongan Baru',
+                        inputPlaceholder: 'Masukkan Nama Potongan Baru',
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return 'Nama Potongan tidak boleh kosong!';
+                            }
+                        }
+                    });
+
+                    // Cek jika pengguna memasukkan nilai baru
+                    if (newPotonganName) {
+                        // Tambahkan nilai baru ke dalam select
+                        var newOption = new Option(newPotonganName, newPotonganName, true, true);
+                        $(this).append(newOption).trigger('change');
+                    } else {
+                        // Batal jika pengguna membatalkan operasi
+                        $(this).val('').trigger('change');
+                    }
+                }
+            });
+        });
+    </script>
+
+    
 @endsection

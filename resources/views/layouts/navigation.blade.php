@@ -1,157 +1,103 @@
 <!-- Sidebar -->
-<div class="sidebar">
-    <!-- Sidebar user panel (optional) -->
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info d-flex align-items-center">
-            <a href="{{ route('admin.profile.show') }}" class="d-block">{{ Auth::user()->nama }}</a>
-            &nbsp;&nbsp;&nbsp;
-            @if (Auth::check())
-                @if (Auth::user()->status)
-                    <span class="badge bg-primary ms-2">Superadmin</span>
-                @else
-                    <span class="badge bg-warning ms-2">Admin</span>
-                @endif
-            @endif
+<div class="nav-header">
+    <a href="{{ route('admin.home') }}" class="brand-logo">
+        <img src="{{ asset('images/tamanmedia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="50">
+        <svg class="brand-title" width="200px" height="33px">
+            <text x="10" y="20" fill="rgb(25, 59, 98)" font-size="16">
+                Penggajian SDM
+            </text>
+        </svg>
+    </a>
+    
+    <div class="nav-control">
+        <div class="hamburger">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
         </div>
-        
     </div>
+</div>
+<div class="dlabnav">
+    <div class="dlabnav-scroll">
+        <ul class="metismenu" id="menu">
+            <li class="header-profile">
+                @if (Auth::check())
+                    @if (Auth::user()->status)
+                        <span class="badge light badge-primary">Superadmin</span>
+                    @else
+                        <span class="badge light badge-warning">Admin</span>
+                    @endif
+                @endif
+                &nbsp;&nbsp;&nbsp;
+                <a class="nav-link d-block text-center" href="{{ route('admin.profile.show') }}"
+                    class="d-block">{{ Auth::user()->nama }}</a>
+            </li>
 
-
-    <!-- Sidebar Menu -->
-    <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             @if (auth()->user()->is_admin)
-                <li class="nav-item {{ Route::is('admin.home') ? 'menu-open' : '' }}">
-                    <a href="{{ route('admin.home') }}" class="nav-link {{ Route::is('admin.home') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            {{ __('Dashboard') }}
-                        </p>
+                <li>
+                    <a href="{{ route('admin.home') }}" class="ai-icon" aria-expanded="false">
+                        <i class="flaticon-025-dashboard"></i>
+                        <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
                 @if (auth()->check() && auth()->user()->status == 1)
-                    <li
-                        class="nav-item {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'menu-open' : '' }}">
-                        <a href="{{ route('admin.users.index') }}"
-                            class="nav-link {{ Route::is('admin.users.*') || Route::is('admin.edit-users') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-cogs"></i>
-                            <p>
-                                {{ __('Admin') }}
-                            </p>
+                    <li>
+                        <a href="{{ route('admin.users.index') }}" class="ai-icon-admin" aria-expanded="false">
+                            <i class="fa fa-cogs"></i>
+                            <span class="nav-text">Admin</span>
                         </a>
                     </li>
                 @endif
-                <li class="nav-item {{ Route::is('admin.sdm.*') || Route::is('admin.edit-sdm') ? 'menu-open' : '' }}">
-                    <a href="{{ route('admin.sdm.index') }}"
-                        class="nav-link {{ Route::is('admin.sdm.*') || Route::is('admin.edit-sdm') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>
-                            {{ __('SDM') }}
-                        </p>
+                <li>
+                    <a href="{{ route('admin.sdm.index') }}" class="ai-icon-sdm" aria-expanded="false">
+                        <i class="fas fa-users"></i>
+                        <span class="nav-text">SDM</span>
                     </a>
                 </li>
 
-                <li
-                    class="nav-item {{ Route::is('admin.entitas.*') || Route::is('admin.edit-entitas') ? 'menu-open' : '' }}">
-                    <a href="{{ route('admin.entitas.index') }}"
-                        class="nav-link {{ Route::is('admin.entitas.*') || Route::is('admin.edit-entitas') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-building"></i>
-                        <p>
-                            {{ __('Entitas') }}
-                        </p>
+                <li>
+                    <a href="{{ route('admin.entitas.index') }}" class="ai-icon" aria-expanded="false">
+                        <i class="fas fa-building"></i>
+                        <span class="nav-text">Entitas</span>
                     </a>
                 </li>
-                <li
-                    class="nav-item {{ Route::is('admin.divisi.*') || Route::is('admin.edit-divisi') ? 'menu-open' : '' }}">
-                    <a href="{{ route('admin.divisi.index') }}"
-                        class="nav-link {{ Route::is('admin.divisi.*') || Route::is('admin.edit-divisi') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-university"></i>
-                        <p>
-                            {{ __('Divisi') }}
-                        </p>
+                <li>
+                    <a href="{{ route('admin.divisi.index') }}" class="ai-icon-home" aria-expanded="false">
+                        <i class="fas fa-university"></i>
+                        <span class="nav-text">Divisi</span>
                     </a>
                 </li>
 
-                <li
-                    class="nav-item {{ Route::is('admin.jabatan.*') || Route::is('admin.edit-jabatan') ? 'menu-open' : '' }}">
-                    <a href="{{ route('admin.jabatan.index') }}"
-                        class="nav-link {{ Route::is('admin.jabatan.*') || Route::is('admin.edit-jabatan') ? 'active' : '' }}">
+                <li>
+                    <a href="{{ route('admin.jabatan.index') }}" class="ai-icon-jabatan" aria-expanded="false">
                         <i class="nav-icon fas fa-user-tie"></i>
-                        <p>
-                            {{ __('Jabatan') }}
-                        </p>
+                        <span class="nav-text">Jabatan</span>
                     </a>
                 </li>
-
-
-                <!-- <li class="nav-item">
-                        <i class="nav-icon far fa-address-card"></i>
-                    
-                </li> -->
-
-                {{-- <li
-                    class="nav-item {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-clock"></i>
-                        <p>
-                            Kehadiran 
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
+                <li>
+                    <a class="has-arrow ai-icon-gaji" href="javascript:void()" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span class="nav-text">Gaji</span>
                     </a>
-                    <ul class="nav nav-treeview"
-                        {{ Route::is('admin.absensis.index') || Route::is('admin.absensis.show') ? 'style=display:block;' : '' }}>
-                        <li class="nav-item {{ Route::is('admin.absensis.index') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.absensis.index') }}"
-                                class="nav-link {{ Route::is('admin.absensis.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Kehadiran</p>
-                            </a>
-                        </li>
-                        
-                    </ul>
-                </li> --}}
-                <li
-                    class="nav-item {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
-                    <a href="#"
-                        class="nav-link {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                        <p>
-                            Gaji
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul
-                        class="nav nav-treeview {{ Route::is('admin.gaji.index') || Route::is('admin.absensis.show') ? 'style=display:block;' : '' }}">
-                        <li class="nav-item {{ Route::is('admin.gaji.index') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.gaji.index') }}"
-                                class="nav-link {{ Route::is('admin.gaji.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
+                    <ul aria-expanded="false">
+                        <li>
+                            <a href="{{ route('admin.gaji.index') }}">
                                 <p>Data Gaji</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ Route::is('admin.absensis.show') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.absensis.show') }}"
-                                class="nav-link {{ Route::is('admin.absensis.show') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
+                        <li>
+                            <a href="{{ route('admin.absensis.show') }}">
                                 <p>Input Gaji</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ Route::is('admin.laporan.index') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Route::is('admin.laporan.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-file-invoice"></i>
-                        <p>
-                            Laporan Slip
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
+                <li>
+                    <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+                        <i class="flaticon-022-copy"></i>
+                        <span class="nav-text">Laporan Slip</span>
                     </a>
-                    <ul class="nav nav-treeview {{ Route::is('admin.laporan.index') ? 'style=display:block;' : '' }}">
-                        <li class="nav-item {{ Route::is('admin.laporan.index') ? 'menu-open' : '' }}">
-                            <a href="{{ route('admin.laporan.index') }}"
-                                class="nav-link {{ Route::is('admin.laporan.index') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
+                    <ul aria-expanded="false">
+                        <li>
+                            <a href="{{ route('admin.laporan.index') }}">
                                 <p>Slip Gaji</p>
                             </a>
                         </li>
@@ -169,7 +115,6 @@
                     <ul class="nav nav-treeview" style="display: none;">
                         <li class="nav-item">
                             <a href="{{ route('admin.laporan.show') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
                                 <p>Slip Gaji</p>
                             </a>
                         </li>
@@ -177,7 +122,9 @@
                 </li>
             @endif
         </ul>
-    </nav>
-    <!-- /.sidebar-menu -->
+    </div>
+</div>
+
+<!-- /.sidebar-menu -->
 </div>
 <!-- /.sidebar -->

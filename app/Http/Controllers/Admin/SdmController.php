@@ -52,58 +52,6 @@ class SdmController extends Controller
         return view('admin.sdm.index', compact('sdms', 'isDeletedPage'));
     }
 
-
-    public function searchResponse(Request $request)
-    {
-        $query = $request->get('term', '');
-        $tunjangan = KomponenGaji::query();
-
-        $tunjangan->whereHas('sdm', function ($query) {
-            $query->where('deleted', 0);
-        });
-
-        if ($request->type == 'namatunjangan') {
-            $tunjangan->where('nama_tunjangan', 'LIKE', '%' . $query . '%');
-        }
-
-        $tunjangan = $tunjangan->get();
-        $data = array();
-        foreach ($tunjangan as $tunjangans) {
-            $data[] = array('nama_tunjangan' => $tunjangans->nama_tunjangan);
-        }
-        if (count($data))
-            return $data;
-        else
-            return ['nama_tunjangan' => ''];
-    }
-
-    public function searchResponsePotongan(Request $request)
-    {
-        $query = $request->get('term', '');
-        $potongan = PotonganGaji::query();
-
-        $potongan->whereHas('sdm', function ($query) {
-            $query->where('deleted', 0);
-        });
-        if ($request->type == 'namapotongan') {
-            $potongan->where('nama_potongan', 'LIKE', '%' . $query . '%');
-        }
-
-        $potongan = $potongan->get();
-        $data = array();
-        foreach ($potongan as $potongans) {
-            $data[] = array('nama_potongan' => $potongans->nama_potongan);
-        }
-        if (count($data))
-            return $data;
-        else
-            return ['nama_potongan' => ''];
-    }
-
-
-
-
-
     /**
      * Show the form for creating a new resource.
      */
@@ -114,8 +62,16 @@ class SdmController extends Controller
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
         $divisis = Divisi::get(['id', 'nama']);
+        $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
+            ->unique('nama_tunjangan')
+            ->sortBy('nama_tunjangan');
 
-        return view('admin.sdm.create', compact('jabatans', 'entita', 'divisis', 'pages', 'title'));
+        $potongans = PotonganGaji::get(['id', 'nama_potongan'])
+            ->unique('nama_potongan')
+            ->sortBy('nama_potongan');
+
+
+        return view('admin.sdm.create', compact('jabatans', 'entita', 'divisis', 'tunjangans', 'potongans', 'pages', 'title'));
     }
 
     /**
@@ -208,19 +164,21 @@ class SdmController extends Controller
         $title = 'Edit SDM';
         $pages = 'SDM';
         // Ambil data pengguna berdasarkan ID
-        $sdm = Sdm::findOrFail($id);
+        $sdm = Sdm::with('komponenGaji', 'potonganGaji')->findOrFail($id);
 
-        // Ambil data tunjangan yang terkait dengan pengguna
-        $tunjangan = $sdm->komponenGaji;
-
-        // Ambil data potongan yang terkait dengan pengguna
-        $potongan = $sdm->potonganGaji;
 
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $entita = Entitas::get(['id', 'nama']);
         $divisis = Divisi::get(['id', 'nama']);
+        $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
+            ->unique('nama_tunjangan')
+            ->sortBy('nama_tunjangan');
+        $potongans = PotonganGaji::get(['id', 'nama_potongan'])
+            ->unique('nama_potongan')
+            ->sortBy('nama_potongan');
 
-        return view('admin.sdm.edit', compact('sdm', 'tunjangan', 'potongan',  'jabatans', 'entita', 'divisis', 'pages', 'title'));
+
+        return view('admin.sdm.edit', compact('sdm',  'jabatans', 'tunjangans', 'potongans', 'entita', 'divisis', 'pages', 'title'));
     }
 
     /**

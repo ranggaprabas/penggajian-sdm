@@ -25,8 +25,7 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 
-Route::get('/sdm/create/searchResponse', [SdmController::class, 'searchResponse'])->name('searchajax');
-Route::get('/sdm/create/searchResponsePotongan', [SdmController::class, 'searchResponsePotongan'])->name('searchajax-potongan');
+
 
 
 
