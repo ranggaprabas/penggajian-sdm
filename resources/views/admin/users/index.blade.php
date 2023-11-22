@@ -72,8 +72,15 @@
             <div class="row">
                 <div class="col-12">
                     @if (session('success'))
-                        <div class="alert alert-success alert-dismissible alert-alt fade show" id="info-message">
-                            {{ session('success') }}
+                        <div class="alert alert-success solid alert-dismissible fade show" id="info-message">
+                            <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                            <strong>Success!</strong> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
                         </div>
                     @endif
                     <div class="card">
@@ -82,7 +89,8 @@
                                 <!-- Move the 'Add' button to the right -->
                                 <div class="ml-auto-add">
                                     <a href="{{ route('admin.users.create') }}" class="btn btn-rounded btn-success">
-                                        <span class="btn-icon-start text-success"><i class="fa fa-plus color-success"></i></span>
+                                        <span class="btn-icon-start text-success"><i
+                                                class="fa fa-plus color-success"></i></span>
                                         Add
                                     </a>
                                 </div>
@@ -96,7 +104,6 @@
                                             <th>Email</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Status</th>
-                                            <th>User</th>
                                             <th>Last Update</th>
                                             <th class="action-column">Action</th>
                                         </tr>
@@ -128,9 +135,6 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{ $admin->username ?? 'Empty user last update ' }}
-                                                </td>
-                                                <td>
                                                     @if ($admin->last_update)
                                                         @php
                                                             $last_update = Carbon\Carbon::parse($admin->last_update)->tz('Asia/Jakarta');
@@ -139,13 +143,10 @@
                                                     @else
                                                         No last updated date
                                                     @endif
-                                                    <br>
                                                     @if ($admin->action)
                                                         <span class="badge light badge-primary">Action:
                                                             {{ $admin->action }}</span>
                                                     @endif
-                                                    <br>
-                                                    <br>
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('admin.users.show', $admin->id) }}"
@@ -173,7 +174,6 @@
                                             <th>Email</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Status</th>
-                                            <th>User</th>
                                             <th>Last Update</th>
                                             <th class="action-column">Action</th>
                                         </tr>
@@ -196,4 +196,8 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+    <div class="footer">
+        <div class="copyright">
+        </div>
+    </div>
 @endsection

@@ -99,8 +99,15 @@
                         </div>
                     @endif
                     @if (session('success'))
-                        <div class="alert alert-success alert-dismissible alert-alt fade show" id="info-message">
-                            {{ session('success') }}
+                        <div class="alert alert-success solid alert-dismissible fade show" id="info-message">
+                            <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                            <strong>Success!</strong> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
                         </div>
                     @endif
                     <div class="card">
@@ -109,13 +116,16 @@
                                 <div class="d-flex align-items-center">
                                     <p class="mr-2 mb-0 mx-2">Status SDM</p>
                                     <!-- Cek apakah berada di halaman "deleted" -->
-                                    <button type="button" class="btn btn-outline-success btn-xs mx-1" onclick="window.location.href='{{ route('admin.sdm.index') }}'">Aktif</button>
-                                    <button type="button" class="btn btn-outline-danger btn-xs mx-2" onclick="window.location.href='{{ route('admin.sdm.index.deleted') }}'">Resign</button>
+                                    <button type="button" class="btn btn-outline-success btn-xs mx-1"
+                                        onclick="window.location.href='{{ route('admin.sdm.index') }}'">Aktif</button>
+                                    <button type="button" class="btn btn-outline-danger btn-xs mx-2"
+                                        onclick="window.location.href='{{ route('admin.sdm.index.deleted') }}'">Resign</button>
                                 </div>
-                                
+
                                 @if (!$isDeletedPage)
                                     <a href="{{ route('admin.sdm.create') }}" class="btn btn-rounded btn-success">
-                                        <span class="btn-icon-start text-success"><i class="fa fa-plus color-success"></i></span>
+                                        <span class="btn-icon-start text-success"><i
+                                                class="fa fa-plus color-success"></i></span>
                                         Add
                                     </a>
                                 @endif
@@ -126,15 +136,12 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            <th>Email</th>
-                                            <th>Nik</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Entitas</th>
                                             <th>Divisi</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
                                             @if (Auth::user()->status == 1)
-                                                <th>User</th>
                                                 <th>Last Update</th>
                                             @endif
                                             <th class="action-column">Action</th>
@@ -146,8 +153,6 @@
                                             <tr id="_index{{ $sdm->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $sdm->nama }}</td>
-                                                <td>{{ $sdm->email }}</td>
-                                                <td>{{ $sdm->nik }}</td>
                                                 <td>{{ $sdm->jenis_kelamin }}</td>
                                                 <td>{{ $sdm->entitas->nama ?? '-' }}</td>
                                                 <td>{{ $sdm->divisi->nama ?? '-' }}</td>
@@ -176,7 +181,6 @@
                                                     @endif
                                                 </td>
                                                 @if (Auth::user()->status == 1)
-                                                    <td>{{ $sdm->username ?? 'Empty user last update' }}</td>
                                                     <td>
                                                         @if ($sdm->last_update)
                                                             @php
@@ -186,13 +190,11 @@
                                                         @else
                                                             No last updated date
                                                         @endif
-                                                        <br>
                                                         @if ($sdm->action)
                                                             <span class="badge light badge-primary">Action:
                                                                 {{ $sdm->action }}</span>
                                                         @endif
-                                                        <br>
-                                                        <br>
+
                                                     </td>
                                                 @endif
                                                 <td>
@@ -227,15 +229,12 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            <th>Email</th>
-                                            <th>Nik</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Entitas</th>
                                             <th>Divisi</th>
                                             <th>Jabatan</th>
                                             <th>Status</th>
                                             @if (Auth::user()->status == 1)
-                                                <th>User</th>
                                                 <th>Last Update</th>
                                             @endif
                                             <th class="action-column">Action</th>
@@ -257,6 +256,10 @@
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
+    </div>
+    <div class="footer">
+        <div class="copyright">
+        </div>
     </div>
     <!-- /.content -->
 @endsection

@@ -70,7 +70,7 @@
             </div>
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
@@ -107,4 +107,8 @@
         <!-- /.row -->
     </div><!-- /.container-fluid -->
     <!-- /.content -->
+    <div class="footer">
+        <div class="copyright">
+        </div>
+    </div>
 @endsection

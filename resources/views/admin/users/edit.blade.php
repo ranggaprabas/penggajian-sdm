@@ -148,4 +148,8 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+    <div class="footer">
+        <div class="copyright">
+        </div>
+    </div>
 @endsection

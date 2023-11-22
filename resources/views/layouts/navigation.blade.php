@@ -3,12 +3,12 @@
     <a href="{{ route('admin.home') }}" class="brand-logo">
         <img src="{{ asset('images/tamanmedia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="50">
         <svg class="brand-title" width="200px" height="33px">
-            <text x="10" y="20" fill="rgb(25, 59, 98)" font-size="16">
+            <text x="0" y="20" fill="rgb(25, 59, 98)" font-size="16">
                 Penggajian SDM
             </text>
         </svg>
     </a>
-    
+
     <div class="nav-control">
         <div class="hamburger">
             <span class="line"></span><span class="line"></span><span class="line"></span>
@@ -18,19 +18,6 @@
 <div class="dlabnav">
     <div class="dlabnav-scroll">
         <ul class="metismenu" id="menu">
-            <li class="header-profile">
-                @if (Auth::check())
-                    @if (Auth::user()->status)
-                        <span class="badge light badge-primary">Superadmin</span>
-                    @else
-                        <span class="badge light badge-warning">Admin</span>
-                    @endif
-                @endif
-                &nbsp;&nbsp;&nbsp;
-                <a class="nav-link d-block text-center" href="{{ route('admin.profile.show') }}"
-                    class="d-block">{{ Auth::user()->nama }}</a>
-            </li>
-
             @if (auth()->user()->is_admin)
                 <li>
                     <a href="{{ route('admin.home') }}" class="ai-icon" aria-expanded="false">

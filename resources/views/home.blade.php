@@ -13,9 +13,18 @@
                     <!-- Right navbar links -->
                     <ul class="navbar-nav header-right">
                         <li class="nav-item dropdown notification_dropdown">
-                            <a class="btn btn-primary d-sm-inline-block" data-toggle="dropdown" aria-expanded="false">
-                                {{ Auth::user()->nama }} <i class="fa fa-user"></i>
-                            </a>
+                            <a class="btn btn-primary d-sm-inline-block position-relative" data-toggle="dropdown" aria-expanded="false" style="padding-bottom: 26px;">
+                                {{ Auth::user()->nama }} <i class="fa fa-user ms-3 scale-5"></i>
+                                @if (Auth::check())
+                                    <div class="position-absolute start-50 translate-middle-x text-center">
+                                        @if (Auth::user()->status)
+                                            superadmin
+                                        @else
+                                            admin
+                                        @endif
+                                    </div>
+                                @endif
+                            </a>                    
                             <div class="dropdown-menu dropdown-menu-end">
                                 <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:200px;">
                                     <ul class="timeline">
@@ -78,9 +87,8 @@
                                 <h3 class="text-white">Selamat Datang! {{ auth()->user()->nama }}</h3>
                                 <p>Selamat datang di Dashboard Penggajian SDM PT. Taman Media Indonesia. Sebagai
                                     administrator, Anda memiliki akses penuh
-                                    untuk mengelola penggajian Sumber Daya Manusia (SDM). Membantu perusahaan
-                                    mencapai keberlanjutan dan
-                                    produktivitas tinggi.</p>
+                                    untuk mengelola penggajian Sumber Daya Manusia (SDM).
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -193,4 +201,8 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+    <div class="footer">
+        <div class="copyright">
+        </div>
+    </div>
 @endsection
