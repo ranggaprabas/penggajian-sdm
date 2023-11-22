@@ -394,7 +394,7 @@
         <div class="copyright">
         </div>
     </div>
-    
+
     {{-- Komponen Edit Tunjangan --}}
 
     <script>
@@ -443,15 +443,25 @@
 
             $(document).on("click", ".removeTunjangan", function() {
                 var tunjanganElement = $(this).closest('.tunjangan');
-                var tunjanganId = tunjanganElement.data('id'); // Dapatkan ID tunjangan
                 tunjanganElement.remove(); // Hapus elemen secara visual
+                updateTunjanganIds();
+            });
 
-                // Hapus ID tunjangan dari daftar tunjangan_ids
-                var tunjanganIds = $("#tunjangan_ids").val().split(',').filter(function(id) {
-                    return id !== tunjanganId.toString();
+            function updateTunjanganIds() {
+                var tunjanganIds = [];
+
+                $(".tunjangan").each(function(index) {
+                    var tunjanganId = $(this).find("[name='tunjangan_ids[]']").val();
+
+                    // Tambahkan logika untuk menetapkan id baru untuk tunjangan yang baru ditambahkan 
+                    if (!tunjanganId) {
+                        tunjanganId = "new_tunjangan_" + index;
+                        $(this).find("[name='tunjangan_ids[]']").val(tunjanganId);
+                    }
+                    tunjanganIds.push(tunjanganId);
                 });
                 $("#tunjangan_ids").val(tunjanganIds.join(','));
-            });
+            }
 
             // Inisialisasi Select2
             $('.select2').select2();
@@ -539,15 +549,26 @@
 
             $(document).on("click", ".removePotongan", function() {
                 var potonganElement = $(this).closest('.potongan');
-                var potonganId = potonganElement.data('id'); // Dapatkan ID potongan
                 potonganElement.remove(); // Hapus elemen secara visual
-
-                // Hapus ID potongan dari daftar potongan_ids
-                var potonganIds = $("#potongan_ids").val().split(',').filter(function(id) {
-                    return id !== potonganId.toString();
-                });
-                $("#potongan_ids").val(potonganIds.join(','));
+                updatePotonganIds();
             });
+
+            function updatePotonganIds() {
+                var potonganIds = [];
+
+                $(".potongan").each(function(index){
+                    var potonganId = $(this).find("[name='potongan_ids[]']").val();
+
+                    // Tambahkan logika untuk menetapkan id baru untuk potongan yang baru ditambahkan
+                    if(!potonganId){
+                        potonganId = "new_potongan_" + index;
+                        $(this).find("[name='potongan_ids[]']").val(potonganId);
+                    }
+                    potonganIds.push(potonganId);
+                });
+
+                $("#potongan_ids").val(potonganIds.join(','));
+            }
 
             // Inisialisasi Select2
             $('.select2').select2();
@@ -588,5 +609,5 @@
         });
     </script>
 
-    
+
 @endsection

@@ -221,18 +221,22 @@ class SdmController extends Controller
         foreach ($request->input('nama_tunjangan', []) as $key => $nama) {
             $nilai = $request->input('nilai_tunjangan')[$key];
             $nama = ucwords($nama); // ucwords berfungsi menngubah nama depan menjadi besar
+            $tunjanganId = $request->input('tunjangan_ids')[$key] ?? null;
 
-            if (isset($existingTunjangan[$key])) {
-                $existingTunjangan[$key]->update([
-                    'nama_tunjangan' => $nama,
-                    'nilai_tunjangan' => $nilai,
-                ]);
+            if($tunjanganId){
+                $existingTunjangan = KomponenGaji::find($tunjanganId);
+
+                if($existingTunjangan){
+                    $existingTunjangan->update([
+                        'nama_tunjangan' => $nama,
+                        'nilai_tunjangan' => $nilai
+                    ]);
+                }
             } else {
                 $tunjangan = new KomponenGaji([
                     'nama_tunjangan' => $nama,
-                    'nilai_tunjangan' => $nilai,
+                    'nilai_tunjangan' => $nilai
                 ]);
-
                 $sdm->komponenGaji()->save($tunjangan);
             }
         }
@@ -257,16 +261,21 @@ class SdmController extends Controller
         foreach ($request->input('nama_potongan', []) as $key => $nama) {
             $nilai = $request->input('nilai_potongan')[$key];
             $nama = ucwords($nama);
+            $potonganId = $request->input('potongan_ids')[$key] ?? null;
 
-            if (isset($existingPotongan[$key])) {
-                $existingPotongan[$key]->update([
-                    'nama_potongan' => $nama,
-                    'nilai_potongan' => $nilai,
-                ]);
+            if($potonganId){
+                $existingPotongan = PotonganGaji::find($potonganId);
+
+                if($existingPotongan){
+                    $existingPotongan->update([
+                        'nama_potongan' => $nama,
+                        'nilai_potongan' => $nilai
+                    ]);
+                }
             } else {
                 $potongan = new PotonganGaji([
                     'nama_potongan' => $nama,
-                    'nilai_potongan' => $nilai,
+                    'nilai_potongan' => $nilai
                 ]);
 
                 $sdm->potonganGaji()->save($potongan);
