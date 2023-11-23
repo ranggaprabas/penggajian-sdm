@@ -125,7 +125,7 @@
                                             @php
                                                 $counter = 1;
                                             @endphp
-                                            <tbody>
+                                            <tbody class="normal-text">
                                                 @forelse($items as $item)
                                                     <tr id="_index{{ $item->id }}">
                                                         <td>{{ $counter }}</td>

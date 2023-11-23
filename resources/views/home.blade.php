@@ -13,7 +13,8 @@
                     <!-- Right navbar links -->
                     <ul class="navbar-nav header-right">
                         <li class="nav-item dropdown notification_dropdown">
-                            <a class="btn btn-primary d-sm-inline-block position-relative" data-toggle="dropdown" aria-expanded="false" style="padding-bottom: 26px;">
+                            <a class="btn btn-primary d-sm-inline-block position-relative" data-toggle="dropdown"
+                                aria-expanded="false" style="padding-bottom: 26px;">
                                 {{ Auth::user()->nama }} <i class="fa fa-user ms-3 scale-5"></i>
                                 @if (Auth::check())
                                     <div class="position-absolute start-50 translate-middle-x text-center">
@@ -24,7 +25,7 @@
                                         @endif
                                     </div>
                                 @endif
-                            </a>                    
+                            </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:200px;">
                                     <ul class="timeline">
@@ -69,7 +70,7 @@
     <div class="content-body">
         <!-- row -->
         <div class="container-fluid">
-            <div class="row invoice-card-row">
+            <div class="row">
                 <div class="col-xl-12">
                     <div class="card coin-card">
                         <div class="card-body d-sm-flex d-block align-items-center">
@@ -93,7 +94,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.col -->
+            </div>
+            <!-- /.col -->
+            <div class="row invoice-card-row">
                 <div class="col-xl-3 col-xxl-3 col-sm-6">
                     <div class="card bg-warning invoice-card">
                         <div class="card-body d-flex">
@@ -175,7 +178,7 @@
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title mt-2">Jenis Kelamin SDM</h3>
+                            <h4 class="card-title">Jenis Kelamin SDM</h3>
                         </div>
                         <div class="card-body">
                             <canvas id="donutChart"
@@ -187,7 +190,7 @@
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title mt-2">Jumlah SDM berdasarkan Entitas</h3>
+                            <h3 class="card-title">Jumlah SDM berdasarkan Entitas</h3>
                         </div>
                         <div class="card-body">
                             <canvas id="pieChart"

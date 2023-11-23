@@ -119,7 +119,7 @@
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="normal-text">
                                                 @forelse($absensis as $absensi)
                                                     <tr>
                                                         <input type="hidden" name="karyawan_id[]"

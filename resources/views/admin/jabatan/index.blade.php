@@ -46,7 +46,7 @@
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="normal-text">
                                         @php
                                             $counter = 1;
                                         @endphp

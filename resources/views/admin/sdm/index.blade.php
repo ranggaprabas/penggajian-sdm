@@ -147,8 +147,7 @@
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-
+                                    <tbody class="normal-text">
                                         @foreach ($sdms as $sdm)
                                             <tr id="_index{{ $sdm->id }}">
                                                 <td>{{ $loop->iteration }}</td>

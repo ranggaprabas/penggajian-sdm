@@ -45,7 +45,7 @@
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="normal-text">
                                         @foreach ($items as $item)
                                             <tr id="index_{{ $item->id }}">
                                                 <td>{{ $loop->iteration }}</td>
