@@ -1,52 +1,3 @@
-.custom-outline {
-    border-top: 4px solid #f39c12;
-    /* Warna outline, ganti dengan warna yang Anda inginkan */
-    border-radius: 5px 5px 5px 5px;
-    /* Bentuk sudut outline */
-    padding: 10px;
-    /* Padding di dalam outline */
-}
-
-.custom-outline-entitas {
-    border-top: 4px solid #007bff;
-    /* Warna outline, ganti dengan warna yang Anda inginkan */
-    border-radius: 5px 5px 5px 5px;
-    /* Bentuk sudut outline */
-    padding: 10px;
-    /* Padding di dalam outline */
-}
-
-.custom-outline-jabatan {
-    border-top: 4px solid #dc3545;
-    /* Warna outline, ganti dengan warna yang Anda inginkan */
-    border-radius: 5px 5px 5px 5px;
-    /* Bentuk sudut outline */
-    padding: 10px;
-    /* Padding di dalam outline */
-}
-
-.custom-outline-divisi {
-    border-top: 4px solid #17a2b8;
-    /* Warna outline, ganti dengan warna yang Anda inginkan */
-    border-radius: 5px 5px 5px 5px;
-    /* Bentuk sudut outline */
-    padding: 10px;
-    /* Padding di dalam outline */
-}
-
-/* Styling for the left icon (sun) */
-.toggle-icon-left {
-    float: left;
-    margin-right: 50px;
-    /* Optional: Adjust the margin as needed */
-}
-
-/* Styling for the center icon (adjust) */
-.toggle-icon-center {
-    display: inline-block;
-    /* Optional: Add margin or padding to center it vertically */
-}
-
 .custom-control-label {
     cursor: pointer;
 }
@@ -137,4 +88,8 @@
 
 #example1 tbody.normal-text td {
     font-weight: normal;
+}
+
+.gray-placeholder::placeholder {
+    color: rgb(199, 199, 199);
 }

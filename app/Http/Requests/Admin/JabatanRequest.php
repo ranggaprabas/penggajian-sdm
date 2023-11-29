@@ -61,6 +61,7 @@ class JabatanRequest extends FormRequest
     {
         return [
             'tunjangan_jabatan.max' => 'Nilai Tunjangan Jabatan melebihi batas max.',
+            'nama.unique' => 'Nama Jabatan sudah ada',
         ];
     }
 }

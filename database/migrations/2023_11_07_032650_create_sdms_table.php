@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama')->nullable();
             $table->integer('entitas_id')->nullable();
             $table->integer('jabatan_id')->nullable();
-            $table->string('email')->unique()->nullable();
+            $table->string('email')->nullable();
             $table->string('nik')->nullable();
             $table->string('jenis_kelamin')->nullable();
             $table->boolean('status')->nullable();

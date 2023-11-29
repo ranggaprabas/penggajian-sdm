@@ -25,7 +25,7 @@ class ProfileController extends Controller
         ]);
 
         return redirect()->back()->with([
-                'message' =>'Profile berhasil diperbarui!',
+                'success' =>'Profile berhasil diperbarui!',
                 'alert-info' => 'info'
             ]);
     }

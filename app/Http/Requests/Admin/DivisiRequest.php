@@ -35,4 +35,10 @@ class DivisiRequest extends FormRequest
             }
         } 
     }
+    public function messages(): array
+    {
+        return[
+            'nama.unique' => 'Nama Divisi sudah ada'            
+        ];
+    }
 }

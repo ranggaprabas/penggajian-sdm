@@ -125,7 +125,7 @@ class AbsensiController extends Controller
             // Additional logic for individual gaji if needed
 
             return redirect()->back()->with([
-                'message' => 'Gaji SDM ' . $sdm->nama . ' berhasil dilakukan',
+                'success' => 'Gaji SDM ' . $sdm->nama . ' berhasil dilakukan',
                 'alert-info' => 'info'
             ]);
         }
@@ -175,7 +175,7 @@ class AbsensiController extends Controller
             }
         }
         return redirect()->back()->with([
-            'message' => 'Gaji serentak berhasil dilakukan',
+            'success' => 'Gaji serentak berhasil dilakukan',
             'alert-info' => 'info'
         ]);
     }

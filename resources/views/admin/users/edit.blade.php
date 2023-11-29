@@ -14,8 +14,18 @@
                     <!-- Right navbar links -->
                     <ul class="navbar-nav header-right">
                         <li class="nav-item dropdown notification_dropdown">
-                            <a class="btn btn-primary d-sm-inline-block" data-toggle="dropdown" aria-expanded="false">
-                                {{ Auth::user()->nama }} <i class="fa fa-user"></i>
+                            <a class="btn btn-primary d-sm-inline-block position-relative" data-toggle="dropdown"
+                                aria-expanded="false" style="padding-bottom: 26px;">
+                                {{ Auth::user()->nama }} <i class="fa fa-user ms-3 scale-5"></i>
+                                @if (Auth::check())
+                                    <div class="position-absolute start-50 translate-middle-x text-center">
+                                        @if (Auth::user()->status)
+                                            superadmin
+                                        @else
+                                            admin
+                                        @endif
+                                    </div>
+                                @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:200px;">
@@ -73,6 +83,23 @@
                     onsubmit="return validateFormAdminEdit() && removeCommas2();">
                     @csrf
                     @method('put')
+                    @if ($errors->any())
+                        <div class="alert alert-danger solid alert-dismissible fade show" id="info-message">
+                            <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2">
+                                </polygon>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            <strong>Error!</strong>
+                            @foreach ($errors->all() as $error)
+                                {{ $error }}<br>
+                            @endforeach
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
+                        </div>
+                    @endif
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Profile Admin</h4>
@@ -83,21 +110,22 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="nama">Nama</label>
-                                            <input class="form-control gray-border" type="text" id="nama" name="nama"
-                                                value="{{ old('nama', $user->nama) }}">
+                                            <input class="form-control gray-border" type="text" id="nama"
+                                                name="nama" value="{{ old('nama', $user->nama) }}">
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input class="form-control gray-border" type="text" id="email" name="email"
-                                                value="{{ old('email', $user->email) }}">
+                                            <input class="form-control gray-border" type="text" id="email"
+                                                name="email" value="{{ old('email', $user->email) }}">
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="jenis_kelamin">Jenis Kelamin</label>
-                                            <select class="default-select form-control wide gray-border" name="jenis_kelamin" id="jenis_kelamin">
+                                            <select class="default-select form-control wide gray-border"
+                                                name="jenis_kelamin" id="jenis_kelamin">
                                                 <option {{ $user->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
                                                     value="laki-laki">Laki-Laki</option>
                                                 <option {{ $user->jenis_kelamin === 'perempuan' ? 'selected' : null }}
@@ -108,7 +136,8 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="status">Status</label>
-                                            <select class="default-select form-control wide gray-border" name="status" id="status">
+                                            <select class="default-select form-control wide gray-border" name="status"
+                                                id="status">
                                                 <option {{ $user->status === 1 ? 'selected' : null }} value="1">
                                                     superadmin
                                                 </option>
@@ -120,7 +149,8 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group-password">
                                             <label for="password">Password Baru</label>
-                                            <input class="form-control gray-border" type="password" id="password" name="password">
+                                            <input class="form-control gray-border" type="password" id="password"
+                                                name="password">
                                             <span class="eye-toggle">
                                                 <i class="fas fa-eye" id="password-toggle"></i>
                                             </span>
@@ -130,8 +160,8 @@
                                         <div class="form-group-password">
                                             <div class="form-group">
                                                 <label for="password_confirmation">Konfirmasi Password Baru</label>
-                                                <input class="form-control gray-border" type="password" id="password_confirmation"
-                                                    name="password_confirmation">
+                                                <input class="form-control gray-border" type="password"
+                                                    id="password_confirmation" name="password_confirmation">
                                                 <span class="eye-toggle"><i class="fas fa-eye"
                                                         id="password-confirmation-toggle"></i></span>
                                             </div>

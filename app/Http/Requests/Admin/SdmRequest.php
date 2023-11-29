@@ -25,8 +25,8 @@ class SdmRequest extends FormRequest
             case 'POST': {
                     return [
                         'nama' => 'required',
-                        'email' => 'required|email|unique:sdms',
-                        'nik' => 'required|unique:sdms',
+                        'email' => 'required|email',
+                        'nik' => 'required',
                         'jabatan_id' => 'required',
                         'entitas_id' => 'required',
                         'divisi_id' => 'required',
@@ -39,8 +39,8 @@ class SdmRequest extends FormRequest
             case 'PATCH': {
                     return [
                         'nama' => 'required',
-                        'email' => ['required', 'email', 'unique:sdms,email,' . $this->route()->sdm->id],
-                        'nik' => ['required', 'unique:sdms,nik,' . $this->route()->sdm->id],
+                        'email' => 'required|email',
+                        'nik' => 'required',
                         'jabatan_id' => 'required',
                         'entitas_id' => 'required',
                         'divisi_id' => 'required',

@@ -14,8 +14,18 @@
                     <!-- Right navbar links -->
                     <ul class="navbar-nav header-right">
                         <li class="nav-item dropdown notification_dropdown">
-                            <a class="btn btn-primary d-sm-inline-block" data-toggle="dropdown" aria-expanded="false">
-                                {{ Auth::user()->nama }} <i class="fa fa-user"></i>
+                            <a class="btn btn-primary d-sm-inline-block position-relative" data-toggle="dropdown"
+                                aria-expanded="false" style="padding-bottom: 26px;">
+                                {{ Auth::user()->nama }} <i class="fa fa-user ms-3 scale-5"></i>
+                                @if (Auth::check())
+                                    <div class="position-absolute start-50 translate-middle-x text-center">
+                                        @if (Auth::user()->status)
+                                            superadmin
+                                        @else
+                                            admin
+                                        @endif
+                                    </div>
+                                @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:200px;">
@@ -193,7 +203,6 @@
                                                             <span class="badge light badge-primary">Action:
                                                                 {{ $sdm->action }}</span>
                                                         @endif
-
                                                     </td>
                                                 @endif
                                                 <td>
