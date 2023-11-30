@@ -232,6 +232,9 @@
                                                         Rp. {{ number_format($take_home_pay, 0, '', '.') }}
                                                     </td>
                                                     <td>
+                                                        <a href="{{ route('admin.gaji.show', $item->id) }}"
+                                                            class="btn btn-warning shadow btn-xs sharp me-1"> <i
+                                                                class="text-white fa fa-eye"></i> </a>
                                                         <a href="javascript:void(0)" id="btn-delete-gaji"
                                                             data-id="{{ $item->id }}"
                                                             data-nama="{{ $item->nama }}"

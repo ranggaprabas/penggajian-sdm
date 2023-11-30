@@ -30,6 +30,13 @@ class GajiController extends Controller
         return view('admin.gaji.index', compact('items'));
     }
 
+    public function show (string $id)
+    {
+        $title = "Detail Gaji SDM";
+        $pages = "Data Gaji";
+        $data = Absensi::findOrFail($id);
+        return view('admin.gaji.show', compact('title', 'pages', 'data'));
+    }
 
 
     public function konversiBulan($bulan)

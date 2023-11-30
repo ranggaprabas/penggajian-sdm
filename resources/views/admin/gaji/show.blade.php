@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            SDM
+                            Data Gaji SDM
                         </div>
                     </div>
                     <!-- Right navbar links -->
@@ -73,7 +73,7 @@
         <div class="container-fluid">
             <div class="row page-titles">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"><a href="{{ route('admin.sdm.index') }}">{{ $pages }}</a>
+                    <li class="breadcrumb-item active"><a href="{{ route('admin.gaji.index') }}">{{ $pages }}</a>
                     </li>
                     <li class="breadcrumb-item">{{ $title }}</li>
                 </ol>
@@ -81,17 +81,12 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
                                     <tr>
                                         <th>Nama</th>
                                         <td>{{ $data->nama }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Email</th>
-                                        <td>{{ $data->email }}</td>
                                     </tr>
                                     <tr>
                                         <th>Nik</th>
@@ -103,100 +98,91 @@
                                     </tr>
                                     <tr>
                                         <th>Entitas</th>
-                                        <td>{{ $data->entitas->nama ?? '-' }}</td>
+                                        <td>{{ $data->entitas ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Divisi</th>
-                                        <td>{{ $data->divisi->nama ?? '-' }}</td>
+                                        <td>{{ $data->divisi ?? '-' }}</td>
                                     </tr>
                                     <tr>
                                         <th>Jabatan</th>
-                                        <td>
-                                            @if ($data->jabatan->deleted == 1)
-                                                {{ $data->jabatan->nama }} <span style="color: red;">(jabatan
-                                                    deleted)</span>
-                                            @else
-                                                {{ $data->jabatan->nama ?? '-' }}
-                                            @endif
-                                        </td>
+                                        <td>{{ $data->jabatan ?? '-' }}</td>
                                     </tr>
                                     <!-- Tampilkan total tunjangan -->
                                     <tr>
                                         <th>Total Tunjangan:</th>
                                         <td>
-                                            @php
-                                                $totalTunjangan = 0; // Inisialisasi total tunjangan
-                                            @endphp
-
-                                            <ul>
-                                                @if ($data->jabatan->deleted != 1)
-                                                    @if ($data->jabatan->tunjangan_jabatan != 1)
-                                                        <li>
-                                                            Tj. Jabatan:
-                                                            {{ number_format($data->jabatan->tunjangan_jabatan, 0, '', '.') }}
-                                                        </li>
+                                            @if ($data->tunjangan)
+                                                @php
+                                                    $tunjangan = json_decode($data->tunjangan, true);
+                                                @endphp
+                                                <ul>
+                                                    <li>
+                                                        Tj. Jabatan:
+                                                        Rp. {{ number_format($data->tunjangan_jabatan, 0, '', '.') }}
+                                                    </li>
+                                                    @if (is_array($tunjangan) && count($tunjangan) > 0)
                                                         @php
-                                                            $totalTunjangan += $data->jabatan->tunjangan_jabatan;
+                                                            $total_tunjangan = array_sum(array_column($tunjangan, 'nilai_tunjangan'));
+                                                            $jumlah_tunjangan = $data->tunjangan_jabatan + $total_tunjangan;
+                                                        @endphp
+                                                        @foreach ($tunjangan as $t)
+                                                            <li>Tj. {{ $t['nama_tunjangan'] ?? '-' }}: Rp.
+                                                                {{ number_format($t['nilai_tunjangan'], 0, '', '.') }}
+                                                            </li>
+                                                        @endforeach
+                                                    @else
+                                                        @php
+                                                            $jumlah_tunjangan = $data->tunjangan_jabatan;
                                                         @endphp
                                                     @endif
-                                                @endif
-
-                                                @foreach ($details->komponenGaji as $tunjangan)
-                                                    <li>
-                                                        Tj. {{ $tunjangan->nama_tunjangan }}: Rp.
-                                                        {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
-                                                    </li>
-                                                    @php
-                                                        $totalTunjangan += $tunjangan->nilai_tunjangan;
-                                                    @endphp
-                                                @endforeach
-                                            </ul>
-                                            <strong>Total: Rp.
-                                                {{ number_format($totalTunjangan, 0, '', '.') }}
-                                            </strong>
+                                                </ul>
+                                                <strong>Total: Rp.
+                                                    {{ number_format($jumlah_tunjangan, 0, '', '.') }}
+                                                </strong>
+                                            @else
+                                                Tidak ada tunjangan.
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Total Potongan:</th>
                                         <td>
-                                            @php
-                                                $totalPotongan = 0;
-                                            @endphp
-                                            @if ($details->potonganGaji->count() > 0)
+                                            @if ($data->potongan)
+                                                @php
+                                                    $potongan = json_decode($data->potongan, true);
+                                                @endphp
                                                 <ul>
-                                                    @foreach ($details->potonganGaji as $potongan)
-                                                        <li> {{ $potongan->nama_potongan }}: Rp.
-                                                            {{ number_format($potongan->nilai_potongan, 0, '', '.') }}
-                                                        </li>
+                                                    @php
+                                                        $jumlah_potongan = 0; // Set potongan menjadi 0 jika tidak ada data potongan
+                                                    @endphp
+                                                    @if (is_array($potongan) && count($potongan) > 0)
                                                         @php
-                                                            $totalPotongan += $potongan->nilai_potongan;
+                                                            $total_potongan = array_sum(array_column($potongan, 'nilai_potongan'));
+                                                            $jumlah_potongan = $total_potongan;
                                                         @endphp
-                                                    @endforeach
+                                                        @foreach ($potongan as $t)
+                                                            <li>{{ $t['nama_potongan'] ?? '-' }}: Rp.
+                                                                {{ number_format($t['nilai_potongan'], 0, '', '.') }}
+                                                            </li>
+                                                        @endforeach
+                                                    @else
+                                                        Tidak ada potongan.
+                                                    @endif
                                                 </ul>
                                                 <strong>Total: Rp.
-                                                    {{ number_format($totalPotongan, 0, '', '.') }}
-                                                @else
-                                                    Tidak ada potongan.
+                                                    {{ number_format($jumlah_potongan, 0, '', '.') }}
+                                                </strong>
                                             @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Take Home Pay:</th>
                                         @php
-                                            $takeHomePay = $totalTunjangan - $totalPotongan;
+                                            $take_home_pay = $jumlah_tunjangan - $jumlah_potongan;
                                         @endphp
                                         <td>
-                                            <strong>Rp. {{ number_format($takeHomePay, 0, '', '.') }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Status</th>
-                                        <td>
-                                            @if ($data->status)
-                                                <span class="badge light badge-success">Pegawai Tetap</span>
-                                            @else
-                                                <span class="badge light badge-warning">Pegawai Tidak Tetap</span>
-                                            @endif
+                                            <strong>Rp. {{ number_format($take_home_pay, 0, '', '.') }}
                                         </td>
                                     </tr>
                                 </tbody>
