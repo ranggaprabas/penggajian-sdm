@@ -78,6 +78,19 @@
                     <li class="breadcrumb-item">{{ $title }}</li>
                 </ol>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info solid alert-dismissible fade show">
+                        <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Detail Gaji SDM
+                        <span class="text-bold">{{ $data->nama }}</span>
+                        bulan <span class="text-bold">{{ $bulan }}</span>
+                        tahun <span class="text-bold">{{ $tahun }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">

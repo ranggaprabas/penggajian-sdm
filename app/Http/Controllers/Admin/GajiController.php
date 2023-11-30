@@ -30,13 +30,23 @@ class GajiController extends Controller
         return view('admin.gaji.index', compact('items'));
     }
 
-    public function show (string $id)
+    public function show(string $id)
     {
         $title = "Detail Gaji SDM";
         $pages = "Data Gaji";
+
         $data = Absensi::findOrFail($id);
-        return view('admin.gaji.show', compact('title', 'pages', 'data'));
+
+        // Extracting year and month from the field
+        $bulanNumeric = substr($data->bulan, 0, -4);  // Get the digits before the last 4
+        $tahun = substr($data->bulan, -4);  // Get the last 4 digits
+
+        // Convert numeric month to its name
+        $bulan = $this->konversiBulan($bulanNumeric);
+
+        return view('admin.gaji.show', compact('title', 'pages', 'data', 'bulan', 'tahun'));
     }
+
 
 
     public function konversiBulan($bulan)
