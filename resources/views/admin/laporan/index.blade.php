@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            Data Laporan Slip Gaji SDM
+                            Laporan Slip Gaji SDM
                         </div>
                     </div>
                     <!-- Right navbar links -->
@@ -71,6 +71,13 @@
     <!-- Main content -->
     <div class="content-body">
         <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="{{ route('admin.laporan.index') }}">Laporan Slip</a>
+                    </li>
+                    <li class="breadcrumb-item">Slip Gaji SDM</li>
+                </ol>
+            </div>
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="card p-4">

@@ -71,6 +71,13 @@
     <!-- Main content -->
     <div class="content-body">
         <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="{{ route('admin.gaji.index') }}">Gaji</a>
+                    </li>
+                    <li class="breadcrumb-item">Data Gaji SDM</li>
+                </ol>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card p-4">

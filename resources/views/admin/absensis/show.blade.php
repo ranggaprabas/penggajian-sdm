@@ -83,6 +83,13 @@
                         aria-label="btn-close"></button>
                 </div>
             @endif
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="{{ route('admin.absensis.show') }}">Gaji</a>
+                    </li>
+                    <li class="breadcrumb-item">Input Gaji SDM</li>
+                </ol>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card p-4">
@@ -210,7 +217,7 @@
                                                         <td>
                                                             {{-- <input type="hidden" name="karyawan_id[]" value="{{ $absensi->id }}"> --}}
                                                             <button type="submit" name="individual_submit" value="{{ $absensi->id }}"
-                                                                class="btn btn-primary btn-sm"><i class="fas fa-check"></i> Gaji</button>
+                                                                class="btn btn-primary btn-xs"><i class="fas fa-check"></i> Gaji</button>
                                                         </td>
                                                     </tr>
                                                 @empty
