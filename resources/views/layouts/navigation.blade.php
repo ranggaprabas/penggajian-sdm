@@ -108,6 +108,12 @@
                     </ul>
                 </li>
             @endif
+            <li>
+                <a href="{{ route('admin.broadcast-information.index') }}" class="ai-icon-home" aria-expanded="false">
+                    <i class="fas fa-envelope"></i>
+                    <span class="nav-text">Broadcast Information</span>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            My Profile
+                            Broadcast Information
                         </div>
                     </div>
                     <!-- Right navbar links -->
@@ -73,76 +73,71 @@
         <div class="container-fluid">
             <div class="row page-titles">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"><a href="{{ route('admin.profile.show') }}">My Profile</a>
+                    <li class="breadcrumb-item active"><a
+                            href="{{ route('admin.broadcast-information.index') }}">{{ $pages }}</a>
                     </li>
-                    <li class="breadcrumb-item">Update Profile</li>
+                    <li class="breadcrumb-item">{{ $title }}</li>
                 </ol>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    @if (session('success'))
-                        <div class="alert alert-success solid alert-dismissible fade show" id="info-message">
+            <div class="row">
+                <div class="col-lg-12">
+                    @if ($errors->any())
+                        <div class="alert alert-danger solid alert-dismissible fade show" id="info-message">
                             <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-                                <polyline points="9 11 12 14 22 4"></polyline>
-                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2">
+                                </polygon>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
                             </svg>
-                            <strong>Success!</strong> {{ session('success') }}
+                            <strong>Error!</strong>
+                            @foreach ($errors->all() as $error)
+                                {{ $error }}<br>
+                            @endforeach
                             <button type="button" class="btn-close" data-bs-dismiss="alert"
                                 aria-label="btn-close"></button>
                         </div>
                     @endif
                     <div class="card">
-                        <form novalidate action="{{ route('admin.profile.update') }}" method="POST"
-                            onsubmit="return validateFormAdminProfile();">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-                                <div class="input-group mb-3">
-                                    <input type="text" name="nama" id="nama"
-                                        class="form-control gray-border @error('nama') is-invalid @enderror"
-                                        placeholder="{{ __('Nama') }}" value="{{ old('nama', auth()->user()->nama) }}"
-                                        required>
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    @error('name')
-                                        <span class="error invalid-feedback">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
+                        <div class="card-body">
+                            <form action="{{ route('admin.broadcast-information.store') }}" method="POST"
+                                onsubmit="return validateFormDivisi();">
+                                @csrf
+                                <div class="mb-3 row">
+                                    <label class="col-sm-2 col-form-label">To SDM</label>
+                                    <div class="col-sm-10">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <select class="form-control gray-border select2" name="categories[]"
+                                                id="categories" multiple>
+                                                @foreach ($broadcasts as $broadcast)
+                                                    <option value="{{ $broadcast->id }}"
+                                                        data-chat-id="{{ $broadcast->chat_id }}"
+                                                        @if (old('categories') && in_array($broadcast->id, old('categories'))) selected @endif>
+                                                        {{ $broadcast->nama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="ml-2">
+                                            <button type="button" class="btn btn-primary"
+                                                onclick="selectAllCategories()">Select All</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                onclick="clearSelectedCategories()">Clear</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <input type="email" name="email" id="email"
-                                        class="form-control gray-border @error('email') is-invalid @enderror"
-                                        placeholder="{{ __('Email') }}"
-                                        value="{{ old('email', auth()->user()->email) }}" required>
-                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    @error('email')
-                                        <span class="error invalid-feedback">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
+                                <div class="mb-3 row">
+                                    <label class="col-sm-2 col-form-label">Message</label>
+                                    <div class="card-body custom-ekeditor">
+                                        <textarea id="ckeditor" name="message" class="form-control" rows="4">{{ old('message') }}</textarea>
+                                    </div>
                                 </div>
-                                <div class="form-group-password-profile mb-3">
-                                    <input type="password" name="password" id="password" class="form-control gray-border gray-placeholder"
-                                        placeholder="{{ __('Password Baru') }}" maxlength="100">
-                                    <span class="eye-toggle"><i class="fas fa-eye" id="password-toggle"></i></span>
-                                    @error('password')
-                                        <span class="error invalid-feedback">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group-password-profile mb-3">
-                                    <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control gray-border gray-placeholder @error('password_confirmation') is-invalid @enderror"
-                                        placeholder="{{ __('Konfirmasi Password Baru') }}" autocomplete="new-password">
-                                    <span class="eye-toggle"><i class="fas fa-eye"
-                                            id="password-confirmation-toggle"></i></span>
-                                </div>
-                                <button type="submit" class="btn btn-primary mt-3">{{ __('Submit') }}</button>
-                            </div>
-                        </form>
+                                <button class="btn btn-primary" type="submit">Simpan</button>
+                            </form>
+
+                        </div>
                     </div>
+
                 </div>
             </div>
             <!-- /.row -->
@@ -150,8 +145,3 @@
     </div>
     <!-- /.content -->
 @endsection
-
-@section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-@endsection
-

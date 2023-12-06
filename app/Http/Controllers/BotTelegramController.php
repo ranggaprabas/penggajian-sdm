@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TelegramUser;
 use Illuminate\Http\Request;
 use Telegram;
 
@@ -28,12 +29,41 @@ class BotTelegramController extends Controller
     public function commandHandlerWebhook()
     {
         $updates = Telegram::commandsHandler(true);
-        $chat_id = $updates->getChat()->getId();
-        $username = $updates->getChat()->getFirstName();
+        $message = $updates->getMessage();
+        $chat_id = $message->getChat()->getId();
+        $username = $message->getChat()->getUsername();
+        $firstName = $message->getChat()->getFirstName(); 
 
-        if (strtolower($updates->getMessage()->getText() === 'halo')) return Telegram::sendMessage([
-            'chat_id' => $chat_id,
-            'text' => 'Halo ' . $username
-        ]);
+        // Periksa jika perintah adalah /start
+        if (strtolower($message->getText()) === '/start') {
+            // Simpan informasi pengguna ke dalam database
+            $this->saveUserToDatabase($chat_id, $username);
+
+            // Respon kepada pengguna
+            Telegram::sendMessage([
+                'chat_id' => $chat_id,
+                'text' => 'Hi ' . $firstName . ', salam kenal. Bagaimana kabarmu?',
+            ]);
+        }
+
+        // Lanjutkan dengan pemrosesan lebih lanjut jika diperlukan
+        // ...
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    private function saveUserToDatabase($chat_id, $username)
+    {
+        // Cek apakah pengguna sudah ada di database
+        $user = TelegramUser::where('chat_id', $chat_id)->first();
+
+        // Jika tidak, simpan informasi pengguna ke dalam database
+        if (!$user) {
+            TelegramUser::create([
+                'chat_id' => $chat_id,
+                'username' => $username,
+                // Tambahkan kolom lain yang ingin Anda simpan
+            ]);
+        }
     }
 }

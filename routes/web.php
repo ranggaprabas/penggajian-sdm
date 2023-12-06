@@ -31,6 +31,7 @@ Auth::routes(['register' => false]);
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::group(['middleware' => ['is_admin']], function () {
+        Route::resource('broadcast-information', App\Http\Controllers\Admin\BroadcastInformationController::class);
         Route::get('divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
         Route::resource('divisi', App\Http\Controllers\Admin\DivisiController::class);
         Route::get('entitas/edit/{id}', [EntitasController::class, 'edit'])->name('edit-entitas');

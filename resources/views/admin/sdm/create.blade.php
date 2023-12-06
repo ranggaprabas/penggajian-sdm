@@ -186,14 +186,67 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
-                                            <label for="status">Status</label>
-                                            <select class="default-select form-control wide gray-border" name="status"
-                                                id="status">
-                                                <option value="1">Pegawai Tetap</option>
-                                                <option value="0">Pegawai Tidak Tetap</option>
+                                            <label for="chat id">Telegram Id</label>
+                                            <select class="form-control select2" name="chat_id" id="chat_id"
+                                                style="width: 100%;" required>
+                                                <option value="__create__">Lainnya</option>
+                                                <option value="" disabled selected>-- Pilih Telegram Id --</option>
+                                                @foreach ($telegramUsers as $telegramUser)
+                                                    <option value="{{ $telegramUser->chat_id }}">
+                                                        {{ $telegramUser->username }} - {{ $telegramUser->chat_id }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="default-select form-control wide gray-border" name="status"
+                                            id="status">
+                                            <option value="1">Pegawai Tetap</option>
+                                            <option value="0">Pegawai Tidak Tetap</option>
+                                        </select>
+                                    </div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            // Inisialisasi Select2
+                                            $('#chat_id').select2();
+
+                                            // Menangani perubahan nilai pada elemen select
+                                            $('#chat_id').on('change', async function() {
+                                                // Mendapatkan nilai terpilih
+                                                var selectedValue = $(this).val();
+
+                                                // Cek apakah opsi "Buat Nilai Baru" dipilih
+                                                if (selectedValue === '__create__') {
+                                                    // Tampilkan modal SweetAlert2 untuk memasukkan nama Tunjangan baru
+                                                    const {
+                                                        value: newChatId
+                                                    } = await Swal.fire({
+                                                        input: 'text',
+                                                        inputLabel: 'Telegram Id Baru',
+                                                        inputPlaceholder: 'Masukkan Telegram Id Baru',
+                                                        showCancelButton: true,
+                                                        inputValidator: (value) => {
+                                                            if (!value) {
+                                                                return 'Telegram Id tidak boleh kosong!';
+                                                            }
+                                                        }
+                                                    });
+
+                                                    // Cek jika pengguna memasukkan nilai baru
+                                                    if (newChatId) {
+                                                        // Tambahkan nilai baru ke dalam select
+                                                        var newOption = new Option(newChatId, newChatId, true, true);
+                                                        $(this).append(newOption).trigger('change');
+                                                    } else {
+                                                        // Batal jika pengguna membatalkan operasi
+                                                        $(this).val('').trigger('change');
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>

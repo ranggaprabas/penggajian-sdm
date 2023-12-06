@@ -144,6 +144,8 @@
     <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
     {{-- select --}}
     <script src="{{ asset('js/select2.full.min.js') }}"></script>
+    <!-- Ckeditor -->
+    <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
 
 
 
@@ -160,11 +162,22 @@
     {{-- Donuts Chart --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
-
-
-
     {{-- sweet alert --}}
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
+
+    {{-- select2 select all and clear --}}
+    <script>
+        function selectAllCategories() {
+            $('#categories option').prop('selected', true);
+            $('#categories').trigger('change.select2');
+        }
+    
+        function clearSelectedCategories() {
+            $('#categories option').prop('selected', false);
+            $('#categories').trigger('change.select2');
+        }
+    </script>
+    
 
     <script>
         // Select the password and password_confirmation inputs, and the toggle icons
@@ -349,6 +362,16 @@
                     });
                     return false; // Menghentikan pengiriman formulir jika tidak valid
                 }
+            }
+            // Pemeriksaan tambahan untuk select dengan ID 'chat_id'
+            const chatIdField = document.getElementById('chat_id');
+            if (chatIdField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Telegram Id Wajib Diisi',
+                    text: 'Telegram Id tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
             }
             return true; // Kirim formulir jika valid
         }
@@ -663,8 +686,8 @@
             new DataTable('#example1', {
                 "pageLength": 100, // Mengatur jumlah default entri menjadi 100
                 "lengthMenu": [10, 25, 50, 100], // Menampilkan opsi untuk mengubah jumlah entri
-                "language":{
-                    "paginate":{
+                "language": {
+                    "paginate": {
                         "next": '<i class="fa fa-angle-double-right" aria-hidden="true"><i>',
                         "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"><i>'
                     }
@@ -672,7 +695,19 @@
             });
         });
     </script>
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new DataTable('#example2', {
+                "language": {
+                    "paginate": {
+                        "next": '<i class="fa fa-angle-double-right" aria-hidden="true"><i>',
+                        "previous": '<i class="fa fa-angle-double-left" aria-hidden="true"><i>'
+                    }
+                }
+            });
+        });
+    </script>
+
 
 
     {{-- Delete swall entitas --}}

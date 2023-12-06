@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            My Profile
+                            Broadcast Information
                         </div>
                     </div>
                     <!-- Right navbar links -->
@@ -73,13 +73,14 @@
         <div class="container-fluid">
             <div class="row page-titles">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"><a href="{{ route('admin.profile.show') }}">My Profile</a>
+                    <li class="breadcrumb-item active"><a
+                            href="{{ route('admin.broadcast-information.index') }}">{{ $title }}</a>
                     </li>
-                    <li class="breadcrumb-item">Update Profile</li>
+                    <li class="breadcrumb-item">Table</li>
                 </ol>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
+            <div class="row">
+                <div class="col-12">
                     @if (session('success'))
                         <div class="alert alert-success solid alert-dismissible fade show" id="info-message">
                             <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
@@ -93,65 +94,69 @@
                         </div>
                     @endif
                     <div class="card">
-                        <form novalidate action="{{ route('admin.profile.update') }}" method="POST"
-                            onsubmit="return validateFormAdminProfile();">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-                                <div class="input-group mb-3">
-                                    <input type="text" name="nama" id="nama"
-                                        class="form-control gray-border @error('nama') is-invalid @enderror"
-                                        placeholder="{{ __('Nama') }}" value="{{ old('nama', auth()->user()->nama) }}"
-                                        required>
-                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    @error('name')
-                                        <span class="error invalid-feedback">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <!-- Move the 'Add' button to the right -->
+                                <div class="ml-auto-add">
+                                    <a href="{{ route('admin.broadcast-information.create') }}"
+                                        class="btn btn-rounded btn-success">
+                                        <span class="btn-icon-start text-success"><i
+                                                class="fa fa-plus color-success"></i></span>
+                                        Add
+                                    </a>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <input type="email" name="email" id="email"
-                                        class="form-control gray-border @error('email') is-invalid @enderror"
-                                        placeholder="{{ __('Email') }}"
-                                        value="{{ old('email', auth()->user()->email) }}" required>
-                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                    @error('email')
-                                        <span class="error invalid-feedback">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group-password-profile mb-3">
-                                    <input type="password" name="password" id="password" class="form-control gray-border gray-placeholder"
-                                        placeholder="{{ __('Password Baru') }}" maxlength="100">
-                                    <span class="eye-toggle"><i class="fas fa-eye" id="password-toggle"></i></span>
-                                    @error('password')
-                                        <span class="error invalid-feedback">
-                                            {{ $message }}
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group-password-profile mb-3">
-                                    <input type="password" name="password_confirmation" id="password_confirmation"
-                                        class="form-control gray-border gray-placeholder @error('password_confirmation') is-invalid @enderror"
-                                        placeholder="{{ __('Konfirmasi Password Baru') }}" autocomplete="new-password">
-                                    <span class="eye-toggle"><i class="fas fa-eye"
-                                            id="password-confirmation-toggle"></i></span>
-                                </div>
-                                <button type="submit" class="btn btn-primary mt-3">{{ __('Submit') }}</button>
                             </div>
-                        </form>
+                            <div class="table-responsive">
+                                <table id="example2" class="display" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Message Last Update</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="normal-text">
+                                        @foreach ($uniqueBroadcasts as $index => $broadcast)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>
+                                                    @if ($broadcast['last_update'])
+                                                        @php
+                                                            $last_update = \Carbon\Carbon::parse($broadcast['last_update'])->tz('Asia/Jakarta');
+                                                        @endphp
+                                                        {{ $last_update->format('Y-m-d H:i:s') }}
+                                                    @else
+                                                        No last updated date.
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($broadcast['action'])
+                                                        <span class="badge light badge-primary">Action:
+                                                            {{ $broadcast['action'] }}</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        {{-- <div class="card-footer clearfix">
+                            {{ $items->links() }}
+                        </div> --}}
                     </div>
+
                 </div>
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
+    <div class="footer">
+        <div class="copyright">
+        </div>
+    </div>
 @endsection
-
-@section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-@endsection
-

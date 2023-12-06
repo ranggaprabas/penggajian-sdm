@@ -12,6 +12,7 @@ use App\Models\Entitas;
 use App\Models\KomponenGaji;
 use App\Models\LogActivity;
 use App\Models\PotonganGaji;
+use App\Models\TelegramUser;
 
 class SdmController extends Controller
 {
@@ -69,9 +70,11 @@ class SdmController extends Controller
         $potongans = PotonganGaji::get(['id', 'nama_potongan'])
             ->unique('nama_potongan')
             ->sortBy('nama_potongan');
+        
+        $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
 
-        return view('admin.sdm.create', compact('jabatans', 'entita', 'divisis', 'tunjangans', 'potongans', 'pages', 'title'));
+        return view('admin.sdm.create', compact('jabatans', 'entita', 'divisis', 'tunjangans', 'potongans', 'pages', 'title', 'telegramUsers'));
     }
 
     /**
@@ -176,9 +179,10 @@ class SdmController extends Controller
         $potongans = PotonganGaji::get(['id', 'nama_potongan'])
             ->unique('nama_potongan')
             ->sortBy('nama_potongan');
+        $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
 
-        return view('admin.sdm.edit', compact('sdm',  'jabatans', 'tunjangans', 'potongans', 'entita', 'divisis', 'pages', 'title'));
+        return view('admin.sdm.edit', compact('sdm',  'jabatans', 'tunjangans', 'potongans', 'entita', 'divisis', 'pages', 'title', 'telegramUsers'));
     }
 
     /**
