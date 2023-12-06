@@ -132,7 +132,7 @@
                                         <textarea id="ckeditor" name="message" class="form-control" rows="4">{{ old('message') }}</textarea>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Simpan</button>
+                                <button class="btn btn-primary" type="submit">Kirim</button>
                             </form>
 
                         </div>
