@@ -1,62 +1,60 @@
 @extends('layouts.guest')
 
 @section('content')
-    <div class="card-body login-card-body">
-        <p class="login-box-msg">{{ __('Login') }}</p>
+    <h4 class="text-center mb-4">Sign in your account</h4>
+    <form action="{{ route('login') }}" method="post">
+        @csrf
 
-        <form action="{{ route('login') }}" method="post">
-            @csrf
-
-            <div class="input-group mb-3">
-                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="{{ __('Email') }}" required autofocus>
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-envelope"></span>
-                    </div>
-                </div>
-                @error('email')
+        <div class="mb-3">
+            <label class="mb-1"><strong>Email</strong></label>
+            <input type="email" name="email"
+                class="form-control @error('email') is-invalid @enderror gray-border gray-placeholder"
+                placeholder="{{ __('Email') }}" required autofocus>
+            @error('email')
                 <span class="error invalid-feedback">
                     {{ $message }}
                 </span>
-                @enderror
-            </div>
+            @enderror
+        </div>
 
-            <div class="input-group mb-3">
-                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" placeholder="{{ __('Password') }}" required>
-                <div class="input-group-append">
-                    <div class="input-group-text">
-                        <span class="fas fa-lock"></span>
-                    </div>
-                </div>
-                @error('password')
+        <div class="mb-3">
+            <label class="mb-1"><strong>Password</strong></label>
+            <div class="form-group-password-reset">
+                <input type="password" name="password" id="password"
+                    class="form-control @error('password') is-invalid @enderror gray-border gray-placeholder"
+                    placeholder="{{ __('Password') }}" required>
+                <span class="eye-toggle"><i class="fas fa-eye" id="password-toggle"></i></span>
+            </div>
+            @error('password')
                 <span class="error invalid-feedback">
                     {{ $message }}
                 </span>
-                @enderror
-            </div>
+            @enderror
+        </div>
 
-            <div class="row">
-                <div class="col-8">
-                    <div class="icheck-primary">
-                        <input type="checkbox" id="remember" name="remember">
-                        <label for="remember">
-                            {{ __('Remember Me') }}
-                        </label>
-                    </div>
+        <div class="row d-flex justify-content-between mt-4 mb-2">
+            <div class="mb-3">
+                <div class="form-check custom-checkbox ms-1">
+                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                    <label class="form-check-label" for="basic_checkbox_1">
+                        {{ __('Remember Me') }}
+                    </label>
                 </div>
-                <!-- /.col -->
-                <div class="col-4">
-                    <button type="submit" class="btn btn-primary btn-block">{{ __('Login') }}</button>
-                </div>
-                <!-- /.col -->
             </div>
-        </form>
+            @if (Route::has('password.request'))
+                <p class="mb-3">
+                    <a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
+                </p>
+            @endif
+        </div>
+        <!-- /.col -->
+        <div class="new-account mt-3">
+            <button type="submit" class="btn btn-primary btn-block">{{ __('Login') }}</button>
+        </div>
+        <!-- /.col -->
+        </div>
+    </form>
 
-        @if (Route::has('password.request'))
-            <p class="mb-1">
-                <a href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
-            </p>
-        @endif
     </div>
     <!-- /.login-card-body -->
 @endsection
