@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
 use App\Models\PotonganGaji;
+use PDF;
 
 class GajiController extends Controller
 {
@@ -71,9 +72,8 @@ class GajiController extends Controller
 
     public function cetak($bulan, $tahun)
     {
-        // Menggunakan fungsi konversiBulan untuk mengonversi angka bulan menjadi teks bulan
+        // Your existing code to fetch data from the database
         $namaBulan = $this->konversiBulan($bulan);
-
         $tanggal = $bulan . $tahun;
         $items = DB::table('absensi')
             ->select(
@@ -92,7 +92,14 @@ class GajiController extends Controller
             ->where('absensi.bulan', $tanggal)
             ->get();
 
-        return view('admin.gaji.cetak', compact('items', 'bulan', 'namaBulan', 'tahun'));
+        // Generate PDF using DomPDF
+        $pdf = PDF::loadView('admin.gaji.cetak', compact('items', 'bulan', 'namaBulan', 'tahun'));
+
+        // You can customize the filename if needed
+        $filename = 'Data Gaji SDM_' . $bulan . '_' . $tahun . '.pdf';
+
+        // Use download() to send the PDF as a download to the user
+        return $pdf->download($filename);
     }
 
     public function destroy($id)

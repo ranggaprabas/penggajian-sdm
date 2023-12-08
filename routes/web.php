@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\EntitasController;
 use App\Http\Controllers\Admin\DivisiController;
+use App\Http\Controllers\Admin\GajiController;
 use App\Http\Controllers\Admin\JabatanController;
 use App\Http\Controllers\Admin\SdmController;
 use App\Http\Controllers\Admin\UserController;
@@ -47,6 +48,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
         // Route::get('kehadiran', [App\Http\Controllers\Admin\AbsensiController::class, 'index'])->name('absensis.index');
         Route::get('gaji/input-gaji', [App\Http\Controllers\Admin\AbsensiController::class, 'show'])->name('absensis.show');
         Route::post('gaji/input-gaji', [App\Http\Controllers\Admin\AbsensiController::class, 'store'])->name('absensis.store');
+        Route::get('gaji/cetak/{bulan}/{tahun}', [GajiController::class, 'cetak'])->name('admin.gaji.cetak');
         Route::resource('gaji', App\Http\Controllers\Admin\GajiController::class);
         Route::get('gaji', [App\Http\Controllers\Admin\GajiController::class, 'index'])->name('gaji.index');
         Route::get('gaji/cetak/{bulan}/{tahun}', [App\Http\Controllers\Admin\GajiController::class, 'cetak'])->name('gaji.cetak');

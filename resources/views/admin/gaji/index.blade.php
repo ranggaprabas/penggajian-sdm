@@ -122,10 +122,10 @@
                             <button class="btn btn-primary mt-3 mb-3"><i class="fa fa-filter"></i> Filter</button>
                             @if (request()->get('bulan') === null && request()->get('tahun') === null)
                                 <a href="{{ route('admin.gaji.cetak', [ltrim(date('m'), '0'), date('Y')]) }}"
-                                    class="btn btn-info mt-3 mb-3" target="_blank"><i class="fa fa-print"></i> Cetak</a>
+                                    class="btn btn-danger mt-3 mb-3"><i class="fa fa-file-pdf"></i> PDF</a>
                             @else
                                 <a href="{{ route('admin.gaji.cetak', [request()->get('bulan'), request()->get('tahun')]) }}"
-                                    class="btn btn-info mt-3 mb-3" target="_blank"><i class="fa fa-print"></i> Cetak</a>
+                                    class="btn btn-danger mt-3 mb-3"><i class="fa fa-file-pdf"></i> PDF</a>
                             @endif
                             <div class="alert alert-secondary alert-dismissible fade show">
                                 <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor"

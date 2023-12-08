@@ -4,36 +4,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
     <title>Cetak Gaji SDM</title>
     <style>
         body {
-            font-family: 'Times new roman';
+            font-family: 'Times New Roman', serif;
             color: black;
+        }
+
+        .container {
+            margin: 20px;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .separator {
+            width: 50%;
+            border-width: 5px;
+            color: black;
+            margin: 10px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        thead tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #f2f2f2;
+            /* Warna latar belakang untuk baris ganjil */
+        }
+
+        tr:nth-child(even) {
+            background-color: white;
+            /* Warna latar belakang untuk baris genap */
+        }
+
+        tr.no-background {
+            background-color: transparent;
+            /* Atau biarkan kosong agar menggunakan warna default */
+        }
+
+        tr.footer {
+            background-color: white;
+        }
+
+        ul {
+            list-style-position: inside;
+            padding: 3;
+            margin: 0;
+        }
+
+        li {
+            text-align: left;
+        }
+
+        .footer {
+            margin-top: 20px;
+        }
+
+        .signature {
+            width: 200px;
+            margin: 0 auto;
+        }
+
+        .date {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .date td {
+            padding: 8px;
+            border: none;
+            text-align: left;
+        }
+
+        .no-background td {
+            background-color: transparent;
+        }
+
+        .separator td {
+            border-top: 1px solid #ccc; /* Warna abu-abu */
         }
     </style>
 </head>
 
 <body>
-    <div style="position: absolute; top: 20px; right: 20px;">
-        <img src="{{ asset('images/tamanmediaindonesia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="180">
-    </div>
     <center>
         <h1>PT. TAMAN MEDIA INDONESIA</h1>
         <h2>Daftar Gaji SDM</h2>
-        <hr style="width: 50%;border-width: 5px;color:black" />
+        <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
     </center>
 
-    <table>
-        <tr>
-            <td>Bulan</td>
-            <td>:</td>
-            <td>{{ $namaBulan }}</td>
+    <table class="date">
+        <tr class="no-background">
+            <td>Bulan   :   {{$namaBulan}}</td>
         </tr>
-        <tr>
-            <td>Tahun</td>
-            <td>:</td>
-            <td>{{ $tahun }}</td>
+        <tr class="separator">
+            <td></td>
+        </tr>
+        <tr class="no-background">
+            <td>Tahun   :  {{ $tahun }}</td>
         </tr>
     </table>
 
@@ -41,9 +135,7 @@
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th class="text-center">Nik</th>
                 <th class="text-center">Nama</th>
-                <th class="text-center">Jenis Kelamin</th>
                 <th class="text-center">Entitas</th>
                 <th class="text-center">Divisi</th>
                 <th class="text-center">Jabatan</th>
@@ -59,9 +151,7 @@
             @forelse($items as $item)
                 <tr>
                     <td>{{ $counter }}</td>
-                    <td>{{ $item->nik }}</td>
                     <td>{{ $item->nama }}</td>
-                    <td>{{ $item->jenis_kelamin }}</td>
                     <td>{{ $item->entitas }}</td>
                     <td>{{ $item->divisi }}</td>
                     <td>{{ $item->jabatan }}</td>
@@ -138,10 +228,10 @@
         </tbody>
     </table>
 
-    <table width="100%">
-        <tr>
-            <td></td>
-            <td width="200px">
+    <table width="100%" style="border: none;">
+        <tr class="footer">
+            <td style="border: none;"></td>
+            <td width="200px" style="border: none;">
                 <p>Semarang, {{ date('d M Y') }} <br /> Manager</p>
                 <br />
                 <br />
@@ -149,10 +239,6 @@
             </td>
         </tr>
     </table>
-
-    <script>
-        window.print();
-    </script>
 </body>
 
 </html>
