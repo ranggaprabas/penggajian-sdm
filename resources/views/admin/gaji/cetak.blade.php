@@ -107,15 +107,19 @@
         }
 
         .separator td {
-            border-top: 1px solid #ccc; /* Warna abu-abu */
+            border-top: 1px solid #ccc;
+            /* Warna abu-abu */
         }
     </style>
 </head>
 
 <body>
+    <div style="position: absolute; top: 20px; right: 5px;">
+        <img src="{{ public_path('images/tamanmediaindonesia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="130">
+    </div>
     <center>
-        <h1>PT. TAMAN MEDIA INDONESIA</h1>
-        <h2>Daftar Gaji SDM</h2>
+        <h2 style="margin-right: 10px;">PT. TAMAN MEDIA INDONESIA</h2>
+        <h3>Daftar Gaji SDM</h3>
         <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
     </center>
 

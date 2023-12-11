@@ -81,7 +81,7 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="card p-4">
-                        <form action="{{ route('admin.laporan.store') }}" method="post" target="_blank">
+                        <form action="{{ route('admin.laporan.store') }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-12">
