@@ -243,10 +243,6 @@
         </table>
         
     @endforeach
-
-    <script>
-        window.print()
-    </script>
 </body>
 
 </html>
