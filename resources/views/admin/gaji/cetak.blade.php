@@ -121,13 +121,14 @@
 
     <table class="date">
         <tr class="no-background">
-            <td>Bulan   :   {{$namaBulan}}</td>
-        </tr>
-        <tr class="separator">
-            <td></td>
+            <td width="15%">Bulan</td>
+            <td width="10px">:</td>
+            <td>{{ $namaBulan }}</td>
         </tr>
         <tr class="no-background">
-            <td>Tahun   :  {{ $tahun }}</td>
+            <td>Tahun</td>
+            <td>:</td>
+            <td>{{ $tahun }}</td>
         </tr>
     </table>
 

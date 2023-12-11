@@ -96,7 +96,7 @@ class GajiController extends Controller
         $pdf = PDF::loadView('admin.gaji.cetak', compact('items', 'bulan', 'namaBulan', 'tahun'));
 
         // You can customize the filename if needed
-        $filename = 'Data Gaji SDM_' . $bulan . '_' . $tahun . '.pdf';
+        $filename = 'Data Gaji SDM_' . $namaBulan . '_' . $tahun . '.pdf';
 
         // Use download() to send the PDF as a download to the user
         return $pdf->download($filename);

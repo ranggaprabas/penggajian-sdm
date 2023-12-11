@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PotonganGaji;
 use App\Models\Sdm;
+use PDF;
+
 
 class LaporanController extends Controller
 {
@@ -63,7 +65,22 @@ class LaporanController extends Controller
             ->where('absensi.sdm_id', $request->karyawan_id)
             ->get();
 
-        return view('admin.laporan.cetak-gaji', compact('bulan', 'namaBulan', 'tahun', 'items'));
+        // Ensure there is at least one item
+        if ($items->isNotEmpty()) {
+            $item = $items->first(); // Assuming you want the first item
+
+            // Generate PDF using DomPDF
+            $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
+
+            // You can customize the filename with the employee's name, month, and year
+            $filename = 'Cetak Slip Gaji SDM_' . $item->nama . '_' . $namaBulan . '_' . $tahun . '.pdf';
+
+            // Use download() to send the PDF as a download to the user
+            return $pdf->download($filename);
+        } else {
+            // Handle the case when there are no items
+            // Redirect or display an error message
+        }
     }
 
 
