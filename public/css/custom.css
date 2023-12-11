@@ -25,6 +25,7 @@
     transform: translateY(-50%);
     cursor: pointer;
 }
+
 .form-group-password-reset {
     position: relative;
 }
@@ -100,10 +101,23 @@
 #example1 tbody.normal-text td {
     font-weight: normal;
 }
+
 #example2 tbody.normal-text td {
     font-weight: normal;
 }
 
 .gray-placeholder::placeholder {
     color: rgb(199, 199, 199);
+}
+
+.ck.ck-editor__main .ck.ck-editor__editable_inline p {
+    margin: 0 !important;
+}
+
+.ck.ck-editor__main .ck.ck-editor__editable_inline>:first-child {
+    margin: 0 !important;
+}
+
+.ck.ck-editor__main .ck.ck-editor__editable_inline>:last-child {
+    margin: 0 !important;
 }

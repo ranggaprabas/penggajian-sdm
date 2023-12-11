@@ -7,6 +7,7 @@ use App\Models\BroadcastInformation;
 use App\Models\LogActivity;
 use App\Models\Sdm;
 use Telegram;
+use Illuminate\Support\HtmlString;
 use Illuminate\Http\Request;
 
 class BroadcastInformationController extends Controller
@@ -75,9 +76,12 @@ class BroadcastInformationController extends Controller
             if ($category) {
                 // Pastikan $category memiliki properti chat_id
                 if (isset($category->chat_id)) {
+                    // Strip HTML tags and decode HTML entities from the message
+                    $message = new HtmlString(strip_tags(html_entity_decode($validatedData['message'])));
+
                     $broadcastInfo = BroadcastInformation::create([
                         'category_id' => $categoryId,
-                        'message' => $validatedData['message'],
+                        'message' => $message,
                     ]);
 
                     // LogActivity
@@ -89,7 +93,7 @@ class BroadcastInformationController extends Controller
                         'date_created' => now()->format('Y-m-d H:i:s')
                     ]);
 
-                    $this->sendTelegramMessage($category->chat_id, $validatedData['message']);
+                    $this->sendTelegramMessage($category->chat_id, $message);
                 } else {
                     // Jika chat_id tidak valid, berikan alert atau tindakan lain yang sesuai
                     return redirect()->route('admin.broadcast-information.index')
@@ -103,15 +107,20 @@ class BroadcastInformationController extends Controller
     }
 
 
-
     private function sendTelegramMessage($username, $message)
     {
-        // Remove HTML tags from the message
-        $message = strip_tags($message);
+        // Strip HTML tags and decode HTML entities from the message
+        $plainTextMessage = strip_tags(html_entity_decode($message));
+
+        // Check if the message is empty after stripping HTML tags
+        if (empty(trim($plainTextMessage))) {
+            \Log::error('Message is empty after stripping HTML tags.');
+            return;
+        }
 
         $response = Telegram::sendMessage([
             'chat_id' => $username,
-            'text' => $message,
+            'text' => $plainTextMessage,
         ]);
 
         if ($response->isOk()) {
@@ -123,6 +132,7 @@ class BroadcastInformationController extends Controller
             \Log::error('Gagal mengirim pesan Telegram ke ' . $username . ': ' . $response->getDescription());
         }
     }
+
 
     /**
      * Store a newly created resource in storage.
