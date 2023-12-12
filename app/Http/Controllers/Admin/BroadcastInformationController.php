@@ -77,11 +77,11 @@ class BroadcastInformationController extends Controller
                 // Pastikan $category memiliki properti chat_id
                 if (isset($category->chat_id)) {
                     // Strip HTML tags and decode HTML entities from the message
-                    $message = new HtmlString(strip_tags(html_entity_decode($validatedData['message'])));
+                    $message = new HtmlString((html_entity_decode($validatedData['message'])));
 
                     $broadcastInfo = BroadcastInformation::create([
                         'category_id' => $categoryId,
-                        'message' => $message,
+                        'message' => 'hai,<b>rangga</b>',
                     ]);
 
                     // LogActivity
@@ -110,7 +110,7 @@ class BroadcastInformationController extends Controller
     private function sendTelegramMessage($username, $message)
     {
         // Strip HTML tags and decode HTML entities from the message
-        $plainTextMessage = strip_tags(html_entity_decode($message));
+        $plainTextMessage = (html_entity_decode($message));
 
         // Check if the message is empty after stripping HTML tags
         if (empty(trim($plainTextMessage))) {
@@ -120,7 +120,8 @@ class BroadcastInformationController extends Controller
 
         $response = Telegram::sendMessage([
             'chat_id' => $username,
-            'text' => $plainTextMessage,
+            'text' => 'hai, <b>hai</b> <i>hai italic</i>',
+            'parse_mode' => 'HTML'
         ]);
 
         if ($response->isOk()) {
