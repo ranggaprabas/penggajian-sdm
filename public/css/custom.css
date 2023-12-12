@@ -121,3 +121,6 @@
 .ck.ck-editor__main .ck.ck-editor__editable_inline>:last-child {
     margin: 0 !important;
 }
+.card-body-home {
+    padding: 0.875rem;
+}

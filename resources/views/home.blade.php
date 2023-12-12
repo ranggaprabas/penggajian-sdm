@@ -177,7 +177,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body-home">
                             <h4 class="card-title">Jenis Kelamin SDM</h3>
                         </div>
                         <div class="card-body">
@@ -189,7 +189,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body-home">
                             <h3 class="card-title">Jumlah SDM berdasarkan Entitas</h3>
                         </div>
                         <div class="card-body">
