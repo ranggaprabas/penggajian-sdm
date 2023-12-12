@@ -165,21 +165,6 @@
     {{-- sweet alert --}}
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
-    {{-- Custom Ckeditor bold and italic --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            ClassicEditor
-                .create(document.querySelector('#ckeditor2'), {
-                    toolbar: {
-                        items: ['bold', 'italic']
-                    },
-                    language: 'en'
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        });
-    </script>
     {{-- select2 select all and clear --}}
     <script>
         function selectAllCategories() {
