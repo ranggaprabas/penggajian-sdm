@@ -141,8 +141,8 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if (isset($broadcast['category_ids']))
-                                                        {{ implode(', ', $broadcast['category_ids']) }}
+                                                    @if (isset($broadcast['sdm_names']))
+                                                        {{ implode(', ', $broadcast['sdm_names']) }}
                                                     @else
                                                         No category assigned.
                                                     @endif
@@ -151,9 +151,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                
-
-
                             </div>
                         </div>
                         <!-- /.card-body -->

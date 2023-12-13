@@ -18,13 +18,14 @@ class BroadcastInformationController extends Controller
     public function index()
     {
         $title = "Broadcast Information";
-        $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'broadcast_information.category_id')
+        $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'sdms.nama as sdm_name', 'broadcast_information.category_id')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'broadcast_information.id')
                     ->where('log_activities.table_name', '=', 'broadcast_information')
                     ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = broadcast_information.id AND log_activities.table_name = "broadcast_information")');
             })
             ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
+            ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
             ->with('sdm')
             ->get();
 
@@ -40,7 +41,7 @@ class BroadcastInformationController extends Controller
 
             // Jika sudah ditambahkan, tambahkan data ke kategori yang sudah ada
             if ($existingBroadcastKey !== false) {
-                $uniqueBroadcasts[$existingBroadcastKey]['category_ids'][] = $broadcast->category_id;
+                $uniqueBroadcasts[$existingBroadcastKey]['sdm_names'][] = $broadcast->sdm_name;
             } else {
                 // Jika belum ditambahkan, tambahkan kategori baru
                 $uniqueBroadcasts[] = [
@@ -48,19 +49,13 @@ class BroadcastInformationController extends Controller
                     'last_update' => $broadcast->last_update,
                     'action' => $broadcast->action,
                     'username' => $broadcast->username,
-                    'category_ids' => [$broadcast->category_id],
+                    'sdm_names' => [$broadcast->sdm_name],
                 ];
             }
         }
 
         return view("admin.broadcast-information.index", compact('title', 'uniqueBroadcasts'));
     }
-
-
-
-
-
-
     /**
      * Show the form for creating a new resource.
      */
