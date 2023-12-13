@@ -45,6 +45,7 @@ class BroadcastInformationController extends Controller
             } else {
                 // Jika belum ditambahkan, tambahkan kategori baru
                 $uniqueBroadcasts[] = [
+                    'id' => $broadcast->id,
                     'message' => $broadcast->message,
                     'last_update' => $broadcast->last_update,
                     'action' => $broadcast->action,
@@ -56,6 +57,7 @@ class BroadcastInformationController extends Controller
 
         return view("admin.broadcast-information.index", compact('title', 'uniqueBroadcasts'));
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -136,20 +138,26 @@ class BroadcastInformationController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $broadcast = BroadcastInformation::with('sdm')->findOrFail($id);
+        $pages = 'Broadcast Information';
+        $title = 'Detail Broadcast Information';
 
+        $relatedBroadcasts = BroadcastInformation::select('broadcast_information.message', 'sdms.nama as sdm_name')
+            ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
+            ->where('broadcast_information.message', $broadcast->message)
+            ->get();
+
+        return view('admin.broadcast-information.show', compact('broadcast', 'relatedBroadcasts', 'pages', 'title'));
+    }
 
     /**
      * Store a newly created resource in storage.
      */
 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

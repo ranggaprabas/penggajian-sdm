@@ -114,6 +114,7 @@
                                             <th>Date</th>
                                             <th>Admin</th>
                                             <th>To</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="normal-text">
@@ -130,7 +131,8 @@
                                                         No last updated date.
                                                     @endif
                                                     @if (isset($broadcast['action']))
-                                                        <span class="badge light badge-primary">Action: {{ $broadcast['action'] }}</span>
+                                                        <span class="badge light badge-primary">Action:
+                                                            {{ $broadcast['action'] }}</span>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -153,7 +155,12 @@
                                                     @else
                                                         No category assigned.
                                                     @endif
-                                                </td>                                                
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('admin.broadcast-information.show', $broadcast['id']) }}"
+                                                        class="btn btn-warning shadow btn-xs sharp me-1"> <i
+                                                            class="text-white fa fa-eye"></i> </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

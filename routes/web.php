@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BroadcastInformationController;
 use App\Http\Controllers\Admin\EntitasController;
 use App\Http\Controllers\Admin\DivisiController;
 use App\Http\Controllers\Admin\GajiController;
@@ -32,6 +33,7 @@ Auth::routes(['register' => false]);
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::group(['middleware' => ['is_admin']], function () {
+        Route::get('broadcast-information/{id}', [BroadcastInformationController::class, 'show'])->name('broadcast-information.show');
         Route::resource('broadcast-information', App\Http\Controllers\Admin\BroadcastInformationController::class);
         Route::get('divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
         Route::resource('divisi', App\Http\Controllers\Admin\DivisiController::class);
