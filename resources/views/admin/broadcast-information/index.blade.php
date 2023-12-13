@@ -142,11 +142,18 @@
                                                 </td>
                                                 <td>
                                                     @if (isset($broadcast['sdm_names']))
-                                                        {{ implode(', ', $broadcast['sdm_names']) }}
+                                                        @php
+                                                            $sdmNames = $broadcast['sdm_names'];
+                                                            $displayNames = count($sdmNames) > 3 ? array_slice($sdmNames, 0, 3) : $sdmNames;
+                                                        @endphp
+                                                        {{ implode(', ', $displayNames) }}
+                                                        @if (count($sdmNames) > 3)
+                                                            , ...
+                                                        @endif
                                                     @else
                                                         No category assigned.
                                                     @endif
-                                                </td>
+                                                </td>                                                
                                             </tr>
                                         @endforeach
                                     </tbody>
