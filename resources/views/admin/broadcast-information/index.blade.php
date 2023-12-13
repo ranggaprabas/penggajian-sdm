@@ -111,8 +111,9 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Message Last Update</th>
-                                            <th>Action</th>
+                                            <th>Date</th>
+                                            <th>Admin</th>
+                                            <th>To</th>
                                         </tr>
                                     </thead>
                                     <tbody class="normal-text">
@@ -120,7 +121,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>
-                                                    @if ($broadcast['last_update'])
+                                                    @if (isset($broadcast['last_update']))
                                                         @php
                                                             $last_update = \Carbon\Carbon::parse($broadcast['last_update'])->tz('Asia/Jakarta');
                                                         @endphp
@@ -128,17 +129,30 @@
                                                     @else
                                                         No last updated date.
                                                     @endif
+                                                    @if (isset($broadcast['action']))
+                                                        <span class="badge light badge-primary">Action: {{ $broadcast['action'] }}</span>
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    @if ($broadcast['action'])
-                                                        <span class="badge light badge-primary">Action:
-                                                            {{ $broadcast['action'] }}</span>
+                                                    @if (isset($broadcast['username']))
+                                                        {{ $broadcast['username'] }}
+                                                    @else
+                                                        No admin assigned.
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if (isset($broadcast['category_ids']))
+                                                        {{ implode(', ', $broadcast['category_ids']) }}
+                                                    @else
+                                                        No category assigned.
                                                     @endif
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                
+
 
                             </div>
                         </div>
