@@ -76,12 +76,10 @@ class BroadcastInformationController extends Controller
             if ($category) {
                 // Pastikan $category memiliki properti chat_id
                 if (isset($category->chat_id)) {
-                    // Strip HTML tags and decode HTML entities from the message
-                    $message = new HtmlString((html_entity_decode($validatedData['message'])));
 
                     $broadcastInfo = BroadcastInformation::create([
                         'category_id' => $categoryId,
-                        'message' => 'hai,<b>rangga</b>',
+                        'message' => $validatedData['message'], // Gunakan $validatedData['message']
                     ]);
 
                     // LogActivity
@@ -93,7 +91,7 @@ class BroadcastInformationController extends Controller
                         'date_created' => now()->format('Y-m-d H:i:s')
                     ]);
 
-                    $this->sendTelegramMessage($category->chat_id, $message);
+                    $this->sendTelegramMessage($category->chat_id, $validatedData['message']); // Gunakan $validatedData['message']
                 } else {
                     // Jika chat_id tidak valid, berikan alert atau tindakan lain yang sesuai
                     return redirect()->route('admin.broadcast-information.index')
@@ -106,15 +104,11 @@ class BroadcastInformationController extends Controller
             ->with('success', 'Broadcast Information berhasil dikirim');
     }
 
-
     private function sendTelegramMessage($username, $message)
     {
-        // Strip HTML tags and decode HTML entities from the message
-        $plainTextMessage = (html_entity_decode($message));
-
-        // Check if the message is empty after stripping HTML tags
-        if (empty(trim($plainTextMessage))) {
-            \Log::error('Message is empty after stripping HTML tags.');
+        // Check if the message is empty
+        if (empty(trim($message))) {
+            \Log::error('Message is empty.');
             return;
         }
 
