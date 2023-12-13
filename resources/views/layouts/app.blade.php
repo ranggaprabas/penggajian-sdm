@@ -165,19 +165,38 @@
     {{-- sweet alert --}}
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#ckeditor1'), {
+                toolbar: {
+                    items: [
+                        'bold',
+                        'italic',
+                        '|',
+                        'undo',
+                        'redo'
+                    ]
+                },
+                language: 'en',
+                // ... konfigurasi lainnya
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
     {{-- select2 select all and clear --}}
     <script>
         function selectAllCategories() {
             $('#categories option').prop('selected', true);
             $('#categories').trigger('change.select2');
         }
-    
+
         function clearSelectedCategories() {
             $('#categories option').prop('selected', false);
             $('#categories').trigger('change.select2');
         }
     </script>
-    
+
 
     <script>
         // Select the password and password_confirmation inputs, and the toggle icons

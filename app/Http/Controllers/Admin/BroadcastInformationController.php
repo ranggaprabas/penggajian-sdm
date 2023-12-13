@@ -106,15 +106,19 @@ class BroadcastInformationController extends Controller
 
     private function sendTelegramMessage($username, $message)
     {
-        // Check if the message is empty
+        // Periksa apakah pesannya kosong
         if (empty(trim($message))) {
-            \Log::error('Message is empty.');
+            \Log::error('Pesan kosong.');
             return;
         }
 
+        // Hapus tag HTML yang tidak diinginkan
+        $allowedTags = '<b><strong><i><em><u><ins><s><strike><del><span><a><tg-emoji><code><pre>';
+        $message = strip_tags($message, $allowedTags);
+
         $response = Telegram::sendMessage([
             'chat_id' => $username,
-            'text' => 'hai, <b>hai</b> <i>hai italic</i>',
+            'text' => $message,
             'parse_mode' => 'HTML'
         ]);
 
@@ -127,6 +131,7 @@ class BroadcastInformationController extends Controller
             \Log::error('Gagal mengirim pesan Telegram ke ' . $username . ': ' . $response->getDescription());
         }
     }
+
 
 
     /**

@@ -129,7 +129,7 @@
                                 <div class="mb-3 row">
                                     <label class="col-sm-2 col-form-label">Message</label>
                                     <div class="card-body custom-ekeditor">
-                                        <textarea id="ckeditor" name="message" class="form-control" rows="4">{{ old('message') }}</textarea>
+                                        <textarea id="ckeditor1" name="message" class="form-control" rows="4">{{ old('message') }}</textarea>
                                     </div>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Kirim</button>
