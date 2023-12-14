@@ -105,6 +105,7 @@ class AbsensiController extends Controller
 
                 $dataAbsensi = [
                     'sdm_id' => $sdm->id,
+                    'chat_id' => $sdm->chat_id,
                     'bulan' => $request->bulan,
                     'nama' => $sdm->nama,
                     'nik' => $sdm->nik,
@@ -157,6 +158,7 @@ class AbsensiController extends Controller
 
                 $dataAbsensi = [
                     'sdm_id' => $sdm->id,
+                    'chat_id' => $sdm->chat_id,
                     'bulan' => $request->bulan,
                     'nama' => $sdm->nama,
                     'nik' => $sdm->nik,
