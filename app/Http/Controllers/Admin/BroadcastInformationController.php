@@ -65,7 +65,12 @@ class BroadcastInformationController extends Controller
     {
         $title = 'Add Broadcast Information';
         $pages = "Broadcast Information";
-        $broadcasts = Sdm::get(['id', 'nama']);
+
+        // Ambil hanya SDM yang memiliki chat_id tidak kosong
+        $broadcasts = Sdm::select('id', 'nama')
+            ->whereNotNull('chat_id')  // Filter untuk chat_id tidak null
+            ->get();
+
         return view('admin.broadcast-information.create', compact('pages', 'title', 'broadcasts'));
     }
 
