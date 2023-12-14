@@ -32,7 +32,7 @@ class SdmRequest extends FormRequest
                         'divisi_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
-                        'chat_id' => 'required'
+                        'chat_id' => 'nullable'
   
                     ];
                 }
@@ -47,7 +47,7 @@ class SdmRequest extends FormRequest
                         'divisi_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
-                        'chat_id' => 'required'
+                        'chat_id' => 'nullable'
                     ];
                 }
         }

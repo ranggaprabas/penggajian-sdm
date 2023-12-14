@@ -122,7 +122,7 @@
                                     </tr>
                                     <tr>
                                         <th>Telegram Id</th>
-                                        <td>{{ $data->chat_id }}</td>
+                                        <td>{{ $data->chat_id ?? '-' }}</td>
                                     </tr>
                                     <!-- Tampilkan total tunjangan -->
                                     <tr>

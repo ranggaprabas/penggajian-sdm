@@ -193,9 +193,9 @@
                                         <div class="form-group">
                                             <label for="chat_id">Telegram Id</label>
                                             <select class="form-control select2" name="chat_id" id="chat_id"
-                                                style="width: 100%;" required>
+                                                style="width: 100%;">
                                                 <option value="__create__">Lainnya</option>
-                                                <option value="" disabled>-- Pilih Telegram Id --</option>
+                                                <option value="">-- Pilih Telegram Id --</option>
                                                 <option value="{{ $sdm->chat_id }}"
                                                     @if ($sdm->id) selected @endif>
                                                     {{ $sdm->chat_id }}

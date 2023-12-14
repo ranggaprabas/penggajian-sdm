@@ -382,16 +382,6 @@
                     return false; // Menghentikan pengiriman formulir jika tidak valid
                 }
             }
-            // Pemeriksaan tambahan untuk select dengan ID 'chat_id'
-            const chatIdField = document.getElementById('chat_id');
-            if (chatIdField.value.trim() === '') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Telegram Id Wajib Diisi',
-                    text: 'Telegram Id tidak boleh kosong!',
-                });
-                return false; // Menghentikan pengiriman formulir jika tidak valid
-            }
             return true; // Kirim formulir jika valid
         }
 

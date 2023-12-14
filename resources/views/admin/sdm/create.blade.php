@@ -188,9 +188,9 @@
                                         <div class="form-group">
                                             <label for="chat id">Telegram Id</label>
                                             <select class="form-control select2" name="chat_id" id="chat_id"
-                                                style="width: 100%;" required>
+                                                style="width: 100%;">
+                                                <option value="">-- Pilih Telegram Id --</option>
                                                 <option value="__create__">Lainnya</option>
-                                                <option value="" disabled selected>-- Pilih Telegram Id --</option>
                                                 @foreach ($telegramUsers as $telegramUser)
                                                     <option value="{{ $telegramUser->chat_id }}">
                                                         {{ $telegramUser->username }} - {{ $telegramUser->chat_id }}
