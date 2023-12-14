@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PotonganGaji;
 use App\Models\Sdm;
+use Illuminate\Support\Facades\Response;
 use PDF;
 
 
@@ -86,6 +87,61 @@ class LaporanController extends Controller
         } else {
             // Handle the case when there are no items
             // Redirect or display an error message
+        }
+    }
+
+    public function printPDF(Request $request, $karyawan_id, $chat_id, $bulan, $tahun)
+    {
+        $namaBulan = $this->konversiBulan($bulan);
+        $tanggal = $bulan . $tahun;
+
+        // Ambil data absensi termasuk chat_id
+        $items = DB::table('absensi')
+            ->select(
+                'sdm_id',
+                'bulan',
+                'nama',
+                'nik',
+                'jenis_kelamin',
+                'entitas',
+                'divisi',
+                'jabatan',
+                'tunjangan_jabatan',
+                'tunjangan',
+                'potongan',
+                'chat_id'
+            )
+            ->where('bulan', $tanggal)
+            ->where('sdm_id', $karyawan_id)
+            ->where('chat_id', $chat_id)
+            ->get();
+
+        // Pastikan data ditemukan
+        if ($items->isNotEmpty()) {
+            $item = $items->first(); // Mengambil hanya satu baris karena asumsi Anda hanya ingin satu item
+            $timestamp = time();
+            
+
+            // Generate PDF menggunakan DomPDF
+            $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
+            $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
+            $pdfContent = $pdf->output();
+
+            // Response PDF langsung sebagai file download
+            $response = Response::make($pdfContent, 200);
+            $response->header('Content-Type', 'application/pdf');
+            $response->header('Content-Disposition', 'attachment; filename=Slip_' . $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf');
+            $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+            $response->header('Cache-Control', 'post-check=0, pre-check=0');
+            $response->header('Pragma', 'no-cache');
+
+            return $response;
+        } else {
+            // Handle the case when there is no data found
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan',
+            ], 404);
         }
     }
 
