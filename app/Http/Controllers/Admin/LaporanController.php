@@ -67,15 +67,21 @@ class LaporanController extends Controller
 
         // Ensure there is at least one item
         if ($items->isNotEmpty()) {
-            $item = $items->first(); // Assuming you want the first item
+            $item = $items->first(); // Mengasumsikan Anda ingin item pertama
 
-            // Generate PDF using DomPDF
+            // Generate timestamp
+            $timestamp = time();
+
+            // Generate PDF menggunakan DomPDF
             $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
 
-            // You can customize the filename with the employee's name, month, and year
-            $filename = 'Cetak Slip Gaji SDM_' . $item->nama . '_' . $namaBulan . '_' . $tahun . '.pdf';
+            // Anda dapat menyesuaikan nama file dengan nama karyawan, bulan, tahun, dan timestamp
+            $filename = 'Slip_' . $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf';
 
-            // Use download() to send the PDF as a download to the user
+            // Set password pengguna (timestamp) untuk PDF
+            $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
+
+            // Gunakan download() untuk mengirimkan PDF sebagai unduhan ke pengguna
             return $pdf->download($filename);
         } else {
             // Handle the case when there are no items
