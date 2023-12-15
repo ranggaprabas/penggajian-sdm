@@ -613,6 +613,23 @@
         }
     </script>
 
+    {{-- sweet alert in setting input required --}}
+
+    <script>
+        function validateFormSetting() {
+            const settingInputField = document.getElementById('setting');
+            if (settingInputField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Telegram Bot Token Wajib Diisi',
+                    text: 'Telegram Bot Token tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            return true; // Kirim formulir jika valid
+        }
+    </script>
+
     {{-- sweet alert in jabatan input required --}}
 
     <script>

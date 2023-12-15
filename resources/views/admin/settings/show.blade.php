@@ -110,17 +110,18 @@
                     @endif
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('admin.settings.update') }}">
+                            <form method="POST" action="{{ route('admin.settings.update') }}"
+                                onsubmit="return validateFormSetting();">
                                 @csrf
                                 @method('PUT')
                                 <div style="gap: .5rem;flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label for="telegram_bot_token">Telegram Bot Token:</label>
-                                    <input class="form-control gray-border" style="width: 100%;" type="text"
-                                        name="telegram_bot_token" value="{{ $setting->telegram_bot_token ?? '-' }}"
-                                        required>
+                                    <input class="form-control gray-border" style="width: 100%;" type="text" id="setting"
+                                        name="telegram_bot_token" value="{{ $setting->telegram_bot_token ?? '' }}"
+                                        >
                                 </div>
-                                <button class="btn btn-primary" type="submit">Save Settings</button>
+                                <button class="btn btn-primary" type="submit">Save Setting</button>
                             </form>
                         </div>
                     </div>
