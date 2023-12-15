@@ -108,12 +108,18 @@
                     </ul>
                 </li>
             @endif
-            <li>
-                <a href="{{ route('admin.broadcast-information.index') }}" class="ai-icon-home" aria-expanded="false">
-                    <i class="fas fa-envelope"></i>
-                    <span class="nav-text">Broadcast Information</span>
-                </a>
-            </li>
+            @php
+                $telegramBotToken = \App\Models\Setting::where('telegram_bot_token', '!=', '')->value('telegram_bot_token');
+            @endphp
+            @if (!empty($telegramBotToken))
+                <li>
+                    <a href="{{ route('admin.broadcast-information.index') }}" class="ai-icon-home"
+                        aria-expanded="false">
+                        <i class="fas fa-envelope"></i>
+                        <span class="nav-text">Broadcast Information</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
 </div>

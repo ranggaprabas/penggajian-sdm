@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\BroadcastInformation;
 use App\Models\LogActivity;
 use App\Models\Sdm;
+use App\Models\Setting;
 use Telegram;
 use Illuminate\Support\HtmlString;
 use Illuminate\Http\Request;
@@ -17,6 +18,14 @@ class BroadcastInformationController extends Controller
      */
     public function index()
     {
+        // Get the TELEGRAM_BOT_TOKEN from the database
+        $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
+
+        // Check if TELEGRAM_BOT_TOKEN is set
+        if (!$telegramSetting) {
+            // Token not set, redirect to 404 or display an error
+            abort(404, 'Telegram Bot Token not configured');
+        }
         $title = "Broadcast Information";
         $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'sdms.nama as sdm_name', 'broadcast_information.category_id')
             ->leftJoin('log_activities', function ($join) {
@@ -63,6 +72,14 @@ class BroadcastInformationController extends Controller
      */
     public function create()
     {
+        // Get the TELEGRAM_BOT_TOKEN from the database
+        $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
+
+        // Check if TELEGRAM_BOT_TOKEN is set
+        if (!$telegramSetting) {
+            // Token not set, redirect to 404 or display an error
+            abort(404, 'Telegram Bot Token not configured');
+        }
         $title = 'Add Broadcast Information';
         $pages = "Broadcast Information";
 
@@ -117,6 +134,13 @@ class BroadcastInformationController extends Controller
 
     private function sendTelegramMessage($username, $message)
     {
+        // Check if TELEGRAM_BOT_TOKEN is set
+        $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
+        if (!$telegramSetting) {
+            // Token not set, log an error or handle as needed
+            \Log::error('Telegram Bot Token not configured. Message not sent to ' . $username);
+            return;
+        }
         // Periksa apakah pesannya kosong
         if (empty(trim($message))) {
             \Log::error('Pesan kosong.');
@@ -145,6 +169,15 @@ class BroadcastInformationController extends Controller
 
     public function show($id)
     {
+        // Get the TELEGRAM_BOT_TOKEN from the database
+        $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
+
+        // Check if TELEGRAM_BOT_TOKEN is set
+        if (!$telegramSetting) {
+            // Token not set, redirect to 404 or display an error
+            abort(404, 'Telegram Bot Token not configured');
+        }
+        
         $broadcast = BroadcastInformation::with('sdm')->findOrFail($id);
         $pages = 'Broadcast Information';
         $title = 'Detail Broadcast Information';
