@@ -28,7 +28,7 @@
                                 @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:200px;">
+                                <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:230px;">
                                     <ul class="timeline">
                                         <li>
                                             <div class="timeline-panel">
@@ -38,6 +38,18 @@
                                                 <div class="media-body">
                                                     <a href="{{ route('admin.profile.show') }}" class="dropdown-item">
                                                         <h6 class="mb-1">{{ __('My profile') }}</h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <div class="media me-2 media-danger">
+                                                    <i class="fa fa-cog"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <a href="{{ route('admin.settings.show') }}" class="dropdown-item">
+                                                        <h6 class="mb-1">{{ __('Setting') }}</h6>
                                                     </a>
                                                 </div>
                                             </div>
@@ -73,9 +85,9 @@
         <div class="container-fluid">
             <div class="row page-titles">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"><a href="{{ route('admin.divisi.index') }}"></a>
+                    <li class="breadcrumb-item active"><a href="{{ route('admin.settings.show') }}">Beranda Setting</a>
                     </li>
-                    <li class="breadcrumb-item"></li>
+                    <li class="breadcrumb-item">Edit Setting</li>
                 </ol>
             </div>
             <div class="row">
@@ -102,13 +114,15 @@
                             <form method="POST" action="{{ route('admin.settings.update') }}">
                                 @csrf
                                 @method('PUT')
-                            
-                                <label for="telegram_bot_token">Telegram Bot Token:</label>
-                                <input type="text" name="telegram_bot_token" value="{{ $setting->telegram_bot_token ?? '-' }}" required>
-                            
-                                <button type="submit">Save Settings</button>
+                                <div style="gap: .5rem;flex-wrap: wrap;"
+                                    class="form-group justify-content-between d-flex align-items-center mb-5">
+                                    <label for="telegram_bot_token">Telegram Bot Token:</label>
+                                    <input class="form-control gray-border" style="width: 100%;" type="text"
+                                        name="telegram_bot_token" value="{{ $setting->telegram_bot_token ?? '-' }}"
+                                        required>
+                                </div>
+                                <button class="btn btn-primary" type="submit">Save Settings</button>
                             </form>
-
                         </div>
                     </div>
 

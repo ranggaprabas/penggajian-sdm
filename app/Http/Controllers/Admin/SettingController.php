@@ -31,7 +31,9 @@ class SettingController extends Controller
         $setting->telegram_bot_token = $request->input('telegram_bot_token');
         $setting->save();
 
-        return redirect()->route('admin.settings.show')
-            ->with('success', 'Settings updated successfully.');
+        return redirect()->route('admin.settings.show')->with([
+            'success', 'Settings updated successfully.',
+            'alert-info' => 'info'
+        ]);
     }
 }
