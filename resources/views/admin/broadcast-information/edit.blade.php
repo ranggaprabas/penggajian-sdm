@@ -28,7 +28,7 @@
                                 @endif
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:200px;">
+                                <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:230px;">
                                     <ul class="timeline">
                                         <li>
                                             <div class="timeline-panel">
@@ -38,6 +38,18 @@
                                                 <div class="media-body">
                                                     <a href="{{ route('admin.profile.show') }}" class="dropdown-item">
                                                         <h6 class="mb-1">{{ __('My profile') }}</h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <div class="media me-2 media-danger">
+                                                    <i class="fa fa-cog"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <a href="{{ route('admin.settings.show') }}" class="dropdown-item">
+                                                        <h6 class="mb-1">{{ __('Setting') }}</h6>
                                                     </a>
                                                 </div>
                                             </div>

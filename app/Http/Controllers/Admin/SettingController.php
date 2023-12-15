@@ -8,17 +8,10 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-    //
     public function show()
     {
-        $setting = Setting::first();
-        return view('admin.settings.show', compact('setting'));
-    }
-
-    public function edit()
-    {
         $setting = Setting::firstOrNew(); // Use firstOrNew to create a new instance if no record is found
-        return view('admin.settings.edit', compact('setting'));
+        return view('admin.settings.show', compact('setting'));
     }
 
     public function update(Request $request)

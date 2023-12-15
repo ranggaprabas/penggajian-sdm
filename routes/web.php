@@ -44,7 +44,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 
     Route::group(['middleware' => ['is_admin']], function () {
         Route::get('settings', [SettingController::class, 'show'])->name('settings.show');
-        Route::get('settings/edit', [SettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
         Route::resource('broadcast-information', App\Http\Controllers\Admin\BroadcastInformationController::class);
         Route::get('divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
