@@ -6,9 +6,11 @@ use App\Http\Controllers\Admin\DivisiController;
 use App\Http\Controllers\Admin\GajiController;
 use App\Http\Controllers\Admin\JabatanController;
 use App\Http\Controllers\Admin\SdmController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\Setting;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +34,18 @@ Auth::routes(['register' => false]);
 
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+    // Get the TELEGRAM_BOT_TOKEN from the database and set it in .env
+    $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
+
+    if ($telegramSetting) {
+        putenv("TELEGRAM_BOT_TOKEN={$telegramSetting->telegram_bot_token}");
+        config(['telegram.bots.mybot.token' => $telegramSetting->telegram_bot_token]);
+    }
+
     Route::group(['middleware' => ['is_admin']], function () {
+        Route::get('settings', [SettingController::class, 'show'])->name('settings.show');
+        Route::get('settings/edit', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
         Route::resource('broadcast-information', App\Http\Controllers\Admin\BroadcastInformationController::class);
         Route::get('divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
         Route::resource('divisi', App\Http\Controllers\Admin\DivisiController::class);
