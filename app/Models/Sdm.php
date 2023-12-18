@@ -33,6 +33,11 @@ class Sdm extends Model
     {
         return $this->hasMany(KomponenGaji::class);
     }
+
+    public function absensi()
+    {
+        return $this->hasOne(Absensi::class, 'sdm_id', 'id');
+    }
     // for create
     public function komponenGajis()
     {

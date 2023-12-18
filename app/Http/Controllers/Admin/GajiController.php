@@ -16,21 +16,25 @@ class GajiController extends Controller
     public function index(Request $request)
     {
         $bulan = $request->get('bulan') . $request->get('tahun');
+        // Hitung jumlah SDM yang belum masuk gaji berdasarkan field bulan dari tabel absensi
+        $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan) {
+            $query->where('bulan', $bulan);
+        })->count();
+
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $items = DB::table('absensi')
-                ->select('absensi.id',  'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
+                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulanSaatIni)
                 ->get();
         } else {
             $items = DB::table('absensi')
                 ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulan)
-
                 ->get();
         }
 
-        return view('admin.gaji.index', compact('items'));
+        return view('admin.gaji.index', compact('items', 'sdmCountNotInAbsensi'));
     }
 
     public function gajiSerentak(Request $request, $bulan, $tahun)
@@ -40,20 +44,37 @@ class GajiController extends Controller
         // Ambil data SDM
         $sdms = Sdm::all();
 
+        // Inisialisasi array untuk menyimpan informasi SDM yang baru dimasukkan ke Absensi
+        $sdmsInserted = [];
+
         // Lakukan proses gaji serentak
         foreach ($sdms as $sdm) {
             // Panggil fungsi untuk menyimpan data ke Absensi
-            $this->storeGajiSerentak($sdm, $bulan, $tahun);
+            $result = $this->storeGajiSerentak($sdm, $bulan, $tahun);
+
+            // Tandai SDM yang baru dimasukkan
+            if ($result) {
+                $sdmsInserted[] = $sdm->nama;
+            }
+        }
+
+        // Berikan keterangan bahwa gaji serentak berhasil dilakukan
+        $keterangan = 'Gaji serentak bulan ini sudah berhasil disimpan';
+
+        // Berikan keterangan jika ada SDM yang baru dimasukkan
+        if (!empty($sdmsInserted)) {
+            $keterangan = 'Gaji serentak bulan ini berhasil disimpan, data SDM baru berhasil dimasukkan';
         }
 
         return redirect()->route('admin.gaji.index', [
             'bulan' => $bulan,
             'tahun' => $tahun,
         ])->with([
-            'success' => 'Gaji serentak bulan ini berhasil disimpan',
+            'success' => $keterangan,
             'alert-info' => 'info',
         ]);
     }
+
 
 
 
@@ -95,9 +116,20 @@ class GajiController extends Controller
             'divisi' => $sdm->divisi->nama,
         ];
 
-        // Simpan data ke Absensi
-        Absensi::create($gaji);
+        // Cek apakah data SDM sudah ada di dalam tabel Absensi
+        $isSdmInAbsensi = Absensi::where('sdm_id', $sdm->id)
+            ->where('bulan', $bulan . $tahun)
+            ->exists();
+
+        // Jika SDM belum ada di dalam Absensi, simpan data
+        if (!$isSdmInAbsensi) {
+            Absensi::create($gaji);
+            return true; // Berhasil disimpan
+        }
+
+        return false; // SDM sudah ada di dalam Absensi
     }
+
 
 
     public function show(string $id)
