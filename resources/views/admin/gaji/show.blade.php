@@ -121,6 +121,10 @@
                                         <th>Jabatan</th>
                                         <td>{{ $data->jabatan ?? '-' }}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Telegram Id</th>
+                                        <td>{{ $data->chat_id ?? '-' }}</td>
+                                    </tr>
                                     <!-- Tampilkan total tunjangan -->
                                     <tr>
                                         <th>Total Tunjangan:</th>
