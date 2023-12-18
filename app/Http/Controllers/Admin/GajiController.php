@@ -132,6 +132,55 @@ class GajiController extends Controller
         return false; // SDM sudah ada di dalam Absensi
     }
 
+    public function cetakPDF($id, $bulan, $tahun)
+    {
+        $tanggal = $bulan . $tahun;
+
+        $item = DB::table('absensi')
+            ->select(
+                'absensi.sdm_id',
+                'absensi.bulan',
+                'absensi.nama',
+                'absensi.nik',
+                'absensi.jenis_kelamin',
+                'absensi.entitas',
+                'absensi.divisi',
+                'absensi.jabatan',
+                'absensi.tunjangan_jabatan',
+                'absensi.tunjangan',
+                'absensi.potongan',
+            )
+            ->where('absensi.id', $id)
+            ->where('absensi.bulan', $tanggal)
+
+            ->first();
+
+        // Pastikan item ditemukan
+        if ($item) {
+
+            $namaBulan = $this->konversiBulan($bulan);
+
+            $items = [$item];
+
+            // Generate timestamp
+            $timestamp = time();
+
+            // Generate PDF menggunakan DomPDF
+            $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'namaBulan', 'tahun')); // Tambahkan 'namaBulan' dan 'tahun'
+
+            // Anda dapat menyesuaikan nama file dengan nama karyawan, bulan, tahun, dan timestamp
+            $filename = 'Slip_' . $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf';
+
+            // Set password pengguna (timestamp) untuk PDF
+            $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
+
+            // Gunakan download() untuk mengirimkan PDF sebagai unduhan ke pengguna
+            return $pdf->download($filename);
+        } else {
+            // Handle the case when the item is not found
+            // Redirect or display an error message
+        }
+    }
 
 
     public function show(string $id)

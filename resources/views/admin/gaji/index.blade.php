@@ -99,8 +99,7 @@
                         <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                     </svg>
                     <strong>Success!</strong> {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                        aria-label="btn-close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close"></button>
                 </div>
             @endif
             <div class="row">
@@ -175,7 +174,8 @@
                                     <i class="fa fa-calculator"></i> Gaji Serentak
                                 </button>
                                 <!-- Tampilkan informasi jumlah SDM yang belum masuk gaji -->
-                                <span class="text-muted ml-2">Total SDM yang belum digaji: {{ $sdmCountNotInAbsensi }}</span>
+                                <span class="text-muted ml-2">Total SDM yang belum digaji:
+                                    {{ $sdmCountNotInAbsensi }}</span>
                             </form>
                         </div>
                     </div>
@@ -276,14 +276,26 @@
                                                         Rp. {{ number_format($take_home_pay, 0, '', '.') }}
                                                     </td>
                                                     <td>
-                                                        <a href="{{ route('admin.gaji.show', $item->id) }}"
-                                                            class="btn btn-warning shadow btn-xs sharp me-1"> <i
-                                                                class="text-white fa fa-eye"></i> </a>
-                                                        <a href="javascript:void(0)" id="btn-delete-gaji"
-                                                            data-id="{{ $item->id }}"
-                                                            data-nama="{{ $item->nama }}"
-                                                            class="btn btn-danger shadow btn-xs sharp me-1"> <i
-                                                                class="fa fa-undo"></i></a>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ route('admin.gaji.show', $item->id) }}"
+                                                                class="btn btn-warning shadow btn-xs sharp me-1"> <i
+                                                                    class="text-white fa fa-eye"></i> </a>
+                                                            <form
+                                                                action="{{ route('admin.gaji.pdf', ['id' => $item->id, 'bulan' => request()->get('bulan', date('m')), 'tahun' => request()->get('tahun', date('Y'))]) }}"
+                                                                method="get">
+                                                                @csrf
+                                                                <!-- ... (form input bulan dan tahun) ... -->
+                                                                <button type="submit"
+                                                                    class="btn btn-info solid btn-xxs">
+                                                                    <i class="fa fa-file-pdf"></i>
+                                                                </button>
+                                                            </form>
+                                                            <a href="javascript:void(0)" id="btn-delete-gaji"
+                                                                data-id="{{ $item->id }}"
+                                                                data-nama="{{ $item->nama }}"
+                                                                class="btn btn-danger shadow btn-xs sharp me-1"> <i
+                                                                    class="fa fa-trash"></i></a>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 @php
