@@ -60,6 +60,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.gaji.index') }}" class="ai-icon-jabatan" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span class="nav-text">Payroll</span>
+                    </a>
+                </li>
+                {{-- <li>
                     <a class="has-arrow ai-icon-gaji" href="javascript:void()" aria-expanded="false">
                         <i class="fas fa-file-invoice-dollar"></i>
                         <span class="nav-text">Gaji</span>
@@ -89,7 +95,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             @else
                 <li class="nav-item">
                     <a href="#" class="nav-link">
