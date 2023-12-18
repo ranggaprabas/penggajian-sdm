@@ -15,7 +15,9 @@ class GajiController extends Controller
 {
     public function index(Request $request)
     {
-        $bulan = $request->get('bulan') . $request->get('tahun');
+        // Set nilai default untuk bulan dan tahun saat ini
+        $bulan = $request->get('bulan', date('m')) . $request->get('tahun', date('Y'));
+
         // Hitung jumlah SDM yang belum masuk gaji berdasarkan field bulan dari tabel absensi
         $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan) {
             $query->where('bulan', $bulan);
