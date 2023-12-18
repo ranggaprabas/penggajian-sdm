@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Absensi;
+use App\Models\KomponenGaji;
 use App\Models\PotonganGaji;
+use App\Models\Sdm;
 use PDF;
 
 class GajiController extends Controller
@@ -30,6 +32,73 @@ class GajiController extends Controller
 
         return view('admin.gaji.index', compact('items'));
     }
+
+    public function gajiSerentak(Request $request, $bulan, $tahun)
+    {
+        // Validasi jika diperlukan
+
+        // Ambil data SDM
+        $sdms = Sdm::all();
+
+        // Lakukan proses gaji serentak
+        foreach ($sdms as $sdm) {
+            // Panggil fungsi untuk menyimpan data ke Absensi
+            $this->storeGajiSerentak($sdm, $bulan, $tahun);
+        }
+
+        return redirect()->route('admin.gaji.index', [
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+        ])->with([
+            'success' => 'Gaji serentak bulan ini berhasil disimpan',
+            'alert-info' => 'info',
+        ]);
+    }
+
+
+
+    // Fungsi untuk menyimpan data ke Absensi
+    private function storeGajiSerentak($sdm, $bulan, $tahun)
+    {
+        // Mendapatkan data komponen gaji untuk pengguna (sdm) saat ini
+        $komponenGaji = KomponenGaji::where('sdm_id', $sdm->id)->get();
+
+        // Mendapatkan data potongan gaji untuk pengguna (sdm) saat ini
+        $potonganGaji = PotonganGaji::where('sdm_id', $sdm->id)->get();
+
+        // Menyusun data tunjangan dalam format JSON
+        $tunjanganDinamis = [];
+        if ($komponenGaji->isNotEmpty()) {
+            $tunjanganDinamis = $komponenGaji->toArray();
+        }
+
+        // Menyusun data potongan dalam format JSON
+        $potonganDinamis = [];
+        if ($potonganGaji->isNotEmpty()) {
+            $potonganDinamis = $potonganGaji->toArray();
+        }
+
+        // Ambil data Gaji terkait
+        // Sesuaikan dengan struktur database dan kebutuhan Anda
+        $gaji = [
+            'sdm_id' => $sdm->id,
+            'chat_id' => $sdm->chat_id,
+            'bulan' => $bulan . $tahun,
+            'nama' => $sdm->nama,
+            'nik' => $sdm->nik,
+            'jenis_kelamin' => $sdm->jenis_kelamin,
+            'jabatan' => $sdm->jabatan->nama,
+            'tunjangan_jabatan' => $sdm->jabatan->tunjangan_jabatan,
+            'tunjangan' => json_encode($tunjanganDinamis),
+            'potongan' => json_encode($potonganDinamis),
+            'entitas' => $sdm->entitas->nama,
+            'divisi' => $sdm->divisi->nama,
+        ];
+
+        // Simpan data ke Absensi
+        Absensi::create($gaji);
+    }
+
 
     public function show(string $id)
     {

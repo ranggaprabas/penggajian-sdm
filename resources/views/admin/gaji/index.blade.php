@@ -130,7 +130,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <button class="btn btn-primary mt-3 mb-3"><i class="fa fa-filter"></i> Filter</button>
                             @if (request()->get('bulan') === null && request()->get('tahun') === null)
                                 <a href="{{ route('admin.gaji.cetak', [ltrim(date('m'), '0'), date('Y')]) }}"
@@ -153,6 +152,15 @@
                                 </button>
                             </div>
                         </form>
+                        <form
+                            action="{{ route('admin.gaji.gaji-serentak', ['bulan' => request()->get('bulan', date('m')), 'tahun' => request()->get('tahun', date('Y'))]) }}"
+                            method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-primary mt-3 mb-3">
+                                <i class="fa fa-calculator"></i> Gaji Serentak
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             </div>
@@ -285,10 +293,10 @@
                                 </div>
                             @else
                                 <div class="text-center">
-                                    <span class="badge bg-danger"> <i class="fa fa-exclamation-circle"></i> Data
-                                        Kosong!, Diperlukan Mengisi <a href="{{ route('admin.absensis.show') }}"
-                                            style="color: #000000 !important; text-decoration: underline;">Input
-                                            Gaji</a> terlebih dahulu</span>
+                                    <span class="badge bg-danger">
+                                        <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Gaji Serentak
+                                        terlebih dahulu
+                                    </span>
                                 </div>
                             @endif
                         </div>

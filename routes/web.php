@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
         Route::get('gaji/input-gaji', [App\Http\Controllers\Admin\AbsensiController::class, 'show'])->name('absensis.show');
         Route::post('gaji/input-gaji', [App\Http\Controllers\Admin\AbsensiController::class, 'store'])->name('absensis.store');
         Route::get('gaji/cetak/{bulan}/{tahun}', [GajiController::class, 'cetak'])->name('admin.gaji.cetak');
+        Route::post('admin/gaji-serentak/{bulan?}/{tahun?}', [GajiController::class, 'gajiSerentak'])->name('gaji.gaji-serentak');
         Route::resource('gaji', App\Http\Controllers\Admin\GajiController::class);
         Route::get('gaji', [App\Http\Controllers\Admin\GajiController::class, 'index'])->name('gaji.index');
         Route::get('gaji/cetak/{bulan}/{tahun}', [App\Http\Controllers\Admin\GajiController::class, 'cetak'])->name('gaji.cetak');
