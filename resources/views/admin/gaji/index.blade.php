@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            Data Gaji SDM
+                            Payroll SDM
                         </div>
                     </div>
                     <!-- Right navbar links -->
@@ -85,9 +85,8 @@
         <div class="container-fluid">
             <div class="row page-titles">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item active"><a href="{{ route('admin.gaji.index') }}">Gaji</a>
+                    <li class="breadcrumb-item active"><a href="{{ route('admin.gaji.index') }}">Payroll SDM</a>
                     </li>
-                    <li class="breadcrumb-item">Data Gaji SDM</li>
                 </ol>
             </div>
             <!-- Tambahkan bagian berikut untuk menampilkan keterangan -->
@@ -174,7 +173,7 @@
                                     <i class="fa fa-calculator"></i> Gaji Serentak
                                 </button>
                                 <!-- Tampilkan informasi jumlah SDM yang belum masuk gaji -->
-                                <span class="text-muted ml-2">Total SDM yang belum digaji:
+                                <span class="text-muted ml-2 mx-2">Total SDM yang belum digaji:
                                     {{ $sdmCountNotInAbsensi }}</span>
                             </form>
                         </div>

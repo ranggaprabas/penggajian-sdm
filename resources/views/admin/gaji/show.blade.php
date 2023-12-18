@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            Data Gaji SDM
+                            Payroll SDM
                         </div>
                     </div>
                     <!-- Right navbar links -->

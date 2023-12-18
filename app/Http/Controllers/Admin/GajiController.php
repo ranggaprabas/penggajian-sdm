@@ -185,8 +185,8 @@ class GajiController extends Controller
 
     public function show(string $id)
     {
-        $title = "Detail Gaji SDM";
-        $pages = "Data Gaji";
+        $title = "Detail Payroll SDM";
+        $pages = "Payroll SDM";
 
         $data = Absensi::findOrFail($id);
 
