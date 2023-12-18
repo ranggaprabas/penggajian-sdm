@@ -175,7 +175,7 @@
                                     <i class="fa fa-calculator"></i> Gaji Serentak
                                 </button>
                                 <!-- Tampilkan informasi jumlah SDM yang belum masuk gaji -->
-                                <span class="text-muted ml-2">SDM belum masuk gaji: {{ $sdmCountNotInAbsensi }}</span>
+                                <span class="text-muted ml-2">Total SDM yang belum digaji: {{ $sdmCountNotInAbsensi }}</span>
                             </form>
                         </div>
                     </div>
