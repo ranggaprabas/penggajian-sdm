@@ -204,7 +204,7 @@
                                     <label for="file">Pilih file Excel</label>
                                 <input type="file" name="file" accept=".xlsx, .xls" id="file" class="form-control gray-border" required>
                             </div>
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel"></i> Import Excel</button>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel"></i> Impor Excel</button>
                             </form>
                         </div>
                     </div>
