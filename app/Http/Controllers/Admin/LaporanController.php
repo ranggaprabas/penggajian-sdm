@@ -140,7 +140,7 @@ class LaporanController extends Controller
             // Handle the case when there is no data found
             return response()->json([
                 'status' => false,
-                'message' => 'Data tidak ditemukan',
+                'message' => 'Slip Gaji yang diminta belum tersedia',
             ], 404);
         }
     }
