@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\GajiExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Imports\GajiImport;
 use App\Models\Absensi;
 use App\Models\KomponenGaji;
 use App\Models\PotonganGaji;
 use App\Models\Sdm;
+use Maatwebsite\Excel\Facades\Excel;
 use PDF;
+use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Validators\ValidationException as ExcelValidationException;
+
 
 class GajiController extends Controller
 {
@@ -183,6 +189,8 @@ class GajiController extends Controller
     }
 
 
+
+
     public function show(string $id)
     {
         $title = "Detail Payroll SDM";
@@ -252,6 +260,58 @@ class GajiController extends Controller
 
         // Use download() to send the PDF as a download to the user
         return $pdf->download($filename);
+    }
+
+    public function exportExcel($bulan, $tahun)
+    {
+        // Ubah format bulan dan tahun sesuai kebutuhan
+        $namaBulan = $this->konversiBulan($bulan);
+        $tanggal = $bulan . $tahun;
+
+        // Ambil data dari tabel absensi sesuai bulan dan tahun
+        $items = DB::table('absensi')
+            ->select(
+                'absensi.id',
+                'absensi.sdm_id',
+                'absensi.chat_id',
+                'absensi.bulan',
+                'absensi.created_at',
+                'absensi.updated_at',
+                'absensi.nama',
+                'absensi.nik',
+                'absensi.jenis_kelamin',
+                'absensi.jabatan',
+                'absensi.tunjangan',
+                'absensi.potongan',
+                'absensi.tunjangan_jabatan',
+                'absensi.entitas',
+                'absensi.divisi',
+            )
+            ->where('absensi.bulan', $tanggal)
+            ->get();
+
+        // Ekspor data ke Excel
+        return Excel::download(new GajiExport($items), 'data_gaji.xlsx');
+    }
+
+    public function importExcel(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        // Get the file from the request
+        $file = $request->file('file');
+
+        // Use the GajiImport class to import data from the Excel file
+        Excel::import(new GajiImport, $file);
+
+        // Redirect back with a success message
+        return redirect()->route('admin.gaji.index')->with([
+            'success' => 'Data telah berhasil diimpor.',
+            'alert-info' => 'info',
+        ]);
     }
 
     public function destroy($id)

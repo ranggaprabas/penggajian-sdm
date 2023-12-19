@@ -142,14 +142,35 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary mt-3 mb-3"><i class="fa fa-filter"></i> Filter</button>
+                                <button class="btn btn-primary mt-3 mb-3 mx-1"><i class="fa fa-filter"></i> Filter</button>
                                 @if (request()->get('bulan') === null && request()->get('tahun') === null)
-                                    <a href="{{ route('admin.gaji.cetak', [ltrim(date('m'), '0'), date('Y')]) }}"
-                                        class="btn btn-danger mt-3 mb-3"><i class="fa fa-file-pdf"></i> PDF</a>
+                                    @php
+                                        $bulan = ltrim(date('m'), '0');
+                                        $tahun = date('Y');
+                                    @endphp
+                                    <a href="{{ route('admin.gaji.cetak', [$bulan, $tahun]) }}"
+                                        class="btn btn-danger mt-3 mb-3 mx-1">
+                                        <i class="fa fa-file-pdf"></i> PDF
+                                    </a>
+                                    <a href="{{ route('admin.gaji.export-excel', [$bulan, $tahun]) }}"
+                                        class="btn btn-success mt-3 mb-3 mx-1">
+                                        <i class="fa fa-file-excel"></i> Export Excel
+                                    </a>
                                 @else
-                                    <a href="{{ route('admin.gaji.cetak', [request()->get('bulan'), request()->get('tahun')]) }}"
-                                        class="btn btn-danger mt-3 mb-3"><i class="fa fa-file-pdf"></i> PDF</a>
+                                    @php
+                                        $bulan = request()->get('bulan');
+                                        $tahun = request()->get('tahun');
+                                    @endphp
+                                    <a href="{{ route('admin.gaji.cetak', [$bulan, $tahun]) }}"
+                                        class="btn btn-danger mt-3 mb-3 mx-1">
+                                        <i class="fa fa-file-pdf"></i> PDF
+                                    </a>
+                                    <a href="{{ route('admin.gaji.export-excel', [$bulan, $tahun]) }}"
+                                        class="btn btn-success mt-3 mb-3 mx-1">
+                                        <i class="fa fa-file-excel"></i> Export Excel
+                                    </a>
                                 @endif
+
                                 <div class="alert alert-secondary alert-dismissible fade show">
                                     <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor"
                                         stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"
@@ -175,6 +196,15 @@
                                 <!-- Tampilkan informasi jumlah SDM yang belum masuk gaji -->
                                 <span class="text-muted ml-2 mx-2">Total SDM yang belum digaji:
                                     {{ $sdmCountNotInAbsensi }}</span>
+                            </form>
+                            <form action="{{ route('admin.gaji.import-excel') }}" method="post"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group mb-3">
+                                    <label for="file">Pilih file Excel</label>
+                                <input type="file" name="file" accept=".xlsx, .xls" id="file" class="form-control gray-border" required>
+                            </div>
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-file-excel"></i> Import Excel</button>
                             </form>
                         </div>
                     </div>
@@ -284,8 +314,7 @@
                                                                 method="get">
                                                                 @csrf
                                                                 <!-- ... (form input bulan dan tahun) ... -->
-                                                                <button type="submit"
-                                                                    class="btn btn-info solid btn-xxs">
+                                                                <button type="submit" class="btn btn-info solid btn-xxs">
                                                                     <i class="fa fa-file-pdf"></i>
                                                                 </button>
                                                             </form>
