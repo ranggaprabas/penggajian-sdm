@@ -322,7 +322,7 @@
                                                                 data-id="{{ $item->id }}"
                                                                 data-nama="{{ $item->nama }}"
                                                                 class="btn btn-danger shadow btn-xs sharp me-1"> <i
-                                                                    class="fa fa-trash"></i></a>
+                                                                    class="fa fa-undo"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>

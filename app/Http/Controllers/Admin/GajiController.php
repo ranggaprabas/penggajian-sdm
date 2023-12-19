@@ -84,27 +84,34 @@ class GajiController extends Controller
     }
 
 
-
-
-    // Fungsi untuk menyimpan data ke Absensi
     private function storeGajiSerentak($sdm, $bulan, $tahun)
     {
         // Mendapatkan data komponen gaji untuk pengguna (sdm) saat ini
         $komponenGaji = KomponenGaji::where('sdm_id', $sdm->id)->get();
 
+        // Menyusun data tunjangan dalam format JSON
+        $tunjanganDinamis = [];
+        foreach ($komponenGaji as $item) {
+            $tunjanganDinamis[] = [
+                'id' => $item->id,
+                'sdm_id' => $item->sdm_id,
+                'nama_tunjangan' => $item->nama_tunjangan,
+                'nilai_tunjangan' => $item->nilai_tunjangan,
+            ];
+        }
+
         // Mendapatkan data potongan gaji untuk pengguna (sdm) saat ini
         $potonganGaji = PotonganGaji::where('sdm_id', $sdm->id)->get();
 
-        // Menyusun data tunjangan dalam format JSON
-        $tunjanganDinamis = [];
-        if ($komponenGaji->isNotEmpty()) {
-            $tunjanganDinamis = $komponenGaji->toArray();
-        }
-
         // Menyusun data potongan dalam format JSON
         $potonganDinamis = [];
-        if ($potonganGaji->isNotEmpty()) {
-            $potonganDinamis = $potonganGaji->toArray();
+        foreach ($potonganGaji as $item) {
+            $potonganDinamis[] = [
+                'id' => $item->id,
+                'sdm_id' => $item->sdm_id,
+                'nama_potongan' => $item->nama_potongan,
+                'nilai_potongan' => $item->nilai_potongan,
+            ];
         }
 
         // Ambil data Gaji terkait
@@ -187,8 +194,6 @@ class GajiController extends Controller
             // Redirect or display an error message
         }
     }
-
-
 
 
     public function show(string $id)
