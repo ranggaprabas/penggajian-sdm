@@ -32,8 +32,8 @@ class GajiImport implements ToModel, WithHeadingRow
                 'nik' => $row['nik'],
                 'jenis_kelamin' => $row['jenis_kelamin'],
                 'jabatan' => $row['jabatan'],
-                'tunjangan' => $row['tunjangan'],
-                'potongan' => $row['potongan'],
+                'tunjangan' => $this->parseJsonArray($row['tunjangan']),
+                'potongan' => $this->parsePotonganArray($row['potongan']),
                 'tunjangan_jabatan' => $row['tunjangan_jabatan'],
                 'entitas' => $row['entitas'],
                 'divisi' => $row['divisi'],
@@ -45,5 +45,51 @@ class GajiImport implements ToModel, WithHeadingRow
 
         // Jika SDM sudah ada di dalam Absensi, kembalikan null atau false
         return null; // atau false
+    }
+
+    private function parseJsonArray($string)
+    {
+        $items = explode(', ', $string);
+
+        return collect($items)
+            ->map(function ($item) {
+                // Use a more robust regex pattern to capture the key-value pairs
+                if (preg_match('/^(.+)=(\d+)$/', $item, $matches)) {
+                    $namaTunjangan = $matches[1];
+                    $nilaiTunjangan = $matches[2];
+
+                    return [
+                        'nama_tunjangan' => $namaTunjangan,
+                        'nilai_tunjangan' => (int)$nilaiTunjangan,
+                    ];
+                } else {
+                    // Handle the case where the pattern doesn't match
+                    return [];
+                }
+            })
+            ->filter(); // Removes falsy values (empty arrays)
+    }
+
+    private function parsePotonganArray($string)
+    {
+        $items = explode(', ', $string);
+
+        return collect($items)
+            ->map(function ($item) {
+                // Use a more robust regex pattern to capture the key-value pairs
+                if (preg_match('/^(.+)=(\d+)$/', $item, $matches)) {
+                    $namaPotongan = $matches[1];
+                    $nilaiPotongan = $matches[2];
+
+                    return [
+                        'nama_potongan' => $namaPotongan,
+                        'nilai_potongan' => (int)$nilaiPotongan,
+                    ];
+                } else {
+                    // Handle the case where the pattern doesn't match
+                    return [];
+                }
+            })
+            ->filter(); // Removes falsy values (empty arrays)
     }
 }

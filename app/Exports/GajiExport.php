@@ -19,6 +19,9 @@ class GajiExport implements FromCollection, WithHeadings
     public function collection()
     {
         return $this->items->map(function ($item) {
+            $formattedTunjangan = $this->formatTunjangan($item->tunjangan);
+            $formattedPotongan = $this->formatPotongan($item->potongan);
+
             return [
                 'id' => $item->id,
                 'sdm_id' => $item->sdm_id,
@@ -30,14 +33,47 @@ class GajiExport implements FromCollection, WithHeadings
                 'nik' => $item->nik,
                 'jenis_kelamin' => $item->jenis_kelamin,
                 'jabatan' => $item->jabatan,
-                'tunjangan' => $item->tunjangan,
-                'potongan' => $item->potongan,
+                'tunjangan' => $formattedTunjangan,
+                'potongan' => $formattedPotongan,
                 'tunjangan_jabatan' => $item->tunjangan_jabatan,
                 'entitas' => $item->entitas,
                 'divisi' => $item->divisi,
             ];
         });
     }
+
+    // Metode tambahan untuk memformat tunjangan
+    private function formatTunjangan($tunjangan)
+    {
+        $formattedTunjangan = json_decode($tunjangan, true);
+        $formattedString = '';
+
+        foreach ($formattedTunjangan as $item) {
+            $formattedString .= $item['nama_tunjangan'] . '=' . $item['nilai_tunjangan'] . ', ';
+        }
+
+        // Menghapus koma dan spasi terakhir
+        $formattedString = rtrim($formattedString, ', ');
+
+        return $formattedString;
+    }
+
+    // Metode tambahan untuk memformat potongan
+    private function formatPotongan($potongan)
+    {
+        $formattedPotongan = json_decode($potongan, true);
+        $formattedString = '';
+
+        foreach ($formattedPotongan as $item) {
+            $formattedString .= $item['nama_potongan'] . '=' . $item['nilai_potongan'] . ', ';
+        }
+
+        // Menghapus koma dan spasi terakhir
+        $formattedString = rtrim($formattedString, ', ');
+
+        return $formattedString;
+    }
+
 
     public function headings(): array
     {
