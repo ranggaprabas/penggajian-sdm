@@ -41,14 +41,19 @@ class GajiImport implements ToCollection, WithHeadingRow
         }
     }
 
+
     private function extractColumnValues($row, $prefix)
     {
         $values = [];
         foreach ($row as $key => $value) {
-            if ($key !== 'tunjangan_jabatan' && strpos($key, $prefix) === 0) {
+            if ($key !== 'tunjangan_jabatan' && strpos($key, $prefix) === 0 && $value !== null) {
                 $columnName = substr($key, strlen($prefix));
+
+                // Gunakan fungsi formatColumnName untuk mengubah nama kolom
+                $formattedColumnName = $this->formatColumnName($columnName);
+
                 $values[] = [
-                    'nama_tunjangan' => $columnName,
+                    'nama_tunjangan' => $formattedColumnName,
                     'nilai_tunjangan' => $value,
                 ];
             }
@@ -61,15 +66,25 @@ class GajiImport implements ToCollection, WithHeadingRow
     {
         $values = [];
         foreach ($row as $key => $value) {
-            if (strpos($key, $prefix) === 0) {
+            if (strpos($key, $prefix) === 0 && $value !== null) {
                 $columnName = substr($key, strlen($prefix));
+
+                // Gunakan fungsi formatColumnName untuk mengubah nama kolom
+                $formattedColumnName = $this->formatColumnName($columnName);
+
                 $values[] = [
-                    'nama_potongan' => $columnName,
+                    'nama_potongan' => $formattedColumnName,
                     'nilai_potongan' => $value,
                 ];
             }
         }
 
         return json_encode($values);
+    }
+
+    // Fungsi untuk mengonversi kata menjadi format yang diinginkan
+    private function formatColumnName($columnName)
+    {
+        return ucwords(str_replace('_', ' ', $columnName));
     }
 }
