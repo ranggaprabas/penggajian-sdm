@@ -93,8 +93,6 @@ class GajiController extends Controller
         $tunjanganDinamis = [];
         foreach ($komponenGaji as $item) {
             $tunjanganDinamis[] = [
-                'id' => $item->id,
-                'sdm_id' => $item->sdm_id,
                 'nama_tunjangan' => $item->nama_tunjangan,
                 'nilai_tunjangan' => $item->nilai_tunjangan,
             ];
@@ -107,8 +105,6 @@ class GajiController extends Controller
         $potonganDinamis = [];
         foreach ($potonganGaji as $item) {
             $potonganDinamis[] = [
-                'id' => $item->id,
-                'sdm_id' => $item->sdm_id,
                 'nama_potongan' => $item->nama_potongan,
                 'nilai_potongan' => $item->nilai_potongan,
             ];
