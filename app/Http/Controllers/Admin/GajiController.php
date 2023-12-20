@@ -305,20 +305,20 @@ class GajiController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
-
+    
         // Get the file from the request
         $file = $request->file('file');
-
+    
         // Use the GajiImport class to import data from the Excel file
         Excel::import(new GajiImport, $file);
-
+    
         // Redirect back with a success message
         return redirect()->route('admin.gaji.index')->with([
             'success' => 'Data telah berhasil diimpor.',
             'alert-info' => 'info',
         ]);
     }
-
+    
     public function destroy($id)
     {
         $gaji = Absensi::findOrFail($id);

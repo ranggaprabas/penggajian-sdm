@@ -3,93 +3,73 @@
 namespace App\Imports;
 
 use App\Models\Absensi;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class GajiImport implements ToModel, WithHeadingRow
+class GajiImport implements ToCollection, WithHeadingRow
 {
-    public function model(array $row)
+    public function collection(Collection $rows)
     {
-        $sdmId = $row['sdm_id'];
-        $bulan = $row['bulan'];
-
-        // Check if SDM already exists in Absensi for the specified month
-        $isSdmInAbsensi = Absensi::where('sdm_id', $sdmId)
-            ->where('bulan', $bulan)
-            ->exists();
-
-        // Jika SDM belum ada di dalam Absensi, simpan data
-        if (!$isSdmInAbsensi) {
-            $gaji = [
+        foreach ($rows as $row) {
+            // Extract common fields
+            $gajiData = [
+                'id' => $row['id'],
                 'sdm_id' => $row['sdm_id'],
                 'chat_id' => $row['chat_id'],
                 'bulan' => $row['bulan'],
-                'created_at' => Carbon::parse($row['created_at']),
-                'updated_at' => Carbon::parse($row['updated_at']),
+                'created_at' => $row['created_at'],
+                'updated_at' => $row['updated_at'],
                 'nama' => $row['nama'],
                 'nik' => $row['nik'],
                 'jenis_kelamin' => $row['jenis_kelamin'],
                 'jabatan' => $row['jabatan'],
-                'tunjangan' => $this->parseJsonArray($row['tunjangan']),
-                'potongan' => $this->parsePotonganArray($row['potongan']),
                 'tunjangan_jabatan' => $row['tunjangan_jabatan'],
                 'entitas' => $row['entitas'],
                 'divisi' => $row['divisi'],
             ];
 
-            // Simpan data dan kembalikan instance model yang baru
-            return new Absensi($gaji);
+            // Extract tunjangan and potongan dynamically
+            $tunjangan = $this->extractColumnValues($row, 'tunjangan_');
+            $potongan = $this->extractColumnValuesPotongan($row, 'potongan_');
+
+            // Combine common fields and extracted values
+            $gaji = Absensi::updateOrCreate(
+                ['id' => $row['id']],
+                array_merge($gajiData, ['tunjangan' => $tunjangan, 'potongan' => $potongan])
+            );
+        }
+    }
+
+    private function extractColumnValues($row, $prefix)
+    {
+        $values = [];
+        foreach ($row as $key => $value) {
+            if ($key !== 'tunjangan_jabatan' && strpos($key, $prefix) === 0) {
+                $columnName = substr($key, strlen($prefix));
+                $values[] = [
+                    'nama_tunjangan' => $columnName,
+                    'nilai_tunjangan' => $value,
+                ];
+            }
         }
 
-        // Jika SDM sudah ada di dalam Absensi, kembalikan null atau false
-        return null; // atau false
+        return json_encode($values);
     }
 
-    private function parseJsonArray($string)
+    private function extractColumnValuesPotongan($row, $prefix)
     {
-        $items = explode(', ', $string);
+        $values = [];
+        foreach ($row as $key => $value) {
+            if (strpos($key, $prefix) === 0) {
+                $columnName = substr($key, strlen($prefix));
+                $values[] = [
+                    'nama_potongan' => $columnName,
+                    'nilai_potongan' => $value,
+                ];
+            }
+        }
 
-        return collect($items)
-            ->map(function ($item) {
-                // Use a more robust regex pattern to capture the key-value pairs
-                if (preg_match('/^(.+)=(\d+)$/', $item, $matches)) {
-                    $namaTunjangan = $matches[1];
-                    $nilaiTunjangan = $matches[2];
-
-                    return [
-                        'nama_tunjangan' => $namaTunjangan,
-                        'nilai_tunjangan' => (int)$nilaiTunjangan,
-                    ];
-                } else {
-                    // Handle the case where the pattern doesn't match
-                    return [];
-                }
-            })
-            ->filter(); // Removes falsy values (empty arrays)
-    }
-
-    private function parsePotonganArray($string)
-    {
-        $items = explode(', ', $string);
-
-        return collect($items)
-            ->map(function ($item) {
-                // Use a more robust regex pattern to capture the key-value pairs
-                if (preg_match('/^(.+)=(\d+)$/', $item, $matches)) {
-                    $namaPotongan = $matches[1];
-                    $nilaiPotongan = $matches[2];
-
-                    return [
-                        'nama_potongan' => $namaPotongan,
-                        'nilai_potongan' => (int)$nilaiPotongan,
-                    ];
-                } else {
-                    // Handle the case where the pattern doesn't match
-                    return [];
-                }
-            })
-            ->filter(); // Removes falsy values (empty arrays)
+        return json_encode($values);
     }
 }
