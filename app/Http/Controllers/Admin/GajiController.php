@@ -93,6 +93,8 @@ class GajiController extends Controller
         $tunjanganDinamis = [];
         foreach ($komponenGaji as $item) {
             $tunjanganDinamis[] = [
+                'id' => $item->id,
+                'sdm_id' => $item->sdm_id,
                 'nama_tunjangan' => $item->nama_tunjangan,
                 'nilai_tunjangan' => $item->nilai_tunjangan,
             ];
@@ -105,6 +107,8 @@ class GajiController extends Controller
         $potonganDinamis = [];
         foreach ($potonganGaji as $item) {
             $potonganDinamis[] = [
+                'id' => $item->id,
+                'sdm_id' => $item->sdm_id,
                 'nama_potongan' => $item->nama_potongan,
                 'nilai_potongan' => $item->nilai_potongan,
             ];
@@ -209,6 +213,57 @@ class GajiController extends Controller
         return view('admin.gaji.show', compact('title', 'pages', 'data', 'bulan', 'tahun'));
     }
 
+    public function edit($id)
+    {
+        $gaji = Absensi::findOrFail($id);
+        $tunjangans = json_decode($gaji->tunjangan, true);
+        $potongans = json_decode($gaji->potongan, true);
+
+        // Mendapatkan model Sdm
+        $sdm = Sdm::findOrFail($gaji->sdm_id);
+
+        // Menyusun data tunjangan dari relasi komponenGaji
+        $existingTunjangans = $sdm->komponenGaji->map(function ($item) {
+            return [
+                'nama_tunjangan' => $item->nama_tunjangan,
+                'nilai_tunjangan' => $item->nilai_tunjangan,
+            ];
+        })->toArray();
+
+        // Menyusun data potongan dari relasi potonganGaji
+        $existingPotongans = $sdm->potonganGaji->map(function ($item) {
+            return [
+                'nama_potongan' => $item->nama_potongan,
+                'nilai_potongan' => $item->nilai_potongan,
+            ];
+        })->toArray();
+
+        return view('admin.gaji.edit', compact('gaji', 'tunjangans', 'potongans', 'existingTunjangans', 'existingPotongans'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $gaji = Absensi::findOrFail($id);
+
+        $this->validate($request, [
+            'chat_id' => 'required',
+            'nama' => 'required',
+            'nik' => 'required',
+        ]);
+
+        // Update data gaji
+        $gaji->update($request->all());
+
+        // Update model Sdm
+        $sdm = Sdm::findOrFail($gaji->sdm_id);
+        $sdm->update([
+            'nama' => $request->input('nama'),
+            'nik' => $request->input('nik'),
+            'chat_id' => $request->input('chat_id'),
+            // ... tambahkan kolom-kolom lain yang perlu diupdate
+        ]);
+        return redirect()->route('admin.gaji.index')->with('success', 'Gaji berhasil diupdate');
+    }
 
 
     public function konversiBulan($bulan)
@@ -301,20 +356,20 @@ class GajiController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,xls',
         ]);
-    
+
         // Get the file from the request
         $file = $request->file('file');
-    
+
         // Use the GajiImport class to import data from the Excel file
         Excel::import(new GajiImport, $file);
-    
+
         // Redirect back with a success message
         return redirect()->route('admin.gaji.index')->with([
             'success' => 'Data telah berhasil diimpor.',
             'alert-info' => 'info',
         ]);
     }
-    
+
     public function destroy($id)
     {
         $gaji = Absensi::findOrFail($id);

@@ -32,9 +32,9 @@ class GajiImport implements ToCollection, WithHeadingRow
             ];
 
             // Extract tunjangan and potongan dynamically
-            $tunjangan = $this->extractColumnValues($row, 'tunjangan_');
-            $potongan = $this->extractColumnValuesPotongan($row, 'potongan_');
-
+            $tunjangan = $this->extractColumnValues($row, 'tunjangan_', $row['sdm_id']);
+            $potongan = $this->extractColumnValuesPotongan($row, 'potongan_', $row['sdm_id']);
+            
             // Cek apakah data untuk bulan dan SDM tertentu sudah ada dalam Absensi
             $existingAbsensi = Absensi::where('bulan', $row['bulan'])
                 ->where('sdm_id', $row['sdm_id'])
@@ -55,7 +55,7 @@ class GajiImport implements ToCollection, WithHeadingRow
 
 
 
-    private function extractColumnValues($row, $prefix)
+    private function extractColumnValues($row, $prefix, $sdmId)
     {
         $values = [];
         foreach ($row as $key => $value) {
@@ -66,6 +66,7 @@ class GajiImport implements ToCollection, WithHeadingRow
                 $formattedColumnName = $this->formatColumnName($columnName);
 
                 $values[] = [
+                    'sdm_id' => $sdmId,
                     'nama_tunjangan' => $formattedColumnName,
                     'nilai_tunjangan' => $value,
                 ];
@@ -75,7 +76,7 @@ class GajiImport implements ToCollection, WithHeadingRow
         return json_encode($values);
     }
 
-    private function extractColumnValuesPotongan($row, $prefix)
+    private function extractColumnValuesPotongan($row, $prefix, $sdmId)
     {
         $values = [];
         foreach ($row as $key => $value) {
@@ -86,6 +87,7 @@ class GajiImport implements ToCollection, WithHeadingRow
                 $formattedColumnName = $this->formatColumnName($columnName);
 
                 $values[] = [
+                    'sdm_id' => $sdmId,
                     'nama_potongan' => $formattedColumnName,
                     'nilai_potongan' => $value,
                 ];

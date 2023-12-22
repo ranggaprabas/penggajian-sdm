@@ -312,6 +312,10 @@
                                                         <a href="{{ route('admin.gaji.show', $item->id) }}"
                                                             class="btn btn-warning shadow btn-xs sharp me-1"> <i
                                                                 class="text-white fa fa-eye"></i> </a>
+                                                        <a href="{{ route('admin.gaji.edit', $item->id) }}"
+                                                            class="btn btn-primary shadow btn-xs sharp me-1"> <i
+                                                                class="fa fa-edit"></i>
+                                                        </a>
                                                         <form
                                                             action="{{ route('admin.gaji.pdf', ['id' => $item->id, 'bulan' => request()->get('bulan', date('m')), 'tahun' => request()->get('tahun', date('Y'))]) }}"
                                                             method="get">
@@ -354,7 +358,8 @@
                         @else
                             <div class="text-center">
                                 <span class="badge bg-danger">
-                                    <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Gaji Serentak / Impor Excel
+                                    <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Gaji Serentak / Impor
+                                    Excel
                                     terlebih dahulu
                                 </span>
                             </div>
