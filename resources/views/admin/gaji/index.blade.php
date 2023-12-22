@@ -354,7 +354,7 @@
                         @else
                             <div class="text-center">
                                 <span class="badge bg-danger">
-                                    <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Gaji Serentak
+                                    <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Gaji Serentak / Impor Excel
                                     terlebih dahulu
                                 </span>
                             </div>
