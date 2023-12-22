@@ -312,7 +312,7 @@
                                                         <a href="{{ route('admin.gaji.show', $item->id) }}"
                                                             class="btn btn-warning shadow btn-xs sharp me-1"> <i
                                                                 class="text-white fa fa-eye"></i> </a>
-                                                        <a href="{{ route('admin.gaji.edit', $item->id) }}"
+                                                        <a href="{{ route('admin.edit-gaji', $item->id) }}"
                                                             class="btn btn-primary shadow btn-xs sharp me-1"> <i
                                                                 class="fa fa-edit"></i>
                                                         </a>

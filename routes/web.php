@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
         Route::post('gaji/import-excel', [GajiController::class, 'importExcel'])->name('gaji.import-excel');
         Route::get('gaji/cetak/{bulan}/{tahun}', [GajiController::class, 'cetak'])->name('admin.gaji.cetak');
         Route::post('admin/gaji-serentak/{bulan?}/{tahun?}', [GajiController::class, 'gajiSerentak'])->name('gaji.gaji-serentak');
+        Route::get('gaji/edit/{id}', [GajiController::class, 'edit'])->name('edit-gaji');
         Route::resource('gaji', App\Http\Controllers\Admin\GajiController::class);
         Route::get('gaji', [App\Http\Controllers\Admin\GajiController::class, 'index'])->name('gaji.index');
         Route::get('gaji/cetak/{bulan}/{tahun}', [App\Http\Controllers\Admin\GajiController::class, 'cetak'])->name('gaji.cetak');

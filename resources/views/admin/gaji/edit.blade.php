@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            SDM
+                            Payroll
                         </div>
                     </div>
                     <!-- Right navbar links -->
@@ -91,8 +91,7 @@
                 </ol>
             </div>
             <div class="col-lg-12">
-                <form novalidate action="{{ route('admin.gaji.update', $gaji->id) }}" method="POST"
-                    onsubmit="return validateForm() && removeCommas2();">
+                <form novalidate action="{{ route('admin.gaji.update', $gaji->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     @if ($errors->any())
@@ -152,19 +151,23 @@
                                     <h4 class="card-title">Tunjangan</h4>
                                 </div>
                                 <div class="card-body p-3">
-                                    <label for="tunjanganContainer">Tunjangan</label>
                                     <div id="tunjanganContainer">
                                         @foreach ($tunjangans as $tunjangan)
                                             <div class="tunjangan">
                                                 <div class="form-group mb-3">
                                                     <label for="nama_tunjangan">Nama Tunjangan</label>
-                                                    <input type="text" class="form-control" name="nama_tunjangan[]"
+                                                    <input type="text" class="form-control gray-border"
+                                                        name="nama_tunjangan[]"
                                                         value="{{ $tunjangan['nama_tunjangan'] }}" required>
                                                 </div>
                                                 <div class="form-group mb-3">
                                                     <label for="nilai_tunjangan">Nilai Tunjangan</label>
-                                                    <input type="text" class="form-control" name="nilai_tunjangan[]"
-                                                        value="{{ $tunjangan['nilai_tunjangan'] }}" required>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">Rp.</span>
+                                                        <input type="text" class="form-control gray-border"
+                                                            name="nilai_tunjangan[]"
+                                                            value="{{ $tunjangan['nilai_tunjangan'] }}" required>
+                                                    </div>
                                                 </div>
                                                 <button type="button"
                                                     class="btn btn-outline-danger removeTunjangan mb-3"><i
@@ -184,7 +187,6 @@
         </div>
         <!-- /.row -->
     </div><!-- /.container-fluid -->
-    </div>
     <!-- /.content -->
     <div class="footer">
         <div class="copyright">
