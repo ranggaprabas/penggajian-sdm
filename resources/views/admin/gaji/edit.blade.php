@@ -140,19 +140,87 @@
                                                 name="chat_id" value="{{ old('chat_id', $gaji->chat_id) }}">
                                         </div>
                                     </div>
+                                    <!-- Form input untuk tunjangan -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Simpan</button>
-                </form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h4 class="card-title">Tunjangan</h4>
+                                </div>
+                                <div class="card-body p-3">
+                                    <label for="tunjanganContainer">Tunjangan</label>
+                                    <div id="tunjanganContainer">
+                                        @foreach ($tunjangans as $tunjangan)
+                                            <div class="tunjangan">
+                                                <div class="form-group mb-3">
+                                                    <label for="nama_tunjangan">Nama Tunjangan</label>
+                                                    <input type="text" class="form-control" name="nama_tunjangan[]"
+                                                        value="{{ $tunjangan['nama_tunjangan'] }}" required>
+                                                </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="nilai_tunjangan">Nilai Tunjangan</label>
+                                                    <input type="text" class="form-control" name="nilai_tunjangan[]"
+                                                        value="{{ $tunjangan['nilai_tunjangan'] }}" required>
+                                                </div>
+                                                <button type="button"
+                                                    class="btn btn-outline-danger removeTunjangan mb-3"><i
+                                                        class="fa fa-trash"></i> Hapus Tunjangan</button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <button type="button" id="addTunjanganEdit" class="btn btn-outline-success">
+                                        <i class="fa fa-plus"></i> Tambah Tunjangan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+            <button class="btn btn-primary" type="submit">Simpan</button>
+            </form>
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
     <div class="footer">
         <div class="copyright">
         </div>
     </div>
+    <!-- Script untuk menangani penambahan dan penghapusan input tunjangan -->
+    <script>
+        $(document).ready(function() {
+            var counter = {{ count($tunjangans) }};
+
+            function addTunjanganInput() {
+                var newTunjangan = `
+                    <div class="tunjangan">
+                        <div class="form-group mb-3">
+                            <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
+                            <input type="text" class="form-control" name="nama_tunjangan[]" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
+                            <input type="text" class="form-control" name="nilai_tunjangan[]" required>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"><i class="fa fa-trash"></i> Hapus Tunjangan</button>
+                    </div>
+                `;
+                $("#tunjanganContainer").append(newTunjangan);
+                counter++;
+            }
+
+            $("#addTunjanganEdit").click(function() {
+                addTunjanganInput();
+            });
+
+            $(document).on("click", ".removeTunjangan", function() {
+                var tunjanganElement = $(this).closest('.tunjangan');
+                tunjanganElement.remove();
+            });
+        });
+    </script>
 @endsection

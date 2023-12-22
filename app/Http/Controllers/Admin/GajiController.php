@@ -217,28 +217,12 @@ class GajiController extends Controller
     {
         $gaji = Absensi::findOrFail($id);
         $tunjangans = json_decode($gaji->tunjangan, true);
-        $potongans = json_decode($gaji->potongan, true);
 
         // Mendapatkan model Sdm
         $sdm = Sdm::findOrFail($gaji->sdm_id);
 
-        // Menyusun data tunjangan dari relasi komponenGaji
-        $existingTunjangans = $sdm->komponenGaji->map(function ($item) {
-            return [
-                'nama_tunjangan' => $item->nama_tunjangan,
-                'nilai_tunjangan' => $item->nilai_tunjangan,
-            ];
-        })->toArray();
 
-        // Menyusun data potongan dari relasi potonganGaji
-        $existingPotongans = $sdm->potonganGaji->map(function ($item) {
-            return [
-                'nama_potongan' => $item->nama_potongan,
-                'nilai_potongan' => $item->nilai_potongan,
-            ];
-        })->toArray();
-
-        return view('admin.gaji.edit', compact('gaji', 'tunjangans', 'potongans', 'existingTunjangans', 'existingPotongans'));
+        return view('admin.gaji.edit', compact('gaji', 'tunjangans'));
     }
 
     public function update(Request $request, $id)
@@ -253,6 +237,17 @@ class GajiController extends Controller
 
         // Update data gaji
         $gaji->update($request->all());
+        // Update data tunjangan
+        $tunjangans = [];
+        foreach ($request->input('nama_tunjangan', []) as $key => $nama) {
+            $nilai = $request->input('nilai_tunjangan')[$key];
+            $tunjangans[] = [
+                'nama_tunjangan' => $nama,
+                'nilai_tunjangan' => $nilai,
+            ];
+        }
+        $gaji->tunjangan = json_encode($tunjangans);
+        $gaji->save();
 
         // Update model Sdm
         $sdm = Sdm::findOrFail($gaji->sdm_id);
