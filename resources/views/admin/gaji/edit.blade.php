@@ -202,11 +202,11 @@
                     <div class="tunjangan">
                         <div class="form-group mb-3">
                             <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
-                            <input type="text" class="form-control" name="nama_tunjangan[]" required>
+                            <input type="text" class="form-control gray-border" name="nama_tunjangan[]" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
-                            <input type="text" class="form-control" name="nilai_tunjangan[]" required>
+                            <input type="text" class="form-control gray-border" name="nilai_tunjangan[]" required>
                         </div>
                         <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"><i class="fa fa-trash"></i> Hapus Tunjangan</button>
                     </div>

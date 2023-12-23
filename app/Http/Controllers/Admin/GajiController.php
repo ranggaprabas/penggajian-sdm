@@ -243,7 +243,7 @@ class GajiController extends Controller
         foreach ($request->input('nama_tunjangan', []) as $key => $nama) {
             $nilai = $request->input('nilai_tunjangan')[$key];
             $tunjangans[] = [
-                'nama_tunjangan' => $nama,
+                'nama_tunjangan' => ucwords($nama),
                 'nilai_tunjangan' => $nilai,
             ];
         }
@@ -260,20 +260,19 @@ class GajiController extends Controller
         ]);
 
         // Update juga data tunjangan pada model KomponenGaji
-        $komponenGaji = $sdm->komponenGaji;
+        $komponenGaji = $sdm->komponenGaji();
 
         // Hapus tunjangan lama
-        $komponenGaji->each->delete();
+        $komponenGaji->delete();
 
         // Tambahkan tunjangan baru
         foreach ($tunjangans as $tunjangan) {
             $komponenGaji->create([
                 'sdm_id' => $sdm->id,
-                'nama_tunjangan' => $tunjangan['nama_tunjangan'],
+                'nama_tunjangan' => ucwords($tunjangan['nama_tunjangan']),
                 'nilai_tunjangan' => $tunjangan['nilai_tunjangan'],
             ]);
         }
-
         return redirect()->route('admin.gaji.index')->with('success', 'Gaji berhasil diupdate');
     }
 
