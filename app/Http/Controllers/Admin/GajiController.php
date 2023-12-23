@@ -27,7 +27,8 @@ class GajiController extends Controller
         // Hitung jumlah SDM yang belum masuk gaji berdasarkan field bulan dari tabel absensi
         $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan) {
             $query->where('bulan', $bulan);
-        })->count();
+        })->where('deleted', '!=', 1)
+            ->count();
 
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
@@ -86,6 +87,11 @@ class GajiController extends Controller
 
     private function storeGajiSerentak($sdm, $bulan, $tahun)
     {
+        // Check if the employee has been marked as deleted
+        if ($sdm->deleted == 1) {
+            // If deleted, skip processing for this employee
+            return false;
+        }
         // Mendapatkan data komponen gaji untuk pengguna (sdm) saat ini
         $komponenGaji = KomponenGaji::where('sdm_id', $sdm->id)->get();
 
