@@ -191,7 +191,7 @@
                                 @csrf
                                 <div class="d-flex gap-3 mt-3 mb-3 mx-1">
                                     <button type="submit" class="btn btn-success"><i class="fa fa-file-excel"></i>
-                                        Impor
+                                        Import
                                         Excel</button>
                                     <input type="file" name="file" accept=".xlsx, .xls" id="file"
                                         class="form-control gray-border" style="width: 55%" required>
@@ -358,7 +358,7 @@
                         @else
                             <div class="text-center">
                                 <span class="badge bg-danger">
-                                    <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Gaji Serentak / Impor
+                                    <i class="fa fa-exclamation-circle"></i> Data Kosong!, Diperlukan Gaji Serentak / Import
                                     Excel
                                     terlebih dahulu
                                 </span>
