@@ -273,7 +273,7 @@ class GajiController extends Controller
                 'nilai_tunjangan' => $tunjangan['nilai_tunjangan'],
             ]);
         }
-        return redirect()->route('admin.gaji.index')->with('success', 'Gaji berhasil diupdate');
+        return redirect()->route('admin.gaji.index')->with('success', 'Gaji berhasil diperbarui!');
     }
 
 
