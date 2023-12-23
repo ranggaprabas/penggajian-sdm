@@ -321,7 +321,7 @@
                                                             method="get">
                                                             @csrf
                                                             <!-- ... (form input bulan dan tahun) ... -->
-                                                            <button type="submit" class="btn btn-outline-danger btn-xxs">
+                                                            <button type="submit" class="btn light btn-danger btn-xxs">
                                                                 <i class="fa fa-file-pdf"></i>
                                                             </button>
                                                         </form>
