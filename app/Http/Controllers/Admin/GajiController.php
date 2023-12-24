@@ -224,11 +224,19 @@ class GajiController extends Controller
         $gaji = Absensi::findOrFail($id);
         $tunjangans = json_decode($gaji->tunjangan, true);
 
-        // Mendapatkan model Sdm
-        $sdm = Sdm::findOrFail($gaji->sdm_id);
+        // Mendapatkan semua data Absensi
+        $gajiData = Absensi::all();
 
+        // Menyusun opsi tunjangan dari semua data Absensi
+        $opsiTunjangan = [];
+        foreach ($gajiData as $gajiItem) {
+            $tunjanganArray = json_decode($gajiItem->tunjangan, true);
+            foreach ($tunjanganArray as $item) {
+                $opsiTunjangan[$gajiItem->id][$item['nama_tunjangan']] = $item['nama_tunjangan'];
+            }
+        }
 
-        return view('admin.gaji.edit', compact('gaji', 'tunjangans'));
+        return view('admin.gaji.edit', compact('gaji', 'tunjangans', 'opsiTunjangan'));
     }
 
     public function update(Request $request, $id)

@@ -156,10 +156,58 @@
                                             <div class="tunjangan">
                                                 <div class="form-group mb-3">
                                                     <label for="nama_tunjangan">Nama Tunjangan</label>
-                                                    <input type="text" class="form-control gray-border"
-                                                        name="nama_tunjangan[]"
-                                                        value="{{ $tunjangan['nama_tunjangan'] }}" required>
+                                                    <select class="form-control select2" name="nama_tunjangan[]">
+                                                        <option value="__create__">Lainnya</option>
+                                                        <option value="" disabled>-- Pilih Tunjangan --</option>
+                                                        <!-- Tambahkan opsi tunjangan dari data yang tersedia -->
+                                                        @foreach ($opsiTunjangan as $absensiId => $opsi)
+                                                            @foreach ($opsi as $namaTunjangan)
+                                                                <option value="{{ $namaTunjangan }}"
+                                                                    {{ $namaTunjangan === $tunjangan['nama_tunjangan'] ? 'selected' : '' }}>
+                                                                    {{ $namaTunjangan }}
+                                                                </option>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </select>
                                                 </div>
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        // Inisialisasi Select2
+                                                        $('select[name="nama_tunjangan[]"]').select2();
+                                                
+                                                        // Menangani perubahan nilai pada elemen select
+                                                        $('select[name="nama_tunjangan[]"]').on('change', async function() {
+                                                            // Mendapatkan nilai terpilih
+                                                            var selectedValue = $(this).val();
+                                                
+                                                            // Cek apakah opsi "Lainnya" dipilih
+                                                            if (selectedValue === '__create__') {
+                                                                // Tampilkan modal SweetAlert2 untuk memasukkan nama Tunjangan baru
+                                                                const { value: newTunjanganName } = await Swal.fire({
+                                                                    input: 'text',
+                                                                    inputLabel: 'Nama Tunjangan Baru',
+                                                                    inputPlaceholder: 'Masukkan Nama Tunjangan Baru',
+                                                                    showCancelButton: true,
+                                                                    inputValidator: (value) => {
+                                                                        if (!value) {
+                                                                            return 'Nama Tunjangan tidak boleh kosong!';
+                                                                        }
+                                                                    }
+                                                                });
+                                                
+                                                                // Cek jika pengguna memasukkan nilai baru
+                                                                if (newTunjanganName) {
+                                                                    // Tambahkan nilai baru ke dalam select
+                                                                    var newOption = new Option(newTunjanganName, newTunjanganName, true, true);
+                                                                    $(this).append(newOption).val(newTunjanganName).trigger('change');
+                                                                } else {
+                                                                    // Batal jika pengguna membatalkan operasi
+                                                                    $(this).val('').trigger('change');
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
                                                 <div class="form-group mb-3">
                                                     <label for="nilai_tunjangan">Nilai Tunjangan</label>
                                                     <div class="input-group">
@@ -170,8 +218,9 @@
                                                     </div>
                                                 </div>
                                                 <button type="button"
-                                                    class="btn btn-outline-danger removeTunjangan mb-3"><i
-                                                        class="fa fa-trash"></i> Hapus Tunjangan</button>
+                                                    class="btn btn-outline-danger removeTunjangan mb-3">
+                                                    <i class="fa fa-trash"></i> Hapus Tunjangan
+                                                </button>
                                             </div>
                                         @endforeach
                                     </div>
