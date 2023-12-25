@@ -223,20 +223,28 @@ class GajiController extends Controller
     {
         $gaji = Absensi::findOrFail($id);
         $tunjangans = json_decode($gaji->tunjangan, true);
+        $potongans = json_decode($gaji->potongan, true);
 
         // Mendapatkan semua data Absensi
         $gajiData = Absensi::all();
 
-        // Menyusun opsi tunjangan dari semua data Absensi
+        // Menyusun opsi tunjangan dan potongan dari semua data Absensi
         $opsiTunjangan = [];
+        $opsiPotongan = [];
         foreach ($gajiData as $gajiItem) {
             $tunjanganArray = json_decode($gajiItem->tunjangan, true);
+            $potonganArray = json_decode($gajiItem->potongan, true);
+
             foreach ($tunjanganArray as $item) {
                 $opsiTunjangan[$gajiItem->id][$item['nama_tunjangan']] = $item['nama_tunjangan'];
             }
+
+            foreach ($potonganArray as $item) {
+                $opsiPotongan[$gajiItem->id][$item['nama_potongan']] = $item['nama_potongan'];
+            }
         }
 
-        return view('admin.gaji.edit', compact('gaji', 'tunjangans', 'opsiTunjangan'));
+        return view('admin.gaji.edit', compact('gaji', 'tunjangans', 'potongans', 'opsiTunjangan', 'opsiPotongan'));
     }
 
     public function update(Request $request, $id)
@@ -264,6 +272,18 @@ class GajiController extends Controller
         $gaji->tunjangan = json_encode($tunjangans);
         $gaji->save();
 
+        // Update data potongan
+        $potongans = [];
+        foreach ($request->input('nama_potongan', []) as $key => $nama) {
+            $nilai = $request->input('nilai_potongan')[$key];
+            $potongans[] = [
+                'nama_potongan' => ucwords($nama),
+                'nilai_potongan' => $nilai,
+            ];
+        }
+        $gaji->potongan = json_encode($potongans);
+        $gaji->save();
+
         // Update model Sdm
         $sdm = Sdm::findOrFail($gaji->sdm_id);
         $sdm->update([
@@ -273,11 +293,13 @@ class GajiController extends Controller
             // ... tambahkan kolom-kolom lain yang perlu diupdate
         ]);
 
-        // Update juga data tunjangan pada model KomponenGaji
+        // Update juga data tunjangan dan potongan pada model KomponenGaji dan PotonganGaji
         $komponenGaji = $sdm->komponenGaji();
+        $potonganGaji = $sdm->potonganGaji();
 
-        // Hapus tunjangan lama
+        // Hapus tunjangan dan potongan lama
         $komponenGaji->delete();
+        $potonganGaji->delete();
 
         // Tambahkan tunjangan baru
         foreach ($tunjangans as $tunjangan) {
@@ -287,6 +309,16 @@ class GajiController extends Controller
                 'nilai_tunjangan' => $tunjangan['nilai_tunjangan'],
             ]);
         }
+
+        // Tambahkan potongan baru
+        foreach ($potongans as $potongan) {
+            $potonganGaji->create([
+                'sdm_id' => $sdm->id,
+                'nama_potongan' => ucwords($potongan['nama_potongan']),
+                'nilai_potongan' => $potongan['nilai_potongan'],
+            ]);
+        }
+
         return redirect()->route('admin.gaji.index')->with('success', 'Gaji berhasil diperbarui!');
     }
 

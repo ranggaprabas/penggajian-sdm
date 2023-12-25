@@ -229,6 +229,90 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h4 class="card-title">Potongan</h4>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div id="potonganContainer">
+                                        @foreach ($potongans as $potongan)
+                                            <div class="potongan">
+                                                <div class="form-group mb-3">
+                                                    <label for="nama_potongan">Nama Potongan</label>
+                                                    <select class="form-control select2" name="nama_potongan[]">
+                                                        <option value="__create__">Lainnya</option>
+                                                        <option value="" disabled>-- Pilih Potongan --</option>
+                                                        <!-- Tambahkan opsi potongan dari data yang tersedia -->
+                                                        @foreach ($opsiPotongan as $absensiId => $opsi)
+                                                            @foreach ($opsi as $namaPotongan)
+                                                                <option value="{{ $namaPotongan }}"
+                                                                    {{ $namaPotongan === $potongan['nama_potongan'] ? 'selected' : '' }}>
+                                                                    {{ $namaPotongan }}
+                                                                </option>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <script>
+                                                    $(document).ready(function() {
+                                                        // Inisialisasi Select2
+                                                        $('select[name="nama_potongan[]"]').select2();
+                                                
+                                                        // Menangani perubahan nilai pada elemen select
+                                                        $('select[name="nama_potongan[]"]').on('change', async function() {
+                                                            // Mendapatkan nilai terpilih
+                                                            var selectedValue = $(this).val();
+                                                
+                                                            // Cek apakah opsi "Lainnya" dipilih
+                                                            if (selectedValue === '__create__') {
+                                                                // Tampilkan modal SweetAlert2 untuk memasukkan nama Potongan baru
+                                                                const { value: newPotonganName } = await Swal.fire({
+                                                                    input: 'text',
+                                                                    inputLabel: 'Nama Potongan Baru',
+                                                                    inputPlaceholder: 'Masukkan Nama Potongan Baru',
+                                                                    showCancelButton: true,
+                                                                    inputValidator: (value) => {
+                                                                        if (!value) {
+                                                                            return 'Nama Potongan tidak boleh kosong!';
+                                                                        }
+                                                                    }
+                                                                });
+                                                
+                                                                // Cek jika pengguna memasukkan nilai baru
+                                                                if (newPotonganName) {
+                                                                    // Tambahkan nilai baru ke dalam select
+                                                                    var newOption = new Option(newPotonganName, newPotonganName, true, true);
+                                                                    $(this).append(newOption).val(newPotonganName).trigger('change');
+                                                                } else {
+                                                                    // Batal jika pengguna membatalkan operasi
+                                                                    $(this).val('').trigger('change');
+                                                                }
+                                                            }
+                                                        });
+                                                    });
+                                                </script>
+                                                <div class="form-group mb-3">
+                                                    <label for="nilai_potongan">Nilai Potongan</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">Rp.</span>
+                                                        <input type="text" class="form-control gray-border"
+                                                            name="nilai_potongan[]"
+                                                            value="{{ $potongan['nilai_potongan'] }}" required>
+                                                    </div>
+                                                </div>
+                                                <button type="button"
+                                                    class="btn btn-outline-danger removePotongan mb-3">
+                                                    <i class="fa fa-trash"></i> Hapus Potongan
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <button type="button" id="addPotonganEdit" class="btn btn-outline-success">
+                                        <i class="fa fa-plus"></i> Tambah Potongan</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
             </div>
             <button class="btn btn-primary" type="submit">Simpan</button>
@@ -271,6 +355,39 @@
             $(document).on("click", ".removeTunjangan", function() {
                 var tunjanganElement = $(this).closest('.tunjangan');
                 tunjanganElement.remove();
+            });
+        });
+    </script>
+    <!-- Script untuk menangani penambahan dan penghapusan input potongan -->
+    <script>
+        $(document).ready(function() {
+            var counter = {{ count($potongans) }};
+
+            function addPotonganInput() {
+                var newPotongan = `
+                    <div class="potongan">
+                        <div class="form-group mb-3">
+                            <label for="nama_potongan${counter}">Nama Potongan</label>
+                            <input type="text" class="form-control gray-border" name="nama_potongan[]" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="nilai_potongan${counter}">Nilai Potongan</label>
+                            <input type="text" class="form-control gray-border" name="nilai_potongan[]" required>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger removePotongan mb-3"><i class="fa fa-trash"></i> Hapus Tunjangan</button>
+                    </div>
+                `;
+                $("#potonganContainer").append(newPotongan);
+                counter++;
+            }
+
+            $("#addPotonganEdit").click(function() {
+                addPotonganInput();
+            });
+
+            $(document).on("click", ".removePotongan", function() {
+                var potonganElement = $(this).closest('.potongan');
+                potonganElement.remove();
             });
         });
     </script>
