@@ -91,7 +91,8 @@
                 </ol>
             </div>
             <div class="col-lg-12">
-                <form novalidate action="{{ route('admin.gaji.update', $gaji->id) }}" method="POST">
+                <form novalidate action="{{ route('admin.gaji.update', $gaji->id) }}" method="POST"
+                    onsubmit="return validateFormEditGaji() && removeCommas2();">
                     @csrf
                     @method('PUT')
                     @if ($errors->any())
@@ -135,8 +136,8 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="nik">Telegram Id</label>
-                                            <input class="form-control gray-border" type="number" id="nik"
-                                                name="chat_id" value="{{ old('chat_id', $gaji->chat_id) }}">
+                                            <input class="form-control gray-border" type="number" name="chat_id"
+                                                value="{{ old('chat_id', $gaji->chat_id) }}">
                                         </div>
                                     </div>
                                     <!-- Form input untuk tunjangan -->
@@ -156,7 +157,7 @@
                                             <div class="tunjangan">
                                                 <div class="form-group mb-3">
                                                     <label for="nama_tunjangan">Nama Tunjangan</label>
-                                                    <select class="form-control select2" name="nama_tunjangan[]">
+                                                    <select class="form-control select2" name="nama_tunjangan[]" required>
                                                         <option value="__create__">Lainnya</option>
                                                         <option value="" disabled>-- Pilih Tunjangan --</option>
                                                         <!-- Tambahkan opsi tunjangan dari data yang tersedia -->
@@ -174,16 +175,18 @@
                                                     $(document).ready(function() {
                                                         // Inisialisasi Select2
                                                         $('select[name="nama_tunjangan[]"]').select2();
-                                                
+
                                                         // Menangani perubahan nilai pada elemen select
                                                         $('select[name="nama_tunjangan[]"]').on('change', async function() {
                                                             // Mendapatkan nilai terpilih
                                                             var selectedValue = $(this).val();
-                                                
+
                                                             // Cek apakah opsi "Lainnya" dipilih
                                                             if (selectedValue === '__create__') {
                                                                 // Tampilkan modal SweetAlert2 untuk memasukkan nama Tunjangan baru
-                                                                const { value: newTunjanganName } = await Swal.fire({
+                                                                const {
+                                                                    value: newTunjanganName
+                                                                } = await Swal.fire({
                                                                     input: 'text',
                                                                     inputLabel: 'Nama Tunjangan Baru',
                                                                     inputPlaceholder: 'Masukkan Nama Tunjangan Baru',
@@ -194,7 +197,7 @@
                                                                         }
                                                                     }
                                                                 });
-                                                
+
                                                                 // Cek jika pengguna memasukkan nilai baru
                                                                 if (newTunjanganName) {
                                                                     // Tambahkan nilai baru ke dalam select
@@ -214,7 +217,8 @@
                                                         <span class="input-group-text">Rp.</span>
                                                         <input type="text" class="form-control gray-border"
                                                             name="nilai_tunjangan[]"
-                                                            value="{{ $tunjangan['nilai_tunjangan'] }}" required>
+                                                            value="{{ old('nilai_tunjangan', number_format($tunjangan['nilai_tunjangan'], 0, ',', '.')) }}"
+                                                            required oninput="addCommas2(this)">
                                                     </div>
                                                 </div>
                                                 <button type="button"
@@ -240,7 +244,7 @@
                                             <div class="potongan">
                                                 <div class="form-group mb-3">
                                                     <label for="nama_potongan">Nama Potongan</label>
-                                                    <select class="form-control select2" name="nama_potongan[]">
+                                                    <select class="form-control select2" name="nama_potongan[]" required>
                                                         <option value="__create__">Lainnya</option>
                                                         <option value="" disabled>-- Pilih Potongan --</option>
                                                         <!-- Tambahkan opsi potongan dari data yang tersedia -->
@@ -258,16 +262,18 @@
                                                     $(document).ready(function() {
                                                         // Inisialisasi Select2
                                                         $('select[name="nama_potongan[]"]').select2();
-                                                
+
                                                         // Menangani perubahan nilai pada elemen select
                                                         $('select[name="nama_potongan[]"]').on('change', async function() {
                                                             // Mendapatkan nilai terpilih
                                                             var selectedValue = $(this).val();
-                                                
+
                                                             // Cek apakah opsi "Lainnya" dipilih
                                                             if (selectedValue === '__create__') {
                                                                 // Tampilkan modal SweetAlert2 untuk memasukkan nama Potongan baru
-                                                                const { value: newPotonganName } = await Swal.fire({
+                                                                const {
+                                                                    value: newPotonganName
+                                                                } = await Swal.fire({
                                                                     input: 'text',
                                                                     inputLabel: 'Nama Potongan Baru',
                                                                     inputPlaceholder: 'Masukkan Nama Potongan Baru',
@@ -278,7 +284,7 @@
                                                                         }
                                                                     }
                                                                 });
-                                                
+
                                                                 // Cek jika pengguna memasukkan nilai baru
                                                                 if (newPotonganName) {
                                                                     // Tambahkan nilai baru ke dalam select
@@ -298,11 +304,11 @@
                                                         <span class="input-group-text">Rp.</span>
                                                         <input type="text" class="form-control gray-border"
                                                             name="nilai_potongan[]"
-                                                            value="{{ $potongan['nilai_potongan'] }}" required>
+                                                            value="{{ old('nilai_potongan', number_format($potongan['nilai_potongan'], 0, ',', '.')) }}"
+                                                            required oninput="addCommas2(this)">
                                                     </div>
                                                 </div>
-                                                <button type="button"
-                                                    class="btn btn-outline-danger removePotongan mb-3">
+                                                <button type="button" class="btn btn-outline-danger removePotongan mb-3">
                                                     <i class="fa fa-trash"></i> Hapus Potongan
                                                 </button>
                                             </div>
@@ -325,6 +331,7 @@
         <div class="copyright">
         </div>
     </div>
+
     <!-- Script untuk menangani penambahan dan penghapusan input tunjangan -->
     <script>
         $(document).ready(function() {
@@ -335,17 +342,34 @@
                     <div class="tunjangan">
                         <div class="form-group mb-3">
                             <label for="nama_tunjangan${counter}">Nama Tunjangan</label>
-                            <input type="text" class="form-control gray-border" name="nama_tunjangan[]" required>
+                            <select class="form-control select2" name="nama_tunjangan[]" required>
+                                <option value="__create__">Lainnya</option>
+                                <option value="" disabled selected>-- Pilih Tunjangan --</option>
+                                <!-- Tambahkan opsi tunjangan dari data yang tersedia -->
+                                @foreach ($opsiTunjangan as $absensiId => $opsi)
+                                    @foreach ($opsi as $namaTunjangan)
+                                        <option value="{{ $namaTunjangan }}">{{ $namaTunjangan }}</option>
+                                    @endforeach
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group mb-3">
                             <label for="nilai_tunjangan${counter}">Nilai Tunjangan</label>
-                            <input type="text" class="form-control gray-border" name="nilai_tunjangan[]" required>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control gray-border" name="nilai_tunjangan[]" oninput="addCommas(this)" required>
+                            </div>
                         </div>
                         <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"><i class="fa fa-trash"></i> Hapus Tunjangan</button>
                     </div>
                 `;
                 $("#tunjanganContainer").append(newTunjangan);
                 counter++;
+
+                // Inisialisasi Select2 pada elemen yang baru ditambahkan
+                $('.select2').select2({
+                    theme: 'bootstrap4'
+                });
             }
 
             $("#addTunjanganEdit").click(function() {
@@ -356,8 +380,43 @@
                 var tunjanganElement = $(this).closest('.tunjangan');
                 tunjanganElement.remove();
             });
+
+            // Menangani perubahan nilai pada elemen select
+            $(document).on('change', '[name^="nama_tunjangan"]', async function() {
+                // Mendapatkan nilai terpilih
+                var selectedValue = $(this).val();
+
+                // Cek apakah opsi "Lainnya" dipilih
+                if (selectedValue === '__create__') {
+                    // Tampilkan modal SweetAlert2 untuk memasukkan nama Tunjangan baru
+                    const {
+                        value: newTunjanganName
+                    } = await Swal.fire({
+                        input: 'text',
+                        inputLabel: 'Nama Tunjangan Baru',
+                        inputPlaceholder: 'Masukkan Nama Tunjangan Baru',
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return 'Nama Tunjangan tidak boleh kosong!';
+                            }
+                        }
+                    });
+
+                    // Cek jika pengguna memasukkan nilai baru
+                    if (newTunjanganName) {
+                        // Tambahkan nilai baru ke dalam select
+                        var newOption = new Option(newTunjanganName, newTunjanganName, true, true);
+                        $(this).append(newOption).val(newTunjanganName).trigger('change');
+                    } else {
+                        // Batal jika pengguna membatalkan operasi
+                        $(this).val('').trigger('change');
+                    }
+                }
+            });
         });
     </script>
+
     <!-- Script untuk menangani penambahan dan penghapusan input potongan -->
     <script>
         $(document).ready(function() {
@@ -368,17 +427,34 @@
                     <div class="potongan">
                         <div class="form-group mb-3">
                             <label for="nama_potongan${counter}">Nama Potongan</label>
-                            <input type="text" class="form-control gray-border" name="nama_potongan[]" required>
+                            <select class="form-control select2" name="nama_potongan[]" required>
+                                <option value="__create__">Lainnya</option>
+                                <option value="" disabled selected>-- Pilih Potongan --</option>
+                                <!-- Tambahkan opsi potongan dari data yang tersedia -->
+                                @foreach ($opsiPotongan as $absensiId => $opsi)
+                                    @foreach ($opsi as $namaPotongan)
+                                        <option value="{{ $namaPotongan }}">{{ $namaPotongan }}</option>
+                                    @endforeach
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group mb-3">
                             <label for="nilai_potongan${counter}">Nilai Potongan</label>
-                            <input type="text" class="form-control gray-border" name="nilai_potongan[]" required>
+                            <div class="input-group">
+                                <span class="input-group-text">Rp.</span>
+                                <input type="text" class="form-control gray-border" name="nilai_potongan[]" oninput="addCommas(this)" required>
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-outline-danger removePotongan mb-3"><i class="fa fa-trash"></i> Hapus Tunjangan</button>
+                        <button type="button" class="btn btn-outline-danger removePotongan mb-3"><i class="fa fa-trash"></i> Hapus Potongan</button>
                     </div>
                 `;
                 $("#potonganContainer").append(newPotongan);
                 counter++;
+
+                // Inisialisasi Select2 pada elemen yang baru ditambahkan
+                $('.select2').select2({
+                    theme: 'bootstrap4'
+                });
             }
 
             $("#addPotonganEdit").click(function() {
@@ -389,6 +465,41 @@
                 var potonganElement = $(this).closest('.potongan');
                 potonganElement.remove();
             });
+
+            // Menangani perubahan nilai pada elemen select
+            $(document).on('change', '[name^="nama_potongan"]', async function() {
+                // Mendapatkan nilai terpilih
+                var selectedValue = $(this).val();
+
+                // Cek apakah opsi "Lainnya" dipilih
+                if (selectedValue === '__create__') {
+                    // Tampilkan modal SweetAlert2 untuk memasukkan nama Potongan baru
+                    const {
+                        value: newPotonganName
+                    } = await Swal.fire({
+                        input: 'text',
+                        inputLabel: 'Nama Potongan Baru',
+                        inputPlaceholder: 'Masukkan Nama Potongan Baru',
+                        showCancelButton: true,
+                        inputValidator: (value) => {
+                            if (!value) {
+                                return 'Nama Potongan tidak boleh kosong!';
+                            }
+                        }
+                    });
+
+                    // Cek jika pengguna memasukkan nilai baru
+                    if (newPotonganName) {
+                        // Tambahkan nilai baru ke dalam select
+                        var newOption = new Option(newPotonganName, newPotonganName, true, true);
+                        $(this).append(newOption).val(newPotonganName).trigger('change');
+                    } else {
+                        // Batal jika pengguna membatalkan operasi
+                        $(this).val('').trigger('change');
+                    }
+                }
+            });
         });
     </script>
+
 @endsection

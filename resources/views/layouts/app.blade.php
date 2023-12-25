@@ -656,6 +656,50 @@
         }
     </script>
 
+
+    {{-- sweet alert in edit gaji input required --}}
+
+    <script>
+        function validateFormEditGaji() {
+            // Implementasikan validasi JavaScript sesuai kebutuhan Anda
+            // Contoh: Periksa semua bidang yang diperlukan
+            // Pemeriksaan tambahan untuk nama dengan ID tertentu
+            const namaField = document.getElementById('nama');
+            if (namaField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Nama Wajib Diisi',
+                    text: 'Nama tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk nik dengan ID 'nik'
+            const nikField = document.getElementById('nik');
+            if (nikField.value.trim() === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'NIK Wajib Diisi',
+                    text: 'NIK tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            const requiredFields = document.querySelectorAll('[required]');
+            for (const field of requiredFields) {
+                if (field.value.trim() === '') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Semua Inputan Wajib Diisi',
+                        text: 'Harap isi semua inputan yang diperlukan.',
+                    });
+                    return false; // Menghentikan pengiriman formulir jika tidak valid
+                }
+            }
+            return true; // Kirim formulir jika valid
+        }
+
+    </script>
+
+
     {{-- Hide Data Tables Action Export --}}
 
     <script>

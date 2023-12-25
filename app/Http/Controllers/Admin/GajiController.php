@@ -319,7 +319,12 @@ class GajiController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.gaji.index')->with('success', 'Gaji berhasil diperbarui!');
+        $message = 'Data SDM ' . $gaji->nama . ' berhasil diperbarui!' ;
+
+        return redirect()->route('admin.gaji.index')->with([
+            'success' => $message,
+            'alert-info' => 'info'
+        ]);
     }
 
 
