@@ -128,6 +128,20 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
+                                            <label for="entitas">Entitas</label>
+                                            <select class="form-control gray-border select2" name="entitas" id="entitas">
+                                                <option value="">-- Pilih Entitas --</option>
+                                                @foreach ($entita as $entitasItem)
+                                                    <option value="{{ $entitasItem->nama }}"
+                                                        {{ $gaji->entitas == $entitasItem->nama ? 'selected' : '' }}>
+                                                        {{ $entitasItem->nama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
                                             <label for="nik">Nik</label>
                                             <input class="form-control gray-border" type="number" id="nik"
                                                 name="nik" value="{{ old('nik', $gaji->nik) }}">

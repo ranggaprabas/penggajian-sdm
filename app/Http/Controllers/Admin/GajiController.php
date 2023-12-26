@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Imports\GajiImport;
 use App\Models\Absensi;
+use App\Models\Entitas;
 use App\Models\KomponenGaji;
 use App\Models\PotonganGaji;
 use App\Models\Sdm;
@@ -221,6 +222,8 @@ class GajiController extends Controller
 
     public function edit($id)
     {
+        $entita = Entitas::get(['id', 'nama']);
+
         $gaji = Absensi::findOrFail($id);
         $tunjangans = json_decode($gaji->tunjangan, true);
         $potongans = json_decode($gaji->potongan, true);
@@ -244,7 +247,7 @@ class GajiController extends Controller
             }
         }
 
-        return view('admin.gaji.edit', compact('gaji', 'tunjangans', 'potongans', 'opsiTunjangan', 'opsiPotongan'));
+        return view('admin.gaji.edit', compact('entita', 'gaji', 'tunjangans', 'potongans', 'opsiTunjangan', 'opsiPotongan'));
     }
 
     public function update(Request $request, $id)
@@ -254,6 +257,7 @@ class GajiController extends Controller
         $this->validate($request, [
             'chat_id' => 'required',
             'nama' => 'required',
+            'entitas' => 'required',
             'nik' => 'required',
         ]);
 
@@ -288,6 +292,7 @@ class GajiController extends Controller
         $sdm = Sdm::findOrFail($gaji->sdm_id);
         $sdm->update([
             'nama' => $request->input('nama'),
+            'entitas_id' => Entitas::firstOrCreate(['nama'=> $request->input('entitas')])->id,
             'nik' => $request->input('nik'),
             'chat_id' => $request->input('chat_id'),
             // ... tambahkan kolom-kolom lain yang perlu diupdate
