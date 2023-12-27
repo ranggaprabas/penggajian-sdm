@@ -59,16 +59,18 @@ class GajiImport implements ToCollection, WithHeadingRow
                 'email' => $row['email'],
                 'nik' => $row['nik'],
                 'chat_id' => $row['chat_id'],
-                // ... (add other fields as needed)
             ];
 
-             // Update or create related data in the SDM table
-             $sdm = Sdm::updateOrCreate(
+            // Update or create related data in the SDM table
+            $sdm = Sdm::updateOrCreate(
                 ['id' => $row['sdm_id']],
                 $sdmData + [
                     'entitas_id' => Entitas::firstOrCreate(['nama' => $row['entitas']])->id,
                     'divisi_id' => Divisi::firstOrCreate(['nama' => $row['divisi']])->id,
-                    'jabatan_id' => Jabatan::firstOrCreate(['nama' => $row['jabatan']])->id,
+                    'jabatan_id' => Jabatan::updateOrCreate(
+                        ['nama' => $row['jabatan']],
+                        ['tunjangan_jabatan' => $row['tunjangan_jabatan']]
+                    )->id,
                     'jenis_kelamin' => $row['jenis_kelamin'],
                 ]
             );
@@ -133,10 +135,10 @@ class GajiImport implements ToCollection, WithHeadingRow
     private function updateOrCreateKomponenGaji($sdm, $tunjangans)
     {
         $komponenGaji = $sdm->komponenGaji();
-    
+
         // Hapus tunjangan lama
         $komponenGaji->delete();
-    
+
         // Tambahkan tunjangan baru
         foreach (json_decode($tunjangans, true) as $tunjangan) {
             $komponenGaji->create([
@@ -146,14 +148,14 @@ class GajiImport implements ToCollection, WithHeadingRow
             ]);
         }
     }
-    
+
     private function updateOrCreatePotonganGaji($sdm, $potongans)
     {
         $potonganGaji = $sdm->potonganGaji();
-    
+
         // Hapus potongan lama
         $potonganGaji->delete();
-    
+
         // Tambahkan potongan baru
         foreach (json_decode($potongans, true) as $potongan) {
             $potonganGaji->create([
@@ -163,4 +165,4 @@ class GajiImport implements ToCollection, WithHeadingRow
             ]);
         }
     }
-    }
+}
