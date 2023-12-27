@@ -673,6 +673,57 @@
                 });
                 return false; // Menghentikan pengiriman formulir jika tidak valid
             }
+            // Pemeriksaan tambahan untuk select dengan ID 'entitas'
+            const entitasSelect = document.getElementById('entitas');
+            const selectedOption = entitasSelect.options[entitasSelect.selectedIndex];
+            if (selectedOption.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pilih Entitas',
+                    text: 'Anda harus memilih entitas!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk select dengan ID 'divisi'
+            const divisiSelect = document.getElementById('divisi');
+            const selectedDivisi = divisiSelect.options[divisiSelect.selectedIndex];
+            if (selectedDivisi.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pilih Divisi',
+                    text: 'Anda harus memilih divisi!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk select dengan ID 'jabatan'
+            const jabatanSelect = document.getElementById('jabatan');
+            const selectedJabatan = jabatanSelect.options[jabatanSelect.selectedIndex];
+            if (selectedJabatan.value === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pilih Jabatan',
+                    text: 'Anda harus memilih jabatan!',
+                });
+                return false; // Menghentikan pengiriman formulir jika tidak valid
+            }
+            // Pemeriksaan tambahan untuk email dengan ID 'email'
+            const emailField = document.getElementById('email');
+            const emailValue = emailField.value.trim();
+            if (emailValue === '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Email Wajib Diisi',
+                    text: 'Email tidak boleh kosong!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email kosong
+            } else if (!isValidEmail(emailValue)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Format Email Tidak Valid',
+                    text: 'Email harus mengandung karakter "@" dan "." (titik)!',
+                });
+                return false; // Menghentikan pengiriman formulir jika email tidak valid
+            }
             // Pemeriksaan tambahan untuk nik dengan ID 'nik'
             const nikField = document.getElementById('nik');
             if (nikField.value.trim() === '') {
@@ -697,6 +748,12 @@
             return true; // Kirim formulir jika valid
         }
 
+        function isValidEmail(email) {
+            // Implementasikan pemeriksaan format email sesuai kebutuhan Anda
+            // Contoh sederhana: menggunakan ekspresi reguler
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
     </script>
 
 

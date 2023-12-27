@@ -32,6 +32,9 @@ class GajiController extends Controller
         $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan) {
             $query->where('bulan', $bulan);
         })->where('deleted', '!=', 1)
+            ->whereHas('jabatan', function ($query) {
+                $query->where('deleted', '!=', 1);
+            })
             ->count();
 
         if ($bulan === '') {
@@ -96,6 +99,11 @@ class GajiController extends Controller
             // If deleted, skip processing for this employee
             return false;
         }
+
+        if ($sdm->jabatan->deleted == 1) {
+            return false;
+        }
+
         // Mendapatkan data komponen gaji untuk pengguna (sdm) saat ini
         $komponenGaji = KomponenGaji::where('sdm_id', $sdm->id)->get();
 
