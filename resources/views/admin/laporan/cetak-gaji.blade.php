@@ -131,6 +131,11 @@
                 <td>{{ $item->nama }}</td>
             </tr>
             <tr class="no-background">
+                <td width="15%">Email</td>
+                <td width="10px">:</td>
+                <td>{{ $item->email }}</td>
+            </tr>
+            <tr class="no-background">
                 <td>NIK</td>
                 <td>:</td>
                 <td>{{ $item->nik }}</td>

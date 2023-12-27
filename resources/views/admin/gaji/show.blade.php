@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
@@ -100,6 +100,10 @@
                                     <tr>
                                         <th>Nama</th>
                                         <td>{{ $data->nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td>{{ $data->email }}</td>
                                     </tr>
                                     <tr>
                                         <th>Nik</th>
@@ -200,6 +204,16 @@
                                         @endphp
                                         <td>
                                             <strong>Rp. {{ number_format($take_home_pay, 0, '', '.') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>
+                                            @if ($data->status)
+                                                <span class="badge light badge-success">Pegawai Tetap</span>
+                                            @else
+                                                <span class="badge light badge-warning">Pegawai Tidak Tetap</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tbody>

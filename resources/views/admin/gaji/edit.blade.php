@@ -130,7 +130,7 @@
                                         <div class="form-group">
                                             <label for="entitas">Entitas</label>
                                             <select class="form-control gray-border select2" name="entitas" id="entitas">
-                                                <option value="">-- Pilih Entitas --</option>
+                                                <option value="" disabled selected>-- Pilih Entitas --</option>
                                                 @foreach ($entita as $entitasItem)
                                                     <option value="{{ $entitasItem->nama }}"
                                                         {{ $gaji->entitas == $entitasItem->nama ? 'selected' : '' }}>
@@ -142,6 +142,45 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
+                                            <label for="divisi">Divisi</label>
+                                            <select class="form-control gray-border select2" name="divisi"
+                                                id="divisi">
+                                                <option value="" disabled selected>-- Pilih Divisi --</option>
+                                                @foreach ($divisis as $divisiItem)
+                                                    <option value="{{ $divisiItem->nama }}"
+                                                        {{ $gaji->divisi == $divisiItem->nama ? 'selected' : '' }}>
+                                                        {{ $divisiItem->nama }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="jabatan">Jabatan</label>
+                                            <select class="form-control gray-border select2" name="jabatan"
+                                                id="jabatan">
+                                                <option value="" disabled selected>-- Pilih Jabatan --</option>
+                                                @foreach ($jabatans as $jabatanItem)
+                                                    @if ($jabatanItem->deleted != 1)
+                                                        <option value="{{ $jabatanItem->nama }}"
+                                                            {{ $gaji->jabatan == $jabatanItem->nama ? 'selected' : '' }}>
+                                                            {{ $jabatanItem->nama }} - Rp.
+                                                            {{ number_format($jabatanItem->tunjangan_jabatan, 0, '', '.') }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input class="form-control gray-border" type="text" id="email"
+                                                name="email" value="{{ old('email', $gaji->email) }}">
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
                                             <label for="nik">Nik</label>
                                             <input class="form-control gray-border" type="number" id="nik"
                                                 name="nik" value="{{ old('nik', $gaji->nik) }}">
@@ -149,10 +188,89 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
-                                            <label for="nik">Telegram Id</label>
-                                            <input class="form-control gray-border" type="number" name="chat_id"
-                                                value="{{ old('chat_id', $gaji->chat_id) }}">
+                                            <label for="jenis_kelamin">Jenis Kelamin</label>
+                                            <select class="default-select form-control wide gray-border"
+                                                name="jenis_kelamin" id="jenis_kelamin">
+                                                <option {{ $gaji->jenis_kelamin === 'laki-laki' ? 'selected' : null }}
+                                                    value="laki-laki">Laki-Laki</option>
+                                                <option {{ $gaji->jenis_kelamin === 'perempuan' ? 'selected' : null }}
+                                                    value="perempuan">Perempuan</option>
+                                            </select>
                                         </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="chat_id">Telegram Id</label>
+                                            <select class="form-control select2" name="chat_id" id="chat_id"
+                                                style="width: 100%;">
+                                                <option value="__create__">Lainnya</option>
+                                                <option value="">-- Pilih Telegram Id --</option>
+                                                <option value="{{ $gaji->chat_id }}"
+                                                    @if ($gaji->id) selected @endif>
+                                                    {{ $gaji->chat_id }}
+                                                </option>
+                                                {{-- Options from tunjangans --}}
+                                                @foreach ($telegramUsers as $telegramUser)
+                                                    <option value="{{ $telegramUser->chat_id }}">
+                                                        {{ $telegramUser->username }} - {{ $telegramUser->chat_id }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        $(document).ready(function() {
+                                            // Inisialisasi Select2
+                                            $('#chat_id').select2();
+
+                                            // Menangani perubahan nilai pada elemen select
+                                            $('#chat_id').on('change', async function() {
+                                                // Mendapatkan nilai terpilih
+                                                var selectedValue = $(this).val();
+
+                                                // Cek apakah opsi "Buat Nilai Baru" dipilih
+                                                if (selectedValue === '__create__') {
+                                                    // Tampilkan modal SweetAlert2 untuk memasukkan nama Tunjangan baru
+                                                    const {
+                                                        value: newChatId
+                                                    } = await Swal.fire({
+                                                        input: 'text',
+                                                        inputLabel: 'Telegram Id Baru',
+                                                        inputPlaceholder: 'Masukkan Telegram Id Baru',
+                                                        showCancelButton: true,
+                                                        inputValidator: (value) => {
+                                                            if (!value) {
+                                                                return 'Telegram Id tidak boleh kosong!';
+                                                            }
+                                                        }
+                                                    });
+
+                                                    // Cek jika pengguna memasukkan nilai baru
+                                                    if (newChatId) {
+                                                        // Tambahkan nilai baru ke dalam select
+                                                        var newOption = new Option(newChatId, newChatId, true, true);
+                                                        $(this).append(newOption).trigger('change');
+                                                    } else {
+                                                        // Batal jika pengguna membatalkan operasi
+                                                        $(this).val('').trigger('change');
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    </script>
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="default-select form-control wide gray-border" name="status"
+                                            id="status">
+                                            <option {{ $gaji->status === 1 ? 'selected' : null }} value="1">
+                                                Pegawai
+                                                Tetap
+                                            </option>
+                                            <option {{ $gaji->status === 0 ? 'selected' : null }} value="0">
+                                                Pegawai
+                                                Tidak
+                                                Tetap</option>
+                                        </select>
                                     </div>
                                     <!-- Form input untuk tunjangan -->
                                 </div>

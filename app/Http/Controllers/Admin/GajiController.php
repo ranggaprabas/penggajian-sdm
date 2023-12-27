@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Imports\GajiImport;
 use App\Models\Absensi;
+use App\Models\Divisi;
 use App\Models\Entitas;
+use App\Models\Jabatan;
 use App\Models\KomponenGaji;
 use App\Models\PotonganGaji;
 use App\Models\Sdm;
+use App\Models\TelegramUser;
 use Maatwebsite\Excel\Facades\Excel;
 use PDF;
 use Illuminate\Validation\ValidationException;
@@ -34,12 +37,12 @@ class GajiController extends Controller
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $items = DB::table('absensi')
-                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
+                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulanSaatIni)
                 ->get();
         } else {
             $items = DB::table('absensi')
-                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
+                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulan)
                 ->get();
         }
@@ -128,7 +131,9 @@ class GajiController extends Controller
             'chat_id' => $sdm->chat_id,
             'bulan' => $bulan . $tahun,
             'nama' => $sdm->nama,
+            'email' => $sdm->email,
             'nik' => $sdm->nik,
+            'status' => $sdm->status,
             'jenis_kelamin' => $sdm->jenis_kelamin,
             'jabatan' => $sdm->jabatan->nama,
             'tunjangan_jabatan' => $sdm->jabatan->tunjangan_jabatan,
@@ -161,6 +166,7 @@ class GajiController extends Controller
                 'absensi.sdm_id',
                 'absensi.bulan',
                 'absensi.nama',
+                'absensi.email',
                 'absensi.nik',
                 'absensi.jenis_kelamin',
                 'absensi.entitas',
@@ -223,6 +229,9 @@ class GajiController extends Controller
     public function edit($id)
     {
         $entita = Entitas::get(['id', 'nama']);
+        $divisis = Divisi::get(['id', 'nama']);
+        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
+        $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
         $gaji = Absensi::findOrFail($id);
         $tunjangans = json_decode($gaji->tunjangan, true);
@@ -247,7 +256,7 @@ class GajiController extends Controller
             }
         }
 
-        return view('admin.gaji.edit', compact('entita', 'gaji', 'tunjangans', 'potongans', 'opsiTunjangan', 'opsiPotongan'));
+        return view('admin.gaji.edit', compact('entita', 'divisis', 'jabatans', 'telegramUsers', 'gaji', 'tunjangans', 'potongans', 'opsiTunjangan', 'opsiPotongan'));
     }
 
     public function update(Request $request, $id)
@@ -258,6 +267,11 @@ class GajiController extends Controller
             'chat_id' => 'required',
             'nama' => 'required',
             'entitas' => 'required',
+            'divisi' => 'required',
+            'jabatan' => 'required',
+            'email' => 'required',
+            'jenis_kelamin' => 'required',
+            'chat_id' => 'nullable',
             'nik' => 'required',
         ]);
 
@@ -290,13 +304,24 @@ class GajiController extends Controller
 
         // Update model Sdm
         $sdm = Sdm::findOrFail($gaji->sdm_id);
+        $jabatan = Jabatan::firstOrCreate(['nama' => $request->input('jabatan')]);
         $sdm->update([
             'nama' => $request->input('nama'),
-            'entitas_id' => Entitas::firstOrCreate(['nama'=> $request->input('entitas')])->id,
+            'entitas_id' => Entitas::firstOrCreate(['nama' => $request->input('entitas')])->id,
+            'divisi_id' => Divisi::firstOrCreate(['nama' => $request->input('divisi')])->id,
+            'jabatan_id' => $jabatan->id,
+            'email' => $request->input('email'),
             'nik' => $request->input('nik'),
+            'jenis_kelamin' => $request->input('jenis_kelamin'),
             'chat_id' => $request->input('chat_id'),
+            'status' => $request->input('status'),
             // ... tambahkan kolom-kolom lain yang perlu diupdate
         ]);
+
+        // Update data jabatan dan tunjangan jabatan di tabel Absensi
+        $gaji->jabatan = $jabatan->nama;
+        $gaji->tunjangan_jabatan = $jabatan->tunjangan_jabatan;
+        $gaji->save();
 
         // Update juga data tunjangan dan potongan pada model KomponenGaji dan PotonganGaji
         $komponenGaji = $sdm->komponenGaji();
@@ -324,7 +349,7 @@ class GajiController extends Controller
             ]);
         }
 
-        $message = 'Data SDM ' . $gaji->nama . ' berhasil diperbarui!' ;
+        $message = 'Data SDM ' . $gaji->nama . ' berhasil diperbarui!';
 
         return redirect()->route('admin.gaji.index')->with([
             'success' => $message,
@@ -401,6 +426,7 @@ class GajiController extends Controller
                 'absensi.created_at',
                 'absensi.updated_at',
                 'absensi.nama',
+                'absensi.email',
                 'absensi.nik',
                 'absensi.jenis_kelamin',
                 'absensi.jabatan',

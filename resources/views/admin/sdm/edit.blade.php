@@ -131,7 +131,7 @@
                                             <label for="entitas">Entitas</label>
                                             <select class="form-control gray-border select2" name="entitas_id"
                                                 id="entitas">
-                                                <option value="">-- Choose Categories --</option>
+                                                <option value="" disabled selected>-- Pilih Entitas --</option>
                                                 @foreach ($entita as $entitas)
                                                     <option value="{{ $entitas->id }}"
                                                         {{ $sdm->entitas && $sdm->entitas->id == $entitas->id ? 'selected' : '' }}>
@@ -146,7 +146,7 @@
                                             <label for="divisi">Divisi</label>
                                             <select class="form-control gray-border select2" name="divisi_id"
                                                 id="divisi">
-                                                <option value="">-- Choose Categories --</option>
+                                                <option value="" disabled selected>-- Pilih Divisi --</option>
                                                 @foreach ($divisis as $divisi)
                                                     <option value="{{ $divisi->id }}"
                                                         {{ $sdm->divisi && $sdm->divisi->id == $divisi->id ? 'selected' : '' }}>
@@ -161,7 +161,7 @@
                                             <label for="jabatan">Jabatan</label>
                                             <select class="form-control gray-border select2" name="jabatan_id"
                                                 id="jabatan" required>
-                                                <option value="" disabled selected>-- Choose Categories --</option>
+                                                <option value="" disabled selected>-- Pilih Jabatan --</option>
                                                 @foreach ($jabatans as $jabatan)
                                                     @if ($jabatan->deleted != 1)
                                                         <option value="{{ $jabatan->id }}"

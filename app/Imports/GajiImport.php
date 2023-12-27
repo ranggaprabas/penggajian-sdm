@@ -23,6 +23,7 @@ class GajiImport implements ToCollection, WithHeadingRow
                 'created_at' => $row['created_at'],
                 'updated_at' => $row['updated_at'],
                 'nama' => $row['nama'],
+                'email' => $row['email'],
                 'nik' => $row['nik'],
                 'jenis_kelamin' => $row['jenis_kelamin'],
                 'jabatan' => $row['jabatan'],
