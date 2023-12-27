@@ -22,4 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('setWebhook', [BotTelegramController::class, 'setWebhook']);
 Route::post('ranggapbot/webhook', [BotTelegramController::class, 'commandHandlerWebhook']);
-Route::get('/print-pdf/{karyawan_id}/{chat_id}/{bulan}/{tahun}', [LaporanController::class, 'printPDF']);
+Route::get('/link-pdf/{chat_id}/{bulan}/{tahun}', [LaporanController::class, 'urlPrintPDF'])->name('url-pdf');
+Route::get('/print-pdf/{chat_id}/{bulan}/{tahun}', [LaporanController::class, 'printPDF']);
