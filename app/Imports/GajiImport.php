@@ -28,6 +28,7 @@ class GajiImport implements ToCollection, WithHeadingRow
                 'updated_at' => $row['updated_at'],
                 'nama' => $row['nama'],
                 'email' => $row['email'],
+                'status' => $row['status'],
                 'nik' => $row['nik'],
                 'jenis_kelamin' => $row['jenis_kelamin'],
                 'jabatan' => $row['jabatan'],
@@ -58,7 +59,9 @@ class GajiImport implements ToCollection, WithHeadingRow
                 'nama' => $row['nama'],
                 'email' => $row['email'],
                 'nik' => $row['nik'],
+                'status' => $row['status'],
                 'chat_id' => $row['chat_id'],
+                'jenis_kelamin' => $row['jenis_kelamin'],
             ];
 
             // Update or create related data in the SDM table
@@ -71,7 +74,6 @@ class GajiImport implements ToCollection, WithHeadingRow
                         ['nama' => $row['jabatan']],
                         ['tunjangan_jabatan' => $row['tunjangan_jabatan']]
                     )->id,
-                    'jenis_kelamin' => $row['jenis_kelamin'],
                 ]
             );
             // Update also tunjangan and potongan in the KomponenGaji and PotonganGaji models

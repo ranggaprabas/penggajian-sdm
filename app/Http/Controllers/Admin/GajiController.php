@@ -436,6 +436,7 @@ class GajiController extends Controller
                 'absensi.updated_at',
                 'absensi.nama',
                 'absensi.email',
+                'absensi.status',
                 'absensi.nik',
                 'absensi.jenis_kelamin',
                 'absensi.jabatan',
