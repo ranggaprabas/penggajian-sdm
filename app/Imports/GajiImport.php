@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Absensi;
+use App\Models\Sdm;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -35,7 +36,7 @@ class GajiImport implements ToCollection, WithHeadingRow
             // Extract tunjangan and potongan dynamically
             $tunjangan = $this->extractColumnValues($row, 'tunjangan_', $row['sdm_id']);
             $potongan = $this->extractColumnValuesPotongan($row, 'potongan_', $row['sdm_id']);
-            
+
             // Cek apakah data untuk bulan dan SDM tertentu sudah ada dalam Absensi
             $existingAbsensi = Absensi::where('bulan', $row['bulan'])
                 ->where('sdm_id', $row['sdm_id'])
@@ -49,6 +50,17 @@ class GajiImport implements ToCollection, WithHeadingRow
                 $existingAbsensi->update(array_merge($gajiData, ['tunjangan' => $tunjangan, 'potongan' => $potongan]));
                 $createdOrUpdatedAbsensi[] = $existingAbsensi;
             }
+            // Simpan atau perbarui data di tabel SDM
+            Sdm::updateOrCreate(
+                ['id' => $row['sdm_id']],
+                [
+                    'nama' => $row['nama'],
+                    'email' => $row['email'],
+                    'nik' => $row['nik'],
+                    'chat_id' => $row['chat_id'],
+                    // ... (add other fields as needed)
+                ]
+            );
         }
 
         return $createdOrUpdatedAbsensi;
