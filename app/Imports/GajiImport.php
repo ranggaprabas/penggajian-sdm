@@ -3,6 +3,9 @@
 namespace App\Imports;
 
 use App\Models\Absensi;
+use App\Models\Divisi;
+use App\Models\Entitas;
+use App\Models\Jabatan;
 use App\Models\Sdm;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -51,14 +54,22 @@ class GajiImport implements ToCollection, WithHeadingRow
                 $createdOrUpdatedAbsensi[] = $existingAbsensi;
             }
             // Simpan atau perbarui data di tabel SDM
+            $sdmData = [
+                'nama' => $row['nama'],
+                'email' => $row['email'],
+                'nik' => $row['nik'],
+                'chat_id' => $row['chat_id'],
+                // ... (add other fields as needed)
+            ];
+
+            // Update or create related data in the SDM table
             Sdm::updateOrCreate(
                 ['id' => $row['sdm_id']],
-                [
-                    'nama' => $row['nama'],
-                    'email' => $row['email'],
-                    'nik' => $row['nik'],
-                    'chat_id' => $row['chat_id'],
-                    // ... (add other fields as needed)
+                $sdmData + [
+                    'entitas_id' => Entitas::firstOrCreate(['nama' => $row['entitas']])->id,
+                    'divisi_id' => Divisi::firstOrCreate(['nama' => $row['divisi']])->id,
+                    'jabatan_id' => Jabatan::firstOrCreate(['nama' => $row['jabatan']])->id,
+                    'jenis_kelamin' => $row['jenis_kelamin'],
                 ]
             );
         }
