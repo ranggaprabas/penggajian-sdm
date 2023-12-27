@@ -16,6 +16,7 @@ use App\Models\PotonganGaji;
 use App\Models\Sdm;
 use App\Models\TelegramUser;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Response;
 use PDF;
 use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Validators\ValidationException as ExcelValidationException;
@@ -470,6 +471,115 @@ class GajiController extends Controller
             'alert-info' => 'info',
         ]);
     }
+
+    public function urlPrintPDF(Request $request, $chat_id, $bulan, $tahun)
+    {
+        $namaBulan = $this->konversiBulan($bulan);
+        $tanggal = $bulan . $tahun;
+
+        // Ambil data absensi termasuk chat_id
+        $items = DB::table('absensi')
+            ->select(
+                'sdm_id',
+                'bulan',
+                'nama',
+                'email',
+                'nik',
+                'jenis_kelamin',
+                'entitas',
+                'divisi',
+                'jabatan',
+                'tunjangan_jabatan',
+                'tunjangan',
+                'potongan',
+                'chat_id'
+            )
+            ->where('bulan', $tanggal)
+            ->where('chat_id', $chat_id)
+            ->get();
+
+        // Pastikan data ditemukan
+        if ($items->isNotEmpty()) {
+            // Generate URL untuk endpoint print PDF
+            $pdfEndpoint = route('url-pdf', [
+                'chat_id' => $chat_id,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+            ]);
+
+            // Ubah nama rute di dalam pesan JSON
+            $response = [
+                'status' => 'success',
+                'message' => 'Slip Gaji ditemukan',
+                'pdf_link' => str_replace('/link-pdf', '/print-pdf', $pdfEndpoint),
+            ];
+
+            return response()->json($response, 200);
+        } else {
+            // Handle the case when there is no data found
+            return response()->json([
+                'status' => false,
+                'message' => 'Slip Gaji yang diminta belum tersedia',
+            ], 404);
+        }
+    }
+
+
+    public function printPDF(Request $request, $chat_id, $bulan, $tahun)
+    {
+        $namaBulan = $this->konversiBulan($bulan);
+        $tanggal = $bulan . $tahun;
+
+        // Ambil data absensi termasuk chat_id
+        $items = DB::table('absensi')
+            ->select(
+                'sdm_id',
+                'bulan',
+                'nama',
+                'email',
+                'nik',
+                'jenis_kelamin',
+                'entitas',
+                'divisi',
+                'jabatan',
+                'tunjangan_jabatan',
+                'tunjangan',
+                'potongan',
+                'chat_id'
+            )
+            ->where('bulan', $tanggal)
+            ->where('chat_id', $chat_id)
+            ->get();
+
+        // Pastikan data ditemukan
+        if ($items->isNotEmpty()) {
+            $item = $items->first(); // Mengambil hanya satu baris karena asumsi Anda hanya ingin satu item
+            $timestamp = time();
+
+
+            // Generate PDF menggunakan DomPDF
+            $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
+            $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
+            $pdfContent = $pdf->output();
+
+            // Response PDF langsung sebagai file download
+            $response = Response::make($pdfContent, 200);
+            $response->header('Content-Type', 'application/pdf');
+            $response->header('Content-Disposition', 'attachment; filename=Slip_' . $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf');
+            $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+            $response->header('Cache-Control', 'post-check=0, pre-check=0');
+            $response->header('Pragma', 'no-cache');
+
+            return $response;
+        } else {
+            // Handle the case when there is no data found
+            return response()->json([
+                'status' => false,
+                'message' => 'Slip Gaji yang diminta belum tersedia',
+            ], 404);
+        }
+    }
+
 
     public function destroy($id)
     {

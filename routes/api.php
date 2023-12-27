@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Admin\GajiController;
 use App\Http\Controllers\BotTelegramController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,5 +22,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('setWebhook', [BotTelegramController::class, 'setWebhook']);
 Route::post('ranggapbot/webhook', [BotTelegramController::class, 'commandHandlerWebhook']);
-Route::get('/link-pdf/{chat_id}/{bulan}/{tahun}', [LaporanController::class, 'urlPrintPDF'])->name('url-pdf');
-Route::get('/print-pdf/{chat_id}/{bulan}/{tahun}', [LaporanController::class, 'printPDF']);
+Route::get('/link-pdf/{chat_id}/{bulan}/{tahun}', [GajiController::class, 'urlPrintPDF'])->name('url-pdf');
+Route::get('/print-pdf/{chat_id}/{bulan}/{tahun}', [GajiController::class, 'printPDF']);
