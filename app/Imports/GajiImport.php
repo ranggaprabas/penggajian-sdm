@@ -62,8 +62,8 @@ class GajiImport implements ToCollection, WithHeadingRow
                 // ... (add other fields as needed)
             ];
 
-            // Update or create related data in the SDM table
-            Sdm::updateOrCreate(
+             // Update or create related data in the SDM table
+             $sdm = Sdm::updateOrCreate(
                 ['id' => $row['sdm_id']],
                 $sdmData + [
                     'entitas_id' => Entitas::firstOrCreate(['nama' => $row['entitas']])->id,
@@ -72,6 +72,9 @@ class GajiImport implements ToCollection, WithHeadingRow
                     'jenis_kelamin' => $row['jenis_kelamin'],
                 ]
             );
+            // Update also tunjangan and potongan in the KomponenGaji and PotonganGaji models
+            $this->updateOrCreateKomponenGaji($sdm, $tunjangan);
+            $this->updateOrCreatePotonganGaji($sdm, $potongan);
         }
 
         return $createdOrUpdatedAbsensi;
@@ -126,4 +129,38 @@ class GajiImport implements ToCollection, WithHeadingRow
     {
         return ucwords(str_replace('_', ' ', $columnName));
     }
-}
+
+    private function updateOrCreateKomponenGaji($sdm, $tunjangans)
+    {
+        $komponenGaji = $sdm->komponenGaji();
+    
+        // Hapus tunjangan lama
+        $komponenGaji->delete();
+    
+        // Tambahkan tunjangan baru
+        foreach (json_decode($tunjangans, true) as $tunjangan) {
+            $komponenGaji->create([
+                'sdm_id' => $sdm->id,
+                'nama_tunjangan' => ucwords($tunjangan['nama_tunjangan']),
+                'nilai_tunjangan' => $tunjangan['nilai_tunjangan'],
+            ]);
+        }
+    }
+    
+    private function updateOrCreatePotonganGaji($sdm, $potongans)
+    {
+        $potonganGaji = $sdm->potonganGaji();
+    
+        // Hapus potongan lama
+        $potonganGaji->delete();
+    
+        // Tambahkan potongan baru
+        foreach (json_decode($potongans, true) as $potongan) {
+            $potonganGaji->create([
+                'sdm_id' => $sdm->id,
+                'nama_potongan' => ucwords($potongan['nama_potongan']),
+                'nilai_potongan' => $potongan['nilai_potongan'],
+            ]);
+        }
+    }
+    }
