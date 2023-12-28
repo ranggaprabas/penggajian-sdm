@@ -150,6 +150,7 @@ class BroadcastInformationController extends Controller
         // Hapus tag HTML yang tidak diinginkan
         $allowedTags = '<b><strong><i><em><u><ins><s><strike><del><span><a><tg-emoji><code><pre>';
         $message = strip_tags($message, $allowedTags);
+        $message = str_replace('&nbsp;', ' ', $message);
 
         $response = Telegram::sendMessage([
             'chat_id' => $username,
