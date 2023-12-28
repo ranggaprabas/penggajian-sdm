@@ -459,24 +459,47 @@ class GajiController extends Controller
 
     public function importExcel(Request $request)
     {
-        // Validate the uploaded file
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls',
-        ]);
-
-        // Get the file from the request
-        $file = $request->file('file');
-
-        // Use the GajiImport class to import data from the Excel file
-        Excel::import(new GajiImport, $file);
-
-        // Redirect back with a success message
-        return redirect()->route('admin.gaji.index')->with([
-            'success' => 'Data telah berhasil diimpor.',
-            'alert-info' => 'info',
-        ]);
+        try {
+            // Validate the uploaded file
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls',
+            ]);
+    
+            // Get the file from the request
+            $file = $request->file('file');
+    
+            // Load the first row of the Excel file to check for required keys
+            $firstRow = Excel::toArray(new GajiImport, $file)[0][0];
+    
+            // Define the required keys
+            $requiredKeys = ['id', 'sdm_id', 'chat_id', 'bulan', 'created_at', 'updated_at', 'nama', 'email', 'status', 'nik', 'jenis_kelamin', 'jabatan', 'tunjangan_jabatan', 'entitas', 'divisi'];
+    
+            // Check if all required keys are present in the Excel file
+            if (count(array_diff($requiredKeys, array_keys($firstRow))) > 0) {
+                // If any required key is missing, redirect with an error message
+                return redirect()->route('admin.gaji.index')->with([
+                    'error' => 'File Excel tidak sesuai. Pastikan file berisi semua kunci yang diperlukan.',
+                    'alert-danger' => 'danger',
+                ]);
+            }
+    
+            // Use the GajiImport class to import data from the Excel file
+            Excel::import(new GajiImport, $file);
+    
+            // Redirect back with a success message
+            return redirect()->route('admin.gaji.index')->with([
+                'success' => 'Data telah berhasil diimpor.',
+                'alert-info' => 'info',
+            ]);
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan, redirect dengan pesan kesalahan
+            return redirect()->route('admin.gaji.index')->with([
+                'error' => 'Terjadi kesalahan saat mengimpor data. Pastikan format file Excel sesuai.',
+                'alert-danger' => 'danger',
+            ]);
+        }
     }
-
+    
     public function urlPrintPDF(Request $request, $chat_id, $bulan, $tahun)
     {
         $namaBulan = $this->konversiBulan($bulan);
