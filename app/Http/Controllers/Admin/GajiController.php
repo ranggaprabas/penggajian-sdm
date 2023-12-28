@@ -15,6 +15,7 @@ use App\Models\KomponenGaji;
 use App\Models\PotonganGaji;
 use App\Models\Sdm;
 use App\Models\TelegramUser;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Response;
 use PDF;
@@ -29,25 +30,34 @@ class GajiController extends Controller
         // Set nilai default untuk bulan dan tahun saat ini
         $bulan = $request->get('bulan', date('m')) . $request->get('tahun', date('Y'));
 
+        // Mendapatkan entitas_id admin yang sedang login
+        $entitasAdmin = Auth::user()->entitas->nama;
+
         // Hitung jumlah SDM yang belum masuk gaji berdasarkan field bulan dari tabel absensi
         $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan) {
-            $query->where('bulan', $bulan);
-        })->where('deleted', '!=', 1)
+            $query->where('bulan', $bulan)
+                ->where('entitas', Auth::user()->entitas->nama);
+        })
+            ->where('entitas_id', Auth::user()->entitas->id) // Sesuaikan dengan field yang sesuai di tabel sdm
+            ->where('deleted', '!=', 1)
             ->whereHas('jabatan', function ($query) {
                 $query->where('deleted', '!=', 1);
             })
             ->count();
+
 
         if ($bulan === '') {
             $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
             $items = DB::table('absensi')
                 ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulanSaatIni)
+                ->where('absensi.entitas', $entitasAdmin)
                 ->get();
         } else {
             $items = DB::table('absensi')
                 ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulan)
+                ->where('absensi.entitas', $entitasAdmin)
                 ->get();
         }
 
@@ -58,8 +68,11 @@ class GajiController extends Controller
     {
         // Validasi jika diperlukan
 
-        // Ambil data SDM
-        $sdms = Sdm::all();
+        // Mendapatkan entitas_id admin yang sedang login
+        $entitasAdmin = Auth::user()->entitas->id;
+
+        // Ambil data SDM sesuai dengan entitas yang sedang login
+        $sdms = Sdm::where('entitas_id', $entitasAdmin)->get();
 
         // Inisialisasi array untuk menyimpan informasi SDM yang baru dimasukkan ke Absensi
         $sdmsInserted = [];
@@ -417,7 +430,7 @@ class GajiController extends Controller
         // You can customize the filename if needed
         $filename = 'Data Gaji SDM_' . $namaBulan . '_' . $tahun . '_' . $timestamp . '.pdf';
 
-        $pdf->setEncryption($timestamp, '',['print', 'copy'], 0);
+        $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
 
         // Use download() to send the PDF as a download to the user
         return $pdf->download($filename);
@@ -464,16 +477,16 @@ class GajiController extends Controller
             $request->validate([
                 'file' => 'required|mimes:xlsx,xls',
             ]);
-    
+
             // Get the file from the request
             $file = $request->file('file');
-    
+
             // Load the first row of the Excel file to check for required keys
             $firstRow = Excel::toArray(new GajiImport, $file)[0][0];
-    
+
             // Define the required keys
             $requiredKeys = ['id', 'sdm_id', 'chat_id', 'bulan', 'created_at', 'updated_at', 'nama', 'email', 'status', 'nik', 'jenis_kelamin', 'jabatan', 'tunjangan_jabatan', 'entitas', 'divisi'];
-    
+
             // Check if all required keys are present in the Excel file
             if (count(array_diff($requiredKeys, array_keys($firstRow))) > 0) {
                 // If any required key is missing, redirect with an error message
@@ -482,10 +495,10 @@ class GajiController extends Controller
                     'alert-danger' => 'danger',
                 ]);
             }
-    
+
             // Use the GajiImport class to import data from the Excel file
             Excel::import(new GajiImport, $file);
-    
+
             // Redirect back with a success message
             return redirect()->route('admin.gaji.index')->with([
                 'success' => 'Data telah berhasil diimpor.',
@@ -499,7 +512,7 @@ class GajiController extends Controller
             ]);
         }
     }
-    
+
     public function urlPrintPDF(Request $request, $chat_id, $bulan, $tahun)
     {
         $namaBulan = $this->konversiBulan($bulan);
