@@ -502,7 +502,7 @@ class GajiController extends Controller
         // Pastikan data ditemukan
         if ($items->isNotEmpty()) {
             // Generate URL untuk endpoint print PDF
-            $pdfEndpoint = route('url-pdf', [
+            $pdfEndpoint = route('print-pdf', [
                 'chat_id' => $chat_id,
                 'bulan' => $bulan,
                 'tahun' => $tahun,
@@ -512,7 +512,7 @@ class GajiController extends Controller
             $response = [
                 'status' => 'success',
                 'message' => 'Slip Gaji ditemukan',
-                'pdf_link' => str_replace('/link-pdf', '/print-pdf', $pdfEndpoint),
+                'pdf_link' => $pdfEndpoint,
             ];
 
             return response()->json($response, 200);
