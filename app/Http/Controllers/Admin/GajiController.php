@@ -409,11 +409,15 @@ class GajiController extends Controller
             ->where('absensi.bulan', $tanggal)
             ->get();
 
+        $timestamp = time();
+
         // Generate PDF using DomPDF
         $pdf = PDF::loadView('admin.gaji.cetak', compact('items', 'bulan', 'namaBulan', 'tahun'));
 
         // You can customize the filename if needed
-        $filename = 'Data Gaji SDM_' . $namaBulan . '_' . $tahun . '.pdf';
+        $filename = 'Data Gaji SDM_' . $namaBulan . '_' . $tahun . '_' . $timestamp . '.pdf';
+
+        $pdf->setEncryption($timestamp, '',['print', 'copy'], 0);
 
         // Use download() to send the PDF as a download to the user
         return $pdf->download($filename);
