@@ -181,6 +181,7 @@ class GajiController extends Controller
 
     public function cetakPDF($id, $bulan, $tahun)
     {
+
         $tanggal = $bulan . $tahun;
 
         $item = DB::table('absensi')
@@ -405,6 +406,7 @@ class GajiController extends Controller
         // Your existing code to fetch data from the database
         $namaBulan = $this->konversiBulan($bulan);
         $tanggal = $bulan . $tahun;
+        $entitasAdmin = Auth::user()->entitas->nama;
         $items = DB::table('absensi')
             ->select(
                 'absensi.sdm_id',
@@ -420,6 +422,7 @@ class GajiController extends Controller
                 'absensi.potongan',
             )
             ->where('absensi.bulan', $tanggal)
+            ->where('absensi.entitas', $entitasAdmin)
             ->get();
 
         $timestamp = time();
@@ -441,6 +444,7 @@ class GajiController extends Controller
         // Ubah format bulan dan tahun sesuai kebutuhan
         $namaBulan = $this->konversiBulan($bulan);
         $tanggal = $bulan . $tahun;
+        $entitasAdmin = Auth::user()->entitas->nama;
 
         // Ambil data dari tabel absensi sesuai bulan dan tahun
         $items = DB::table('absensi')
@@ -464,6 +468,7 @@ class GajiController extends Controller
                 'absensi.divisi',
             )
             ->where('absensi.bulan', $tanggal)
+            ->where('absensi.entitas', $entitasAdmin)
             ->get();
 
         // Ekspor data ke Excel

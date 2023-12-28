@@ -10,6 +10,7 @@ use App\Models\Setting;
 use Telegram;
 use Illuminate\Support\HtmlString;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BroadcastInformationController extends Controller
 {
@@ -26,8 +27,12 @@ class BroadcastInformationController extends Controller
             // Token not set, redirect to 404 or display an error
             abort(404, 'Telegram Bot Token not configured');
         }
+
+        // Mendapatkan entitas admin yang sedang login
+        $entitasAdmin = Auth::user()->entitas->id;
+
         $title = "Broadcast Information";
-        $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'sdms.nama as sdm_name', 'broadcast_information.category_id')
+        $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'sdms.nama as sdm_name', 'broadcast_information.category_id', 'sdms.entitas_id')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'broadcast_information.id')
                     ->where('log_activities.table_name', '=', 'broadcast_information')
@@ -35,6 +40,7 @@ class BroadcastInformationController extends Controller
             })
             ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
             ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
+            ->where('sdms.entitas_id', $entitasAdmin)
             ->with('sdm')
             ->get();
 
@@ -82,10 +88,12 @@ class BroadcastInformationController extends Controller
         }
         $title = 'Add Broadcast Information';
         $pages = "Broadcast Information";
+        $entitasAdmin = Auth::user()->entitas->id;
 
         // Ambil hanya SDM yang memiliki chat_id tidak kosong
         $broadcasts = Sdm::select('id', 'nama')
             ->whereNotNull('chat_id')  // Filter untuk chat_id tidak null
+            ->where('entitas_id', $entitasAdmin)
             ->get();
 
         return view('admin.broadcast-information.create', compact('pages', 'title', 'broadcasts'));
@@ -178,7 +186,7 @@ class BroadcastInformationController extends Controller
             // Token not set, redirect to 404 or display an error
             abort(404, 'Telegram Bot Token not configured');
         }
-        
+
         $broadcast = BroadcastInformation::with('sdm')->findOrFail($id);
         $pages = 'Broadcast Information';
         $title = 'Detail Broadcast Information';
