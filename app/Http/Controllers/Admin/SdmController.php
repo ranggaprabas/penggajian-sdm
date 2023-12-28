@@ -13,6 +13,7 @@ use App\Models\KomponenGaji;
 use App\Models\LogActivity;
 use App\Models\PotonganGaji;
 use App\Models\TelegramUser;
+use Illuminate\Support\Facades\Auth;
 
 class SdmController extends Controller
 {
@@ -21,6 +22,10 @@ class SdmController extends Controller
      */
     public function index()
     {
+        // Mendapatkan entitas_id admin yang sedang login
+        $entitasIdAdmin = Auth::user()->entitas_id;
+
+        // Query untuk mendapatkan SDM berdasarkan entitas_id
         $sdms = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'sdms.id')
@@ -28,7 +33,8 @@ class SdmController extends Controller
                     ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = sdms.id AND log_activities.table_name = "sdms")');
             })
             ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
-            ->where('deleted', 0)
+            ->where('sdms.deleted', 0) // Menggunakan alias sdms untuk menyatakan tabel sdm
+            ->where('sdms.entitas_id', $entitasIdAdmin) // Menggunakan alias sdms untuk menyatakan tabel sdm
             ->with('jabatan', 'entitas', 'divisi')
             ->get();
 
@@ -38,6 +44,8 @@ class SdmController extends Controller
 
     public function indexDeleted()
     {
+        $entitasIdAdmin = Auth::user()->entitas_id;
+
         $sdms = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'sdms.id')
@@ -45,7 +53,8 @@ class SdmController extends Controller
                     ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = sdms.id AND log_activities.table_name = "sdms")');
             })
             ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
-            ->where('deleted', 1)
+            ->where('sdms.deleted', 1)
+            ->where('sdms.entitas_id', $entitasIdAdmin)
             ->with('jabatan', 'entitas', 'divisi')
             ->get();
 
@@ -61,7 +70,16 @@ class SdmController extends Controller
         $title = 'Add SDM';
         $pages = 'SDM';
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
-        $entita = Entitas::get(['id', 'nama']);
+        // Ambil entitas sesuai dengan entitas_id pengguna yang sedang login
+        $user = Auth::user();
+        // Jika status pengguna adalah 1, tampilkan semua entitas
+        if ($user->status == 1) {
+            $entita = Entitas::get(['id', 'nama']);
+        } else {
+            // Jika status pengguna bukan 1, tampilkan hanya entitas sesuai entitas_id pengguna
+            $entita = Entitas::where('id', $user->entitas_id)->get(['id', 'nama']);
+        }
+
         $divisis = Divisi::get(['id', 'nama']);
         $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
             ->unique('nama_tunjangan')
@@ -70,7 +88,7 @@ class SdmController extends Controller
         $potongans = PotonganGaji::get(['id', 'nama_potongan'])
             ->unique('nama_potongan')
             ->sortBy('nama_potongan');
-        
+
         $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
 
@@ -152,9 +170,15 @@ class SdmController extends Controller
      */
     public function show(string $id)
     {
+        $user = Auth::user();
         $title = 'Detail SDM';
         $pages = 'SDM';
         $data = Sdm::findOrFail($id);
+
+        if ($user->entitas_id != $data->entitas_id) {
+            abort(404, 'Unauthorized');
+        }
+
         $details = Sdm::with('komponenGaji', 'potonganGaji')->findOrFail($id);
         return view('admin.sdm.show', compact('title', 'pages', 'data', 'details'));
     }
@@ -164,14 +188,29 @@ class SdmController extends Controller
      */
     public function edit(string $id)
     {
+        // Ambil data pengguna berdasarkan ID
+        $user = Auth::user();
+
+
         $title = 'Edit SDM';
         $pages = 'SDM';
         // Ambil data pengguna berdasarkan ID
         $sdm = Sdm::with('komponenGaji', 'potonganGaji')->findOrFail($id);
-
+        // Pastikan bahwa entitas_id pengguna sesuai dengan entitas_id SDM
+        if ($user->entitas_id !== $sdm->entitas_id) {
+            // Redirect atau tampilkan pesan error jika entitas_id tidak cocok
+            abort(404, 'Unauthorized');
+        }
 
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
-        $entita = Entitas::get(['id', 'nama']);
+        $user = Auth::user();
+        // Jika status pengguna adalah 1, tampilkan semua entitas
+        if ($user->status == 1) {
+            $entita = Entitas::get(['id', 'nama']);
+        } else {
+            // Jika status pengguna bukan 1, tampilkan hanya entitas sesuai entitas_id pengguna
+            $entita = Entitas::where('id', $user->entitas_id)->get(['id', 'nama']);
+        }
         $divisis = Divisi::get(['id', 'nama']);
         $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
             ->unique('nama_tunjangan')
@@ -227,10 +266,10 @@ class SdmController extends Controller
             $nama = ucwords($nama); // ucwords berfungsi menngubah nama depan menjadi besar
             $tunjanganId = $request->input('tunjangan_ids')[$key] ?? null;
 
-            if($tunjanganId){
+            if ($tunjanganId) {
                 $existingTunjangan = KomponenGaji::find($tunjanganId);
 
-                if($existingTunjangan){
+                if ($existingTunjangan) {
                     $existingTunjangan->update([
                         'nama_tunjangan' => $nama,
                         'nilai_tunjangan' => $nilai
@@ -267,10 +306,10 @@ class SdmController extends Controller
             $nama = ucwords($nama);
             $potonganId = $request->input('potongan_ids')[$key] ?? null;
 
-            if($potonganId){
+            if ($potonganId) {
                 $existingPotongan = PotonganGaji::find($potonganId);
 
-                if($existingPotongan){
+                if ($existingPotongan) {
                     $existingPotongan->update([
                         'nama_potongan' => $nama,
                         'nilai_potongan' => $nilai

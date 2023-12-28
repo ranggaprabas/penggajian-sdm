@@ -9,6 +9,7 @@ use App\Models\Entitas;
 use App\Models\Jabatan;
 use App\Models\Sdm;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -29,11 +30,24 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Menghitung jumlah pria (Laki-laki)
-        $maleCount = Sdm::where('jenis_kelamin', 'laki-laki')->where('deleted', '!=', 1)->count();
+        $user = Auth::user();
 
-        // Menghitung jumlah wanita (Perempuan)
-        $femaleCount = Sdm::where('jenis_kelamin', 'perempuan')->where('deleted', '!=', 1)->count();
+        // Menghitung jumlah pria (Laki-laki) berdasarkan entitas_id pengguna
+        $maleCount = Sdm::where('jenis_kelamin', 'laki-laki')
+            ->where('entitas_id', $user->entitas_id)
+            ->where('deleted', '!=', 1)
+            ->count();
+
+        // Menghitung jumlah wanita (Perempuan) berdasarkan entitas_id pengguna
+        $femaleCount = Sdm::where('jenis_kelamin', 'perempuan')
+            ->where('entitas_id', $user->entitas_id)
+            ->where('deleted', '!=', 1)
+            ->count();
+
+        // Menghitung jumlah total SDM berdasarkan entitas_id pengguna
+        $employee_count = Sdm::where('entitas_id', $user->entitas_id)
+            ->where('deleted', '!=', 1)
+            ->count();
 
         // Menghitung jumlah entitas
         $crocodicCount = Sdm::where('entitas_id', '1')->where('deleted', '!=', 1)->count();
@@ -41,11 +55,10 @@ class HomeController extends Controller
         $reprimeCount = Sdm::where('entitas_id', '3')->where('deleted', '!=', 1)->count();
         $taarufCount = Sdm::where('entitas_id', '4')->where('deleted', '!=', 1)->count();
 
-        $employee_count = Sdm::where('deleted', '!=', 1)->count();
         $entita_count = Entitas::count();
         $divisi_count = Divisi::count();
         $jabatan_count = Jabatan::where('deleted', '!=', 1)->count();
 
-        return view('home', compact('employee_count', 'entita_count','divisi_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount', 'taarufCount'));
+        return view('home', compact('employee_count', 'entita_count', 'divisi_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount', 'taarufCount'));
     }
 }

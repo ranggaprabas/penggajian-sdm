@@ -28,6 +28,7 @@ class UserRequest extends FormRequest
                         'email' => 'required|email|unique:users',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
+                        'entitas_id' => 'required',
                         'password' => 'required|min:3|confirmed',
   
                     ];
@@ -39,6 +40,7 @@ class UserRequest extends FormRequest
                         'email' => ['required', 'email', 'unique:users,email,' . $this->route()->user->id],
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
+                        'entitas_id' => 'required',
                         'password' => 'nullable|min:3|confirmed',
  
                     ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
+use App\Models\Entitas;
 use App\Models\LogActivity;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -96,8 +97,11 @@ class UserController extends Controller
         // Ambil data pengguna berdasarkan ID
         $user = User::findOrFail($id);
 
+        // Ambil daftar entitas untuk opsi dropdown
+        $entitasOptions = Entitas::all();
 
-        return view('admin.users.edit', compact('user', 'pages', 'title'));
+
+        return view('admin.users.edit', compact('user', 'pages', 'title', 'entitasOptions'));
     }
 
     /**

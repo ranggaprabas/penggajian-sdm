@@ -38,5 +38,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    
+    public function entitas()
+    {
+        return $this->belongsTo(Entitas::class, 'entitas_id');
+    }
 }

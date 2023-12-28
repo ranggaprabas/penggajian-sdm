@@ -151,11 +151,22 @@
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="entitas_id">Entitas</label>
+                                            <select class="default-select form-control wide gray-border" name="entitas_id">
+                                                @foreach ($entitasOptions as $entitas)
+                                                    <option value="{{ $entitas->id }}">{{ $entitas->nama }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
                                         <div class="form-group-password">
                                             <label for="password">Password</label>
                                             <input class="form-control gray-border" type="password" id="password"
                                                 name="password">
-                                            <span class="eye-toggle"><i class="fas fa-eye" id="password-toggle"></i></span>
+                                            <span class="eye-toggle"><i class="fas fa-eye"
+                                                    id="password-toggle"></i></span>
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">

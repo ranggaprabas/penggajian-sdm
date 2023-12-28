@@ -98,7 +98,7 @@
                             </span>
                             <div>
                                 <h3 class="text-white">Selamat Datang! {{ auth()->user()->nama }}</h3>
-                                <p>Selamat datang di Dashboard Penggajian SDM PT. Taman Media Indonesia. Sebagai
+                                <p>Selamat datang di Dashboard Penggajian SDM {{ Auth::user()->entitas->nama }}. Sebagai
                                     administrator, Anda memiliki akses penuh
                                     untuk mengelola penggajian Sumber Daya Manusia (SDM).
                                 </p>
