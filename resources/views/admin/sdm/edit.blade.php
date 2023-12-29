@@ -463,6 +463,11 @@
                                                                     oninput="addCommas2(this)">
                                                             </div>
                                                         </div>
+                                                        <div class="form-group mb-3">
+                                                            <label for="note_potongan[]">Note Potongan</label>
+                                                            <input class="form-control gray-border" type="text"
+                                                                name="note_potongan[]" id="note_potongan" value="{{ $potongan->note_potongan ?? '' }}">
+                                                        </div>            
                                                         <input type="hidden" name="potongan_ids[]"
                                                             value="{{ $potongan->id }}">
                                                         <button type="button"
@@ -628,6 +633,10 @@
                     <input class="form-control nilai-potongan gray-border" type="text" name="nilai_potongan[]" oninput="addCommas2(this)" required>
                 </div>
             </div>
+            <div class="form-group mb-3">
+                <label for="note_potongan${counter}">Catatan Potongan</label>
+                <input class="form-control gray-border" type="text" name="note_potongan[]" id="note_potongan">
+            </div>   
             <button type="button" class="btn btn-outline-danger removePotongan mb-3"> <i class="fa fa-trash"></i>  Hapus Potongan</button>
         </div>
     `;

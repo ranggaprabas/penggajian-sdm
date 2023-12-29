@@ -136,12 +136,14 @@ class SdmController extends Controller
         // Simpan juga potongan gaji dengan konsep yang serupa
         $namaPotongan = $request->input('nama_potongan');
         $nilaiPotongan = $request->input('nilai_potongan');
+        $notePotongan = $request->input('note_potongan');
 
         // Loop melalui data tunjangan dan simpan dalam model KomponenGaji
         if (is_array($namaPotongan) && is_array($nilaiPotongan)) {
             for ($i = 0; $i < count($namaPotongan); $i++) {
                 $nama = ucwords($namaPotongan[$i]);
                 $nilai = $nilaiPotongan[$i];
+                $note = $notePotongan[$i];
 
                 // Periksa apakah input adalah "Default Nama" atau "Default Nilai" atau kosong/null
                 if (empty($nama) || $nilai === null || $nilai === '') {
@@ -151,6 +153,7 @@ class SdmController extends Controller
                 $potongan = new PotonganGaji([
                     'nama_potongan' => $nama,
                     'nilai_potongan' => $nilai,
+                    'note_potongan' => $note,
                 ]);
 
                 $user->potonganGajis()->save($potongan);
@@ -215,7 +218,7 @@ class SdmController extends Controller
         $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
             ->unique('nama_tunjangan')
             ->sortBy('nama_tunjangan');
-        $potongans = PotonganGaji::get(['id', 'nama_potongan'])
+        $potongans = PotonganGaji::get(['id', 'nama_potongan', 'note_potongan'])
             ->unique('nama_potongan')
             ->sortBy('nama_potongan');
         $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
@@ -303,6 +306,7 @@ class SdmController extends Controller
         // Loop melalui data potongan yang dikirim dalam request
         foreach ($request->input('nama_potongan', []) as $key => $nama) {
             $nilai = $request->input('nilai_potongan')[$key];
+            $note = $request->input('note_potongan')[$key] ?? null;
             $nama = ucwords($nama);
             $potonganId = $request->input('potongan_ids')[$key] ?? null;
 
@@ -312,13 +316,15 @@ class SdmController extends Controller
                 if ($existingPotongan) {
                     $existingPotongan->update([
                         'nama_potongan' => $nama,
-                        'nilai_potongan' => $nilai
+                        'nilai_potongan' => $nilai,
+                        'note_potongan' => $note
                     ]);
                 }
             } else {
                 $potongan = new PotonganGaji([
                     'nama_potongan' => $nama,
-                    'nilai_potongan' => $nilai
+                    'nilai_potongan' => $nilai,
+                    'note_potongan' => $note
                 ]);
 
                 $sdm->potonganGaji()->save($potongan);

@@ -414,6 +414,11 @@
                                                         oninput="addCommas2(this)">
                                                 </div>
                                             </div>
+                                            <div class="form-group mb-3">
+                                                <label for="note_potongan[]">Note Potongan</label>
+                                                <input class="form-control gray-border" type="text"
+                                                    name="note_potongan[]" id="note_potongan">
+                                            </div>
                                             <button type="button" class="btn btn-outline-danger removePotonganAdd mb-3">
                                                 <i class="fa fa-trash"></i> Hapus Potongan</button>
                                         </div>
@@ -581,6 +586,10 @@
                             <span class="input-group-text">Rp.</span>
                             <input class="form-control nilai-potongan gray-border" type="text" name="nilai_potongan[]" oninput="addCommas2(this)" required>
                         </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="note_potongan${counter}">Catatan Potongan</label>
+                            <input class="form-control gray-border" type="text" name="note_potongan[]" id="note_potongan">
                     </div>
                     <button type="button" class="btn btn-outline-danger removePotonganAdd mb-3"> <i class="fa fa-trash"></i>  Hapus Potongan</button>
                 </div>
