@@ -129,6 +129,7 @@ class GajiController extends Controller
                 'sdm_id' => $item->sdm_id,
                 'nama_tunjangan' => $item->nama_tunjangan,
                 'nilai_tunjangan' => $item->nilai_tunjangan,
+                'note_tunjangan' => $item->note_tunjangan,
             ];
         }
 
@@ -143,6 +144,7 @@ class GajiController extends Controller
                 'sdm_id' => $item->sdm_id,
                 'nama_potongan' => $item->nama_potongan,
                 'nilai_potongan' => $item->nilai_potongan,
+                'note_potongan' => $item->note_potongan,
             ];
         }
 
