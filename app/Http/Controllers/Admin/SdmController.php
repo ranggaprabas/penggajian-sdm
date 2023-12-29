@@ -112,12 +112,14 @@ class SdmController extends Controller
 
         $namaTunjangan = $request->input('nama_tunjangan');
         $nilaiTunjangan = $request->input('nilai_tunjangan');
+        $noteTunjangan = $request->input('note_tunjangan');
 
         // Loop melalui data tunjangan dan simpan dalam model KomponenGaji
         if (is_array($namaTunjangan) && is_array($nilaiTunjangan)) {
             for ($i = 0; $i < count($namaTunjangan); $i++) {
                 $nama = ucwords($namaTunjangan[$i]); // ucwords berfungsi Mengubah huruf pertama menjadi besar
                 $nilai = $nilaiTunjangan[$i];
+                $note = $noteTunjangan[$i] ?? null;
 
                 // Periksa apakah input adalah "Default Nama" atau "Default Nilai" atau kosong/null
                 if (empty($nama) || $nilai === null || $nilai === '') {
@@ -127,6 +129,7 @@ class SdmController extends Controller
                 $tunjangan = new KomponenGaji([
                     'nama_tunjangan' => $nama,
                     'nilai_tunjangan' => $nilai,
+                    'note_tunjangan' => $note
                 ]);
 
                 $user->komponenGajis()->save($tunjangan); // Sambungkan tunjangan ke user
@@ -143,7 +146,7 @@ class SdmController extends Controller
             for ($i = 0; $i < count($namaPotongan); $i++) {
                 $nama = ucwords($namaPotongan[$i]);
                 $nilai = $nilaiPotongan[$i];
-                $note = $notePotongan[$i];
+                $note = $notePotongan[$i] ?? null;
 
                 // Periksa apakah input adalah "Default Nama" atau "Default Nilai" atau kosong/null
                 if (empty($nama) || $nilai === null || $nilai === '') {
@@ -266,6 +269,7 @@ class SdmController extends Controller
         // Loop melalui data tunjangan yang dikirim dalam request
         foreach ($request->input('nama_tunjangan', []) as $key => $nama) {
             $nilai = $request->input('nilai_tunjangan')[$key];
+            $note = $request->input('note_tunjangan')[$key] ?? null;
             $nama = ucwords($nama); // ucwords berfungsi menngubah nama depan menjadi besar
             $tunjanganId = $request->input('tunjangan_ids')[$key] ?? null;
 
@@ -275,13 +279,15 @@ class SdmController extends Controller
                 if ($existingTunjangan) {
                     $existingTunjangan->update([
                         'nama_tunjangan' => $nama,
-                        'nilai_tunjangan' => $nilai
+                        'nilai_tunjangan' => $nilai,
+                        'note_tunjangan' => $note
                     ]);
                 }
             } else {
                 $tunjangan = new KomponenGaji([
                     'nama_tunjangan' => $nama,
-                    'nilai_tunjangan' => $nilai
+                    'nilai_tunjangan' => $nilai,
+                    'note_tunjangan' => $note
                 ]);
                 $sdm->komponenGaji()->save($tunjangan);
             }

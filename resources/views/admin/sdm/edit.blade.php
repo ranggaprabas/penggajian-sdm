@@ -364,6 +364,11 @@
                                                                     oninput="addCommas2(this)">
                                                             </div>
                                                         </div>
+                                                        <div class="form-group mb-3">
+                                                            <label for="note_tunjangan[]">Note Tunjangan</label>
+                                                            <input class="form-control gray-border" type="text"
+                                                                name="note_tunjangan[]" id="note_tunjangan" value="{{ $tunjangan->note_tunjangan ?? '' }}">
+                                                        </div>    
                                                         <input type="hidden" name="tunjangan_ids[]"
                                                             value="{{ $tunjangan->id }}">
                                                         <button type="button"
@@ -527,6 +532,10 @@
                     <input class="form-control nilai-tunjangan gray-border" type="text" name="nilai_tunjangan[]" oninput="addCommas2(this)" required>
                 </div>
             </div>
+            <div class="form-group mb-3">
+                <label for="note_tunjangann${counter}">Note Tunjangan</label>
+                <input class="form-control gray-border" type="text" name="note_tunjangan[]" id="note_tunjangan">
+            </div>  
             <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"> <i class="fa fa-trash"></i>  Hapus Tunjangan</button>
         </div>
     `;
@@ -634,7 +643,7 @@
                 </div>
             </div>
             <div class="form-group mb-3">
-                <label for="note_potongan${counter}">Catatan Potongan</label>
+                <label for="note_potongan${counter}">Note Potongan</label>
                 <input class="form-control gray-border" type="text" name="note_potongan[]" id="note_potongan">
             </div>   
             <button type="button" class="btn btn-outline-danger removePotongan mb-3"> <i class="fa fa-trash"></i>  Hapus Potongan</button>
