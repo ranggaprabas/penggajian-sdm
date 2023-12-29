@@ -1253,35 +1253,6 @@
         @endif
     </script>
 
-
-    {{-- Pie Chart --}}
-
-    <script>
-        @if (isset($maleCount) && isset($femaleCount))
-            // Mendapatkan elemen canvas
-            var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-
-            // Membuat pie chart
-            var pieChart = new Chart(pieChartCanvas, {
-                type: "pie",
-                data: {
-                    labels: ["Crocodic", "Eventy", "Reprime", "Ta'aruf"],
-                    datasets: [{
-                        data: [{{ $crocodicCount }}, {{ $eventyCount }}, {{ $reprimeCount }},
-                            {{ $taarufCount }}
-                        ],
-                        backgroundColor: ["#3c8dbc", "#f39c12", "#1F3775", "#EF4043"],
-                    }],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                },
-            });
-        @endif
-    </script>
-
-
     <!-- Untuk menambahkan titik pemisah rupiah Jabatan -->
     <script>
         // Fungsi untuk menambahkan pemisah titik saat mengisi input number

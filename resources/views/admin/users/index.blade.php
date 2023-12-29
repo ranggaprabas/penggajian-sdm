@@ -123,6 +123,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
+                                            <th>Entitas</th>
                                             <th>Email</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Status</th>
@@ -138,6 +139,7 @@
                                             <tr id="_index{{ $admin->id }}">
                                                 <td>{{ $counter }}</td>
                                                 <td>{{ $admin->nama }}</td>
+                                                <td>{{ $admin->entitas->nama ?? '-' }}</td>
                                                 <td>{{ $admin->email }}</td>
                                                 <td>{{ $admin->jenis_kelamin }}</td>
                                                 <td>

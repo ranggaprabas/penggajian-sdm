@@ -8,6 +8,7 @@ use App\Models\Entitas;
 use App\Models\Jabatan;
 use App\Models\Sdm;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -16,8 +17,13 @@ class GajiImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         $createdOrUpdatedAbsensi = [];
-
+        $entitasAdmin = Auth::user()->entitas->nama;
+        
         foreach ($rows as $row) {
+            // Validasi jika entitas dalam baris cocok dengan entitas pengguna yang sedang login
+            if ($row['entitas'] !== $entitasAdmin) {
+                continue; // Lewati baris ini jika entitas tidak cocok
+            }
             // Extract common fields
             $gajiData = [
                 'id' => $row['id'],

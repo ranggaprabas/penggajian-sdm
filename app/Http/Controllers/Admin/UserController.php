@@ -45,9 +45,10 @@ class UserController extends Controller
     {
         $title = 'Add Admin';
         $pages = 'Admin';
+        $entitasOptions = Entitas::all();
 
 
-        return view('admin.users.create', compact('pages', 'title'));
+        return view('admin.users.create', compact('pages', 'title', 'entitasOptions'));
     }
 
     /**

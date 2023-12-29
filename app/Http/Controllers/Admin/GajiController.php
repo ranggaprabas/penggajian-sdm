@@ -256,7 +256,14 @@ class GajiController extends Controller
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
+        $user = Auth::user();
         $gaji = Absensi::findOrFail($id);
+
+        // Periksa apakah entitas pengguna cocok dengan entitas pada data gaji
+        if ($user->entitas->nama != $gaji->entitas){
+            abort(404, 'Unauthorized');
+        }
+        
         $tunjangans = json_decode($gaji->tunjangan, true);
         $potongans = json_decode($gaji->potongan, true);
 

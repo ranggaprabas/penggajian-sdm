@@ -147,21 +147,9 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
-                                            <label for="status">Status</label>
-                                            <select class="default-select form-control wide gray-border" name="status"
-                                                id="status">
-                                                <option {{ $user->status === 1 ? 'selected' : null }} value="1">
-                                                    superadmin
-                                                </option>
-                                                <option {{ $user->status === 0 ? 'selected' : null }} value="0">admin
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <div class="form-group">
                                             <label for="entitas_id">Entitas</label>
-                                            <select class="default-select form-control wide gray-border" name="entitas_id">
+                                            <select class="default-select form-control wide gray-border"
+                                                name="entitas_id">
                                                 @foreach ($entitasOptions as $entitas)
                                                     <option value="{{ $entitas->id }}"
                                                         {{ $user->entitas_id == $entitas->id ? 'selected' : '' }}>
@@ -190,6 +178,17 @@
                                                         id="password-confirmation-toggle"></i></span>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="default-select form-control wide gray-border" name="status"
+                                            id="status">
+                                            <option {{ $user->status === 1 ? 'selected' : null }} value="1">
+                                                superadmin
+                                            </option>
+                                            <option {{ $user->status === 0 ? 'selected' : null }} value="0">admin
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

@@ -49,16 +49,10 @@ class HomeController extends Controller
             ->where('deleted', '!=', 1)
             ->count();
 
-        // Menghitung jumlah entitas
-        $crocodicCount = Sdm::where('entitas_id', '1')->where('deleted', '!=', 1)->count();
-        $eventyCount = Sdm::where('entitas_id', '2')->where('deleted', '!=', 1)->count();
-        $reprimeCount = Sdm::where('entitas_id', '3')->where('deleted', '!=', 1)->count();
-        $taarufCount = Sdm::where('entitas_id', '4')->where('deleted', '!=', 1)->count();
-
         $entita_count = Entitas::count();
         $divisi_count = Divisi::count();
         $jabatan_count = Jabatan::where('deleted', '!=', 1)->count();
 
-        return view('home', compact('employee_count', 'entita_count', 'divisi_count', 'jabatan_count', 'maleCount', 'femaleCount', 'crocodicCount', 'eventyCount', 'reprimeCount', 'taarufCount'));
+        return view('home', compact('employee_count', 'entita_count', 'divisi_count', 'jabatan_count', 'maleCount', 'femaleCount'));
     }
 }

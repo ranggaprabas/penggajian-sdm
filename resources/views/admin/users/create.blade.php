@@ -142,18 +142,9 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
-                                            <label for="status">Status</label>
-                                            <select class="default-select form-control wide gray-border" name="status"
-                                                id="status">
-                                                <option value="1">superadmin</option>
-                                                <option value="0">admin</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <div class="form-group">
                                             <label for="entitas_id">Entitas</label>
-                                            <select class="default-select form-control wide gray-border" name="entitas_id">
+                                            <select class="default-select form-control wide gray-border"
+                                                name="entitas_id">
                                                 @foreach ($entitasOptions as $entitas)
                                                     <option value="{{ $entitas->id }}">{{ $entitas->nama }}</option>
                                                 @endforeach
@@ -179,6 +170,14 @@
                                                         id="password-confirmation-toggle"></i></span>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <select class="default-select form-control wide gray-border" name="status"
+                                            id="status">
+                                            <option value="1">superadmin</option>
+                                            <option value="0">admin</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

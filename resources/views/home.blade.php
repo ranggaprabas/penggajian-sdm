@@ -169,18 +169,6 @@
                         <!-- /.card-body -->
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body-home">
-                            <h3 class="card-title">Jumlah SDM berdasarkan Entitas</h3>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="pieChart"
-                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                </div>
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
