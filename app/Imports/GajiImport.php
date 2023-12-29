@@ -18,7 +18,7 @@ class GajiImport implements ToCollection, WithHeadingRow
     {
         $createdOrUpdatedAbsensi = [];
         $entitasAdmin = Auth::user()->entitas->nama;
-        
+
         foreach ($rows as $row) {
             // Validasi jika entitas dalam baris cocok dengan entitas pengguna yang sedang login
             if ($row['entitas'] !== $entitasAdmin) {
@@ -102,10 +102,15 @@ class GajiImport implements ToCollection, WithHeadingRow
                 // Gunakan fungsi formatColumnName untuk mengubah nama kolom
                 $formattedColumnName = $this->formatColumnName($columnName);
 
+                // Extract note column
+                $noteColumnName = 'note_' . $prefix . $columnName;
+                $noteValue = $row[$noteColumnName] ?? null;
+
                 $values[] = [
                     'sdm_id' => $sdmId,
                     'nama_tunjangan' => $formattedColumnName,
                     'nilai_tunjangan' => $value,
+                    'note_tunjangan' => $noteValue,
                 ];
             }
         }
@@ -123,10 +128,15 @@ class GajiImport implements ToCollection, WithHeadingRow
                 // Gunakan fungsi formatColumnName untuk mengubah nama kolom
                 $formattedColumnName = $this->formatColumnName($columnName);
 
+                // Extract note column
+                $noteColumnName = 'note_' . $prefix . $columnName;
+                $noteValue = $row[$noteColumnName] ?? null;
+
                 $values[] = [
                     'sdm_id' => $sdmId,
                     'nama_potongan' => $formattedColumnName,
                     'nilai_potongan' => $value,
+                    'note_potongan' => $noteValue,
                 ];
             }
         }
@@ -153,6 +163,7 @@ class GajiImport implements ToCollection, WithHeadingRow
                 'sdm_id' => $sdm->id,
                 'nama_tunjangan' => ucwords($tunjangan['nama_tunjangan']),
                 'nilai_tunjangan' => $tunjangan['nilai_tunjangan'],
+                'note_tunjangan' => $tunjangan['note_tunjangan'] ?? null,
             ]);
         }
     }
@@ -170,6 +181,7 @@ class GajiImport implements ToCollection, WithHeadingRow
                 'sdm_id' => $sdm->id,
                 'nama_potongan' => ucwords($potongan['nama_potongan']),
                 'nilai_potongan' => $potongan['nilai_potongan'],
+                'note_potongan' => $potongan['note_potongan'] ?? null,
             ]);
         }
     }
