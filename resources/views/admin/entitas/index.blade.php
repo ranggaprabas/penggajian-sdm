@@ -106,6 +106,16 @@
                     @endif
                     <div class="card">
                         <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <!-- Move the 'Add' button to the right -->
+                                <div class="ml-auto-add">
+                                    <a href="{{ route('admin.entitas.create') }}" class="btn btn-rounded btn-success">
+                                        <span class="btn-icon-start text-success"><i
+                                                class="fa fa-plus color-success"></i></span>
+                                        Add
+                                    </a>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table id="example" class="display" style="width: 100%">
                                     <thead>
@@ -149,9 +159,9 @@
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
                                                 </form> --}}
-                                                    {{-- <a href="javascript:void(0)" id="btn-delete-post"
+                                                    <a href="javascript:void(0)" id="btn-delete-post"
                                                     data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                                    class="btn btn-danger"> <i class="fa fa-trash"></i></a> --}}
+                                                    class="btn btn-danger shadow btn-xs sharp me-1"> <i class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
