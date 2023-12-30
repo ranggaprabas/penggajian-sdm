@@ -262,10 +262,10 @@ class GajiController extends Controller
         $gaji = Absensi::findOrFail($id);
 
         // Periksa apakah entitas pengguna cocok dengan entitas pada data gaji
-        if ($user->entitas->nama != $gaji->entitas){
+        if ($user->entitas->nama != $gaji->entitas) {
             abort(404, 'Unauthorized');
         }
-        
+
         $tunjangans = json_decode($gaji->tunjangan, true);
         $potongans = json_decode($gaji->potongan, true);
 
@@ -314,9 +314,12 @@ class GajiController extends Controller
         $tunjangans = [];
         foreach ($request->input('nama_tunjangan', []) as $key => $nama) {
             $nilai = $request->input('nilai_tunjangan')[$key];
+            $noteTunjangan = $request->input('note_tunjangan')[$key] ?? null;
+
             $tunjangans[] = [
                 'nama_tunjangan' => ucwords($nama),
                 'nilai_tunjangan' => $nilai,
+                'note_tunjangan' => $noteTunjangan,
             ];
         }
         $gaji->tunjangan = json_encode($tunjangans);
@@ -326,9 +329,12 @@ class GajiController extends Controller
         $potongans = [];
         foreach ($request->input('nama_potongan', []) as $key => $nama) {
             $nilai = $request->input('nilai_potongan')[$key];
+            $notePotongan = $request->input('note_potongan')[$key] ?? null;
+
             $potongans[] = [
                 'nama_potongan' => ucwords($nama),
                 'nilai_potongan' => $nilai,
+                'note_potongan' => $notePotongan,
             ];
         }
         $gaji->potongan = json_encode($potongans);
@@ -369,6 +375,7 @@ class GajiController extends Controller
                 'sdm_id' => $sdm->id,
                 'nama_tunjangan' => ucwords($tunjangan['nama_tunjangan']),
                 'nilai_tunjangan' => $tunjangan['nilai_tunjangan'],
+                'note_tunjangan' => $tunjangan['note_tunjangan'],
             ]);
         }
 
@@ -378,6 +385,7 @@ class GajiController extends Controller
                 'sdm_id' => $sdm->id,
                 'nama_potongan' => ucwords($potongan['nama_potongan']),
                 'nilai_potongan' => $potongan['nilai_potongan'],
+                'note_potongan' => $potongan['note_potongan'],
             ]);
         }
 

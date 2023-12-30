@@ -24,24 +24,9 @@ class GajiImport implements ToCollection, WithHeadingRow
             if ($row['entitas'] !== $entitasAdmin) {
                 continue; // Lewati baris ini jika entitas tidak cocok
             }
+
             // Extract common fields
-            $gajiData = [
-                'id' => $row['id'],
-                'sdm_id' => $row['sdm_id'],
-                'chat_id' => $row['chat_id'],
-                'bulan' => $row['bulan'],
-                'created_at' => $row['created_at'],
-                'updated_at' => $row['updated_at'],
-                'nama' => $row['nama'],
-                'email' => $row['email'],
-                'status' => $row['status'],
-                'nik' => $row['nik'],
-                'jenis_kelamin' => $row['jenis_kelamin'],
-                'jabatan' => $row['jabatan'],
-                'tunjangan_jabatan' => $row['tunjangan_jabatan'],
-                'entitas' => $row['entitas'],
-                'divisi' => $row['divisi'],
-            ];
+            $gajiData = $this->extractCommonFields($row);
 
             // Extract tunjangan and potongan dynamically
             $tunjangan = $this->extractColumnValues($row, 'tunjangan_', $row['sdm_id']);
@@ -88,6 +73,27 @@ class GajiImport implements ToCollection, WithHeadingRow
         }
 
         return $createdOrUpdatedAbsensi;
+    }
+
+    private function extractCommonFields($row)
+    {
+        return [
+            'id' => $row['id'],
+            'sdm_id' => $row['sdm_id'],
+            'chat_id' => $row['chat_id'],
+            'bulan' => $row['bulan'],
+            'created_at' => $row['created_at'],
+            'updated_at' => $row['updated_at'],
+            'nama' => $row['nama'],
+            'email' => $row['email'],
+            'status' => $row['status'],
+            'nik' => $row['nik'],
+            'jenis_kelamin' => $row['jenis_kelamin'],
+            'jabatan' => $row['jabatan'],
+            'tunjangan_jabatan' => $row['tunjangan_jabatan'],
+            'entitas' => $row['entitas'],
+            'divisi' => $row['divisi'],
+        ];
     }
 
 

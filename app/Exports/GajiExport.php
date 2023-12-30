@@ -57,13 +57,13 @@ class GajiExport implements FromCollection, WithHeadings
 
         foreach ($formattedTunjangan as $item) {
             $columnName = 'tunjangan_' . $item['nama_tunjangan'];
+
+            // Set the value even if note_tunjangan is empty
             $formattedColumns[$columnName] = $item['nilai_tunjangan'];
 
-            // Tambahkan kolom untuk note_tunjangan jika note_tunjangan tidak null
-            if ($item['note_tunjangan'] !== null) {
-                $noteColumnName = 'note_' . $columnName;
-                $formattedColumns[$noteColumnName] = $item['note_tunjangan'];
-            }
+            // Tambahkan kolom untuk note_tunjangan
+            $noteColumnName = 'note_' . $columnName;
+            $formattedColumns[$noteColumnName] = $item['note_tunjangan'];
         }
 
         // Tambahkan kolom tambahan untuk tunjangan yang tidak memiliki nama belakang
@@ -72,8 +72,18 @@ class GajiExport implements FromCollection, WithHeadings
 
         foreach ($allTunjanganKeys as $key) {
             $columnName = 'tunjangan_' . $key;
+
+            // Set the value to null if note_tunjangan is null
             if (!isset($formattedColumns[$columnName])) {
                 $formattedColumns[$columnName] = null;
+            }
+
+            // Tambahkan kolom untuk note_tunjangan jika note_tunjangan tidak null
+            $noteColumnName = 'note_' . $columnName;
+            if ($formattedColumns[$columnName] !== null) {
+                $formattedColumns[$noteColumnName] = $formattedTunjangan[array_search($key, $tunjanganKeys)]['note_tunjangan'];
+            } else {
+                $formattedColumns[$noteColumnName] = null;
             }
         }
 
@@ -87,13 +97,13 @@ class GajiExport implements FromCollection, WithHeadings
 
         foreach ($formattedPotongan as $item) {
             $columnName = 'potongan_' . $item['nama_potongan'];
+
+            // Set the value even if note_potongan is empty
             $formattedColumns[$columnName] = $item['nilai_potongan'];
 
-            // Tambahkan kolom untuk note_potongan jika note_potongan tidak null
-            if ($item['note_potongan'] !== null) {
-                $noteColumnName = 'note_' . $columnName;
-                $formattedColumns[$noteColumnName] = $item['note_potongan'];
-            }
+            // Tambahkan kolom untuk note_potongan
+            $noteColumnName = 'note_' . $columnName;
+            $formattedColumns[$noteColumnName] = $item['note_potongan'];
         }
 
         // Tambahkan kolom tambahan untuk potongan yang tidak memiliki nama belakang
@@ -102,14 +112,24 @@ class GajiExport implements FromCollection, WithHeadings
 
         foreach ($allPotonganKeys as $key) {
             $columnName = 'potongan_' . $key;
+
+            // Set the value to null if note_potongan is null
             if (!isset($formattedColumns[$columnName])) {
                 $formattedColumns[$columnName] = null;
+            }
+
+            // Tambahkan kolom untuk note_potongan jika note_potongan tidak null
+            $noteColumnName = 'note_' . $columnName;
+            if ($formattedColumns[$columnName] !== null) {
+                $formattedColumns[$noteColumnName] = $formattedPotongan[array_search($key, $potonganKeys)]['note_potongan'];
+            } else {
+                $formattedColumns[$noteColumnName] = null;
             }
         }
 
         return $formattedColumns;
     }
-
+    
     private function getAllTunjanganKeys()
     {
         $allKeys = [];

@@ -353,6 +353,12 @@
                                                             required oninput="addCommas2(this)">
                                                     </div>
                                                 </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="note_tunjangan">Note Tunjangan</label>
+                                                    <input type="text" class="form-control gray-border"
+                                                        name="note_tunjangan[]"
+                                                        value="{{ old('note_tunjangan', $tunjangan['note_tunjangan']) }}">
+                                                </div>
                                                 <button type="button"
                                                     class="btn btn-outline-danger removeTunjangan mb-3">
                                                     <i class="fa fa-trash"></i> Hapus Tunjangan
@@ -440,6 +446,12 @@
                                                             required oninput="addCommas2(this)">
                                                     </div>
                                                 </div>
+                                                <div class="form-group mb-3">
+                                                    <label for="note_potongan">Note Potongan</label>
+                                                    <input type="text" class="form-control gray-border"
+                                                        name="note_potongan[]"
+                                                        value="{{ old('note_potongan', $potongan['note_potongan']) }}">
+                                                </div>
                                                 <button type="button" class="btn btn-outline-danger removePotongan mb-3">
                                                     <i class="fa fa-trash"></i> Hapus Potongan
                                                 </button>
@@ -491,6 +503,10 @@
                                 <span class="input-group-text">Rp.</span>
                                 <input type="text" class="form-control gray-border" name="nilai_tunjangan[]" oninput="addCommas(this)" required>
                             </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="note_tunjangan${counter}">Note Tunjangan</label>
+                                <input type="text" class="form-control gray-border" name="note_tunjangan[]">
                         </div>
                         <button type="button" class="btn btn-outline-danger removeTunjangan mb-3"><i class="fa fa-trash"></i> Hapus Tunjangan</button>
                     </div>
@@ -576,6 +592,10 @@
                                 <span class="input-group-text">Rp.</span>
                                 <input type="text" class="form-control gray-border" name="nilai_potongan[]" oninput="addCommas(this)" required>
                             </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="note_potongan${counter}">Note Potongan</label>
+                                <input type="text" class="form-control gray-border" name="note_potongan[]">
                         </div>
                         <button type="button" class="btn btn-outline-danger removePotongan mb-3"><i class="fa fa-trash"></i> Hapus Potongan</button>
                     </div>
