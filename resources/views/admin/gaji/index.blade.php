@@ -199,14 +199,14 @@
                                     @endif
                             </form>
                             <form action="{{ route('admin.gaji.import-excel') }}" method="post"
-                                enctype="multipart/form-data">
+                                enctype="multipart/form-data" onsubmit="return validateFormInputExcel();">
                                 @csrf
                                 <div class="d-flex gap-3 mt-3 mb-3 mx-1">
                                     <button type="submit" class="btn btn-success"><i class="fa fa-file-excel"></i>
                                         Import
                                         Excel</button>
                                     <input type="file" name="file" accept=".xlsx, .xls" id="file"
-                                        class="form-control gray-border" style="width: 55%" required>
+                                        class="form-control gray-border" style="width: 55%">
                                 </div>
                             </form>
                         </div>

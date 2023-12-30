@@ -295,6 +295,27 @@
         }
     </script>
 
+    {{-- sweet alert in excel input required --}}
+
+    <script>
+        function validateFormInputExcel() {
+            // Validate file upload
+            const fileInput = document.getElementById('file');
+            if (fileInput.files.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Wajib Diupload',
+                    text: 'Harap pilih file Excel untuk diupload!',
+                });
+                return false; // Stop form submission if not valid
+            }
+
+            // Additional validations can be added as needed
+
+            return true; // Allow form submission if all validations pass
+        }
+    </script>
+
     {{-- sweet alert in users input required --}}
 
     <script>
