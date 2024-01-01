@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="alert alert-info solid alert-dismissible fade show">
-                        <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Detail Gaji SDM
+                        <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Detail Payroll SDM
                         <span class="text-bold">{{ $data->nama }}</span>
                         bulan <span class="text-bold">{{ $bulan }}</span>
                         tahun <span class="text-bold">{{ $tahun }}</span>

@@ -28,7 +28,7 @@ class GajiController extends Controller
     public function index(Request $request)
     {
         // Set nilai default untuk bulan dan tahun saat ini
-        $bulan = $request->get('bulan', date('m')) . $request->get('tahun', date('Y'));
+        $bulan = $request->get('bulan', date('n')) . $request->get('tahun', date('Y'));
 
         // Mendapatkan entitas_id admin yang sedang login
         $entitasAdmin = Auth::user()->entitas->nama;
@@ -260,6 +260,13 @@ class GajiController extends Controller
 
         $user = Auth::user();
         $gaji = Absensi::findOrFail($id);
+        // Extracting year and month from the field
+        $bulanNumeric = substr($gaji->bulan, 0, -4);  // Get the digits before the last 4
+        $tahun = substr($gaji->bulan, -4);  // Get the last 4 digits
+
+        // Convert numeric month to its name
+        $bulan = $this->konversiBulan($bulanNumeric);
+
 
         // Periksa apakah entitas pengguna cocok dengan entitas pada data gaji
         if ($user->entitas->nama != $gaji->entitas) {
@@ -288,7 +295,7 @@ class GajiController extends Controller
             }
         }
 
-        return view('admin.gaji.edit', compact('entita', 'divisis', 'jabatans', 'telegramUsers', 'gaji', 'tunjangans', 'potongans', 'opsiTunjangan', 'opsiPotongan'));
+        return view('admin.gaji.edit', compact('entita', 'divisis', 'jabatans', 'telegramUsers', 'gaji', 'tunjangans', 'potongans', 'opsiTunjangan', 'opsiPotongan', 'bulan', 'tahun'));
     }
 
     public function update(Request $request, $id)

@@ -136,34 +136,30 @@
                                         <div class="form-group">
                                             <label for="bulan">Bulan</label>
                                             <select class="form-control select2" name="bulan" id="bulan" required>
-                                                <option value=""disabled selected>-- Pilih Bulan --</option>
-                                                <option value="1">Januari</option>
-                                                <option value="2">Februari</option>
-                                                <option value="3">Maret</option>
-                                                <option value="4">April</option>
-                                                <option value="5">Mei</option>
-                                                <option value="6">Juni</option>
-                                                <option value="7">Juli</option>
-                                                <option value="8">Agustus</option>
-                                                <option value="9">September</option>
-                                                <option value="10">Oktober</option>
-                                                <option value="11">November</option>
-                                                <option value="12">Desember</option>
-                                            </select>
+                                                <option value="" disabled>-- Pilih Bulan --</option>
+                                                @for ($i = 1; $i <= 12; $i++)
+                                                    <option value="{{ $i }}" @if(request('bulan') == $i) selected @endif>
+                                                        {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                                    </option>
+                                                @endfor
+                                            </select>                                            
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="tahun">Tahun</label>
                                             <select class="form-control select2" name="tahun" id="tahun" required>
-                                                <option value=""disabled selected>-- Pilih Tahun --</option>
-                                                {{ $last = date('Y') - 10 }}
-                                                {{ $now = date('Y') }}
-
+                                                <option value="" disabled>-- Pilih Tahun --</option>
+                                                @php
+                                                    $last = date('Y') - 10;
+                                                    $now = date('Y');
+                                                @endphp
+                                            
                                                 @for ($i = $now; $i >= $last; $i--)
-                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                    <option value="{{ $i }}" @if(request('tahun') == $i) selected @endif>{{ $i }}</option>
                                                 @endfor
                                             </select>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -211,7 +207,7 @@
                             </form>
                         </div>
                         <form
-                            action="{{ route('admin.gaji.gaji-serentak', ['bulan' => request()->get('bulan', date('m')), 'tahun' => request()->get('tahun', date('Y'))]) }}"
+                            action="{{ route('admin.gaji.gaji-serentak', ['bulan' => request()->get('bulan', date('n')), 'tahun' => request()->get('tahun', date('Y'))]) }}"
                             method="post">
                             @csrf
                             <button type="submit" class="btn btn-primary mt-1 mb-1">
@@ -328,15 +324,13 @@
                                                             class="btn btn-primary shadow btn-xs sharp me-1"> <i
                                                                 class="fa fa-edit"></i>
                                                         </a>
-                                                        <form
-                                                            action="{{ route('admin.gaji.pdf', ['id' => $item->id, 'bulan' => request()->get('bulan', date('m')), 'tahun' => request()->get('tahun', date('Y'))]) }}"
-                                                            method="get">
+                                                        <form action="{{ route('admin.gaji.pdf', ['id' => $item->id, 'bulan' => request()->get('bulan', date('n')), 'tahun' => request()->get('tahun', date('Y'))]) }}" method="get">
                                                             @csrf
                                                             <!-- ... (form input bulan dan tahun) ... -->
                                                             <button type="submit" class="btn light btn-danger btn-xxs">
                                                                 <i class="fa fa-file-pdf"></i>
                                                             </button>
-                                                        </form>
+                                                        </form>                                                        
                                                         <a href="javascript:void(0)" id="btn-delete-gaji"
                                                             data-id="{{ $item->id }}"
                                                             data-nama="{{ $item->nama }}"

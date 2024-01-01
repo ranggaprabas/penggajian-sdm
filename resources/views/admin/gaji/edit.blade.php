@@ -90,11 +90,23 @@
                     <li class="breadcrumb-item">Edit Payroll</li>
                 </ol>
             </div>
-            <div class="col-lg-12">
-                <form novalidate action="{{ route('admin.gaji.update', $gaji->id) }}" method="POST"
-                    onsubmit="return validateFormEditGaji() && removeCommas2();">
-                    @csrf
-                    @method('PUT')
+            <form novalidate action="{{ route('admin.gaji.update', $gaji->id) }}" method="POST"
+                onsubmit="return validateFormEditGaji() && removeCommas2();">
+                @csrf
+                @method('PUT')
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-info solid alert-dismissible fade show">
+                            <i class="fa fa-eye"></i><span style="margin-right: 10px;"></span>Edit Payroll SDM
+                            <span class="text-bold">{{ $gaji->nama }}</span>
+                            bulan <span class="text-bold">{{ $bulan }}</span>
+                            tahun <span class="text-bold">{{ $tahun }}</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
                     @if ($errors->any())
                         <div class="alert alert-danger solid alert-dismissible fade show" id="info-message">
                             <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
@@ -129,7 +141,8 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="entitas">Entitas</label>
-                                            <select class="form-control gray-border select2" name="entitas" id="entitas">
+                                            <select class="form-control gray-border select2" name="entitas"
+                                                id="entitas">
                                                 <option value="" disabled selected>-- Pilih Entitas --</option>
                                                 @foreach ($entita as $entitasItem)
                                                     <option value="{{ $entitasItem->nama }}"
@@ -464,8 +477,8 @@
                             </div>
                         </div>
                     </div>
-            </div>
-            <button class="btn btn-primary" type="submit">Simpan</button>
+                </div>
+                <button class="btn btn-primary" type="submit">Simpan</button>
             </form>
         </div>
         <!-- /.row -->
