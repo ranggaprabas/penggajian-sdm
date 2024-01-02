@@ -22,21 +22,22 @@ class SdmController extends Controller
      */
     public function index()
     {
-        // Mendapatkan entitas_id admin yang sedang login
-        $entitasIdAdmin = Auth::user()->entitas_id;
+        $user = Auth::user();
 
-        // Query untuk mendapatkan SDM berdasarkan entitas_id
-        $sdms = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
+        $query = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'sdms.id')
                     ->where('log_activities.table_name', '=', 'sdms')
                     ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = sdms.id AND log_activities.table_name = "sdms")');
             })
             ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
-            ->where('sdms.deleted', 0) // Menggunakan alias sdms untuk menyatakan tabel sdm
-            ->where('sdms.entitas_id', $entitasIdAdmin) // Menggunakan alias sdms untuk menyatakan tabel sdm
-            ->with('jabatan', 'entitas', 'divisi')
-            ->get();
+            ->where('sdms.deleted', 0);
+
+        if ($user->status !== 1) {
+            $query->where('sdms.entitas_id', $user->entitas_id);
+        }
+
+        $sdms = $query->with('jabatan', 'entitas', 'divisi')->get();
 
         $isDeletedPage = false;
         return view('admin.sdm.index', compact('sdms', 'isDeletedPage'));
@@ -44,19 +45,22 @@ class SdmController extends Controller
 
     public function indexDeleted()
     {
-        $entitasIdAdmin = Auth::user()->entitas_id;
+        $user = Auth::user();
 
-        $sdms = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
+        $query = Sdm::select('sdms.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'sdms.id')
                     ->where('log_activities.table_name', '=', 'sdms')
                     ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = sdms.id AND log_activities.table_name = "sdms")');
             })
             ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
-            ->where('sdms.deleted', 1)
-            ->where('sdms.entitas_id', $entitasIdAdmin)
-            ->with('jabatan', 'entitas', 'divisi')
-            ->get();
+            ->where('sdms.deleted', 1);
+
+        if ($user->status !== 1) {
+            $query->where('sdms.entitas_id', $user->entitas_id);
+        }
+
+        $sdms = $query->with('jabatan', 'entitas', 'divisi')->get();
 
         $isDeletedPage = true;
         return view('admin.sdm.index', compact('sdms', 'isDeletedPage'));
@@ -70,8 +74,23 @@ class SdmController extends Controller
         $title = 'Add SDM';
         $pages = 'SDM';
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
+
         // Ambil entitas sesuai dengan entitas_id pengguna yang sedang login
         $user = Auth::user();
+        $entityId = $user->entitas_id;
+
+        if ($user->status == 1) {
+            $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
+            $divisis = Divisi::get(['id', 'nama']);
+        } else {
+            $jabatans = Jabatan::where('entitas_id', $entityId)
+                ->select('id', 'nama', 'tunjangan_jabatan', 'deleted')
+                ->get();
+            $divisis = Divisi::where('entitas_id', $entityId)
+                ->select('id', 'nama')
+                ->get();
+        }
+
         // Jika status pengguna adalah 1, tampilkan semua entitas
         if ($user->status == 1) {
             $entita = Entitas::get(['id', 'nama']);
@@ -80,20 +99,49 @@ class SdmController extends Controller
             $entita = Entitas::where('id', $user->entitas_id)->get(['id', 'nama']);
         }
 
-        $divisis = Divisi::get(['id', 'nama']);
-        $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
-            ->unique('nama_tunjangan')
-            ->sortBy('nama_tunjangan');
-
-        $potongans = PotonganGaji::get(['id', 'nama_potongan'])
-            ->unique('nama_potongan')
-            ->sortBy('nama_potongan');
+        // Ambil semua tunjangan dan potongan yang sesuai dengan entitas_id pengguna
+        $tunjangans = $this->getTunjangans($user->status, $user->entitas_id);
+        $potongans = $this->getPotongans($user->status, $user->entitas_id);
 
         $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
-
         return view('admin.sdm.create', compact('jabatans', 'entita', 'divisis', 'tunjangans', 'potongans', 'pages', 'title', 'telegramUsers'));
     }
+
+    // Fungsi untuk mendapatkan tunjangan sesuai dengan status dan entitas_id
+    private function getTunjangans($status, $entitasId)
+    {
+        if ($status == 1) {
+            return KomponenGaji::get(['id', 'nama_tunjangan'])
+                ->unique('nama_tunjangan')
+                ->sortBy('nama_tunjangan');
+        } else {
+            return KomponenGaji::whereHas('sdm', function ($query) use ($entitasId) {
+                $query->where('entitas_id', $entitasId);
+            })
+                ->get(['id', 'nama_tunjangan'])
+                ->unique('nama_tunjangan')
+                ->sortBy('nama_tunjangan');
+        }
+    }
+
+    // Fungsi untuk mendapatkan potongan sesuai dengan status dan entitas_id
+    private function getPotongans($status, $entitasId)
+    {
+        if ($status == 1) {
+            return PotonganGaji::get(['id', 'nama_potongan'])
+                ->unique('nama_potongan')
+                ->sortBy('nama_potongan');
+        } else {
+            return PotonganGaji::whereHas('sdm', function ($query) use ($entitasId) {
+                $query->where('entitas_id', $entitasId);
+            })
+                ->get(['id', 'nama_potongan'])
+                ->unique('nama_potongan')
+                ->sortBy('nama_potongan');
+        }
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -181,14 +229,14 @@ class SdmController extends Controller
         $pages = 'SDM';
         $data = Sdm::findOrFail($id);
 
-        if ($user->entitas_id != $data->entitas_id) {
+        // Check if the user's status is 1 or if the user belongs to the same entitas as the SDM
+        if ($user->status != 1 && $user->entitas_id != $data->entitas_id) {
             abort(404, 'Unauthorized');
         }
 
         $details = Sdm::with('komponenGaji', 'potonganGaji')->findOrFail($id);
         return view('admin.sdm.show', compact('title', 'pages', 'data', 'details'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -196,20 +244,69 @@ class SdmController extends Controller
     {
         // Ambil data pengguna berdasarkan ID
         $user = Auth::user();
-
-
         $title = 'Edit SDM';
         $pages = 'SDM';
+        // Mendapatkan entitas ID dari pengguna yang sedang login
+        $entityId = $user->entitas_id;
         // Ambil data pengguna berdasarkan ID
         $sdm = Sdm::with('komponenGaji', 'potonganGaji')->findOrFail($id);
-        // Pastikan bahwa entitas_id pengguna sesuai dengan entitas_id SDM
-        if ($user->entitas_id !== $sdm->entitas_id) {
-            // Redirect atau tampilkan pesan error jika entitas_id tidak cocok
+
+        // kondisi jika == 1 tampilkan semua opsi tunjangan, jika else tampilkan opsi sesuai dengan user login per entitas
+        if ($user->status == 1) {
+            $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
+                ->unique('nama_tunjangan')
+                ->sortBy('nama_tunjangan');
+            $potongans = PotonganGaji::get(['id', 'nama_potongan', 'note_potongan'])
+                ->unique('nama_potongan')
+                ->sortBy('nama_potongan');
+        } else {
+            // Ambil entitas_id pengguna yang sedang login
+            $entitasIdUser = Auth::user()->entitas_id;
+
+            // Ambil entitas_id SDM yang sedang diedit
+            $entitasIdSdm = $sdm->entitas_id;
+
+            // Ambil data tunjangans yang sesuai dengan entitas_id
+            $tunjangans = KomponenGaji::whereHas('sdm', function ($query) use ($entitasIdUser, $entitasIdSdm) {
+                $query->where('entitas_id', $entitasIdUser);
+                if ($entitasIdUser != $entitasIdSdm) {
+                    $query->orWhere('entitas_id', $entitasIdSdm);
+                }
+            })
+                ->get(['id', 'nama_tunjangan'])
+                ->unique('nama_tunjangan')
+                ->sortBy('nama_tunjangan');
+
+            // Ambil data potongans yang sesuai dengan entitas_id
+            $potongans = PotonganGaji::whereHas('sdm', function ($query) use ($entitasIdUser, $entitasIdSdm) {
+                $query->where('entitas_id', $entitasIdUser);
+                if ($entitasIdUser != $entitasIdSdm) {
+                    $query->orWhere('entitas_id', $entitasIdSdm);
+                }
+            })
+                ->get(['id', 'nama_potongan', 'note_potongan'])
+                ->unique('nama_potongan')
+                ->sortBy('nama_potongan');
+        }
+
+        // Check if the user's status is 1 or if the user belongs to the same entitas as the SDM
+        if ($user->status != 1 && $user->entitas_id != $sdm->entitas_id) {
             abort(404, 'Unauthorized');
         }
 
-        $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
-        $user = Auth::user();
+        if ($user->status == 1) {
+            $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
+            $divisis = Divisi::get(['id', 'nama']);
+        } else {
+            // Tampilkan jabatans sesuai dengan entitas ID pengguna
+            $jabatans = Jabatan::where('entitas_id', $entityId)
+                ->select('id', 'nama', 'tunjangan_jabatan', 'deleted')
+                ->get();
+            $divisis = Divisi::where('entitas_id', $entityId)
+                ->select('id', 'nama')
+                ->get();
+        }
+
         // Jika status pengguna adalah 1, tampilkan semua entitas
         if ($user->status == 1) {
             $entita = Entitas::get(['id', 'nama']);
@@ -217,13 +314,7 @@ class SdmController extends Controller
             // Jika status pengguna bukan 1, tampilkan hanya entitas sesuai entitas_id pengguna
             $entita = Entitas::where('id', $user->entitas_id)->get(['id', 'nama']);
         }
-        $divisis = Divisi::get(['id', 'nama']);
-        $tunjangans = KomponenGaji::get(['id', 'nama_tunjangan'])
-            ->unique('nama_tunjangan')
-            ->sortBy('nama_tunjangan');
-        $potongans = PotonganGaji::get(['id', 'nama_potongan', 'note_potongan'])
-            ->unique('nama_potongan')
-            ->sortBy('nama_potongan');
+
         $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
 

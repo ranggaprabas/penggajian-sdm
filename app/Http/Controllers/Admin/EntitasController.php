@@ -14,6 +14,17 @@ class EntitasController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function __construct()
+    {
+        $this->middleware(['auth', function ($request, $next) {
+            if (auth()->user() && auth()->user()->status !== 1) {
+                abort(404, 'Unauthorized');
+            }
+            return $next($request);
+        }])->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+    }
+    
     public function index()
     {
         $items = Entitas::select('entitas.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')

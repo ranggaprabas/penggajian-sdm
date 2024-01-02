@@ -21,24 +21,28 @@ class DivisiRequest extends FormRequest
      */
     public function rules(): array
     {
-        switch($this->method()){
+        switch ($this->method()) {
             case 'POST': {
                 return [
-                    'nama' => 'required|unique:divisis',
+                    'nama' => 'required|unique:divisis,nama,NULL,id,entitas_id,' . auth()->user()->entitas_id,
                 ];
             }
             case 'PUT':
             case 'PATCH': {
                 return [
-                    'nama' => ['required', 'unique:divisis,nama,' . $this->route()->divisi->id],
+                    'nama' => [
+                        'required',
+                        'unique:divisis,nama,' . $this->route()->divisi->id . ',id,entitas_id,' . auth()->user()->entitas_id,
+                    ],
                 ];
             }
-        } 
+        }
     }
+    
     public function messages(): array
     {
-        return[
-            'nama.unique' => 'Nama Divisi sudah ada'            
+        return [
+            'nama.unique' => 'Nama Divisi sudah ada di entitas Anda.',
         ];
     }
-}
+    }

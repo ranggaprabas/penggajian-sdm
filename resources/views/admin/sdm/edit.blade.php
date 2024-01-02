@@ -129,16 +129,22 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group ">
                                             <label for="entitas">Entitas</label>
-                                            <select class="form-control gray-border select2" name="entitas_id"
-                                                id="entitas">
-                                                <option value="" disabled selected>-- Pilih Entitas --</option>
-                                                @foreach ($entita as $entitas)
-                                                    <option value="{{ $entitas->id }}"
-                                                        {{ $sdm->entitas && $sdm->entitas->id == $entitas->id ? 'selected' : '' }}>
-                                                        {{ $entitas->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            @if (Auth::user()->status == 1)
+                                                <select class="form-control gray-border select2" name="entitas_id"
+                                                    id="entitas" required>
+                                                    <option value="" disabled selected>-- Pilih Entitas --</option>
+                                                    @foreach ($entita as $entitas)
+                                                        <option value="{{ $entitas->id }}"
+                                                            {{ $sdm->entitas && $sdm->entitas->id == $entitas->id ? 'selected' : '' }}>
+                                                            {{ $entitas->nama }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <input type="text" class="form-control gray-border" 
+                                                    value="{{ $sdm->entitas->nama }}" readonly>
+                                                <input type="hidden" name="entitas_id" value="{{ $sdm->entitas->id }}">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
@@ -367,8 +373,9 @@
                                                         <div class="form-group mb-3">
                                                             <label for="note_tunjangan[]">Note Tunjangan</label>
                                                             <input class="form-control gray-border" type="text"
-                                                                name="note_tunjangan[]" id="note_tunjangan" value="{{ $tunjangan->note_tunjangan ?? '' }}">
-                                                        </div>    
+                                                                name="note_tunjangan[]" id="note_tunjangan"
+                                                                value="{{ $tunjangan->note_tunjangan ?? '' }}">
+                                                        </div>
                                                         <input type="hidden" name="tunjangan_ids[]"
                                                             value="{{ $tunjangan->id }}">
                                                         <button type="button"
@@ -471,8 +478,9 @@
                                                         <div class="form-group mb-3">
                                                             <label for="note_potongan[]">Note Potongan</label>
                                                             <input class="form-control gray-border" type="text"
-                                                                name="note_potongan[]" id="note_potongan" value="{{ $potongan->note_potongan ?? '' }}">
-                                                        </div>            
+                                                                name="note_potongan[]" id="note_potongan"
+                                                                value="{{ $potongan->note_potongan ?? '' }}">
+                                                        </div>
                                                         <input type="hidden" name="potongan_ids[]"
                                                             value="{{ $potongan->id }}">
                                                         <button type="button"

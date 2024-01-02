@@ -8,6 +8,7 @@ use App\Models\Jabatan;
 use App\Http\Requests\Admin\JabatanRequest;
 use App\Models\LogActivity;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class JabatanController extends Controller
 {
@@ -16,14 +17,22 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $items = Jabatan::select('jabatan.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
+        $user = Auth::user();
+        $query = Jabatan::select('jabatan.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'jabatan.id')
                     ->where('log_activities.table_name', '=', 'jabatan')
                     ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = jabatan.id AND log_activities.table_name = "jabatan")');
             })
-            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
-            ->get();
+            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id');
+
+        if ($user->status == 1) {
+            // Jika user memiliki status 1 (superadmin), tampilkan semua divisi
+            $items = $query->get();
+        } else {
+            // Jika tidak, tampilkan divisi yang sesuai dengan entitas user
+            $items = $query->where('jabatan.entitas_id', $user->entitas_id)->get();
+        }
 
         return view('admin.jabatan.index', compact('items'));
     }
@@ -43,7 +52,10 @@ class JabatanController extends Controller
      */
     public function store(JabatanRequest $request)
     {
-        $jabatan = Jabatan::create($request->validated());
+        $validatedData = $request->validated();
+        $validatedData['entitas_id'] = Auth::user()->entitas_id;
+
+        $jabatan = Jabatan::create($validatedData);
 
         LogActivity::create([
             'table_name' => 'jabatan',
@@ -76,7 +88,12 @@ class JabatanController extends Controller
     {
         $title = 'Edit Jabatan';
         $pages = "Jabatan";
+        $user = auth()->user();
         $data = Jabatan::findOrFail($id);
+        // Jika pengguna bukan superadmin (status != 1) dan entitas_id tidak sesuai, tampilkan 404
+        if ($user->status != 1 && $data->entitas_id != $user->entitas_id) {
+            abort(404);
+        }
         return view('admin.jabatan.edit', compact('pages', 'title', 'data'));
     }
 
@@ -85,7 +102,10 @@ class JabatanController extends Controller
      */
     public function update(JabatanRequest $request, Jabatan $jabatan)
     {
-        $jabatan->update($request->validated());
+        $validatedData = $request->validated();
+        $validatedData['entitas_id'] = Auth::user()->entitas_id;
+
+        $jabatan->update($validatedData);
 
         LogActivity::where('table_name', 'jabatan')
             ->where('row_id', $jabatan->id)

@@ -39,13 +39,14 @@
                         <span class="nav-text">SDM</span>
                     </a>
                 </li>
-
-                <li>
-                    <a href="{{ route('admin.entitas.index') }}" class="ai-icon" aria-expanded="false">
-                        <i class="fas fa-building"></i>
-                        <span class="nav-text">Entitas</span>
-                    </a>
-                </li>
+                @if (auth()->check() && auth()->user()->status == 1)
+                    <li>
+                        <a href="{{ route('admin.entitas.index') }}" class="ai-icon" aria-expanded="false">
+                            <i class="fas fa-building"></i>
+                            <span class="nav-text">Entitas</span>
+                        </a>
+                    </li>
+                @endif
                 <li>
                     <a href="{{ route('admin.divisi.index') }}" class="ai-icon-home" aria-expanded="false">
                         <i class="fas fa-university"></i>

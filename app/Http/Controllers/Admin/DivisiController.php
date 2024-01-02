@@ -8,6 +8,7 @@ use App\Models\Divisi;
 use App\Models\LogActivity;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DivisiController extends Controller
 {
@@ -17,14 +18,23 @@ class DivisiController extends Controller
     public function index()
     {
         $title = "Divisi";
-        $items = Divisi::select('divisis.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
+        $user = Auth::user();
+
+        $query = Divisi::select('divisis.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
             ->leftJoin('log_activities', function ($join) {
                 $join->on('log_activities.row_id', '=', 'divisis.id')
                     ->where('log_activities.table_name', '=', 'divisis')
                     ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = divisis.id AND log_activities.table_name = "divisis")');
             })
-            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
-            ->get();
+            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id');
+
+        if ($user->status == 1) {
+            // Jika user memiliki status 1 (superadmin), tampilkan semua divisi
+            $items = $query->get();
+        } else {
+            // Jika tidak, tampilkan divisi yang sesuai dengan entitas user
+            $items = $query->where('divisis.entitas_id', $user->entitas_id)->get();
+        }
 
         return view("admin.divisi.index", compact('title', 'items'));
     }
@@ -45,7 +55,10 @@ class DivisiController extends Controller
      */
     public function store(DivisiRequest $request)
     {
-        $divisi = Divisi::create($request->validated());
+        $validatedData = $request->validated();
+        $validatedData['entitas_id'] = Auth::user()->entitas_id;
+
+        $divisi = Divisi::create($validatedData);
 
         LogActivity::create([
             'table_name' => 'divisis',
@@ -78,7 +91,14 @@ class DivisiController extends Controller
     {
         $title = 'Edit Divisi';
         $pages = "Divisi";
+        $user = auth()->user();
+
         $data = Divisi::findOrFail($id);
+
+        // Jika pengguna bukan superadmin (status != 1) dan entitas_id tidak sesuai, tampilkan 404
+        if ($user->status != 1 && $data->entitas_id != $user->entitas_id) {
+            abort(404);
+        }
         return view('admin.divisi.edit', compact('pages', 'title', 'data'));
     }
 
@@ -87,7 +107,10 @@ class DivisiController extends Controller
      */
     public function update(DivisiRequest $request, Divisi $divisi)
     {
-        $divisi->update($request->validated());
+        $validatedData = $request->validated();
+        $validatedData['entitas_id'] = Auth::user()->entitas_id;
+
+        $divisi->update($validatedData);
 
         LogActivity::where('table_name', 'divisis')
             ->where('row_id', $divisi->id)

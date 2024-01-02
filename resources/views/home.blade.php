@@ -97,11 +97,20 @@
                                 </svg>
                             </span>
                             <div>
-                                <h3 class="text-white">Selamat Datang! {{ auth()->user()->nama }}</h3>
-                                <p>Selamat datang di Dashboard Penggajian SDM {{ Auth::user()->entitas->nama }}. Sebagai
-                                    administrator, Anda memiliki akses penuh
-                                    untuk mengelola penggajian Sumber Daya Manusia (SDM).
-                                </p>
+                                @if (Auth::user()->status == 1)
+                                    <h3 class="text-white">Selamat Datang! {{ auth()->user()->nama }}</h3>
+                                    <p>Selamat datang di Dashboard Penggajian SDM PT. Taman Media Indonesia. Sebagai
+                                        Super Admin, Anda memiliki akses penuh
+                                        untuk mengelola Semua penggajian Sumber Daya Manusia (SDM).
+                                    </p>
+                                @else
+                                    <h3 class="text-white">Selamat Datang! {{ auth()->user()->nama }}</h3>
+                                    <p>Selamat datang di Dashboard Penggajian SDM {{ Auth::user()->entitas->nama }}.
+                                        Sebagai
+                                        administrator, Anda memiliki akses penuh
+                                        untuk mengelola penggajian Sumber Daya Manusia (SDM).
+                                    </p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -115,31 +124,33 @@
                             <div class="icon me-3"><i class="fas fa-users text-white" style="font-size: 20px;"></i>
                             </div>
                             <div>
-                                <h2 class="text-white invoice-num" id="employeeCount">0</h2>
+                                <h2 class="text-white invoice-num" id="employeeCount">{{ $employee_count }}</h2>
                                 <span class="text-white fs-18">SDM</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-xxl-3 col-sm-6">
-                    <div class="card bg-success invoice-card">
-                        <div class="card-body d-flex">
-                            <div class="icon me-3"><i class="fas fa-building text-white" style="font-size: 20px;"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-white invoice-num" id="entitaCount">0</h2>
-                                <span class="text-white fs-18">Entitas</span>
+                @if ($user->status == 1)
+                    <div class="col-xl-3 col-xxl-3 col-sm-6">
+                        <div class="card bg-success invoice-card">
+                            <div class="card-body d-flex">
+                                <div class="icon me-3"><i class="fas fa-building text-white" style="font-size: 20px;"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-white invoice-num" id="entitaCount">{{ $entita_count }}</h2>
+                                    <span class="text-white fs-18">Entitas</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 <div class="col-xl-3 col-xxl-3 col-sm-6">
                     <div class="card bg-info invoice-card">
                         <div class="card-body d-flex">
                             <div class="icon me-3"><i class="fas fa-university text-white" style="font-size: 20px;"></i>
                             </div>
                             <div>
-                                <h2 class="text-white invoice-num" id="divisiCount">0</h2>
+                                <h2 class="text-white invoice-num" id="divisiCount">{{ $divisi_count }}</h2>
                                 <span class="text-white fs-18">Divisi</span>
                             </div>
                         </div>
@@ -151,7 +162,7 @@
                             <div class="icon me-3"><i class="fas fa-user-tie text-white" style="font-size: 20px;"></i>
                             </div>
                             <div>
-                                <h2 class="text-white invoice-num" id="jabatanCount">0</h2>
+                                <h2 class="text-white invoice-num" id="jabatanCount">{{ $jabatan_count }}</h2>
                                 <span class="text-white fs-18">Jabatan</span>
                             </div>
                         </div>

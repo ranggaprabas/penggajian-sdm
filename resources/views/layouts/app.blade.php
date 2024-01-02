@@ -332,17 +332,6 @@
                 });
                 return false; // Menghentikan pengiriman formulir jika tidak valid
             }
-            // Pemeriksaan tambahan untuk select dengan ID 'entitas'
-            const entitasSelect = document.getElementById('entitas');
-            const selectedOption = entitasSelect.options[entitasSelect.selectedIndex];
-            if (selectedOption.value === '') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Pilih Entitas',
-                    text: 'Anda harus memilih entitas!',
-                });
-                return false; // Menghentikan pengiriman formulir jika tidak valid
-            }
             // Pemeriksaan tambahan untuk select dengan ID 'divisi'
             const divisiSelect = document.getElementById('divisi');
             const selectedDivisi = divisiSelect.options[divisiSelect.selectedIndex];
@@ -1315,47 +1304,6 @@
                 value = value.replace(/\./g, ''); // Menghapus semua titik
                 inputsPotongan[i].value = value;
             }
-        }
-    </script>
-
-
-
-
-    <!-- Number Counting Animation -->
-    <script>
-        @if (isset($employee_count))
-            startCountingAnimation('employeeCount', {{ $employee_count }}, 5000); // Animasi lebih lambat
-        @endif
-
-        @if (isset($entita_count))
-            startCountingAnimation('entitaCount', {{ $entita_count }}, 5000); // Animasi lebih lambat
-        @endif
-
-        @if (isset($jabatan_count))
-            startCountingAnimation('jabatanCount', {{ $jabatan_count }}, 5000); // Animasi lebih lambat
-        @endif
-
-        @if (isset($divisi_count))
-            startCountingAnimation('divisiCount', {{ $jabatan_count }}, 5000); // Animasi lebih lambat
-        @endif
-
-        function startCountingAnimation(targetId, endValue, duration) {
-            const element = document.getElementById(targetId);
-            const startValue = parseInt(element.textContent, 10);
-            const increment = Math.ceil(endValue / (duration / 100));
-            let currentValue = startValue;
-
-            const intervalId = setInterval(() => {
-                if (currentValue < endValue) {
-                    currentValue += increment;
-                    if (currentValue > endValue) {
-                        currentValue = endValue; // Pastikan tidak melebihi nilai akhir
-                    }
-                    element.textContent = currentValue;
-                } else {
-                    clearInterval(intervalId);
-                }
-            }, 100); // Tingkatkan angka ini untuk memperlambat animasi
         }
     </script>
 

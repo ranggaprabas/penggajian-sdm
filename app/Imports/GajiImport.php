@@ -61,12 +61,26 @@ class GajiImport implements ToCollection, WithHeadingRow
                 $sdmData + [
                     'entitas_id' => Entitas::firstOrCreate(['nama' => $row['entitas']])->id,
                     'divisi_id' => Divisi::firstOrCreate(['nama' => $row['divisi']])->id,
-                    'jabatan_id' => Jabatan::updateOrCreate(
-                        ['nama' => $row['jabatan']],
-                        ['tunjangan_jabatan' => $row['tunjangan_jabatan']]
-                    )->id,
                 ]
             );
+
+            // Cari jabatan berdasarkan nama
+            $jabatan = Jabatan::where('nama', $row['jabatan'])->where('tunjangan_jabatan', $row['tunjangan_jabatan'])->first();
+
+            // Jika jabatan tidak ditemukan, buat jabatan baru
+            if (!$jabatan) {
+                $jabatan = Jabatan::create([
+                    'nama' => $row['jabatan'],
+                    'tunjangan_jabatan' => $row['tunjangan_jabatan'],
+                    'entitas_id' => $sdm->entitas_id,
+                ]);
+            }
+
+            // Simpan ID jabatan pada entitas SDM
+            $sdm->jabatan_id = $jabatan->id;
+            $sdm->save();
+
+
             // Update also tunjangan and potongan in the KomponenGaji and PotonganGaji models
             $this->updateOrCreateKomponenGaji($sdm, $tunjangan);
             $this->updateOrCreatePotonganGaji($sdm, $potongan);

@@ -170,13 +170,13 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="jabatan">Jabatan</label>
-                                            <select class="form-control gray-border select2" name="jabatan"
-                                                id="jabatan">
+                                            <select class="form-control gray-border select2" name="jabatan" id="jabatan">
                                                 <option value="" disabled selected>-- Pilih Jabatan --</option>
                                                 @foreach ($jabatans as $jabatanItem)
                                                     @if ($jabatanItem->deleted != 1)
-                                                        <option value="{{ $jabatanItem->nama }}"
-                                                            {{ $gaji->jabatan == $jabatanItem->nama ? 'selected' : '' }}>
+                                                        <option value="{{ $jabatanItem->id }}"
+                                                            data-tunjangan="{{ $jabatanItem->tunjangan_jabatan }}"
+                                                            {{ $gaji->jabatan == $jabatanItem->nama && $gaji->tunjangan_jabatan == $jabatanItem->tunjangan_jabatan ? 'selected' : '' }}>
                                                             {{ $jabatanItem->nama }} - Rp.
                                                             {{ number_format($jabatanItem->tunjangan_jabatan, 0, '', '.') }}
                                                         </option>

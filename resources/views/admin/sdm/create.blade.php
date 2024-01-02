@@ -128,15 +128,22 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="entitas">Entitas</label>
-                                            <select class="form-control gray-border select2" name="entitas_id"
-                                                id="entitas">
-                                                <option value="">--Choose Categories--</option>
-                                                @foreach ($entita as $entitas)
-                                                    <option value="{{ $entitas->id }}"
-                                                        @if (old('entitas_id') == $entitas->id) selected @endif>
-                                                        {{ $entitas->nama }}</option>
-                                                @endforeach
-                                            </select>
+                                            @if (Auth::user()->status == 1)
+                                                <select class="form-control gray-border select2" name="entitas_id"
+                                                    id="entitas" required>
+                                                    <option value="">-- Pilih Entitas--</option>
+                                                    @foreach ($entita as $entitas)
+                                                        <option value="{{ $entitas->id }}"
+                                                            @if (old('entitas_id') == $entitas->id) selected @endif>
+                                                            {{ $entitas->nama }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <input type="text" class="form-control gray-border"
+                                                    value="{{ $entita->first()->nama }}" readonly>
+                                                <input type="hidden" name="entitas_id"
+                                                    value="{{ $entita->first()->id }}">
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
@@ -144,7 +151,7 @@
                                             <label for="divisi">Divisi</label>
                                             <select class="form-control gray-border select2" name="divisi_id"
                                                 id="divisi">
-                                                <option value="">--Choose Categories--</option>
+                                                <option value="">-- Pilih Divisi--</option>
                                                 @foreach ($divisis as $divisi)
                                                     <option value="{{ $divisi->id }}"
                                                         @if (old('divisi_id') == $divisi->id) selected @endif>
@@ -158,7 +165,7 @@
                                             <label for="jabatan">Jabatan</label>
                                             <select class="form-control gray-border select2" name="jabatan_id"
                                                 id="jabatan">
-                                                <option value="">--Choose Categories--</option>
+                                                <option value="">-- Pilih Jabatan--</option>
                                                 @foreach ($jabatans as $jabatan)
                                                     @if ($jabatan->deleted != 1)
                                                         <option value="{{ $jabatan->id }}"

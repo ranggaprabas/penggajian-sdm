@@ -253,12 +253,34 @@ class GajiController extends Controller
 
     public function edit($id)
     {
-        $entita = Entitas::get(['id', 'nama']);
         $divisis = Divisi::get(['id', 'nama']);
         $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
         $telegramUsers = TelegramUser::get(['id', 'chat_id', 'username']);
 
         $user = Auth::user();
+        $entityId = $user->entitas_id;
+
+        if ($user->status == 1) {
+            $jabatans = Jabatan::get(['id', 'nama', 'tunjangan_jabatan', 'deleted']);
+            $divisis = Divisi::get(['id', 'nama']);
+        } else {
+            // Tampilkan jabatans sesuai dengan entitas ID pengguna
+            $jabatans = Jabatan::where('entitas_id', $entityId)
+                ->select('id', 'nama', 'tunjangan_jabatan', 'deleted')
+                ->get();
+            $divisis = Divisi::where('entitas_id', $entityId)
+                ->select('id', 'nama')
+                ->get();
+        }
+
+        // Jika status pengguna adalah 1, tampilkan semua entitas
+        if ($user->status == 1) {
+            $entita = Entitas::get(['id', 'nama']);
+        } else {
+            // Jika status pengguna bukan 1, tampilkan hanya entitas sesuai entitas_id pengguna
+            $entita = Entitas::where('id', $user->entitas_id)->get(['id', 'nama']);
+        }
+
         $gaji = Absensi::findOrFail($id);
         // Extracting year and month from the field
         $bulanNumeric = substr($gaji->bulan, 0, -4);  // Get the digits before the last 4
@@ -349,12 +371,13 @@ class GajiController extends Controller
 
         // Update model Sdm
         $sdm = Sdm::findOrFail($gaji->sdm_id);
-        $jabatan = Jabatan::firstOrCreate(['nama' => $request->input('jabatan')]);
+        // Update data jabatan dan tunjangan jabatan di tabel Absensi
+        $selectedJabatan = Jabatan::findOrFail($request->input('jabatan'));
         $sdm->update([
             'nama' => $request->input('nama'),
             'entitas_id' => Entitas::firstOrCreate(['nama' => $request->input('entitas')])->id,
             'divisi_id' => Divisi::firstOrCreate(['nama' => $request->input('divisi')])->id,
-            'jabatan_id' => $jabatan->id,
+            'jabatan_id' => $selectedJabatan->id,
             'email' => $request->input('email'),
             'nik' => $request->input('nik'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
@@ -363,9 +386,8 @@ class GajiController extends Controller
             // ... tambahkan kolom-kolom lain yang perlu diupdate
         ]);
 
-        // Update data jabatan dan tunjangan jabatan di tabel Absensi
-        $gaji->jabatan = $jabatan->nama;
-        $gaji->tunjangan_jabatan = $jabatan->tunjangan_jabatan;
+        $gaji->jabatan = $selectedJabatan->nama;
+        $gaji->tunjangan_jabatan = $selectedJabatan->tunjangan_jabatan;
         $gaji->save();
 
         // Update juga data tunjangan dan potongan pada model KomponenGaji dan PotonganGaji
