@@ -32,28 +32,44 @@ class GajiController extends Controller
 
         // Mendapatkan entitas_id admin yang sedang login
         $entitasAdmin = Auth::user()->entitas->nama;
+        $statusAdmin = Auth::user()->status;
 
         // Hitung jumlah SDM yang belum masuk gaji berdasarkan field bulan dari tabel absensi
-        $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan) {
-            $query->where('bulan', $bulan)
-                ->where('entitas', Auth::user()->entitas->nama);
-        })
-            ->where('entitas_id', Auth::user()->entitas->id) // Sesuaikan dengan field yang sesuai di tabel sdm
-            ->where('deleted', '!=', 1)
-            ->whereHas('jabatan', function ($query) {
-                $query->where('deleted', '!=', 1);
+        $sdmCountNotInAbsensi = 0;
+
+        // Jika status pengguna adalah 1 (atau sesuai dengan kondisi Anda), hitung jumlah SDM yang belum masuk gaji
+        if ($statusAdmin == 1) {
+            $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan) {
+                $query->where('bulan', $bulan);
             })
-            ->count();
+                ->where('deleted', '!=', 1)
+                ->whereHas('jabatan', function ($query) {
+                    $query->where('deleted', '!=', 1);
+                })
+                ->count();
+        } else {
+            // Jika status bukan 1, hitung jumlah SDM yang ada di tabel sdm namun belum diabsen
+            $sdmCountNotInAbsensi = Sdm::whereDoesntHave('absensi', function ($query) use ($bulan, $entitasAdmin) {
+                $query->where('bulan', $bulan)
+                    ->where('entitas', $entitasAdmin);
+            })
+                ->where('entitas_id', Auth::user()->entitas->id) // Sesuaikan dengan field yang sesuai di tabel sdm
+                ->where('deleted', '!=', 1)
+                ->whereHas('jabatan', function ($query) {
+                    $query->where('deleted', '!=', 1);
+                })
+                ->count();
+        }
 
-
-        if ($bulan === '') {
-            $bulanSaatIni = ltrim(date('m') . date('Y'), '0');
+        // Mendapatkan data gaji berdasarkan bulan dan entitas_id
+        if ($statusAdmin == 1) {
+            // Jika status adalah 1, tampilkan semua data
             $items = DB::table('absensi')
                 ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
-                ->where('absensi.bulan', $bulanSaatIni)
-                ->where('absensi.entitas', $entitasAdmin)
+                ->where('absensi.bulan', $bulan)
                 ->get();
         } else {
+            // Jika status bukan 1, tampilkan data sesuai entitas_id
             $items = DB::table('absensi')
                 ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulan)
@@ -64,15 +80,17 @@ class GajiController extends Controller
         return view('admin.gaji.index', compact('items', 'sdmCountNotInAbsensi'));
     }
 
+
     public function gajiSerentak(Request $request, $bulan, $tahun)
     {
         // Validasi jika diperlukan
 
         // Mendapatkan entitas_id admin yang sedang login
         $entitasAdmin = Auth::user()->entitas->id;
+        $statusAdmin = Auth::user()->status;
 
         // Ambil data SDM sesuai dengan entitas yang sedang login
-        $sdms = Sdm::where('entitas_id', $entitasAdmin)->get();
+        $sdms = ($statusAdmin == 1) ? Sdm::all() : Sdm::where('entitas_id', $entitasAdmin)->get();
 
         // Inisialisasi array untuk menyimpan informasi SDM yang baru dimasukkan ke Absensi
         $sdmsInserted = [];
@@ -248,6 +266,12 @@ class GajiController extends Controller
         // Convert numeric month to its name
         $bulan = $this->konversiBulan($bulanNumeric);
 
+        $user = Auth::user();
+        if($user->status != 1 && $user->entitas->nama != $data->entitas) {
+            abort(404, 'Unauthorized');
+        }
+
+
         return view('admin.gaji.show', compact('title', 'pages', 'data', 'bulan', 'tahun'));
     }
 
@@ -290,8 +314,9 @@ class GajiController extends Controller
         $bulan = $this->konversiBulan($bulanNumeric);
 
 
-        // Periksa apakah entitas pengguna cocok dengan entitas pada data gaji
-        if ($user->entitas->nama != $gaji->entitas) {
+
+        // Check if the user's entitas matches the entitas in the gaji data
+        if ($user->status != 1 && $user->entitas->nama != $gaji->entitas) {
             abort(404, 'Unauthorized');
         }
 
