@@ -30,19 +30,36 @@ class BroadcastInformationController extends Controller
 
         // Mendapatkan entitas admin yang sedang login
         $entitasAdmin = Auth::user()->entitas->id;
+        // Mendapatkan status user yang sedang login
+        $statusUser = Auth::user()->status;
 
         $title = "Broadcast Information";
-        $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'sdms.nama as sdm_name', 'broadcast_information.category_id', 'sdms.entitas_id')
-            ->leftJoin('log_activities', function ($join) {
-                $join->on('log_activities.row_id', '=', 'broadcast_information.id')
-                    ->where('log_activities.table_name', '=', 'broadcast_information')
-                    ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = broadcast_information.id AND log_activities.table_name = "broadcast_information")');
-            })
-            ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
-            ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
-            ->where('sdms.entitas_id', $entitasAdmin)
-            ->with('sdm')
-            ->get();
+        if ($statusUser == 1) {
+            // Jika status user adalah 1, tidak mempertimbangkan entitas
+            $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'sdms.nama as sdm_name', 'broadcast_information.category_id', 'sdms.entitas_id')
+                ->leftJoin('log_activities', function ($join) {
+                    $join->on('log_activities.row_id', '=', 'broadcast_information.id')
+                        ->where('log_activities.table_name', '=', 'broadcast_information')
+                        ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = broadcast_information.id AND log_activities.table_name = "broadcast_information")');
+                })
+                ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
+                ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
+                ->with('sdm')
+                ->get();
+        } else {
+            // Jika status user bukan 1, pertimbangkan entitas
+            $broadcasts = BroadcastInformation::select('broadcast_information.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username', 'sdms.nama as sdm_name', 'broadcast_information.category_id', 'sdms.entitas_id')
+                ->leftJoin('log_activities', function ($join) {
+                    $join->on('log_activities.row_id', '=', 'broadcast_information.id')
+                        ->where('log_activities.table_name', '=', 'broadcast_information')
+                        ->whereRaw('log_activities.id = (SELECT MAX(id) FROM log_activities WHERE log_activities.row_id = broadcast_information.id AND log_activities.table_name = "broadcast_information")');
+                })
+                ->leftJoin('users', 'users.id', '=', 'log_activities.user_id')
+                ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
+                ->where('sdms.entitas_id', $entitasAdmin)
+                ->with('sdm')
+                ->get();
+        }
 
         // Inisialisasi array untuk menyimpan data yang akan ditampilkan
         $uniqueBroadcasts = [];
@@ -88,13 +105,25 @@ class BroadcastInformationController extends Controller
         }
         $title = 'Add Broadcast Information';
         $pages = "Broadcast Information";
-        $entitasAdmin = Auth::user()->entitas->id;
+        // Mendapatkan status user yang sedang login
+        $statusUser = Auth::user()->status;
 
-        // Ambil hanya SDM yang memiliki chat_id tidak kosong
-        $broadcasts = Sdm::select('id', 'nama')
-            ->whereNotNull('chat_id')  // Filter untuk chat_id tidak null
-            ->where('entitas_id', $entitasAdmin)
-            ->get();
+        if ($statusUser == 1) {
+            // Jika status user adalah 1, tidak mempertimbangkan entitas
+            $broadcasts = Sdm::select('id', 'nama')
+                ->whereNotNull('chat_id')  // Filter untuk chat_id tidak null
+                ->get();
+        } else {
+            // Jika status user bukan 1, pertimbangkan entitas
+            // Mendapatkan entitas admin yang sedang login
+            $entitasAdmin = Auth::user()->entitas->id;
+
+            // Ambil hanya SDM yang memiliki chat_id tidak kosong dan terkait dengan entitas yang sedang login
+            $broadcasts = Sdm::select('id', 'nama')
+                ->whereNotNull('chat_id')  // Filter untuk chat_id tidak null
+                ->where('entitas_id', $entitasAdmin)
+                ->get();
+        }
 
         return view('admin.broadcast-information.create', compact('pages', 'title', 'broadcasts'));
     }
@@ -188,15 +217,25 @@ class BroadcastInformationController extends Controller
         }
 
         $broadcast = BroadcastInformation::with('sdm')->findOrFail($id);
-        $pages = 'Broadcast Information';
-        $title = 'Detail Broadcast Information';
+        $user = Auth::user();
+        $entitasAdmin = $user->entitas->id;
+        $statusUser = $user->status;
 
-        $relatedBroadcasts = BroadcastInformation::select('broadcast_information.message', 'sdms.nama as sdm_name')
-            ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
-            ->where('broadcast_information.message', $broadcast->message)
-            ->get();
+        // Jika status user adalah 1 atau entitas sesuai dengan user yang login, izinkan akses
+        if ($statusUser == 1 || $broadcast->sdm->entitas_id == $entitasAdmin) {
+            $pages = 'Broadcast Information';
+            $title = 'Detail Broadcast Information';
 
-        return view('admin.broadcast-information.show', compact('broadcast', 'relatedBroadcasts', 'pages', 'title'));
+            $relatedBroadcasts = BroadcastInformation::select('broadcast_information.message', 'sdms.nama as sdm_name')
+                ->leftJoin('sdms', 'sdms.id', '=', 'broadcast_information.category_id')
+                ->where('broadcast_information.message', $broadcast->message)
+                ->get();
+
+            return view('admin.broadcast-information.show', compact('broadcast', 'relatedBroadcasts', 'pages', 'title'));
+        } else {
+            // Tampilkan pesan atau arahkan ke halaman tertentu jika akses ditolak
+            abort(404, 'Unauthorized access');
+        }
     }
 
     /**
