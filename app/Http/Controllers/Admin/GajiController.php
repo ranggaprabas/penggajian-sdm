@@ -267,7 +267,7 @@ class GajiController extends Controller
         $bulan = $this->konversiBulan($bulanNumeric);
 
         $user = Auth::user();
-        if($user->status != 1 && $user->entitas->nama != $data->entitas) {
+        if ($user->status != 1 && $user->entitas->nama != $data->entitas) {
             abort(404, 'Unauthorized');
         }
 
@@ -477,24 +477,46 @@ class GajiController extends Controller
         // Your existing code to fetch data from the database
         $namaBulan = $this->konversiBulan($bulan);
         $tanggal = $bulan . $tahun;
+        $user = Auth::user();
         $entitasAdmin = Auth::user()->entitas->nama;
-        $items = DB::table('absensi')
-            ->select(
-                'absensi.sdm_id',
-                'absensi.bulan',
-                'absensi.nama',
-                'absensi.nik',
-                'absensi.jenis_kelamin',
-                'absensi.entitas',
-                'absensi.divisi',
-                'absensi.jabatan',
-                'absensi.tunjangan_jabatan',
-                'absensi.tunjangan',
-                'absensi.potongan',
-            )
-            ->where('absensi.bulan', $tanggal)
-            ->where('absensi.entitas', $entitasAdmin)
-            ->get();
+        // If the user has status 1, fetch data without considering entitas
+        if ($user->status == 1) {
+            $items = DB::table('absensi')
+                ->select(
+                    'absensi.sdm_id',
+                    'absensi.bulan',
+                    'absensi.nama',
+                    'absensi.nik',
+                    'absensi.jenis_kelamin',
+                    'absensi.entitas',
+                    'absensi.divisi',
+                    'absensi.jabatan',
+                    'absensi.tunjangan_jabatan',
+                    'absensi.tunjangan',
+                    'absensi.potongan',
+                )
+                ->where('absensi.bulan', $tanggal)
+                ->get();
+        } else {
+            // If the user doesn't have status 1, fetch data based on their entitas
+            $items = DB::table('absensi')
+                ->select(
+                    'absensi.sdm_id',
+                    'absensi.bulan',
+                    'absensi.nama',
+                    'absensi.nik',
+                    'absensi.jenis_kelamin',
+                    'absensi.entitas',
+                    'absensi.divisi',
+                    'absensi.jabatan',
+                    'absensi.tunjangan_jabatan',
+                    'absensi.tunjangan',
+                    'absensi.potongan',
+                )
+                ->where('absensi.bulan', $tanggal)
+                ->where('absensi.entitas', $entitasAdmin)
+                ->get();
+        }
 
         $timestamp = time();
 
@@ -515,32 +537,61 @@ class GajiController extends Controller
         // Ubah format bulan dan tahun sesuai kebutuhan
         $namaBulan = $this->konversiBulan($bulan);
         $tanggal = $bulan . $tahun;
-        $entitasAdmin = Auth::user()->entitas->nama;
+
+        $user = Auth::user();
+        $entitasAdmin = $user->entitas->nama;
 
         // Ambil data dari tabel absensi sesuai bulan dan tahun
-        $items = DB::table('absensi')
-            ->select(
-                'absensi.id',
-                'absensi.sdm_id',
-                'absensi.chat_id',
-                'absensi.bulan',
-                'absensi.created_at',
-                'absensi.updated_at',
-                'absensi.nama',
-                'absensi.email',
-                'absensi.status',
-                'absensi.nik',
-                'absensi.jenis_kelamin',
-                'absensi.jabatan',
-                'absensi.tunjangan',
-                'absensi.potongan',
-                'absensi.tunjangan_jabatan',
-                'absensi.entitas',
-                'absensi.divisi',
-            )
-            ->where('absensi.bulan', $tanggal)
-            ->where('absensi.entitas', $entitasAdmin)
-            ->get();
+        if ($user->status == 1) {
+            // Jika status adalah 1, tampilkan semua data
+            $items = DB::table('absensi')
+                ->select(
+                    'absensi.id',
+                    'absensi.sdm_id',
+                    'absensi.chat_id',
+                    'absensi.bulan',
+                    'absensi.created_at',
+                    'absensi.updated_at',
+                    'absensi.nama',
+                    'absensi.email',
+                    'absensi.status',
+                    'absensi.nik',
+                    'absensi.jenis_kelamin',
+                    'absensi.jabatan',
+                    'absensi.tunjangan',
+                    'absensi.potongan',
+                    'absensi.tunjangan_jabatan',
+                    'absensi.entitas',
+                    'absensi.divisi',
+                )
+                ->where('absensi.bulan', $tanggal)
+                ->get();
+        } else {
+            // Jika status bukan 1, tampilkan data sesuai entitas_id
+            $items = DB::table('absensi')
+                ->select(
+                    'absensi.id',
+                    'absensi.sdm_id',
+                    'absensi.chat_id',
+                    'absensi.bulan',
+                    'absensi.created_at',
+                    'absensi.updated_at',
+                    'absensi.nama',
+                    'absensi.email',
+                    'absensi.status',
+                    'absensi.nik',
+                    'absensi.jenis_kelamin',
+                    'absensi.jabatan',
+                    'absensi.tunjangan',
+                    'absensi.potongan',
+                    'absensi.tunjangan_jabatan',
+                    'absensi.entitas',
+                    'absensi.divisi',
+                )
+                ->where('absensi.bulan', $tanggal)
+                ->where('absensi.entitas', $entitasAdmin)
+                ->get();
+        }
 
         // Ekspor data ke Excel
         return Excel::download(new GajiExport($items), 'data_gaji.xlsx');

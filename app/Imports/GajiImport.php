@@ -17,76 +17,91 @@ class GajiImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         $createdOrUpdatedAbsensi = [];
-        $entitasAdmin = Auth::user()->entitas->nama;
+        $user = Auth::user();
+        $entitasAdmin = $user->entitas->nama;
 
         foreach ($rows as $row) {
-            // Validasi jika entitas dalam baris cocok dengan entitas pengguna yang sedang login
-            if ($row['entitas'] !== $entitasAdmin) {
-                continue; // Lewati baris ini jika entitas tidak cocok
+            // Jika status user adalah 1, atau entitas dalam baris cocok dengan entitas pengguna yang sedang login
+            if ($user->status == 1 || $row['entitas'] === $entitasAdmin) {
+                // Extract common fields
+                $gajiData = $this->extractCommonFields($row);
+
+                // Extract tunjangan and potongan dynamically
+                $tunjangan = $this->extractColumnValues($row, 'tunjangan_', $row['sdm_id']);
+                $potongan = $this->extractColumnValuesPotongan($row, 'potongan_', $row['sdm_id']);
+
+                // Cek apakah data untuk bulan dan SDM tertentu sudah ada dalam Absensi
+                $existingAbsensi = Absensi::where('bulan', $row['bulan'])
+                    ->where('sdm_id', $row['sdm_id'])
+                    ->first();
+
+                if (!$existingAbsensi) {
+                    // Data untuk bulan dan SDM tertentu belum ada, buat entitas baru dan simpan
+                    $createdOrUpdatedAbsensi[] = Absensi::create(array_merge($gajiData, ['tunjangan' => $tunjangan, 'potongan' => $potongan]));
+                } else {
+                    // Data untuk bulan dan SDM tertentu sudah ada, perbarui entitas
+                    $existingAbsensi->update(array_merge($gajiData, ['tunjangan' => $tunjangan, 'potongan' => $potongan]));
+                    $createdOrUpdatedAbsensi[] = $existingAbsensi;
+                }
+
+                // Simpan atau perbarui data di tabel SDM
+                $sdmData = [
+                    'nama' => $row['nama'],
+                    'email' => $row['email'],
+                    'nik' => $row['nik'],
+                    'status' => $row['status'],
+                    'chat_id' => $row['chat_id'],
+                    'jenis_kelamin' => $row['jenis_kelamin'],
+                ];
+
+                // Update or create related data in the SDM table
+                $sdm = Sdm::updateOrCreate(
+                    ['id' => $row['sdm_id']],
+                    $sdmData + [
+                        'entitas_id' => Entitas::firstOrCreate(['nama' => $row['entitas']])->id,
+                        'divisi_id' => $this->getOrCreateDivisiId($row),
+                    ]
+                );
+
+                // Cari jabatan berdasarkan nama
+                $jabatan = Jabatan::where('nama', $row['jabatan'])->where('tunjangan_jabatan', $row['tunjangan_jabatan'])->first();
+
+                // Jika jabatan tidak ditemukan, buat jabatan baru
+                if (!$jabatan) {
+                    $jabatan = Jabatan::create([
+                        'nama' => $row['jabatan'],
+                        'tunjangan_jabatan' => $row['tunjangan_jabatan'],
+                        'entitas_id' => $sdm->entitas_id,
+                    ]);
+                }
+
+                // Simpan ID jabatan pada entitas SDM
+                $sdm->jabatan_id = $jabatan->id;
+                $sdm->save();
+
+                // Update also tunjangan and potongan in the KomponenGaji and PotonganGaji models
+                $this->updateOrCreateKomponenGaji($sdm, $tunjangan);
+                $this->updateOrCreatePotonganGaji($sdm, $potongan);
             }
-
-            // Extract common fields
-            $gajiData = $this->extractCommonFields($row);
-
-            // Extract tunjangan and potongan dynamically
-            $tunjangan = $this->extractColumnValues($row, 'tunjangan_', $row['sdm_id']);
-            $potongan = $this->extractColumnValuesPotongan($row, 'potongan_', $row['sdm_id']);
-
-            // Cek apakah data untuk bulan dan SDM tertentu sudah ada dalam Absensi
-            $existingAbsensi = Absensi::where('bulan', $row['bulan'])
-                ->where('sdm_id', $row['sdm_id'])
-                ->first();
-
-            if (!$existingAbsensi) {
-                // Data untuk bulan dan SDM tertentu belum ada, buat entitas baru dan simpan
-                $createdOrUpdatedAbsensi[] = Absensi::create(array_merge($gajiData, ['tunjangan' => $tunjangan, 'potongan' => $potongan]));
-            } else {
-                // Data untuk bulan dan SDM tertentu sudah ada, perbarui entitas
-                $existingAbsensi->update(array_merge($gajiData, ['tunjangan' => $tunjangan, 'potongan' => $potongan]));
-                $createdOrUpdatedAbsensi[] = $existingAbsensi;
-            }
-            // Simpan atau perbarui data di tabel SDM
-            $sdmData = [
-                'nama' => $row['nama'],
-                'email' => $row['email'],
-                'nik' => $row['nik'],
-                'status' => $row['status'],
-                'chat_id' => $row['chat_id'],
-                'jenis_kelamin' => $row['jenis_kelamin'],
-            ];
-
-            // Update or create related data in the SDM table
-            $sdm = Sdm::updateOrCreate(
-                ['id' => $row['sdm_id']],
-                $sdmData + [
-                    'entitas_id' => Entitas::firstOrCreate(['nama' => $row['entitas']])->id,
-                    'divisi_id' => Divisi::firstOrCreate(['nama' => $row['divisi']])->id,
-                ]
-            );
-
-            // Cari jabatan berdasarkan nama
-            $jabatan = Jabatan::where('nama', $row['jabatan'])->where('tunjangan_jabatan', $row['tunjangan_jabatan'])->first();
-
-            // Jika jabatan tidak ditemukan, buat jabatan baru
-            if (!$jabatan) {
-                $jabatan = Jabatan::create([
-                    'nama' => $row['jabatan'],
-                    'tunjangan_jabatan' => $row['tunjangan_jabatan'],
-                    'entitas_id' => $sdm->entitas_id,
-                ]);
-            }
-
-            // Simpan ID jabatan pada entitas SDM
-            $sdm->jabatan_id = $jabatan->id;
-            $sdm->save();
-
-
-            // Update also tunjangan and potongan in the KomponenGaji and PotonganGaji models
-            $this->updateOrCreateKomponenGaji($sdm, $tunjangan);
-            $this->updateOrCreatePotonganGaji($sdm, $potongan);
         }
 
         return $createdOrUpdatedAbsensi;
+    }
+
+    private function getOrCreateDivisiId($row)
+    {
+        $entitasId = Entitas::firstOrCreate(['nama' => $row['entitas']])->id;
+        $divisi = Divisi::where('entitas_id', $entitasId)->where('nama', $row['divisi'])->first();
+
+        if (!$divisi) {
+            // Jika divisi belum ada, buat divisi baru
+            $divisi = Divisi::create([
+                'nama' => $row['divisi'],
+                'entitas_id' => $entitasId,
+            ]);
+        }
+
+        return $divisi->id;
     }
 
     private function extractCommonFields($row)
