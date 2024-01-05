@@ -2,11 +2,18 @@
 <div class="nav-header">
     <div class="nav-header" style="display: flex; align-items: center;">
         <a href="{{ route('admin.home') }}" class="brand-logo">
-            @if(auth()->user()->entitas && auth()->user()->entitas->image)
-                <img src="{{ asset('storage/' . auth()->user()->entitas->image) }}" alt="{{ auth()->user()->entitas->nama }} Logo" width="50">
+            @if (auth()->user()->status == 1)
+                <!-- Jika status pengguna adalah 1, tampilkan gambar Taman Media -->
+                <img src="{{ asset('images/tamanmedia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="50">
             @else
-                <!-- Default image jika entitas tidak memiliki gambar -->
-                <img src="{{ asset('images/default.png') }}" alt="Default Logo" width="50">
+                <!-- Jika status pengguna bukan 1, tampilkan gambar entitas -->
+                @if (auth()->user()->entitas && auth()->user()->entitas->image)
+                    <img src="{{ asset('storage/' . auth()->user()->entitas->image) }}"
+                        alt="{{ auth()->user()->entitas->nama }} Logo" width="50">
+                @else
+                    <!-- Default image jika entitas tidak memiliki gambar -->
+                    <img src="{{ asset('images/default.png') }}" alt="Default Logo" width="50">
+                @endif
             @endif
             <svg class="brand-title" width="200px" height="33px">
                 <text x="0" y="15" fill="rgb(25, 59, 98)" font-size="16">
@@ -15,7 +22,7 @@
             </svg>
         </a>
     </div>
-    
+
     <div class="nav-control">
         <div class="hamburger">
             <span class="line"></span><span class="line"></span><span class="line"></span>
