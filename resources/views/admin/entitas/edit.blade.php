@@ -95,7 +95,7 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <form action="{{ route('admin.entitas.update', $data->id) }}" method="POST"
+                            <form action="{{ route('admin.entitas.update', $data->id) }}" enctype="multipart/form-data" method="POST"
                                 onsubmit="return validateFormEntitas();">
                                 @csrf
                                 @method('put')
@@ -104,6 +104,14 @@
                                     <label class="m-0" for="name">Nama</label>
                                     <input class="form-control gray-border" style="width: 80%;" type="text"
                                         id="entitas-input" name="nama" value="{{ old('nama', $data->nama) }}">
+                                </div>
+                                <div style="gap: .5rem; flex-wrap: wrap;" class="form-group justify-content-between d-flex align-items-center mb-5">
+                                    <label for="gambar">Gambar</label>
+                                    <input type="file" id="image" class="form-control gray-border" name="image" style="width: 80%;">
+                                    @if ($data->image)
+                                        <img src="{{ asset('storage/' . $data->image) }}" alt="Entitas Image" class="w-25 mt-2">
+                                        <input type="hidden" name="old_image" value="{{ $data->image }}">
+                                    @endif
                                 </div>
                                 <button class="btn btn-primary" type="submit">Simpan</button>
                             </form>

@@ -8,6 +8,7 @@ use App\Models\Entitas;
 use App\Models\LogActivity;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EntitasController extends Controller
 {
@@ -15,7 +16,7 @@ class EntitasController extends Controller
      * Display a listing of the resource.
      */
 
-     public function __construct()
+    public function __construct()
     {
         $this->middleware(['auth', function ($request, $next) {
             if (auth()->user() && auth()->user()->status !== 1) {
@@ -24,7 +25,7 @@ class EntitasController extends Controller
             return $next($request);
         }])->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     }
-    
+
     public function index()
     {
         $items = Entitas::select('entitas.*', 'log_activities.action', 'log_activities.date_created as last_update', 'users.nama as username')
@@ -54,7 +55,14 @@ class EntitasController extends Controller
      */
     public function store(EntitasRequest $request)
     {
-        $entitas = Entitas::create($request->validated());
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = $request->file('image')->store('images/entitas', 'public');
+            $validatedData['image'] = $imagePath;
+        }
+
+        $entitas = Entitas::create($validatedData);
 
         LogActivity::create([
             'table_name' => 'entitas',
@@ -96,18 +104,38 @@ class EntitasController extends Controller
      */
     public function update(EntitasRequest $request, Entitas $entita)
     {
-        $entita->update($request->validated());
+        $validatedData = $request->validated();
 
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Jika ada gambar baru yang diunggah, proses pembaruan gambar
+            $imagePath = $request->file('image')->store('images/entitas', 'public');
+
+            // Hapus gambar lama jika ada
+            if ($entita->image) {
+                Storage::disk('public')->delete($entita->image);
+            }
+
+            // Simpan path gambar yang baru
+            $validatedData['image'] = $imagePath;
+        } else {
+            // Jika tidak ada gambar baru yang diunggah, gunakan old image
+            $validatedData['image'] = $request->input('old_image', $entita->image);
+        }
+
+        $entita->update($validatedData);
+
+        // Hapus log aktivitas yang lama
         LogActivity::where('table_name', 'entitas')
             ->where('row_id', $entita->id)
             ->delete();
 
+        // Tambahkan log aktivitas yang baru
         LogActivity::create([
             'table_name' => 'entitas',
             'row_id' => $entita->id,
             'user_id' => auth()->user()->id,
             'action' => 'edit',
-            'date_created' => now()->format('Y:m:d H:i:s')
+            'date_created' => now()->format('Y-m-d H:i:s')
         ]);
 
         // Membuat pesan sukses
@@ -118,7 +146,6 @@ class EntitasController extends Controller
             'alert-info' => 'info'
         ]);
     }
-
     /**
      * Remove the specified resource from storage.
      */

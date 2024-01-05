@@ -94,7 +94,7 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('admin.entitas.store') }}" method="POST"
+                            <form action="{{ route('admin.entitas.store') }}" enctype="multipart/form-data" method="POST" 
                                 onsubmit="return validateFormEntitas();">
                                 @csrf
                                 <div style="gap: .5rem;flex-wrap: wrap;"
@@ -102,6 +102,12 @@
                                     <label class="m-0" for="name">Nama</label>
                                     <input class="form-control gray-border" style="width: 80%;" type="text" id="entitas-input"
                                         name="nama" value="{{ old('nama') }}">
+                                </div>
+                                <div style="gap: .5rem;flex-wrap: wrap;"
+                                    class="form-group justify-content-between d-flex align-items-center mb-5">
+                                    <label for="gambar">Gambar</label>
+                                    <input type="file" id="image" class="form-control gray-border" name="image" style="width: 80%;">
+                                    <small class="text-danger error-message">Ukuran gambar harus dengan resolusi ( width: 72px, height: 72px)</small>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Simpan</button>
                             </form>

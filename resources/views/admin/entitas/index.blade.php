@@ -122,10 +122,9 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
-                                            @if (Auth::user()->status == 1)
-                                                <th>User</th>
-                                                <th>Last Update</th>
-                                            @endif
+                                            <th class="col-5">Gambar</th>
+                                            <th>User</th>
+                                            <th>Last Update</th>
                                             <th class="action-column">Action</th>
                                         </tr>
                                     </thead>
@@ -134,34 +133,38 @@
                                             <tr id="index_{{ $item->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }}</td>
-                                                @if (Auth::user()->status == 1)
-                                                    <td>{{ $item->username ?? 'Empty user last update' }}</td>
-                                                    <td>
-                                                        @if ($item->last_update)
-                                                            @php
-                                                                $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
-                                                            @endphp
-                                                            {{ $last_update->format('Y-m-d H:i:s') }}
-                                                        @else
-                                                            No last updated date.
-                                                        @endif
-                                                        @if ($item->action)
-                                                            <span class="badge light badge-primary">Action:
-                                                                {{ $item->action }}</span>
-                                                        @endif
-                                                    </td>
-                                                @endif
+                                                <td>
+                                                    <img src="{{ asset('storage/' . $item->image) }}" alt="Image Our"
+                                                        class="w-25">
+                                                </td>
+                                                <td>{{ $item->username ?? 'Empty user last update' }}</td>
+                                                <td>
+                                                    @if ($item->last_update)
+                                                        @php
+                                                            $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
+                                                        @endphp
+                                                        {{ $last_update->format('Y-m-d H:i:s') }}
+                                                    @else
+                                                        No last updated date.
+                                                    @endif
+                                                    @if ($item->action)
+                                                        <span class="badge light badge-primary">Action:
+                                                            {{ $item->action }}</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <a href="{{ route('admin.edit-entitas', $item->id) }}"
-                                                        class="btn btn-primary shadow btn-xs sharp me-1"> <i class="fa fa-edit"></i> </a>
+                                                        class="btn btn-primary shadow btn-xs sharp me-1"> <i
+                                                            class="fa fa-edit"></i> </a>
                                                     {{-- <form onclick="return confirm('anda yakin ? ');" class="d-inline-block" action="{{ route('admin.entitas.destroy', $item->id) }}" method="post">
                                                     @csrf 
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
                                                 </form> --}}
                                                     <a href="javascript:void(0)" id="btn-delete-post"
-                                                    data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                                    class="btn btn-danger shadow btn-xs sharp me-1"> <i class="fa fa-trash"></i></a>
+                                                        data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                                        class="btn btn-danger shadow btn-xs sharp me-1"> <i
+                                                            class="fa fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

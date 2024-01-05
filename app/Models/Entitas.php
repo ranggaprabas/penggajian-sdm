@@ -11,4 +11,9 @@ class Entitas extends Model
     protected $table = 'entitas';
 
     protected $guarded = ['id'];
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

@@ -21,18 +21,19 @@ class EntitasRequest extends FormRequest
      */
     public function rules(): array
     {
-        switch($this->method()){
+        switch ($this->method()) {
             case 'POST': {
                 return [
                     'nama' => 'required|unique:entitas',
+                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
                 ];
             }
             case 'PUT':
             case 'PATCH': {
                 return [
                     'nama' => ['required', 'unique:entitas,nama,' . $this->route()->entita->id],
+                    'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
                 ];
             }
-        } 
-    }
-}
+        }
+    }}
