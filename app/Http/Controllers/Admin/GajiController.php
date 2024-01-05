@@ -724,6 +724,9 @@ class GajiController extends Controller
             $item = $items->first(); // Mengambil hanya satu baris karena asumsi Anda hanya ingin satu item
             $timestamp = time();
 
+            // Dapatkan data entitas berdasarkan nama
+            $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
+
 
             // Generate PDF menggunakan DomPDF
             $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));

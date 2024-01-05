@@ -114,14 +114,34 @@
 </head>
 
 <body>
-    <div style="position: absolute; top: 20px; right: 5px;">
-        <img src="{{ public_path('images/tamanmediaindonesia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="130">
-    </div>
-    <center>
-        <h2 style="margin-right: 10px;">PT. TAMAN MEDIA INDONESIA</h2>
-        <h3>Daftar Gaji SDM</h3>
-        <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
-    </center>
+    @if (auth()->user()->status == 1)
+        <div style="position: absolute; top: 20px; right: 5px;">
+            <img src="{{ public_path('images/tamanmediaindonesia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo"
+                width="130">
+        </div>
+        <center>
+            <h2 style="margin-right: 10px;">PT. TAMAN MEDIA INDONESIA</h2>
+            <h3>Daftar Gaji SDM</h3>
+            <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
+        </center>
+    @else
+        <div style="position: absolute; top: 20px; right: 5px;">
+            @if (auth()->user()->entitas && auth()->user()->entitas->image)
+                <!-- Jika entitas pengguna memiliki gambar, tampilkan gambar entitas -->
+                <img src="{{ public_path('storage/' . auth()->user()->entitas->image) }}"
+                    alt="{{ auth()->user()->entitas->nama }} Logo" width="130">
+            @else
+                <!-- Default image jika entitas tidak memiliki gambar -->
+                <img src="{{ public_path('images/default.png') }}" alt="Default Logo" width="130">
+            @endif
+        </div>
+        <center>
+            <h2 style="margin-right: 10px;">
+                {{ auth()->user()->entitas ? auth()->user()->entitas->nama : 'Nama Entitas' }}</h2>
+            <h3>Daftar Gaji SDM</h3>
+            <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
+        </center>
+    @endif
 
     <table class="date">
         <tr class="no-background">

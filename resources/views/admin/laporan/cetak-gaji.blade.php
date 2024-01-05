@@ -114,16 +114,22 @@
 </head>
 
 <body>
-    <div style="position: absolute; top: 20px; right: 5px;">
-        <img src="{{ public_path('images/tamanmediaindonesia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="130">
-    </div>
-    <center>
-        <h2>PT. TAMAN MEDIA INDONESIA</h2>
-        <h3>Slip Gaji SDM</h3>
-        <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
-    </center>
-
     @foreach ($items as $item)
+    @php
+        // Dapatkan data entitas berdasarkan nama
+        $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
+    @endphp
+
+    @if ($entitas)
+        <div style="position: absolute; top: 20px; right: 5px;">
+            <img src="{{ public_path('storage/' . $entitas->image) }}" alt="{{ $entitas->nama }} Logo" width="130">
+        </div>
+        <center>
+            <h2>{{ $entitas->nama }}</h2>
+            <h3>Slip Gaji SDM</h3>
+            <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
+        </center>
+    @endif
         <table style="width:100%" class="date">
             <tr class="no-background">
                 <td width="15%">Nama SDM</td>
