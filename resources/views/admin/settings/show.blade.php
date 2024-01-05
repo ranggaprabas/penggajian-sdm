@@ -111,21 +111,37 @@
                     <div class="card">
                         <div class="card-body">
                             <form method="POST" action="{{ route('admin.settings.update') }}"
-                                onsubmit="return validateFormSetting();">
+                                enctype="multipart/form-data" onsubmit="return validateFormSetting();">
                                 @csrf
                                 @method('PUT')
-                                <div style="gap: .5rem;flex-wrap: wrap;"
+                                @if (Auth::user()->status == 1)
+                                    <div style="gap: .5rem;flex-wrap: wrap;"
+                                        class="form-group justify-content-between d-flex align-items-center mb-5">
+                                        <label for="telegram_bot_token">Telegram Bot Token:</label>
+                                        <input class="form-control gray-border" style="width: 100%;" type="text"
+                                            id="setting" name="telegram_bot_token"
+                                            value="{{ $setting->telegram_bot_token ?? '' }}">
+                                    </div>
+                                @endif
+                                <!-- Upload image field -->
+                                <div style="gap: .5rem; flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
-                                    <label for="telegram_bot_token">Telegram Bot Token:</label>
-                                    <input class="form-control gray-border" style="width: 100%;" type="text" id="setting"
-                                        name="telegram_bot_token" value="{{ $setting->telegram_bot_token ?? '' }}"
-                                        >
+                                    <label for="image">Gambar Entitas</label>
+                                    <input type="file" id="image" class="form-control gray-border mb-3" name="image"
+                                        style="width: 100%;">
+                                    <!-- Display image from Entitas if available -->
+                                    @if ($entitas && $entitas->image)
+                                        <img src="{{ asset('storage/' . $entitas->image) }}" alt="Entitas Image"
+                                            class="w-25">
+                                    @endif
+                                    @if ($entitas && $entitas->image)
+                                        <input type="hidden" name="old_image" value="{{ $entitas->image }}">
+                                    @endif
                                 </div>
                                 <button class="btn btn-primary" type="submit">Save Setting</button>
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
             <!-- /.row -->

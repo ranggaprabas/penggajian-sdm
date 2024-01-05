@@ -75,8 +75,8 @@ class EntitasController extends Controller
         $entitasNama = $request->input('nama');
 
         return redirect()->route('admin.entitas.index')->with([
-            'message' => 'Data Entitas ' . $entitasNama . ' berhasil ditambahkan!',
-            'alert-info' => 'success'
+            'success' => 'Data Entitas ' . $entitasNama . ' berhasil ditambahkan!',
+            'alert-info' => 'info'
         ]);
     }
 

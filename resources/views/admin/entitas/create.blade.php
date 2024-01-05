@@ -107,7 +107,6 @@
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label for="gambar">Gambar</label>
                                     <input type="file" id="image" class="form-control gray-border" name="image" style="width: 80%;">
-                                    <small class="text-danger error-message">Ukuran gambar harus dengan resolusi ( width: 72px, height: 72px)</small>
                                 </div>
                                 <button class="btn btn-primary" type="submit">Simpan</button>
                             </form>

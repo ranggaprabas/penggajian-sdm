@@ -1,14 +1,21 @@
 <!-- Sidebar -->
 <div class="nav-header">
-    <a href="{{ route('admin.home') }}" class="brand-logo">
-        <img src="{{ asset('images/tamanmedia.png') }}" alt="PT. TAMAN MEDIA INDONESIA Logo" width="50">
-        <svg class="brand-title" width="200px" height="33px">
-            <text x="0" y="20" fill="rgb(25, 59, 98)" font-size="16">
-                Penggajian SDM
-            </text>
-        </svg>
-    </a>
-
+    <div class="nav-header" style="display: flex; align-items: center;">
+        <a href="{{ route('admin.home') }}" class="brand-logo">
+            @if(auth()->user()->entitas && auth()->user()->entitas->image)
+                <img src="{{ asset('storage/' . auth()->user()->entitas->image) }}" alt="{{ auth()->user()->entitas->nama }} Logo" width="50">
+            @else
+                <!-- Default image jika entitas tidak memiliki gambar -->
+                <img src="{{ asset('images/default.png') }}" alt="Default Logo" width="50">
+            @endif
+            <svg class="brand-title" width="200px" height="33px">
+                <text x="0" y="15" fill="rgb(25, 59, 98)" font-size="16">
+                    Penggajian SDM
+                </text>
+            </svg>
+        </a>
+    </div>
+    
     <div class="nav-control">
         <div class="hamburger">
             <span class="line"></span><span class="line"></span><span class="line"></span>
