@@ -115,21 +115,21 @@
 
 <body>
     @foreach ($items as $item)
-    @php
-        // Dapatkan data entitas berdasarkan nama
-        $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
-    @endphp
+        @php
+            // Dapatkan data entitas berdasarkan nama
+            $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
+        @endphp
 
-    @if ($entitas)
-        <div style="position: absolute; top: 20px; right: 5px;">
-            <img src="{{ public_path('storage/' . $entitas->image) }}" alt="{{ $entitas->nama }} Logo" width="130">
-        </div>
-        <center>
-            <h2>{{ $entitas->nama }}</h2>
-            <h3>Slip Gaji SDM</h3>
-            <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
-        </center>
-    @endif
+        @if ($entitas)
+            <div style="position: absolute; top: 20px; right: 5px;">
+                <img src="{{ public_path('storage/' . $entitas->image) }}" alt="{{ $entitas->nama }} Logo" width="130">
+            </div>
+            <center>
+                <h2>{{ $entitas->nama }}</h2>
+                <h3>Slip Gaji SDM</h3>
+                <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
+            </center>
+        @endif
         <table style="width:100%" class="date">
             <tr class="no-background">
                 <td width="15%">Nama SDM</td>
@@ -190,7 +190,13 @@
             @foreach ($totalTunjangan as $key => $tun)
                 <tr>
                     <td>{{ $loop->iteration + 1 }}</td>
-                    <td>Tj. {{ $tun['nama_tunjangan'] }}</td>
+                    <td>
+                        Tj. {{ $tun['nama_tunjangan'] }}
+                        <br>
+                        @if (!empty($tun['note_tunjangan']))
+                            ({{ $tun['note_tunjangan'] }})
+                        @endif
+                    </td>
                     <td>Rp. {{ number_format($tun['nilai_tunjangan'], 0, '', '.') }}</td>
                 </tr>
             @endforeach
@@ -213,11 +219,17 @@
             @php
                 $totalPotongan = $item->potongan ? json_decode($item->potongan, true) : [];
             @endphp
-            @foreach ($totalPotongan as $key => $tun)
+            @foreach ($totalPotongan as $key => $pot)
                 <tr>
                     <td>{{ $loop->iteration + 0 }}</td>
-                    <td>{{ $tun['nama_potongan'] }}</td>
-                    <td>Rp. {{ number_format($tun['nilai_potongan'], 0, '', '.') }}</td>
+                    <td>
+                        {{ $pot['nama_potongan'] }}
+                        <br>
+                        @if (!empty($pot['note_potongan']))
+                            ({{ $pot['note_potongan'] }})
+                        @endif
+                    </td>
+                    <td>Rp. {{ number_format($pot['nilai_potongan'], 0, '', '.') }}</td>
                 </tr>
             @endforeach
             @php
@@ -253,7 +265,6 @@
                 </td>
             </tr>
         </table>
-        
     @endforeach
 </body>
 
