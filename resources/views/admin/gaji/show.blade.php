@@ -150,6 +150,9 @@
                                                         @foreach ($tunjangan as $t)
                                                             <li>Tj. {{ $t['nama_tunjangan'] ?? '-' }}: Rp.
                                                                 {{ number_format($t['nilai_tunjangan'], 0, '', '.') }}
+                                                                @if (!empty($t['note_tunjangan']))
+                                                                    ({{ $t['note_tunjangan'] }})
+                                                                @endif
                                                             </li>
                                                         @endforeach
                                                     @else
@@ -185,6 +188,9 @@
                                                         @foreach ($potongan as $t)
                                                             <li>{{ $t['nama_potongan'] ?? '-' }}: Rp.
                                                                 {{ number_format($t['nilai_potongan'], 0, '', '.') }}
+                                                                @if (!empty($t['note_potongan']))
+                                                                    ({{ $t['note_potongan'] }})
+                                                                @endif
                                                             </li>
                                                         @endforeach
                                                     @else

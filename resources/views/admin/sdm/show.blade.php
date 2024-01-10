@@ -161,6 +161,9 @@
                                                     <li>
                                                         Tj. {{ $tunjangan->nama_tunjangan }}: Rp.
                                                         {{ number_format($tunjangan->nilai_tunjangan, 0, '', '.') }}
+                                                        @if (!empty($tunjangan->note_tunjangan))
+                                                            ({{ $tunjangan->note_tunjangan }})
+                                                        @endif
                                                     </li>
                                                     @php
                                                         $totalTunjangan += $tunjangan->nilai_tunjangan;
@@ -183,6 +186,9 @@
                                                     @foreach ($details->potonganGaji as $potongan)
                                                         <li> {{ $potongan->nama_potongan }}: Rp.
                                                             {{ number_format($potongan->nilai_potongan, 0, '', '.') }}
+                                                            @if (!empty($potongan->note_potongan))
+                                                                ({{ $potongan->note_potongan }})
+                                                            @endif
                                                         </li>
                                                         @php
                                                             $totalPotongan += $potongan->nilai_potongan;
