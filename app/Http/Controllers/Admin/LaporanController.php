@@ -42,6 +42,7 @@ class LaporanController extends Controller
         return $daftarBulan[$bulan] ?? '';
     }
 
+    // Cetak PDF Karyawan
     public function store(Request $request)
     {
         $bulan = $request->bulan;
@@ -86,8 +87,11 @@ class LaporanController extends Controller
             // Gunakan download() untuk mengirimkan PDF sebagai unduhan ke pengguna
             return $pdf->download($filename);
         } else {
-            // Handle the case when there are no items
-            // Redirect or display an error message
+            // Handle the case when there is no data found
+            return response()->json([
+                'status' => false,
+                'message' => 'Slip Gaji yang diminta belum tersedia',
+            ], 404);
         }
     }
 

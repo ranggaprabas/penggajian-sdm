@@ -32,7 +32,7 @@ class BotTelegramController extends Controller
         $message = $updates->getMessage();
         $chat_id = $message->getChat()->getId();
         $username = $message->getChat()->getUsername();
-        $firstName = $message->getChat()->getFirstName(); 
+        $firstName = $message->getChat()->getFirstName();
 
         // Periksa jika perintah adalah /start
         if (strtolower($message->getText()) === '/start') {
@@ -46,8 +46,40 @@ class BotTelegramController extends Controller
             ]);
         }
 
-        // Lanjutkan dengan pemrosesan lebih lanjut jika diperlukan
-        // ...
+        // Periksa jika perintah adalah /slip
+        if (strtolower($message->getText()) === '/slip') {
+            // Kirim keyboard inline dengan pilihan bulan dan tahun
+            Telegram::sendMessage([
+                'chat_id' => $chat_id,
+                'text' => 'Pilih bulan dan tahun:',
+                'reply_markup' => json_encode([
+                    'inline_keyboard' => [
+                        [
+                            ['text' => 'Januari 2024', 'callback_data' => '1/2024'],
+                            ['text' => 'Februari 2024', 'callback_data' => '2/2024'],
+                            // Tambahkan pilihan bulan dan tahun lainnya sesuai kebutuhan
+                        ],
+                    ],
+                ]),
+            ]);
+        }
+
+        // Lakukan pemrosesan callback jika ada
+        if ($updates->getCallbackQuery()) {
+            $callbackData = $updates->getCallbackQuery()->getData();
+
+            // Pisahkan bulan dan tahun dari callback data
+            list($bulan, $tahun) = explode('/', $callbackData);
+
+            // Buat link untuk mengakses PDF menggunakan data bulan dan tahun yang dipilih
+            $pdfLink = route('url-pdf', ['chat_id' => $chat_id, 'bulan' => $bulan, 'tahun' => $tahun]);
+
+            // Respon langsung kepada pengguna dengan tautan PDF
+            Telegram::sendMessage([
+                'chat_id' => $chat_id,
+                'text' => $pdfLink,
+            ]);
+        }
 
         return response()->json(['status' => 'ok']);
     }

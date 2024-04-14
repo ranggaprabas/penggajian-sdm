@@ -40,7 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+    
+        'sdm' => [
+            'driver' => 'session',
+            'provider' => 'sdms',
+        ],
     ],
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -64,13 +70,12 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+    
+        'sdms' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Sdm::class,
+        ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords

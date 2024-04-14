@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+
 
 class LoginController extends Controller
 {
@@ -36,5 +40,21 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('web')->attempt($credentials)) {
+            return redirect()->intended('admin/home');  // Redirect Admin ke dashboard 
+        }
+
+        // if (Auth::guard('sdm')->attempt($credentials)) {
+        //     return redirect()->intended('admin/laporan/slip-gaji/karyawan'); // Redirect SDM 
+        // }
+
+        return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors([
+            'email' => 'Invalid email or password.',
+        ]);
     }
 }

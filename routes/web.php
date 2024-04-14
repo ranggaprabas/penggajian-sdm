@@ -33,7 +33,7 @@ Auth::routes(['register' => false]);
 
 
 
-Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['middleware' => ['auth:web,sdm'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     // Get the TELEGRAM_BOT_TOKEN from the database and set it in .env
     $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
 
@@ -75,8 +75,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
         Route::post('laporan/slip-gaji', [App\Http\Controllers\Admin\LaporanController::class, 'store'])->name('laporan.store');
     });
     Route::get('home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
-    // Route::get('laporan/slip-gaji/karyawan', [App\Http\Controllers\Admin\LaporanController::class, 'show'])->name('laporan.show');
-    // Route::post('laporan/slip-gaji/karyawan', [App\Http\Controllers\Admin\LaporanController::class, 'cekGaji'])->name('laporan.karyawan');
+    Route::get('laporan/slip-gaji/karyawan', [App\Http\Controllers\Admin\LaporanController::class, 'show'])->name('laporan.show');
+
+    // Cetak PDF Karyawan
+    Route::post('laporan/slip-gaji/karyawan', [App\Http\Controllers\Admin\LaporanController::class, 'store'])->name('laporan.store');
 
     Route::get('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('profile.update');

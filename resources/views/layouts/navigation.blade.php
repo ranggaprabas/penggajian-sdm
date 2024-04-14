@@ -111,33 +111,25 @@
                         </li>
                     </ul>
                 </li> --}}
+                @php
+                    $telegramBotToken = \App\Models\Setting::where('telegram_bot_token', '!=', '')->value(
+                        'telegram_bot_token',
+                    );
+                @endphp
+                @if (!empty($telegramBotToken))
+                    <li>
+                        <a href="{{ route('admin.broadcast-information.index') }}" class="ai-icon-home"
+                            aria-expanded="false">
+                            <i class="fas fa-envelope"></i>
+                            <span class="nav-text">Broadcast Information</span>
+                        </a>
+                    </li>
+                @endif
             @else
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-circle nav-icon"></i>
-                        <p>
-                            Laporan
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview" style="display: none;">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.laporan.show') }}" class="nav-link">
-                                <p>Slip Gaji</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            @endif
-            @php
-                $telegramBotToken = \App\Models\Setting::where('telegram_bot_token', '!=', '')->value('telegram_bot_token');
-            @endphp
-            @if (!empty($telegramBotToken))
                 <li>
-                    <a href="{{ route('admin.broadcast-information.index') }}" class="ai-icon-home"
-                        aria-expanded="false">
-                        <i class="fas fa-envelope"></i>
-                        <span class="nav-text">Broadcast Information</span>
+                    <a href="{{ route('admin.laporan.show') }}" class="ai-icon-jabatan" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span class="nav-text">Slip Gaji</span>
                     </a>
                 </li>
             @endif
