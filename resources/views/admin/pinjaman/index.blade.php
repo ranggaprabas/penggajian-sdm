@@ -8,7 +8,7 @@
                 <div class="collapse navbar-collapse justify-content-between">
                     <div class="header-left">
                         <div class="dashboard_bar">
-                            Pinjaman
+                            Pinjaman SDM
                         </div>
                     </div>
                     <!-- Right navbar links -->
@@ -144,8 +144,11 @@
                                                             @method('PUT')
                                                             <div class="form-group">
                                                                 <select name="status"
-                                                                    class="default-select form-control wide gray-border"
+                                                                    class="form-control select2"
                                                                     onchange="this.form.submit()">
+                                                                    <option value="diproses"
+                                                                        {{ $p->status == 'diproses' ? 'selected' : '' }}>
+                                                                        Diproses</option>
                                                                     <option value="diterima"
                                                                         {{ $p->status == 'diterima' ? 'selected' : '' }}>
                                                                         Diterima</option>
