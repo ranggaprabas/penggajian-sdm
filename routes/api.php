@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 //Protecting Routes
@@ -26,6 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', function (Request $request) {
         return auth()->user();
     });
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('pinjaman', PinjamanController::class);
     Route::post('/cetak-pdf', [LaporanController::class, 'store'])->name('cetak-pdf');
 });
@@ -34,4 +36,3 @@ Route::get('setWebhook', [BotTelegramController::class, 'setWebhook']);
 Route::post('ranggapbot/webhook', [BotTelegramController::class, 'commandHandlerWebhook']);
 Route::get('/link-pdf/{chat_id}/{bulan}/{tahun}', [GajiController::class, 'urlPrintPDF'])->name('url-pdf');
 Route::get('/print-pdf/{chat_id}/{bulan}/{tahun}', [GajiController::class, 'printPDF'])->name('print-pdf');
-

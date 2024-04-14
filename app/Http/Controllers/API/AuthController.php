@@ -33,4 +33,12 @@ class AuthController extends Controller
         // If authentication fails for both guards, return unauthorized response
         return response()->json(['message' => 'Unauthorized'], 401);
     }
+
+    public function logout(Request $request)
+    {
+        // Revoke the current user's token
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logout successful']);
+    }
 }
