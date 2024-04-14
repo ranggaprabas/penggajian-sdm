@@ -33,7 +33,7 @@ Auth::routes(['register' => false]);
 
 
 
-Route::group(['middleware' => ['auth:web,sdm'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['middleware' => ['auth:web'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     // Get the TELEGRAM_BOT_TOKEN from the database and set it in .env
     $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
 
@@ -73,6 +73,11 @@ Route::group(['middleware' => ['auth:web,sdm'], 'prefix' => 'admin', 'as' => 'ad
         Route::get('gaji/cetak/{bulan}/{tahun}', [App\Http\Controllers\Admin\GajiController::class, 'cetak'])->name('gaji.cetak');
         Route::get('laporan/slip-gaji', [App\Http\Controllers\Admin\LaporanController::class, 'index'])->name('laporan.index');
         Route::post('laporan/slip-gaji', [App\Http\Controllers\Admin\LaporanController::class, 'store'])->name('laporan.store');
+        Route::resource('pinjaman', App\Http\Controllers\Admin\PinjamanAdminController::class);
+        Route::get('pinjaman', [App\Http\Controllers\Admin\PinjamanAdminController::class, 'index'])->name('pinjaman.index');
+        Route::put('pinjaman/{id}/update-status', [App\Http\Controllers\Admin\PinjamanAdminController::class, 'updateStatus'])->name('pinjaman.updateStatus');
+
+        
     });
     Route::get('home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');
     Route::get('laporan/slip-gaji/karyawan', [App\Http\Controllers\Admin\LaporanController::class, 'show'])->name('laporan.show');

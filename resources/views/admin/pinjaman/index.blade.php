@@ -1,0 +1,188 @@
+@extends('layouts.app')
+
+@section('content')
+    <!-- Content Header (Page header) -->
+    <div class="header">
+        <div class="header-content">
+            <nav class="navbar navbar-expand">
+                <div class="collapse navbar-collapse justify-content-between">
+                    <div class="header-left">
+                        <div class="dashboard_bar">
+                            Pinjaman
+                        </div>
+                    </div>
+                    <!-- Right navbar links -->
+                    <ul class="navbar-nav header-right">
+                        <li class="nav-item dropdown notification_dropdown">
+                            <a class="btn btn-primary d-sm-inline-block position-relative" data-toggle="dropdown"
+                                aria-expanded="false" style="padding-bottom: 26px;">
+                                {{ Auth::user()->nama }} <i class="fa fa-user ms-3 scale-5"></i>
+                                @if (Auth::check())
+                                    <div class="position-absolute start-50 translate-middle-x text-center">
+                                        @if (Auth::user()->status)
+                                            superadmin
+                                        @else
+                                            admin
+                                        @endif
+                                    </div>
+                                @endif
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3" style="height:230px;">
+                                    <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <div class="media me-2 media-info">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <a href="{{ route('admin.profile.show') }}" class="dropdown-item">
+                                                        <h6 class="mb-1">{{ __('My profile') }}</h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <div class="media me-2 media-danger">
+                                                    <i class="fa fa-cog"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <a href="{{ route('admin.settings.show') }}" class="dropdown-item">
+                                                        <h6 class="mb-1">{{ __('Setting') }}</h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="timeline-panel">
+                                                <div class="media me-2 media-success">
+                                                    <i class="fas fa-sign-out-alt"></i>
+                                                </div>
+                                                <div class="media-body">
+                                                    <form method="POST" action="{{ route('logout') }}">
+                                                        @csrf
+                                                        <a href="{{ route('logout') }}" class="dropdown-item"
+                                                            onclick="event.preventDefault(); confirmLogout();">
+                                                            <h6 class="mb-1"> {{ __('Log Out') }}</h6>
+                                                        </a>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div> <!-- /.navbar -->
+
+    <!-- Main content -->
+    <div class="content-body">
+        <div class="container-fluid">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">Table</li>
+                </ol>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    @if (session('success'))
+                        <div class="alert alert-success solid alert-dismissible fade show" id="info-message">
+                            <svg viewbox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                <polyline points="9 11 12 14 22 4"></polyline>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                            <strong>Success!</strong> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="btn-close"></button>
+                        </div>
+                    @endif
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <!-- Move the 'Add' button to the right -->
+                            </div>
+                            <div class="table-responsive">
+                                <table id="example2" class="display" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>Divisi</th>
+                                            <th>Nilai Pinjaman</th>
+                                            <th>Status</th>
+                                            <th class="action-column">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="normal-text">
+                                        @foreach ($pinjaman as $p)
+                                            <tr id="index_{{ $p->id }}">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $p->nama }}</td>
+                                                <td>{{ $p->divisi }}</td>
+                                                <td>Rp. {{ number_format($p->nilai_pinjaman, 0, '', '.') }}</td>
+                                                <td>
+                                                    @if ($p->status == 'diproses')
+                                                        <span class="badge light badge-warning">{{ $p->status }}</span>
+                                                    @elseif($p->status == 'ditolak')
+                                                        <span class="badge light badge-danger">{{ $p->status }}</span>
+                                                    @elseif($p->status == 'diterima')
+                                                        <span class="badge light badge-success">{{ $p->status }}</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex gap-3">
+
+                                                        <form action="{{ route('admin.pinjaman.updateStatus', $p->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group">
+                                                                <select name="status"
+                                                                    class="default-select form-control wide gray-border"
+                                                                    onchange="this.form.submit()">
+                                                                    <option value="diterima"
+                                                                        {{ $p->status == 'diterima' ? 'selected' : '' }}>
+                                                                        Diterima</option>
+                                                                    <option value="ditolak"
+                                                                        {{ $p->status == 'ditolak' ? 'selected' : '' }}>
+                                                                        Ditolak
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </form>
+                                                        <a href="javascript:void(0)" id="btn-delete-pinjaman"
+                                                            data-id="{{ $p->id }}" data-nama="{{ $p->nama }}"
+                                                            class="btn btn-danger shadow btn-xs sharp me-1"> <i
+                                                                class="fa fa-trash"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        {{-- <div class="card-footer clearfix">
+                            {{ $items->links() }}
+                        </div> --}}
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+    <div class="footer">
+        <div class="copyright">
+        </div>
+    </div>
+@endsection

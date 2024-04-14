@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\GajiController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PinjamanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BotTelegramController;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', function (Request $request) {
         return auth()->user();
     });
-
+    Route::resource('pinjaman', PinjamanController::class);
     Route::post('/cetak-pdf', [LaporanController::class, 'store'])->name('cetak-pdf');
 });
 

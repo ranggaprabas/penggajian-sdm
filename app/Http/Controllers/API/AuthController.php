@@ -14,22 +14,6 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        // Attempt authentication with 'web' guard
-        if (Auth::guard('web')->attempt($credentials)) {
-            $user = Auth::guard('web')->user();
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Hi ' . $user->name . ', selamat datang di sistem payroll',
-                'data' => [
-                    'user' => $user,
-                    'token' => $token,
-                    'token_type' => 'Bearer'
-                ]
-            ]);
-        }
-
         // Attempt authentication with 'sdm' guard
         if (Auth::guard('sdm')->attempt($credentials)) {
             $user = Auth::guard('sdm')->user();

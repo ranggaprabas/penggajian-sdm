@@ -75,6 +75,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.pinjaman.index') }}" class="ai-icon-jabatan" aria-expanded="false">
+                        <i class="nav-icon fas fa-money-bill"></i>
+                        <span class="nav-text">Pinjaman SDM</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.gaji.index') }}" class="ai-icon-jabatan" aria-expanded="false">
                         <i class="fas fa-file-invoice-dollar"></i>
                         <span class="nav-text">Payroll</span>

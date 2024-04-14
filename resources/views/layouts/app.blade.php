@@ -945,6 +945,54 @@
         });
     </script>
 
+    <script>
+        //button create pinjaman event
+        $('body').on('click', '#btn-delete-pinjaman', function() {
+
+            let p_id = $(this).data('id');
+            let token = $("meta[name='csrf-token']").attr("content");
+
+            Swal.fire({
+                title: 'Apakah Kamu Yakin?',
+                text: `Ingin menghapus data Pinjaman '${$(this).data('nama')}'! `,
+                icon: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'TIDAK',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'YA, HAPUS!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    //fetch to delete data
+                    $.ajax({
+                        url: `/admin/pinjaman/${p_id}`,
+                        type: "DELETE",
+                        cache: false,
+                        data: {
+                            "_token": token
+                        },
+                        success: function(response) {
+                            //show success message
+                            Swal.fire({
+                                type: 'success',
+                                icon: 'success',
+                                title: `${response.message}`,
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            //remove post on table
+                            $(`#index_${p_id}`).remove();
+                            // Kembali ke halaman sebelumnya
+                            setTimeout(function() {
+                                window.location.href =
+                                    "{{ route('admin.pinjaman.index') }}";
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
     {{-- Delete swall jabatan --}}
 
     <script>
