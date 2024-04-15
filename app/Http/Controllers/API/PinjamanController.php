@@ -49,11 +49,11 @@ class PinjamanController extends Controller
         return response()->json(['message' => 'Pinjaman created successfully', 'data' => $pinjaman], 201);
     }
 
-    public function destroy($id)
-    {
-        $pinjaman = Pinjaman::findOrFail($id);
-        $pinjaman->delete();
+    // public function destroy($id)
+    // {
+    //     $pinjaman = Pinjaman::findOrFail($id);
+    //     $pinjaman->delete();
 
-        return response()->json(['message' => 'Pinjaman deleted successfully']);
-    }
+    //     return response()->json(['message' => 'Pinjaman deleted successfully']);
+    // }
 }
