@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\GajiController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LaporanApiController;
 use App\Http\Controllers\API\PinjamanController;
+use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BotTelegramController;
 use Illuminate\Http\Request;
@@ -28,6 +29,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         return auth()->user();
     });
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('pinjaman', PinjamanController::class);
     Route::post('/cetak-pdf', [LaporanApiController::class, 'store'])->name('cetak-pdf');
 });
