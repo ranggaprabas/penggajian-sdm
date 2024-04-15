@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('pinjaman', function (Blueprint $table) {
             $table->id();
+            $table->integer('sdm_id')->nullable();
             $table->string('nama')->nullable();
             $table->string('nik')->nullable();
             $table->string('entitas')->nullable();
