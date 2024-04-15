@@ -95,6 +95,44 @@ class LaporanController extends Controller
         }
     }
 
+    public function cetakPinjaman($id)
+    {
+
+        $item = DB::table('pinjaman')
+            ->select(
+                'pinjaman.sdm_id',
+                'pinjaman.nama',
+                'pinjaman.nik',
+                'pinjaman.entitas',
+                'pinjaman.divisi',
+                'pinjaman.jabatan',
+                'pinjaman.nilai_pinjaman',
+                'pinjaman.keterangan',
+                'pinjaman.status',
+            )
+            ->where('pinjaman.id', $id)
+            ->first();
+
+        // Pastikan item ditemukan
+        if ($item) {
+
+
+            $items = [$item];
+
+            // Generate PDF menggunakan DomPDF
+            $pdf = PDF::loadView('admin.pinjaman.cetak-pinjaman', compact('items')); // Tambahkan 'namaBulan' dan 'tahun'
+
+            // Anda dapat menyesuaikan nama file dengan nama karyawan, bulan, tahun, dan timestamp
+            $filename = 'Pinjaman_' . $item->entitas . '_' . $item->nama . '.pdf';
+
+            // Gunakan download() untuk mengirimkan PDF sebagai unduhan ke pengguna
+            return $pdf->download($filename);
+        } else {
+            // Handle the case when the item is not found
+            // Redirect or display an error message
+        }
+    }
+
     public function urlPrintPDF(Request $request, $chat_id, $bulan, $tahun)
     {
         $namaBulan = $this->konversiBulan($bulan);

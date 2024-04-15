@@ -5,9 +5,11 @@ use App\Http\Controllers\Admin\EntitasController;
 use App\Http\Controllers\Admin\DivisiController;
 use App\Http\Controllers\Admin\GajiController;
 use App\Http\Controllers\Admin\JabatanController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\SdmController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\API\LaporanApiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Models\Setting;
@@ -76,7 +78,8 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'admin', 'as' => 'admin.
         Route::resource('pinjaman', App\Http\Controllers\Admin\PinjamanAdminController::class);
         Route::get('pinjaman', [App\Http\Controllers\Admin\PinjamanAdminController::class, 'index'])->name('pinjaman.index');
         Route::put('pinjaman/{id}/update-status', [App\Http\Controllers\Admin\PinjamanAdminController::class, 'updateStatus'])->name('pinjaman.updateStatus');
-
+        Route::get('pinjaman/{id}/pdf', [LaporanController::class, 'cetakPinjaman'])
+            ->name('pinjaman.pdf');
         
     });
     Route::get('home', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('home');

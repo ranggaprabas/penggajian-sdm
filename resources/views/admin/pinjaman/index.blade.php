@@ -143,8 +143,7 @@
                                                             @csrf
                                                             @method('PUT')
                                                             <div class="form-group">
-                                                                <select name="status"
-                                                                    class="form-control select2"
+                                                                <select name="status" class="form-control select2"
                                                                     onchange="this.form.submit()">
                                                                     <option value="diproses"
                                                                         {{ $p->status == 'diproses' ? 'selected' : '' }}>
@@ -163,6 +162,15 @@
                                                             data-id="{{ $p->id }}" data-nama="{{ $p->nama }}"
                                                             class="btn btn-danger shadow btn-xs sharp me-1"> <i
                                                                 class="fa fa-trash"></i></a>
+                                                        <form
+                                                            action="{{ route('admin.pinjaman.pdf', ['id' => $p->id]) }}"
+                                                            method="get">
+                                                            @csrf
+                                                            <!-- ... (form input bulan dan tahun) ... -->
+                                                            <button type="submit" class="btn light btn-danger btn-xxs">
+                                                                <i class="fa fa-file-pdf"></i>
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

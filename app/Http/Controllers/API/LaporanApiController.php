@@ -84,4 +84,48 @@ class LaporanApiController extends Controller
             ], 404);
         }
     }
+
+    public function cetakPinjamanApi()
+    {
+
+        // Mendapatkan sdm_id pengguna yang sedang login
+        $sdmId = Auth::user()->id;
+
+        $item = DB::table('pinjaman')
+            ->select(
+                'pinjaman.sdm_id',
+                'pinjaman.nama',
+                'pinjaman.nik',
+                'pinjaman.entitas',
+                'pinjaman.divisi',
+                'pinjaman.jabatan',
+                'pinjaman.nilai_pinjaman',
+                'pinjaman.keterangan',
+                'pinjaman.status',
+            )
+            ->where('pinjaman.sdm_id', $sdmId)
+            ->first();
+
+        // Pastikan item ditemukan
+        if ($item) {
+
+
+            $items = [$item];
+
+            // Generate PDF menggunakan DomPDF
+            $pdf = PDF::loadView('admin.pinjaman.cetak-pinjaman', compact('items')); // Tambahkan 'namaBulan' dan 'tahun'
+
+            // Anda dapat menyesuaikan nama file dengan nama karyawan, bulan, tahun, dan timestamp
+            $filename = 'Pinjaman_' . $item->entitas . '_' . $item->nama . '.pdf';
+
+            // Gunakan download() untuk mengirimkan PDF sebagai unduhan ke pengguna
+            return $pdf->download($filename);
+        } else {
+            // Handle the case when there is no data found
+            return response()->json([
+                'status' => false,
+                'message' => 'Pinjaman tidak ditemukan',
+            ], 404);
+        }
+    }
 }
