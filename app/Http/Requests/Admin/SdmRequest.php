@@ -32,22 +32,23 @@ class SdmRequest extends FormRequest
                         'divisi_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
-                        'chat_id' => 'nullable'
-  
+                        'chat_id' => 'nullable',
+                        'password' => 'required|min:3|confirmed'                       
                     ];
                 }
-            case 'PUT':
-            case 'PATCH': {
-                    return [
-                        'nama' => 'required',
-                        'email' => 'required|email',
-                        'nik' => 'required',
-                        'jabatan_id' => 'required',
-                        'entitas_id' => 'required',
-                        'divisi_id' => 'required',
-                        'jenis_kelamin' => 'required',
-                        'status' => 'required',
-                        'chat_id' => 'nullable'
+                case 'PUT':
+                    case 'PATCH': {
+                        return [
+                            'nama' => 'required',
+                            'email' => 'required|email',
+                            'nik' => 'required',
+                            'jabatan_id' => 'required',
+                            'entitas_id' => 'required',
+                            'divisi_id' => 'required',
+                            'jenis_kelamin' => 'required',
+                            'status' => 'required',
+                            'chat_id' => 'nullable',
+                            'password' => 'required|min:3|confirmed'
                     ];
                 }
         }

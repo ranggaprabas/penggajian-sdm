@@ -14,6 +14,7 @@ use App\Models\LogActivity;
 use App\Models\PotonganGaji;
 use App\Models\TelegramUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class SdmController extends Controller
 {
@@ -148,8 +149,9 @@ class SdmController extends Controller
      */
     public function store(SdmRequest $request)
     {
-        $user = Sdm::create($request->validated());
-
+        $data = $request->validated();
+        $data['password'] = Hash::make($request->input('password')); 
+        $user = Sdm::create($data);
         LogActivity::create([
             'table_name' => 'sdms',
             'row_id' => $user->id,
@@ -326,7 +328,13 @@ class SdmController extends Controller
      */
     public function update(SdmRequest $request, Sdm $sdm)
     {
-        $sdm->update($request->validated());
+        $data = $request->validated();
+        if (!empty($request->input('password'))) {
+            $data['password'] = Hash::make($request->input('password'));
+        } else {
+            unset($data['password']);
+        }
+        $sdm->update($data);
 
         LogActivity::where('table_name', 'sdms')
             ->where('row_id', $sdm->id)

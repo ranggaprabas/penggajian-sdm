@@ -189,6 +189,27 @@
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
+                                        <div class="form-group-password">
+                                            <label for="password">Password Baru</label>
+                                            <input class="form-control gray-border" type="password" id="password"
+                                                name="password">
+                                            <span class="eye-toggle">
+                                                <i class="fas fa-eye" id="password-toggle"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group-password">
+                                            <div class="form-group">
+                                                <label for="password_confirmation">Konfirmasi Password Baru</label>
+                                                <input class="form-control gray-border" type="password"
+                                                    id="password_confirmation" name="password_confirmation">
+                                                <span class="eye-toggle"><i class="fas fa-eye"
+                                                        id="password-confirmation-toggle"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="nik">Nik</label>
                                             <input class="form-control gray-border" type="number" id="nik"
