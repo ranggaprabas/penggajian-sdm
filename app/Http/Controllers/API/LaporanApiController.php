@@ -85,7 +85,7 @@ class LaporanApiController extends Controller
         }
     }
 
-    public function cetakPinjamanApi()
+    public function cetakPinjamanApi($id)
     {
 
         // Mendapatkan sdm_id pengguna yang sedang login
@@ -103,6 +103,7 @@ class LaporanApiController extends Controller
                 'pinjaman.keterangan',
                 'pinjaman.status',
             )
+            ->where('pinjaman.id', $id)
             ->where('pinjaman.sdm_id', $sdmId)
             ->first();
 

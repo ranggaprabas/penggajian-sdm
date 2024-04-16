@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/cetak-pinjaman', [LaporanApiController::class, 'cetakPinjamanApi'])->name('cetak.pinjaman');
+    Route::get('/cetak-pinjaman/{id}', [LaporanApiController::class, 'cetakPinjamanApi'])->name('cetak.pinjaman');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::resource('pinjaman', PinjamanController::class);
     Route::post('/cetak-pdf', [LaporanApiController::class, 'store'])->name('cetak-pdf');
