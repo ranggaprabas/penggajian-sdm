@@ -110,6 +110,9 @@
             border-top: 1px solid #ccc;
             /* Warna abu-abu */
         }
+        .indented {
+            text-indent: 35px;
+        }
     </style>
 </head>
 
@@ -126,20 +129,40 @@
             </div>
             <center>
                 <h2>{{ $entitas->nama }}</h2>
-                <h3>Pinjaman SDM</h3>
+                <h3>SURAT PERMOHONAN PEMINJAMAN UANG</h3>
                 <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
             </center>
         @endif
-        <table style="width:100%" class="date">
+        <table class="date">
             <tr class="no-background">
-                <td width="15%">Nama SDM</td>
-                <td width="10px">:</td>
-                <td>{{ $item->nama }}</td>
+                <td><strong>Hal: Pengajuan Permohonan Pinjaman Uang</strong></td>
+            </tr>
+        </table>
+        <table class="date">
+            <tr class="no-background">
+                <td>Kepada</td>
             </tr>
             <tr class="no-background">
-                <td>NIK</td>
-                <td>:</td>
-                <td>{{ $item->nik }}</td>
+                <td>Yth. Pimpinan PT. Taman Media Indonesia</td>
+            </tr>
+            <tr class="no-background">
+                <td>Di</td>
+            </tr>
+            <tr class="no-background">
+                <td>Tempat</td>
+            </tr>
+        </table>
+        <table class="date">
+            <tr class="no-background">
+                <td class="indented">Sehubungan dengan keperluan mendesak yang saya hadapi, dengan ini saya mengajukan permohonan
+                    pinjaman uang, saya yang bertanda tangan di bawah ini:</td>
+            </tr>
+        </table>
+        <table style="width:100%" class="date">
+            <tr class="no-background">
+                <td width="15%">Nama</td>
+                <td width="10px">:</td>
+                <td>{{ $item->nama }}</td>
             </tr>
             <tr class="no-background">
                 <td>Entitas</td>
@@ -157,11 +180,6 @@
                 <td>{{ $item->jabatan }}</td>
             </tr>
             <tr class="no-background">
-                <td>Nilai Pinjaman</td>
-                <td>:</td>
-                <td>Rp. {{ number_format($item->nilai_pinjaman, 0, '', '.') }}</td>
-            </tr>
-            <tr class="no-background">
                 <td>Keterangan</td>
                 <td>:</td>
                 <td>{{ $item->keterangan }}</td>
@@ -173,19 +191,27 @@
             </tr>
         </table>
 
+        <table class="date">
+            <tr class="no-background">
+                <td>Dengan ini mengajukan permohonan pinjaman uang sebesar Rp. {{ number_format($item->nilai_pinjaman, 0, '', '.') }}. Uang tersebut akan digunakan untuk keperluan pribadi yang mendesak.</td>
+            </tr>
+        </table>
+
+        <table class="date">
+            <tr class="no-background">
+                <td>Demikian surat permohonan ini dibuat. Atas Perhatiannya saya ucapkan terima kasih.</td>
+            </tr>
+        </table>
+
         <table width="100%" style="border: none;">
             <tr class="footer">
                 <td style="border: none; text-align: left;">
-                    <p>SDM</p>
-                    <br>
-                    <br>
-                    <p class="font-weight-bold">{{ $item->nama }}</p>
                 </td>
                 <td width="200px" style="border: none;">
-                    <p class="font-weight-bold">Semarang, {{ date('d M Y') }} Manager,</p>
-                    <br>
+                    <p class="font-weight-bold">Semarang, {{ date('d M Y') }}</p>
                     <br>
                     <p>_________________</p>
+                    <p><strong>{{ $item->nama }}</strong></p>
                 </td>
             </tr>
         </table>
