@@ -45,6 +45,23 @@ class BotTelegramController extends Controller
                 'text' => 'Hi ' . $firstName . ', salam kenal. Bagaimana kabarmu?',
             ]);
         }
+        // Periksa jika perintah adalah /file
+        if (strtolower($message->getText()) === '/file') {
+            // Kirim file PDF kepada pengguna
+            $documentUrl = 'https://files1.simpkb.id/guruberbagi/rpp/427181-1673150322.pdf'; // URL file PDF yang ingin dikirim
+            $botToken = env('TELEGRAM_BOT_TOKEN');
+            $url = "https://api.telegram.org/bot{$botToken}/sendDocument?chat_id={$chat_id}&document={$documentUrl}";
+            $response = file_get_contents($url);
+            $response = json_decode($response, true);
+
+            if ($response['ok']) {
+                // Pesan berhasil dikirim
+                // Lakukan sesuatu di sini jika diperlukan
+            } else {
+                // Pesan gagal dikirim
+                // Lakukan sesuatu di sini jika diperlukan
+            }
+        }
 
         // Periksa jika perintah adalah /slip
         if (strtolower($message->getText()) === '/slip') {
