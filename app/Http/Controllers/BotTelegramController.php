@@ -45,58 +45,52 @@ class BotTelegramController extends Controller
                 'text' => 'Hi ' . $firstName . ', salam kenal. Bagaimana kabarmu?',
             ]);
         }
+
         // Periksa jika perintah adalah /file
         if (strtolower($message->getText()) === '/file') {
-            // Kirim file PDF kepada pengguna
-            $documentUrl = 'https://files1.simpkb.id/guruberbagi/rpp/427181-1673150322.pdf'; // URL file PDF yang ingin dikirim
-            $botToken = env('TELEGRAM_BOT_TOKEN');
-            $url = "https://api.telegram.org/bot{$botToken}/sendDocument?chat_id={$chat_id}&document={$documentUrl}";
-            $response = file_get_contents($url);
-            $response = json_decode($response, true);
+            // Bangun inline keyboard
+            $inlineKeyboard = [
+                [
+                    [
+                        'text' => 'Cetak PDF',
+                        'callback_data' => 'print_pdf',
+                    ],
+                ],
+            ];
 
-            if ($response['ok']) {
-                // Pesan berhasil dikirim
-                // Lakukan sesuatu di sini jika diperlukan
-            } else {
-                // Pesan gagal dikirim
-                // Lakukan sesuatu di sini jika diperlukan
-            }
-        }
-
-        // Periksa jika perintah adalah /slip
-        if (strtolower($message->getText()) === '/slip') {
-            // Kirim keyboard inline dengan pilihan bulan dan tahun
+            // Kirim inline keyboard
             Telegram::sendMessage([
                 'chat_id' => $chat_id,
-                'text' => 'Pilih bulan dan tahun:',
+                'text' => 'Pilih aksi:',
                 'reply_markup' => json_encode([
-                    'inline_keyboard' => [
-                        [
-                            ['text' => 'Januari 2024', 'callback_data' => '1/2024'],
-                            ['text' => 'Februari 2024', 'callback_data' => '2/2024'],
-                            // Tambahkan pilihan bulan dan tahun lainnya sesuai kebutuhan
-                        ],
-                    ],
+                    'inline_keyboard' => $inlineKeyboard,
                 ]),
             ]);
         }
 
-        // Lakukan pemrosesan callback jika ada
-        if ($updates->getCallbackQuery()) {
-            $callbackData = $updates->getCallbackQuery()->getData();
+        // Tangani respon inline keyboard
+        if ($updates->getCallbackQuery() !== null) {
+            $callback_query = $updates->getCallbackQuery();
+            $callback_data = $callback_query->getData();
 
-            // Pisahkan bulan dan tahun dari callback data
-            list($bulan, $tahun) = explode('/', $callbackData);
+            if ($callback_data === 'print_pdf') {
+                // Kirim file PDF kepada pengguna
+                $documentUrl = 'https://files1.simpkb.id/guruberbagi/rpp/427181-1673150322.pdf'; // URL file PDF yang ingin dikirim
+                $botToken = env('TELEGRAM_BOT_TOKEN');
+                $url = "https://api.telegram.org/bot{$botToken}/sendDocument?chat_id={$chat_id}&document={$documentUrl}";
+                $response = file_get_contents($url);
+                $response = json_decode($response, true);
 
-            // Buat link untuk mengakses PDF menggunakan data bulan dan tahun yang dipilih
-            $pdfLink = route('url-pdf', ['chat_id' => $chat_id, 'bulan' => $bulan, 'tahun' => $tahun]);
-
-            // Respon langsung kepada pengguna dengan tautan PDF
-            Telegram::sendMessage([
-                'chat_id' => $chat_id,
-                'text' => $pdfLink,
-            ]);
+                if ($response['ok']) {
+                    // Pesan berhasil dikirim
+                    // Lakukan sesuatu di sini jika diperlukan
+                } else {
+                    // Pesan gagal dikirim
+                    // Lakukan sesuatu di sini jika diperlukan
+                }
+            }
         }
+
 
         return response()->json(['status' => 'ok']);
     }
