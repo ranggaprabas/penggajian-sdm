@@ -41,3 +41,5 @@ Route::get('setWebhook', [BotTelegramController::class, 'setWebhook']);
 Route::post('ranggapbot/webhook', [BotTelegramController::class, 'commandHandlerWebhook']);
 Route::get('/link-pdf/{chat_id}/{bulan}/{tahun}', [GajiController::class, 'urlPrintPDF'])->name('url-pdf');
 Route::get('/print-pdf/{chat_id}/{bulan}/{tahun}', [GajiController::class, 'printPDF'])->name('print-pdf');
+Route::get('/download-pdf/{chat_id}/{bulan}/{tahun}', [GajiController::class, 'downloadPDF'])->name('download-pdf');
+

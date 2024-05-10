@@ -692,6 +692,60 @@ class GajiController extends Controller
         }
     }
 
+    public function downloadPDF(Request $request, $chat_id, $bulan, $tahun)
+    {
+        // Logika untuk menghasilkan PDF
+        $namaBulan = $this->konversiBulan($bulan);
+        $tanggal = $bulan . $tahun;
+
+        // Ambil data absensi termasuk chat_id
+        $items = DB::table('absensi')
+            ->select(
+                'sdm_id',
+                'bulan',
+                'nama',
+                'email',
+                'nik',
+                'jenis_kelamin',
+                'entitas',
+                'divisi',
+                'jabatan',
+                'tunjangan_jabatan',
+                'tunjangan',
+                'potongan',
+                'chat_id'
+            )
+            ->where('bulan', $tanggal)
+            ->where('chat_id', $chat_id)
+            ->get();
+
+        // Pastikan data ditemukan
+        if ($items->isNotEmpty()) {
+            $item = $items->first(); // Mengambil hanya satu baris karena asumsi Anda hanya ingin satu item
+            $timestamp = time();
+
+            // Dapatkan data entitas berdasarkan nama
+            $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
+
+            // Generate PDF menggunakan DomPDF
+            $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
+            $pdfContent = $pdf->output();
+
+            // Set header untuk menentukan tipe file sebagai PDF dan menentukan untuk menampilkan langsung (inline)
+            $headers = [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="gaji.pdf"',
+            ];
+
+            // Berikan respons dengan file PDF
+            return Response::make($pdfContent, 200, $headers);
+        } else {
+            // Handle jika data tidak ditemukan
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
+    }
+
+
 
     public function printPDF(Request $request, $chat_id, $bulan, $tahun)
     {
