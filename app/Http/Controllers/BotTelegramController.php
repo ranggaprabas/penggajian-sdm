@@ -46,36 +46,74 @@ class BotTelegramController extends Controller
             ]);
         }
 
-        // Periksa jika perintah adalah /file
-        if (strtolower($message->getText()) === '/file') {
-            // Bangun inline keyboard
-            $inlineKeyboard = [
-                [
-                    [
-                        'text' => 'Cetak PDF',
-                        'callback_data' => 'print_pdf',
-                    ],
-                ],
-            ];
-
-            // Kirim inline keyboard
-            Telegram::sendMessage([
-                'chat_id' => $chat_id,
-                'text' => 'Pilih aksi:',
-                'reply_markup' => json_encode([
-                    'inline_keyboard' => $inlineKeyboard,
-                ]),
-            ]);
+        // Periksa jika perintah adalah /slip
+        elseif (strtolower($message->getText()) === '/slip') {
+            $this->slipCommandHandler($chat_id);
         }
 
-        // Tangani respon inline keyboard
-        if ($updates->getCallbackQuery() !== null) {
-            $callback_query = $updates->getCallbackQuery();
-            $callback_data = $callback_query->getData();
+        // Periksa jika pesan adalah callback query
+        elseif ($callback = $updates->getCallbackQuery()) {
+            $this->handleCallbackQuery($callback);
+        }
 
-            if ($callback_data === 'print_pdf') {
-                // Kirim file PDF kepada pengguna
-                $documentUrl = 'https://files1.simpkb.id/guruberbagi/rpp/427181-1673150322.pdf'; // URL file PDF yang ingin dikirim
+        return response()->json(['status' => 'ok']);
+    }
+
+    private function slipCommandHandler($chat_id)
+    {
+        // Daftar nama bulan
+        $bulan = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+
+        // Mendapatkan tahun sekarang
+        $tahun_sekarang = date('Y');
+
+        // Daftar tahun, misalnya dari tahun sekarang hingga dua tahun sebelumnya dan dua tahun berikutnya
+        $tahun = range($tahun_sekarang - 2, $tahun_sekarang);
+
+        // Menyusun tombol untuk setiap bulan
+        $inline_keyboard = [];
+        $row = [];
+        foreach ($bulan as $index => $nama_bulan) {
+            // Menyusun callback data untuk pemilihan bulan dan tahun
+            foreach ($tahun as $thn) {
+                $callback_data = json_encode(['bulan' => ($index + 1), 'tahun' => $thn]);
+                $row[] = ['text' => $nama_bulan . ' ' . $thn, 'callback_data' => $callback_data];
+            }
+            $inline_keyboard[] = $row;
+            $row = [];
+        }
+
+        // Kirim pesan dengan tombol inline untuk bulan dan tahun
+        Telegram::sendMessage([
+            'chat_id' => $chat_id,
+            'text' => 'Pilih Bulan dan Tahun:',
+            'reply_markup' => json_encode([
+                'inline_keyboard' => $inline_keyboard
+            ])
+        ]);
+    }
+
+    private function handleCallbackQuery($callback)
+    {
+        $message = $callback->getMessage();
+        $chat_id = $message->getChat()->getId();
+        $data = $callback->getData();
+
+        // Pastikan callback data tidak null
+        if ($data) {
+            $callback_data = json_decode($data, true);
+
+            // Periksa apakah callback data berisi informasi bulan dan tahun
+            if (isset($callback_data['bulan']) && isset($callback_data['tahun'])) {
+                $bulan = $callback_data['bulan'];
+                $tahun = $callback_data['tahun'];
+
+                // Buat URL PDF sesuai dengan bulan dan tahun yang dipilih
+                $documentUrl = 'https://8b11-103-120-173-126.ngrok-free.app/api/download-pdf/' . $chat_id . '/' . $bulan . '/' . $tahun;
+
                 $botToken = env('TELEGRAM_BOT_TOKEN');
                 $url = "https://api.telegram.org/bot{$botToken}/sendDocument?chat_id={$chat_id}&document={$documentUrl}";
                 $response = file_get_contents($url);
@@ -90,10 +128,9 @@ class BotTelegramController extends Controller
                 }
             }
         }
-
-
-        return response()->json(['status' => 'ok']);
     }
+
+
 
     private function saveUserToDatabase($chat_id, $username)
     {
