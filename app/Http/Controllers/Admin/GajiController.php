@@ -732,9 +732,10 @@ class GajiController extends Controller
             $pdfContent = $pdf->output();
 
             // Set header untuk menentukan tipe file sebagai PDF dan menentukan untuk menampilkan langsung (inline)
+            $fileName = $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf'; // Ubah file name sesuai dengan permintaan
             $headers = [
                 'Content-Type' => 'application/pdf',
-                'Content-Disposition' => 'inline; filename="gaji.pdf"',
+                'Content-Disposition' => 'inline; filename="' . $fileName . '"', // Menggunakan file name yang baru
             ];
 
             // Berikan respons dengan file PDF
