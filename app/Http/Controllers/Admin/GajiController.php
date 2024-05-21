@@ -669,7 +669,7 @@ class GajiController extends Controller
         // Pastikan data ditemukan
         if ($items->isNotEmpty()) {
             // Generate URL untuk endpoint print PDF
-            $pdfEndpoint = route('print-pdf', [
+            $pdfEndpoint = route('download-pdf', [
                 'chat_id' => $chat_id,
                 'bulan' => $bulan,
                 'tahun' => $tahun,

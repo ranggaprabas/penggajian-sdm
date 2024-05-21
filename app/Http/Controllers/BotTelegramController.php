@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TelegramUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Telegram;
 
 class BotTelegramController extends Controller
@@ -71,7 +72,7 @@ class BotTelegramController extends Controller
         $tahun_sekarang = date('Y');
 
         // Daftar tahun, misalnya dari tahun sekarang hingga dua tahun sebelumnya dan dua tahun berikutnya
-        $tahun = range($tahun_sekarang - 2, $tahun_sekarang);
+        $tahun = range($tahun_sekarang - 1, $tahun_sekarang);
 
         // Menyusun tombol untuk setiap bulan
         $inline_keyboard = [];
@@ -111,26 +112,68 @@ class BotTelegramController extends Controller
                 $bulan = $callback_data['bulan'];
                 $tahun = $callback_data['tahun'];
 
-                // Buat URL PDF sesuai dengan bulan dan tahun yang dipilih
-                $documentUrl = 'https://8b11-103-120-173-126.ngrok-free.app/api/download-pdf/' . $chat_id . '/' . $bulan . '/' . $tahun;
 
-                $botToken = env('TELEGRAM_BOT_TOKEN');
-                $url = "https://api.telegram.org/bot{$botToken}/sendDocument?chat_id={$chat_id}&document={$documentUrl}";
-                $response = file_get_contents($url);
-                $response = json_decode($response, true);
 
-                if ($response['ok']) {
-                    // Pesan berhasil dikirim
-                    // Lakukan sesuatu di sini jika diperlukan
+                // Panggil API untuk mengecek ketersediaan slip gaji
+                $apiResponse = $this->checkSlipAvailability($chat_id, $bulan, $tahun);
+
+                if ($apiResponse['status'] === 'success') {
+                    // Kirim pesan pemberitahuan kepada pengguna
+                    $response = Http::get('https://api.nuryazid.com/finatale/public/api/link-pdf/' . $chat_id . '/' . $bulan . '/' . $tahun);
+                    $message = $response->json()['message'] ?? 'API tidak merespon dengan benar';
+
+                    Telegram::sendMessage([
+                        'chat_id' => $chat_id,
+                        'text' => $message,
+                    ]);
+                    // Slip gaji tersedia, kirimkan file PDF
+                    $documentUrl = $apiResponse['pdf_link'];
+                    $botToken = env('TELEGRAM_BOT_TOKEN');
+                    $url = "https://api.telegram.org/bot{$botToken}/sendDocument?chat_id={$chat_id}&document={$documentUrl}";
+                    $response = file_get_contents($url);
+                    $response = json_decode($response, true);
+
+                    if ($response['ok']) {
+                        // Pesan berhasil dikirim
+                        // Lakukan sesuatu di sini jika diperlukan
+                    } else {
+                        // Pesan gagal dikirim
+                        // Lakukan sesuatu di sini jika diperlukan
+                    }
                 } else {
-                    // Pesan gagal dikirim
-                    // Lakukan sesuatu di sini jika diperlukan
+                    // Slip gaji tidak tersedia, kirim pesan pemberitahuan
+                    Telegram::sendMessage([
+                        'chat_id' => $chat_id,
+                        'text' => $apiResponse['message'],
+                    ]);
                 }
             }
         }
     }
 
+    private function checkSlipAvailability($chat_id, $bulan, $tahun)
+    {
+        $apiUrl = route('url-pdf', ['chat_id' => $chat_id, 'bulan' => $bulan, 'tahun' => $tahun]);
+        $response = @file_get_contents($apiUrl);
 
+        if ($response === FALSE) {
+            $http_response_header = isset($http_response_header) ? $http_response_header : [];
+            foreach ($http_response_header as $header) {
+                if (strpos($header, '404') !== false) {
+                    return [
+                        'status' => 'error',
+                        'message' => 'Slip gaji yang diminta belum tersedia',
+                    ];
+                }
+            }
+            return [
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat memeriksa slip gaji',
+            ];
+        }
+
+        return json_decode($response, true);
+    }
 
     private function saveUserToDatabase($chat_id, $username)
     {

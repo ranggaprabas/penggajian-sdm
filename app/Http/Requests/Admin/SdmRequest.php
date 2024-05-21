@@ -48,7 +48,7 @@ class SdmRequest extends FormRequest
                             'jenis_kelamin' => 'required',
                             'status' => 'required',
                             'chat_id' => 'nullable',
-                            'password' => 'required|min:3|confirmed'
+                            'password' => 'nullable|min:3|confirmed'
                     ];
                 }
         }
