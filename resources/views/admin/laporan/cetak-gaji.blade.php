@@ -144,7 +144,7 @@
             <div class="header">
                 <div class="header-text">
                     <h2>{{ $entitas->nama }}</h2>
-                    <p>Jl. Bina Remaja No. 6 Banyumanik Semarang</p>
+                    <p>{{ $entitas->alamat }}</p>
                 </div>
             </div>
 
