@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'admin', 'as' => 'admin.
         Route::resource('broadcast-information', App\Http\Controllers\Admin\BroadcastInformationController::class);
         Route::get('divisi/edit/{id}', [DivisiController::class, 'edit'])->name('edit-divisi');
         Route::resource('divisi', App\Http\Controllers\Admin\DivisiController::class);
+        Route::delete('entitas/restore/{entita}', [EntitasController::class, 'restore'])->name('admin.entitas.restore');
         Route::get('entitas/edit/{id}', [EntitasController::class, 'edit'])->name('edit-entitas');
         Route::resource('entitas', App\Http\Controllers\Admin\EntitasController::class);
         Route::get('jabatan/edit/{id}', [JabatanController::class, 'edit'])->name('edit-jabatan');

@@ -149,19 +149,45 @@ class EntitasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    public function restore(Entitas $entita)
+    {
+        LogActivity::where('table_name', 'entitas')
+            ->where('row_id', $entita->id)
+            ->delete();
+
+        LogActivity::create([
+            'table_name' => 'entitas',
+            'row_id' => $entita->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'restore',
+            'date_created' => now()->format('Y-m-d H:i:s')
+        ]);
+
+        $entita->update(['deleted' => 0]);
+
+        return response()->json(['message' => 'Data Entitas ' . $entita->nama . ' Berhasil diaktifkan.']);
+    }
+
     public function destroy($id)
     {
         $entita = Entitas::findOrFail($id);
 
-        // Menghapus hubungan entitas pada setiap user
-        $users = User::where('entitas_id', $entita->id)->get();
-        foreach ($users as $user) {
-            $user->entitas_id = null;
-            $user->save();
-        }
+        // Menghapus data log activity yang terkait dengan jabatan
+        LogActivity::where('table_name', 'entitas')
+            ->where('row_id', $entita->id)
+            ->delete();
 
-        // Menghapus entitas
-        $entita->delete();
+        LogActivity::create([
+            'table_name' => 'entitas',
+            'row_id' => $entita->id,
+            'user_id' => auth()->user()->id,
+            'action' => 'delete',
+            'date_created' => now()->format('Y:m:d H:i:s')
+        ]);
+
+        // Mengubah nilai "deleted" menjadi 1 (true) alih-alih menghapus data
+        $entita->deleted = 1;
+        $entita->save();
 
         //return response
         return response()->json([

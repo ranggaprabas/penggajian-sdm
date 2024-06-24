@@ -24,6 +24,9 @@ class AuthController extends Controller
                 'message' => 'Hi ' . $user->name . ', selamat datang di sistem payroll',
                 'data' => [
                     'user' => $user,
+                    'entitas' => $user->entitas,
+                    'divisi' => $user->divisi,
+                    'jabatan' => $user->jabatan,
                     'token' => $token,
                     'token_type' => 'Bearer'
                 ]

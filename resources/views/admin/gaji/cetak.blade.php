@@ -164,7 +164,7 @@
                 <th class="text-center">Entitas</th>
                 <th class="text-center">Divisi</th>
                 <th class="text-center">Jabatan</th>
-                <th class="text-center">Tunjangan</th>
+                <th class="text-center">Penerimaan/Tunjangan</th>
                 <th class="text-center">Potongan</th>
                 <th class="text-center">Take Home Pay</th>
             </tr>
@@ -187,7 +187,11 @@
                             @endphp
                             <ul>
                                 <li>
-                                    Jabatan:
+                                    Gaji Pokok:
+                                    Rp. {{ number_format($item->gaji_pokok, 0, '', '.') }}
+                                </li>
+                                <li>
+                                    Tj. Jabatan:
                                     Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}
                                 </li>
                                 @if (is_array($tunjangan) && count($tunjangan) > 0)
@@ -196,7 +200,7 @@
                                         $jumlah_tunjangan = $item->tunjangan_jabatan + $total_tunjangan;
                                     @endphp
                                     @foreach ($tunjangan as $t)
-                                        <li>{{ $t['nama_tunjangan'] ?? '-' }}: Rp.
+                                        <li>Tj. {{ $t['nama_tunjangan'] ?? '-' }}: Rp.
                                             {{ number_format($t['nilai_tunjangan'], 0, '', '.') }}
                                         </li>
                                     @endforeach

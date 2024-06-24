@@ -52,6 +52,7 @@ class GajiImport implements ToCollection, WithHeadingRow
                     'status' => $row['status'],
                     'chat_id' => $row['chat_id'],
                     'jenis_kelamin' => $row['jenis_kelamin'],
+                    'gaji_pokok' => $row['gaji_pokok'],
                 ];
 
                 // Update or create related data in the SDM table
@@ -122,6 +123,7 @@ class GajiImport implements ToCollection, WithHeadingRow
             'tunjangan_jabatan' => $row['tunjangan_jabatan'],
             'entitas' => $row['entitas'],
             'divisi' => $row['divisi'],
+            'gaji_pokok' => $row['gaji_pokok'],
         ];
     }
 

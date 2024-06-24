@@ -183,7 +183,7 @@
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <input class="form-control gray-border" type="text" id="email"
-                                            name="email" value="{{ old('email') }}">
+                                                name="email" value="{{ old('email') }}">
                                         </div>
                                     </div>
                                     <div class="mb-3 col-md-6">
@@ -238,13 +238,22 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="default-select form-control wide gray-border" name="status"
-                                            id="status">
-                                            <option value="1">Pegawai Tetap</option>
-                                            <option value="0">Pegawai Tidak Tetap</option>
-                                        </select>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <select class="default-select form-control wide gray-border" name="status"
+                                                id="status">
+                                                <option value="1">Pegawai Tetap</option>
+                                                <option value="0">Pegawai Tidak Tetap</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="nik">Gaji Pokok <span style="color: red;">(*)</span></label>
+                                            <input class="form-control gray-border" type="text" id="gaji-pokok"
+                                                name="gaji_pokok" oninput="addCommas2(this)" value="{{ old('gaji_pokok') }}">
+                                        </div>
                                     </div>
                                     <script>
                                         $(document).ready(function() {

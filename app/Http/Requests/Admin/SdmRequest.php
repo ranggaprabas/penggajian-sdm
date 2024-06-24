@@ -32,8 +32,9 @@ class SdmRequest extends FormRequest
                         'divisi_id' => 'required',
                         'jenis_kelamin' => 'required',
                         'status' => 'required',
+                        'gaji_pokok' => 'required|integer|max:2147483647',
                         'chat_id' => 'nullable',
-                        'password' => 'required|min:3|confirmed'                       
+                        'password' => 'nullable|min:3|confirmed'                       
                     ];
                 }
                 case 'PUT':
@@ -47,6 +48,7 @@ class SdmRequest extends FormRequest
                             'divisi_id' => 'required',
                             'jenis_kelamin' => 'required',
                             'status' => 'required',
+                            'gaji_pokok' => 'required|integer|max:2147483647',
                             'chat_id' => 'nullable',
                             'password' => 'nullable|min:3|confirmed'
                     ];

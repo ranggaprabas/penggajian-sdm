@@ -36,6 +36,7 @@ class GajiExport implements FromCollection, WithHeadings
                 'tunjangan_jabatan' => $item->tunjangan_jabatan,
                 'entitas' => $item->entitas,
                 'divisi' => $item->divisi,
+                'gaji_pokok' => $item->gaji_pokok,
             ];
 
             // Memisahkan tunjangan menjadi kolom baru
@@ -153,6 +154,7 @@ class GajiExport implements FromCollection, WithHeadings
             'tunjangan_jabatan',
             'entitas',
             'divisi',
+            'gaji_pokok',
         ];
 
         // Dapatkan nama tunjangan dan potongan dari SDM pertama

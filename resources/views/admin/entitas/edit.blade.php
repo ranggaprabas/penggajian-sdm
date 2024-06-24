@@ -105,6 +105,12 @@
                                     <input class="form-control gray-border" style="width: 80%;" type="text"
                                         id="entitas-input" name="nama" value="{{ old('nama', $data->nama) }}">
                                 </div>
+                                <div style="gap: .5rem;flex-wrap: wrap;"
+                                    class="form-group justify-content-between d-flex align-items-center mb-5">
+                                    <label class="m-0" for="name">Alamat</label>
+                                    <input class="form-control gray-border" style="width: 80%;" type="text"
+                                        id="alamat-input" name="alamat" value="{{ old('alamat', $data->alamat) }}">
+                                </div>
                                 <div style="gap: .5rem; flex-wrap: wrap;" class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label for="gambar">Gambar</label>
                                     <input type="file" id="image" class="form-control gray-border" name="image" style="width: 80%;">

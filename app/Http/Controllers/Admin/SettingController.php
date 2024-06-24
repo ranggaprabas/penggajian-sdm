@@ -50,6 +50,7 @@ class SettingController extends Controller
 
             $validatedData = $request->validate([
                 'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'alamat' => 'required',
             ]);
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {

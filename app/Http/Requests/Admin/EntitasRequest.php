@@ -25,6 +25,7 @@ class EntitasRequest extends FormRequest
             case 'POST': {
                 return [
                     'nama' => 'required|unique:entitas',
+                    'alamat' => 'required',
                     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
                 ];
             }
@@ -32,6 +33,7 @@ class EntitasRequest extends FormRequest
             case 'PATCH': {
                 return [
                     'nama' => ['required', 'unique:entitas,nama,' . $this->route()->entita->id],
+                    'alamat' => 'required',
                     'image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
                 ];
             }

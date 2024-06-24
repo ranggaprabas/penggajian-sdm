@@ -161,7 +161,9 @@
                                                 <td>
                                                     @if ($admin->last_update)
                                                         @php
-                                                            $last_update = Carbon\Carbon::parse($admin->last_update)->tz('Asia/Jakarta');
+                                                            $last_update = Carbon\Carbon::parse(
+                                                                $admin->last_update,
+                                                            )->tz('Asia/Jakarta');
                                                         @endphp
                                                         {{ $last_update->format('Y-m-d H:i:s') }}
                                                     @else
@@ -180,10 +182,12 @@
                                                         class="btn btn-primary shadow btn-xs sharp me-1"> <i
                                                             class="fa fa-edit"></i>
                                                     </a>
-                                                    <a href="javascript:void(0)" id="btn-delete-admin"
-                                                        data-id="{{ $admin->id }}" data-nama="{{ $admin->nama }}"
-                                                        class="btn btn-danger shadow btn-xs sharp me-1"> <i
-                                                            class="fa fa-trash"></i></a>
+                                                    @if (auth()->user()->id !== $admin->id)
+                                                        <a href="javascript:void(0)" id="btn-delete-admin"
+                                                            data-id="{{ $admin->id }}" data-nama="{{ $admin->nama }}"
+                                                            class="btn btn-danger shadow btn-xs sharp me-1"> <i
+                                                                class="fa fa-trash"></i></a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @php

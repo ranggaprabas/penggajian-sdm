@@ -170,7 +170,8 @@
                                     <div class="mb-3 col-md-6">
                                         <div class="form-group">
                                             <label for="jabatan">Jabatan</label>
-                                            <select class="form-control gray-border select2" name="jabatan" id="jabatan">
+                                            <select class="form-control gray-border select2" name="jabatan"
+                                                id="jabatan">
                                                 <option value="" disabled selected>-- Pilih Jabatan --</option>
                                                 @foreach ($jabatans as $jabatanItem)
                                                     @if ($jabatanItem->deleted != 1)
@@ -271,19 +272,29 @@
                                             });
                                         });
                                     </script>
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="default-select form-control wide gray-border" name="status"
-                                            id="status">
-                                            <option {{ $gaji->status === 1 ? 'selected' : null }} value="1">
-                                                Pegawai
-                                                Tetap
-                                            </option>
-                                            <option {{ $gaji->status === 0 ? 'selected' : null }} value="0">
-                                                Pegawai
-                                                Tidak
-                                                Tetap</option>
-                                        </select>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <select class="default-select form-control wide gray-border" name="status"
+                                                id="status">
+                                                <option {{ $gaji->status === 1 ? 'selected' : null }} value="1">
+                                                    Pegawai
+                                                    Tetap
+                                                </option>
+                                                <option {{ $gaji->status === 0 ? 'selected' : null }} value="0">
+                                                    Pegawai
+                                                    Tidak
+                                                    Tetap</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="nik">Gaji Pokok <span style="color: red;">(*)</span></label>
+                                            <input class="form-control gray-border" type="text" id="gaji-pokok"
+                                                name="gaji_pokok" oninput="addCommas2(this)"
+                                                value="{{ old('gaji_pokok', str_replace(',', '.', number_format($gaji->gaji_pokok))) }}">
+                                        </div>
                                     </div>
                                     <!-- Form input untuk tunjangan -->
                                 </div>

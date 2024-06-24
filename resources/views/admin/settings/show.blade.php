@@ -116,19 +116,26 @@
                                 @method('PUT')
                                 @if (Auth::user()->status == 1)
                                     <div style="gap: .5rem;flex-wrap: wrap;"
-                                        class="form-group justify-content-between d-flex align-items-center mb-5">
+                                        class="form-group justify-content-between d-flex align-items-center mb-3">
                                         <label for="telegram_bot_token">Telegram Bot Token:</label>
                                         <input class="form-control gray-border" style="width: 100%;" type="text"
                                             id="setting" name="telegram_bot_token"
                                             value="{{ $setting->telegram_bot_token ?? '' }}">
                                     </div>
                                 @endif
+                                <div style="gap: .5rem;flex-wrap: wrap;"
+                                    class="form-group justify-content-between d-flex align-items-center mb-3">
+                                    <label for="alamat">Alamat Entitas:</label>
+                                    <input class="form-control gray-border" style="width: 100%;" type="text"
+                                        id="alamat" name="alamat"
+                                        value="{{ $entitas->alamat ?? '' }}">
+                                </div>
                                 <!-- Upload image field -->
                                 <div style="gap: .5rem; flex-wrap: wrap;"
                                     class="form-group justify-content-between d-flex align-items-center mb-5">
                                     <label for="image">Gambar Entitas</label>
-                                    <input type="file" id="image" class="form-control gray-border mb-3" name="image"
-                                        style="width: 100%;">
+                                    <input type="file" id="image" class="form-control gray-border mb-3"
+                                        name="image" style="width: 100%;">
                                     <!-- Display image from Entitas if available -->
                                     @if ($entitas && $entitas->image)
                                         <img src="{{ asset('storage/' . $entitas->image) }}" alt="Entitas Image"

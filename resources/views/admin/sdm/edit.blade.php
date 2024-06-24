@@ -141,7 +141,7 @@
                                                     @endforeach
                                                 </select>
                                             @else
-                                                <input type="text" class="form-control gray-border" 
+                                                <input type="text" class="form-control gray-border"
                                                     value="{{ $sdm->entitas->nama }}" readonly>
                                                 <input type="hidden" name="entitas_id" value="{{ $sdm->entitas->id }}">
                                             @endif
@@ -248,19 +248,29 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="default-select form-control wide gray-border" name="status"
-                                            id="status">
-                                            <option {{ $sdm->status === 1 ? 'selected' : null }} value="1">
-                                                Pegawai
-                                                Tetap
-                                            </option>
-                                            <option {{ $sdm->status === 0 ? 'selected' : null }} value="0">
-                                                Pegawai
-                                                Tidak
-                                                Tetap</option>
-                                        </select>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status">Status</label>
+                                            <select class="default-select form-control wide gray-border" name="status"
+                                                id="status">
+                                                <option {{ $sdm->status === 1 ? 'selected' : null }} value="1">
+                                                    Pegawai
+                                                    Tetap
+                                                </option>
+                                                <option {{ $sdm->status === 0 ? 'selected' : null }} value="0">
+                                                    Pegawai
+                                                    Tidak
+                                                    Tetap</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <div class="form-group">
+                                            <label for="nik">Gaji Pokok <span style="color: red;">(*)</span></label>
+                                            <input class="form-control gray-border" type="text" id="gaji-pokok"
+                                                name="gaji_pokok" oninput="addCommas2(this)"
+                                                value="{{ old('gaji_pokok', str_replace(',', '.', number_format($sdm->gaji_pokok))) }}">
+                                        </div>
                                     </div>
                                     <script>
                                         $(document).ready(function() {

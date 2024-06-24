@@ -26,6 +26,26 @@ class BotTelegramController extends Controller
         dd($response);
     }
 
+    public function resetWebhook()
+    {
+        // Hapus webhook yang ada
+        $response = Telegram::removeWebhook();
+
+        // Atur ulang webhook
+        $response = Telegram::setWebhook(['url' => env('TELEGRAM_WEBHOOK_URL')]);
+
+        if ($response === true) {
+            // Webhook berhasil diatur, tetapi kita ingin menampilkan halaman 404.
+            abort(404);
+        }
+
+        // Jika Anda ingin melakukan sesuatu setelah menetapkan webhook, tambahkan di sini.
+        // ...
+
+        // Respon seharusnya tidak pernah sampai ke sini jika webhook berhasil diatur.
+        dd($response);
+    }
+
 
     public function commandHandlerWebhook()
     {
@@ -38,7 +58,7 @@ class BotTelegramController extends Controller
         // Periksa jika perintah adalah /start
         if (strtolower($message->getText()) === '/start') {
             // Simpan informasi pengguna ke dalam database
-            $this->saveUserToDatabase($chat_id, $username);
+            $this->saveUserToDatabase($chat_id, $firstName);
 
             // Respon kepada pengguna
             Telegram::sendMessage([
@@ -68,24 +88,35 @@ class BotTelegramController extends Controller
             'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
         ];
 
-        // Mendapatkan tahun sekarang
+        // Mendapatkan tahun sekarang dan bulan sekarang
         $tahun_sekarang = date('Y');
+        $bulan_sekarang = date('n'); // Mendapatkan bulan sekarang dalam bentuk angka (1-12)
 
-        // Daftar tahun, misalnya dari tahun sekarang hingga dua tahun sebelumnya dan dua tahun berikutnya
+        // Daftar tahun, misalnya dari tahun sekarang hingga 1 tahun sebelumnya dan dua tahun berikutnya
         $tahun = range($tahun_sekarang - 1, $tahun_sekarang);
 
         // Menyusun tombol untuk setiap bulan
         $inline_keyboard = [];
-        $row = [];
-        foreach ($bulan as $index => $nama_bulan) {
-            // Menyusun callback data untuk pemilihan bulan dan tahun
-            foreach ($tahun as $thn) {
-                $callback_data = json_encode(['bulan' => ($index + 1), 'tahun' => $thn]);
-                $row[] = ['text' => $nama_bulan . ' ' . $thn, 'callback_data' => $callback_data];
+        foreach ($tahun as $thn) {
+            foreach ($bulan as $index => $nama_bulan) {
+                $bulan_angka = $index + 1;
+                // Hanya tampilkan bulan hingga bulan sekarang (termasuk bulan sekarang)
+                if ($thn < $tahun_sekarang || ($thn == $tahun_sekarang && $bulan_angka <= $bulan_sekarang)) {
+                    $nama_bulan_tahun = $nama_bulan . ' ' . $thn;
+                    // Tambahkan tanda bintang jika ini adalah bulan sekarang
+                    if ($bulan_angka == $bulan_sekarang && $thn == $tahun_sekarang) {
+                        $nama_bulan_tahun .= ' *';
+                    }
+                    // Menyusun callback data untuk pemilihan bulan dan tahun
+                    $callback_data = json_encode(['bulan' => $bulan_angka, 'tahun' => $thn]);
+                    // Tambahkan tombol ke dalam satu baris (row)
+                    $inline_keyboard[] = ['text' => $nama_bulan_tahun, 'callback_data' => $callback_data];
+                }
             }
-            $inline_keyboard[] = $row;
-            $row = [];
         }
+
+        // Pisahkan tombol-tombol menjadi beberapa baris sesuai keinginan
+        $inline_keyboard = array_chunk($inline_keyboard, 2); // Ubah 4 sesuai keinginan (jumlah tombol per baris)
 
         // Kirim pesan dengan tombol inline untuk bulan dan tahun
         Telegram::sendMessage([
@@ -175,7 +206,7 @@ class BotTelegramController extends Controller
         return json_decode($response, true);
     }
 
-    private function saveUserToDatabase($chat_id, $username)
+    private function saveUserToDatabase($chat_id, $firstName)
     {
         // Cek apakah pengguna sudah ada di database
         $user = TelegramUser::where('chat_id', $chat_id)->first();
@@ -184,7 +215,7 @@ class BotTelegramController extends Controller
         if (!$user) {
             TelegramUser::create([
                 'chat_id' => $chat_id,
-                'username' => $username,
+                'username' => $firstName,
                 // Tambahkan kolom lain yang ingin Anda simpan
             ]);
         }

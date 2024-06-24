@@ -283,7 +283,7 @@
                                             }
                                         }
 
-                                        return $jumlah_tunjangan - $jumlah_potongan;
+                                        return $item->gaji_pokok + $jumlah_tunjangan - $jumlah_potongan;
                                     }
                                 @endphp
                                 <table id="example2" class="display" style="width:100%">

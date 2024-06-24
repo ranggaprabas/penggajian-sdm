@@ -101,6 +101,10 @@
                                         <td>{{ $data->nama }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Entitas</th>
+                                        <td>{{ $data->entitas->nama ?? '' }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Email</th>
                                         <td>{{ $data->email }}</td>
                                     </tr>

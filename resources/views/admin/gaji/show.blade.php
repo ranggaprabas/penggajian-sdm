@@ -141,6 +141,12 @@
                                         <th>Telegram Id</th>
                                         <td>{{ $data->chat_id ?? '-' }}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Gaji Pokok</th>
+                                        <td><strong>Rp.
+                                            {{ number_format($data->gaji_pokok , 0, '', '.') }}
+                                        </strong></td>
+                                    </tr>
                                     <!-- Tampilkan total tunjangan -->
                                     <tr>
                                         <th>Total Tunjangan:</th>
@@ -218,7 +224,7 @@
                                     <tr>
                                         <th>Take Home Pay:</th>
                                         @php
-                                            $take_home_pay = $jumlah_tunjangan - $jumlah_potongan;
+                                            $take_home_pay = $data->gaji_pokok + $jumlah_tunjangan - $jumlah_potongan;
                                         @endphp
                                         <td>
                                             <strong>Rp. {{ number_format($take_home_pay, 0, '', '.') }}

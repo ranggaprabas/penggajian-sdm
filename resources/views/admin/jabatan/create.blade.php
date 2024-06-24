@@ -127,7 +127,7 @@
                                         <div class="input-group">
                                             <span class="input-group-text">Rp.</span>
                                             <input class="form-control gray-border" style="width: 80%;" type="text"
-                                                id="nilai-jabatan" name="tunjangan_jabatan" id="tunjangan_jabatan"
+                                                id="nilai-jabatan" name="tunjangan_jabatan"
                                                 oninput="addCommas(this)" value="{{ old('tunjangan_jabatan') }}">
                                         </div>
                                     </div>

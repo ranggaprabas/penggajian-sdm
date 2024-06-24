@@ -32,6 +32,54 @@ class LaporanApiController extends Controller
         return $daftarBulan[$bulan] ?? '';
     }
     // Cetak PDF Karyawan
+    public function getPdf(Request $request)
+    {
+        $bulan = $request->query('bulan');
+        $tahun = $request->query('tahun');
+        $namaBulan = $this->konversiBulan($bulan);
+        $tanggal = $bulan . $tahun;
+        $sdmId = Auth::user()->id;
+        $items = DB::table('absensi')
+            ->select(
+                'absensi.sdm_id',
+                'absensi.bulan',
+                'absensi.nama',
+                'absensi.email',
+                'absensi.nik',
+                'absensi.jenis_kelamin',
+                'absensi.entitas',
+                'absensi.divisi',
+                'absensi.jabatan',
+                'absensi.tunjangan_jabatan',
+                'absensi.tunjangan',
+                'absensi.gaji_pokok',
+                'absensi.potongan'
+            )
+            ->where('absensi.bulan', $tanggal)
+            ->where('absensi.sdm_id', $sdmId)
+            ->get();
+
+        if ($items->isNotEmpty()) {
+            $item = $items->first();
+
+            $timestamp = time();
+
+            $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
+
+            $filename = 'Slip_' . $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf';
+
+            $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
+
+            return $pdf->download($filename);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Slip Gaji yang diminta belum tersedia',
+            ], 404);
+        }
+    }
+
+    // Cetak PDF Karyawan
     public function store(Request $request)
     {
         $bulan = $request->bulan;
@@ -52,6 +100,7 @@ class LaporanApiController extends Controller
                 'absensi.jabatan',
                 'absensi.tunjangan_jabatan',
                 'absensi.tunjangan',
+                'absensi.gaji_pokok',
                 'absensi.potongan',
             )
             ->where('absensi.bulan', $tanggal)
@@ -84,6 +133,7 @@ class LaporanApiController extends Controller
             ], 404);
         }
     }
+
 
     public function cetakPinjamanApi($id)
     {

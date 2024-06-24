@@ -4,36 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cetak Slip Gaji SDM</title>
+    <title>Slip Gaji</title>
     <style>
         body {
-            font-family: 'Times New Roman', serif;
-            color: black;
-        }
-
-        .container {
+            font-family: Arial, sans-serif;
             margin: 20px;
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .title {
-            font-size: 24px;
-            font-weight: bold;
+        .header img {
+            width: 200px;
         }
 
-        .subtitle {
+        .header .header-text {
+            flex-grow: 1;
+            text-align: left;
+            margin-left: 300px;
+        }
+
+        .header .header-text h2 {
             font-size: 20px;
-            font-weight: bold;
+            margin: 0;
         }
 
-        .separator {
-            width: 50%;
-            border-width: 5px;
-            color: black;
-            margin: 10px auto;
+        .header .header-text p {
+            font-size: 10px;
+            margin: 5px 0;
+        }
+
+        .details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .details div {
+            width: 15%;
         }
 
         table {
@@ -44,8 +54,40 @@
 
         th,
         td {
-            border: 1px solid black;
             padding: 8px;
+            text-align: left;
+            border: none;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        .profile {
+            background-color: #ffffff;
+        }
+
+        .highlightJumlah {
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+        }
+
+        .highlight {
+            background-color: #062256;
+            color: white;
+        }
+
+        .spacing {
+            display: inline-block;
+            width: 10px;
+        }
+
+        .align-right {
+            float: right;
+        }
+
+        .center-text {
             text-align: center;
         }
 
@@ -53,62 +95,36 @@
             background-color: white;
         }
 
-        tr:nth-child(odd) {
-            background-color: #f2f2f2;
-            /* Warna latar belakang untuk baris ganjil */
+        tbody tr:nth-child(odd) {
+            background-color: #ffffff;
         }
 
-        tr:nth-child(even) {
-            background-color: white;
-            /* Warna latar belakang untuk baris genap */
+        tbody tr:nth-child(even) {
+            background-color: #d9edf7;
         }
 
-        tr.no-background {
-            background-color: transparent;
-            /* Atau biarkan kosong agar menggunakan warna default */
+        .currency {
+            display: flex;
+            justify-content: flex-end;
+            gap: 80px;
         }
 
-        tr.footer {
-            background-color: white;
-        }
-
-        ul {
-            list-style-position: inside;
-            padding: 3;
-            margin: 0;
-        }
-
-        li {
-            text-align: left;
+        .currency span {
+            display: inline-block;
+            width: 50px;
+            text-align: right;
         }
 
         .footer {
             margin-top: 20px;
         }
 
-        .signature {
-            width: 200px;
-            margin: 0 auto;
-        }
-
-        .date {
-            border-collapse: collapse;
+        .profile-table {
             width: 100%;
         }
 
-        .date td {
-            padding: 8px;
-            border: none;
-            text-align: left;
-        }
-
-        .no-background td {
-            background-color: transparent;
-        }
-
-        .separator td {
-            border-top: 1px solid #ccc;
-            /* Warna abu-abu */
+        .profile-table td {
+            padding: 4px;
         }
     </style>
 </head>
@@ -116,156 +132,166 @@
 <body>
     @foreach ($items as $item)
         @php
-            // Dapatkan data entitas berdasarkan nama
             $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
+            setlocale(LC_TIME, 'id_ID.UTF-8');
+            $tanggalCetak = strftime('%d %B %Y', strtotime('now'));
         @endphp
 
         @if ($entitas)
-            <div style="position: absolute; top: 20px; right: 5px;">
-                <img src="{{ public_path('storage/' . $entitas->image) }}" alt="{{ $entitas->nama }} Logo" width="130">
+        <div style="position: absolute; top: 20px; left: 17px;">
+            <img src="{{ public_path('storage/' . $entitas->image) }}" alt="{{ $entitas->nama }} Logo" width="170">
+        </div>
+            <div class="header">
+                <div class="header-text">
+                    <h2>{{ $entitas->nama }}</h2>
+                    <p>Jl. Bina Remaja No. 6 Banyumanik Semarang</p>
+                </div>
             </div>
-            <center>
-                <h2>{{ $entitas->nama }}</h2>
-                <h3>Slip Gaji SDM</h3>
-                <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
-            </center>
+
+            <h2 class="center-text">SLIP GAJI</h2>
+
+            <table class="profile-table">
+                <tr>
+                    <td class="profile" width="15%">Nama SDM</td>
+                    <td class="profile" width="10px">:</td>
+                    <td class="profile" width="35%">{{ $item->nama }}</td>
+                    <td class="profile" width="15%"></td>
+                    <td class="profile" width="15%">NIK</td>
+                    <td class="profile" width="10px">:</td>
+                    <td class="profile">{{ $item->nik }}</td>
+                </tr>
+                <tr>
+                    <td class="profile">Jabatan</td>
+                    <td class="profile">:</td>
+                    <td class="profile">{{ $item->jabatan }}</td>
+                    <td class="profile" width="15%"></td>
+                    <td class="profile">Bulan</td>
+                    <td class="profile">:</td>
+                    <td class="profile">{{ $namaBulan }} {{ $tahun }}</td>
+                </tr>
+            </table>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="highlight center-text" colspan="2">PENERIMAAN</th>
+                        <th class="highlight center-text" colspan="2">POTONGAN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $totalTunjangan = $item->tunjangan ? json_decode($item->tunjangan, true) : [];
+                        $totalPotongan = $item->potongan ? json_decode($item->potongan, true) : [];
+                        $maxRows = max(count($totalTunjangan) + 2, count($totalPotongan));
+                    @endphp
+
+                    @for ($i = 0; $i < $maxRows; $i++)
+                        <tr>
+                            @if ($i == 0)
+                                <td>
+                                    1. Gaji Pokok
+                                </td>
+                                <td>
+                                    Rp {{ number_format($item->gaji_pokok, 0, '', '.') }}
+                                </td>
+                            @elseif ($i == 1)
+                                <td>
+                                    2. Tunjangan Jabatan
+                                </td>
+                                <td>
+                                    Rp {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}
+                                </td>
+                            @else
+                                <td>
+                                    @if (isset($totalTunjangan[$i - 2]))
+                                        {{ $i + 1 }}. Tunjangan {{ $totalTunjangan[$i - 2]['nama_tunjangan'] }}
+                                        @if (!empty($totalTunjangan[$i - 2]['note_tunjangan']))
+                                            <br> ({{ $totalTunjangan[$i - 2]['note_tunjangan'] }})
+                                        @endif
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (isset($totalTunjangan[$i - 2]))
+                                        Rp {{ number_format($totalTunjangan[$i - 2]['nilai_tunjangan'], 0, '', '.') }}
+                                    @endif
+                                </td>
+                            @endif
+
+                            <td>
+                                @if (isset($totalPotongan[$i]))
+                                    {{ $i + 1 }}. {{ $totalPotongan[$i]['nama_potongan'] }}
+                                    @if (!empty($totalPotongan[$i]['note_potongan']))
+                                        <br> ({{ $totalPotongan[$i]['note_potongan'] }})
+                                    @endif
+                                @endif
+                            </td>
+                            <td>
+                                @if (isset($totalPotongan[$i]))
+                                    Rp {{ number_format($totalPotongan[$i]['nilai_potongan'], 0, '', '.') }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endfor
+                    <tr>
+                        <td colspan="4">&nbsp;</td>
+                    </tr>
+                    @php
+                        $total_tunjangan =
+                            $item->gaji_pokok +
+                            $item->tunjangan_jabatan +
+                            array_sum(array_column($totalTunjangan, 'nilai_tunjangan'));
+                        $total_potongan = array_sum(array_column($totalPotongan, 'nilai_potongan'));
+                    @endphp
+                    <tr>
+                        <td class="highlightJumlah" colspan="2">
+                            <strong>Jumlah Gaji Bruto</strong>
+                            <div class="align-right currency">
+                                <strong>Rp</strong>
+                                <strong>{{ number_format($total_tunjangan, 0, '', '.') }}</strong>
+                            </div>
+                        </td>
+                        <td class="highlightJumlah" colspan="2">
+                            <strong>Jumlah Potongan</strong>
+                            <div class="align-right currency">
+                                <strong>Rp</strong>
+                                <strong>{{ number_format($total_potongan, 0, '', '.') }}</strong>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="highlight" colspan="2">
+                            <strong>Jumlah Take Home Pay</strong>
+                            <div class="align-right currency">
+                                <strong>Rp</strong>
+                                <strong>{{ number_format($total_tunjangan - $total_potongan, 0, '', '.') }}</strong>
+                            </div>
+                        </td>
+                        <td class="highlight" colspan="2"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table width="100%" style="border: none;">
+                <tr class="footer">
+                    <td style="border: none; text-align: left;">
+                        <p>Semarang, {{ $tanggalCetak }} </p>
+                        <p>Dibuat Oleh :</p>
+                        <br>
+                        <br>
+                        <p class="font-weight-bold">Finance</p>
+                    </td>
+                    <td width="150px" style="border: none;">
+                        <p>&nbsp;</p>
+                        <p>Diterima Oleh:</p>
+                        <br>
+                        <br>
+                        <p class="font-weight-bold">{{ $item->nama }}</p>
+                    </td>
+                </tr>
+            </table>
         @endif
-        <table style="width:100%" class="date">
-            <tr class="no-background">
-                <td width="15%">Nama SDM</td>
-                <td width="10px">:</td>
-                <td>{{ $item->nama }}</td>
-            </tr>
-            <tr class="no-background">
-                <td width="15%">Email</td>
-                <td width="10px">:</td>
-                <td>{{ $item->email }}</td>
-            </tr>
-            <tr class="no-background">
-                <td>NIK</td>
-                <td>:</td>
-                <td>{{ $item->nik }}</td>
-            </tr>
-            <tr class="no-background">
-                <td>Entitas</td>
-                <td>:</td>
-                <td>{{ $item->entitas }}</td>
-            </tr>
-            <tr class="no-background">
-                <td>Divisi</td>
-                <td>:</td>
-                <td>{{ $item->divisi }}</td>
-            </tr>
-            <tr class="no-background">
-                <td>Jabatan</td>
-                <td>:</td>
-                <td>{{ $item->jabatan }}</td>
-            </tr>
-            <tr class="no-background">
-                <td>Bulan</td>
-                <td>:</td>
-                <td>{{ $namaBulan }}</td>
-            </tr>
-            <tr class="no-background">
-                <td>Tahun</td>
-                <td>:</td>
-                <td>{{ $tahun }}</td>
-            </tr>
-        </table>
-
-        <table class="table table-striped table-bordered mt-3">
-            <tr>
-                <th class="text-center" width="5%">No</th>
-                <th class="text-center" width="40%">Tunjangan (+)</th>
-                <th class="text-center" width="40%">Jumlah</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Tj. Jabatan</td>
-                <td>Rp. {{ number_format($item->tunjangan_jabatan, 0, '', '.') }}</td>
-            </tr>
-            @php
-                $totalTunjangan = $item->tunjangan ? json_decode($item->tunjangan, true) : [];
-            @endphp
-            @foreach ($totalTunjangan as $key => $tun)
-                <tr>
-                    <td>{{ $loop->iteration + 1 }}</td>
-                    <td>
-                        Tj. {{ $tun['nama_tunjangan'] }}
-                        <br>
-                        @if (!empty($tun['note_tunjangan']))
-                            ({{ $tun['note_tunjangan'] }})
-                        @endif
-                    </td>
-                    <td>Rp. {{ number_format($tun['nilai_tunjangan'], 0, '', '.') }}</td>
-                </tr>
-            @endforeach
-            @php
-                $total_tunjangan = $item->tunjangan_jabatan + array_sum(array_column($totalTunjangan, 'nilai_tunjangan'));
-            @endphp
-            <tr>
-                <th colspan="2" style="text-align: right;">Total Tunjangan</th>
-                <th>Rp. {{ number_format($total_tunjangan, 0, '', '.') }}</th>
-            </tr>
-
-        </table>
-
-        <table class="table table-striped table-bordered mt-3">
-            <tr>
-                <th class="text-center" width="5%">No</th>
-                <th class="text-center" width="40%">Potongan (-)</th>
-                <th class="text-center" width="40%">Jumlah</th>
-            </tr>
-            @php
-                $totalPotongan = $item->potongan ? json_decode($item->potongan, true) : [];
-            @endphp
-            @foreach ($totalPotongan as $key => $pot)
-                <tr>
-                    <td>{{ $loop->iteration + 0 }}</td>
-                    <td>
-                        {{ $pot['nama_potongan'] }}
-                        <br>
-                        @if (!empty($pot['note_potongan']))
-                            ({{ $pot['note_potongan'] }})
-                        @endif
-                    </td>
-                    <td>Rp. {{ number_format($pot['nilai_potongan'], 0, '', '.') }}</td>
-                </tr>
-            @endforeach
-            @php
-                $total_potongan = array_sum(array_column($totalPotongan, 'nilai_potongan'));
-            @endphp
-            <tr>
-                <th colspan="2" style="text-align: right;">Total Potongan</th>
-                <th>Rp. {{ number_format($total_potongan, 0, '', '.') }}</th>
-            </tr>
-            @php
-                $total_gaji = $total_tunjangan - $total_potongan;
-            @endphp
-            <tr>
-                <th colspan="2" style="text-align: right;">Take Home Pay</th>
-                <th>Rp. {{ number_format($total_gaji, 0, '', '.') }}</th>
-            </tr>
-        </table>
-
-
-        <table width="100%" style="border: none;">
-            <tr class="footer">
-                <td style="border: none; text-align: left;">
-                    <p>SDM</p>
-                    <br>
-                    <br>
-                    <p class="font-weight-bold">{{ $item->nama }}</p>
-                </td>
-                <td width="200px" style="border: none;">
-                    <p class="font-weight-bold">Semarang, {{ date('d M Y') }} Manager,</p>
-                    <br>
-                    <br>
-                    <p>_________________</p>
-                </td>
-            </tr>
-        </table>
     @endforeach
+
 </body>
 
 </html>

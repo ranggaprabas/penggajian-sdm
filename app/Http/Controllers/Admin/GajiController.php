@@ -65,13 +65,13 @@ class GajiController extends Controller
         if ($statusAdmin == 1) {
             // Jika status adalah 1, tampilkan semua data
             $items = DB::table('absensi')
-                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
+                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.gaji_pokok', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulan)
                 ->get();
         } else {
             // Jika status bukan 1, tampilkan data sesuai entitas_id
             $items = DB::table('absensi')
-                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.tunjangan', 'absensi.potongan')
+                ->select('absensi.id', 'absensi.sdm_id', 'absensi.bulan', 'absensi.nama', 'absensi.email', 'absensi.nik', 'absensi.jenis_kelamin', 'absensi.entitas', 'absensi.divisi', 'absensi.jabatan', 'absensi.tunjangan_jabatan', 'absensi.gaji_pokok', 'absensi.tunjangan', 'absensi.potongan')
                 ->where('absensi.bulan', $bulan)
                 ->where('absensi.entitas', $entitasAdmin)
                 ->get();
@@ -179,6 +179,7 @@ class GajiController extends Controller
             'jenis_kelamin' => $sdm->jenis_kelamin,
             'jabatan' => $sdm->jabatan->nama,
             'tunjangan_jabatan' => $sdm->jabatan->tunjangan_jabatan,
+            'gaji_pokok' => $sdm->gaji_pokok,
             'tunjangan' => json_encode($tunjanganDinamis),
             'potongan' => json_encode($potonganDinamis),
             'entitas' => $sdm->entitas->nama,
@@ -217,6 +218,7 @@ class GajiController extends Controller
                 'absensi.jabatan',
                 'absensi.tunjangan_jabatan',
                 'absensi.tunjangan',
+                'absensi.gaji_pokok',
                 'absensi.potongan',
             )
             ->where('absensi.id', $id)
@@ -359,6 +361,7 @@ class GajiController extends Controller
             'jenis_kelamin' => 'required',
             'chat_id' => 'nullable',
             'nik' => 'required',
+            'gaji_pokok' => 'required',
         ]);
 
         // Update data gaji
@@ -405,6 +408,7 @@ class GajiController extends Controller
             'jabatan_id' => $selectedJabatan->id,
             'email' => $request->input('email'),
             'nik' => $request->input('nik'),
+            'gaji_pokok' => $request->input('gaji_pokok'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
             'chat_id' => $request->input('chat_id'),
             'status' => $request->input('status'),
@@ -493,6 +497,7 @@ class GajiController extends Controller
                     'absensi.jabatan',
                     'absensi.tunjangan_jabatan',
                     'absensi.tunjangan',
+                    'absensi.gaji_pokok',
                     'absensi.potongan',
                 )
                 ->where('absensi.bulan', $tanggal)
@@ -511,6 +516,7 @@ class GajiController extends Controller
                     'absensi.jabatan',
                     'absensi.tunjangan_jabatan',
                     'absensi.tunjangan',
+                    'absensi.gaji_pokok',
                     'absensi.potongan',
                 )
                 ->where('absensi.bulan', $tanggal)
@@ -563,6 +569,7 @@ class GajiController extends Controller
                     'absensi.tunjangan_jabatan',
                     'absensi.entitas',
                     'absensi.divisi',
+                    'absensi.gaji_pokok',
                 )
                 ->where('absensi.bulan', $tanggal)
                 ->get();
@@ -587,6 +594,7 @@ class GajiController extends Controller
                     'absensi.tunjangan_jabatan',
                     'absensi.entitas',
                     'absensi.divisi',
+                    'absensi.gaji_pokok',
                 )
                 ->where('absensi.bulan', $tanggal)
                 ->where('absensi.entitas', $entitasAdmin)
@@ -612,7 +620,7 @@ class GajiController extends Controller
             $firstRow = Excel::toArray(new GajiImport, $file)[0][0];
 
             // Define the required keys
-            $requiredKeys = ['id', 'sdm_id', 'chat_id', 'bulan', 'created_at', 'updated_at', 'nama', 'email', 'status', 'nik', 'jenis_kelamin', 'jabatan', 'tunjangan_jabatan', 'entitas', 'divisi'];
+            $requiredKeys = ['id', 'sdm_id', 'chat_id', 'bulan', 'created_at', 'updated_at', 'nama', 'email', 'status', 'nik', 'jenis_kelamin', 'jabatan', 'tunjangan_jabatan', 'entitas', 'divisi', 'gaji_pokok'];
 
             // Check if all required keys are present in the Excel file
             if (count(array_diff($requiredKeys, array_keys($firstRow))) > 0) {
@@ -660,6 +668,7 @@ class GajiController extends Controller
                 'tunjangan_jabatan',
                 'tunjangan',
                 'potongan',
+                'gaji_pokok',
                 'chat_id'
             )
             ->where('bulan', $tanggal)
@@ -669,7 +678,7 @@ class GajiController extends Controller
         // Pastikan data ditemukan
         if ($items->isNotEmpty()) {
             // Generate URL untuk endpoint print PDF
-            $pdfEndpoint = route('download-pdf', [
+            $pdfEndpoint = route('slip-pdf', [
                 'chat_id' => $chat_id,
                 'bulan' => $bulan,
                 'tahun' => $tahun,
@@ -692,7 +701,7 @@ class GajiController extends Controller
         }
     }
 
-    public function downloadPDF(Request $request, $chat_id, $bulan, $tahun)
+    public function slipPDF(Request $request, $chat_id, $bulan, $tahun)
     {
         // Logika untuk menghasilkan PDF
         $namaBulan = $this->konversiBulan($bulan);
@@ -713,6 +722,7 @@ class GajiController extends Controller
                 'tunjangan_jabatan',
                 'tunjangan',
                 'potongan',
+                'gaji_pokok',
                 'chat_id'
             )
             ->where('bulan', $tanggal)
@@ -729,6 +739,11 @@ class GajiController extends Controller
 
             // Generate PDF menggunakan DomPDF
             $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
+
+            // Set password pengguna (timestamp) untuk PDF
+            $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
+
+            // Dapatkan konten PDF
             $pdfContent = $pdf->output();
 
             // Set header untuk menentukan tipe file sebagai PDF dan menentukan untuk menampilkan langsung (inline)
@@ -739,7 +754,7 @@ class GajiController extends Controller
             ];
 
             // Berikan respons dengan file PDF
-            return Response::make($pdfContent, 200, $headers);
+            return response()->make($pdfContent, 200, $headers);
         } else {
             // Handle jika data tidak ditemukan
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
@@ -748,63 +763,65 @@ class GajiController extends Controller
 
 
 
-    public function printPDF(Request $request, $chat_id, $bulan, $tahun)
-    {
-        $namaBulan = $this->konversiBulan($bulan);
-        $tanggal = $bulan . $tahun;
 
-        // Ambil data absensi termasuk chat_id
-        $items = DB::table('absensi')
-            ->select(
-                'sdm_id',
-                'bulan',
-                'nama',
-                'email',
-                'nik',
-                'jenis_kelamin',
-                'entitas',
-                'divisi',
-                'jabatan',
-                'tunjangan_jabatan',
-                'tunjangan',
-                'potongan',
-                'chat_id'
-            )
-            ->where('bulan', $tanggal)
-            ->where('chat_id', $chat_id)
-            ->get();
+    // public function printPDF(Request $request, $chat_id, $bulan, $tahun)
+    // {
+    //     $namaBulan = $this->konversiBulan($bulan);
+    //     $tanggal = $bulan . $tahun;
 
-        // Pastikan data ditemukan
-        if ($items->isNotEmpty()) {
-            $item = $items->first(); // Mengambil hanya satu baris karena asumsi Anda hanya ingin satu item
-            $timestamp = time();
+    //     // Ambil data absensi termasuk chat_id
+    //     $items = DB::table('absensi')
+    //         ->select(
+    //             'sdm_id',
+    //             'bulan',
+    //             'nama',
+    //             'email',
+    //             'nik',
+    //             'jenis_kelamin',
+    //             'entitas',
+    //             'divisi',
+    //             'jabatan',
+    //             'tunjangan_jabatan',
+    //             'tunjangan',
+    //             'potongan',
+    //             'gaji_pokok',
+    //             'chat_id'
+    //         )
+    //         ->where('bulan', $tanggal)
+    //         ->where('chat_id', $chat_id)
+    //         ->get();
 
-            // Dapatkan data entitas berdasarkan nama
-            $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
+    //     // Pastikan data ditemukan
+    //     if ($items->isNotEmpty()) {
+    //         $item = $items->first(); // Mengambil hanya satu baris karena asumsi Anda hanya ingin satu item
+    //         $timestamp = time();
+
+    //         // Dapatkan data entitas berdasarkan nama
+    //         $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
 
 
-            // Generate PDF menggunakan DomPDF
-            $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
-            $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
-            $pdfContent = $pdf->output();
+    //         // Generate PDF menggunakan DomPDF
+    //         $pdf = PDF::loadView('admin.laporan.cetak-gaji', compact('items', 'bulan', 'namaBulan', 'tahun'));
+    //         $pdf->setEncryption($timestamp, '', ['print', 'copy'], 0);
+    //         $pdfContent = $pdf->output();
 
-            // Response PDF langsung sebagai file download
-            $response = Response::make($pdfContent, 200);
-            $response->header('Content-Type', 'application/pdf');
-            $response->header('Content-Disposition', 'attachment; filename=Slip_' . $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf');
-            $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-            $response->header('Cache-Control', 'post-check=0, pre-check=0');
-            $response->header('Pragma', 'no-cache');
+    //         // Response PDF langsung sebagai file download
+    //         $response = Response::make($pdfContent, 200);
+    //         $response->header('Content-Type', 'application/pdf');
+    //         $response->header('Content-Disposition', 'attachment; filename=Slip_' . $item->entitas . '_' . $item->nama . '_' . $timestamp . '.pdf');
+    //         $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    //         $response->header('Cache-Control', 'post-check=0, pre-check=0');
+    //         $response->header('Pragma', 'no-cache');
 
-            return $response;
-        } else {
-            // Handle the case when there is no data found
-            return response()->json([
-                'status' => false,
-                'message' => 'Slip Gaji yang diminta belum tersedia',
-            ], 404);
-        }
-    }
+    //         return $response;
+    //     } else {
+    //         // Handle the case when there is no data found
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Slip Gaji yang diminta belum tersedia',
+    //         ], 404);
+    //     }
+    // }
 
 
     public function destroy($id)

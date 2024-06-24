@@ -150,7 +150,12 @@ class SdmController extends Controller
     public function store(SdmRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make($request->input('password')); 
+        // Set default password jika password kosong
+        $password = $request->input('password');
+        if (empty($password)) {
+            $password = 'crocodichebat';
+        }
+        $data['password'] = Hash::make($password);
         $user = Sdm::create($data);
         LogActivity::create([
             'table_name' => 'sdms',

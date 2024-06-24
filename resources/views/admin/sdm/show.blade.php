@@ -115,7 +115,14 @@
                                     </tr>
                                     <tr>
                                         <th>Entitas</th>
-                                        <td>{{ $data->entitas->nama ?? '-' }}</td>
+                                        <td>
+                                            @if ($data->entitas->deleted == 1)
+                                                {{ $data->entitas->nama }} <span style="color: red;">(entitas
+                                                    deleted)</span>
+                                            @else
+                                                {{ $data->entitas->nama ?? '-' }}
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Divisi</th>
@@ -135,6 +142,12 @@
                                     <tr>
                                         <th>Telegram Id</th>
                                         <td>{{ $data->chat_id ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Gaji Pokok</th>
+                                        <td><strong>Rp.
+                                            {{ number_format($data->gaji_pokok , 0, '', '.') }}
+                                        </strong></td>
                                     </tr>
                                     <!-- Tampilkan total tunjangan -->
                                     <tr>
@@ -205,7 +218,7 @@
                                     <tr>
                                         <th>Take Home Pay:</th>
                                         @php
-                                            $takeHomePay = $totalTunjangan - $totalPotongan;
+                                            $takeHomePay = $data->gaji_pokok + $totalTunjangan - $totalPotongan;
                                         @endphp
                                         <td>
                                             <strong>Rp. {{ number_format($takeHomePay, 0, '', '.') }}

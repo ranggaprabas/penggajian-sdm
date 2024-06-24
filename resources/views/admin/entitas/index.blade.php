@@ -122,7 +122,9 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama</th>
+                                            <th>Alamat</th>
                                             <th class="col-5">Gambar</th>
+                                            <th>Status</th>
                                             <th>User</th>
                                             <th>Last Update</th>
                                             <th class="action-column">Action</th>
@@ -133,15 +135,25 @@
                                             <tr id="index_{{ $item->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }}</td>
+                                                <td>{{ $item->alamat }}</td>
                                                 <td>
                                                     <img src="{{ asset('storage/' . $item->image) }}" alt="Image Our"
                                                         class="w-25">
+                                                </td>
+                                                <td>
+                                                    @if ($item->deleted == 1)
+                                                        <span class="badge light badge-danger">Tidak Aktif</span>
+                                                    @else
+                                                        <span class="badge light badge-success">Aktif</span>
+                                                    @endif
                                                 </td>
                                                 <td>{{ $item->username ?? 'Empty user last update' }}</td>
                                                 <td>
                                                     @if ($item->last_update)
                                                         @php
-                                                            $last_update = \Carbon\Carbon::parse($item->last_update)->tz('Asia/Jakarta');
+                                                            $last_update = \Carbon\Carbon::parse(
+                                                                $item->last_update,
+                                                            )->tz('Asia/Jakarta');
                                                         @endphp
                                                         {{ $last_update->format('Y-m-d H:i:s') }}
                                                     @else
@@ -161,10 +173,20 @@
                                                     @method('delete')
                                                     <button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>
                                                 </form> --}}
-                                                    <a href="javascript:void(0)" id="btn-delete-post"
-                                                        data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
-                                                        class="btn btn-danger shadow btn-xs sharp me-1"> <i
-                                                            class="fa fa-trash"></i></a>
+                                                    @if ($item->deleted == 1)
+                                                        <a href="javascript:void(0)" id="btn-restore-entitas"
+                                                            data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                                            class="btn btn-success shadow btn-xs sharp me-1">
+                                                            <i class="fa fa-power-off"></i>
+                                                        </a>
+                                                    @else
+                                                        <a href="javascript:void(0)" id="btn-delete-post"
+                                                            data-id="{{ $item->id }}"
+                                                            data-nama="{{ $item->nama }}"
+                                                            class="btn btn-danger shadow btn-xs sharp me-1"> <i
+                                                                class="fa fa-trash"></i></a>
+                                                    @endif
+
                                                 </td>
                                             </tr>
                                         @endforeach

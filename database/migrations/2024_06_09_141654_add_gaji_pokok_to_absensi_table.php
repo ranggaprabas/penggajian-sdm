@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('absensi', function (Blueprint $table) {
             //
-            $table->integer('entitas_id')->nullable();
-
+            $table->integer('gaji_pokok')->nullable()->after('tunjangan_jabatan');
         });
     }
 
@@ -23,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('absensi', function (Blueprint $table) {
             //
         });
     }

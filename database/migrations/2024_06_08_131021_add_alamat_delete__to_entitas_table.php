@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('entitas', function (Blueprint $table) {
             //
-            $table->integer('entitas_id')->nullable();
-
+            $table->string('alamat')->nullable()->after('image');
+            $table->boolean('deleted')->default(false)->after('alamat');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('entitas', function (Blueprint $table) {
             //
         });
     }
