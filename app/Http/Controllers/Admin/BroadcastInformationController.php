@@ -169,41 +169,77 @@ class BroadcastInformationController extends Controller
             ->with('success', 'Broadcast Information berhasil dikirim');
     }
 
-    private function sendTelegramMessage($username, $message)
+    private function sendTelegramMessage($chat_id, $message)
     {
         // Check if TELEGRAM_BOT_TOKEN is set
         $telegramSetting = Setting::where('telegram_bot_token', '!=', '')->first();
         if (!$telegramSetting) {
             // Token not set, log an error or handle as needed
-            \Log::error('Telegram Bot Token not configured. Message not sent to ' . $username);
+            \Log::error('Telegram Bot Token not configured. Message not sent to ' . $chat_id);
             return;
         }
+
         // Periksa apakah pesannya kosong
         if (empty(trim($message))) {
             \Log::error('Pesan kosong.');
             return;
         }
 
-        // Hapus tag HTML yang tidak diinginkan
-        $allowedTags = '<b><strong><i><em><u><ins><s><strike><del><span><a><tg-emoji><code><pre>';
-        $message = strip_tags($message, $allowedTags);
-        $message = str_replace('&nbsp;', ' ', $message);
+        // Function to remove &nbsp; and format bold and italic text
+        $message = $this->cleanAndFormatText($message);
 
-        $response = Telegram::sendMessage([
-            'chat_id' => $username,
-            'text' => $message,
-            'parse_mode' => 'HTML'
-        ]);
+        // Convert HTML to plain text
+        $plainMessage = str_replace(['<p>', '</p>', '<br>', '<br/>', '<br />'], "\n", $message);
+        $plainMessage = strip_tags($plainMessage);
+        $plainMessage = preg_replace("/(\n\s*)+\n/", "\n", $plainMessage); // Remove extra new lines
 
-        if ($response->isOk()) {
-            // Pesan berhasil dikirim
-            \Log::info('Pesan berhasil dikirim ke ' . $username);
+        // Encode the message with Markdown V2 formatting
+        $encodedMessage = urlencode($plainMessage);
+
+        // Retrieve Telegram bot token from settings
+        $telegramBotToken = $telegramSetting->telegram_bot_token;
+
+        // Build URL to send message using Telegram API
+        $url = "https://api.telegram.org/bot$telegramBotToken/sendMessage?chat_id=$chat_id&text=$encodedMessage&parse_mode=MarkdownV2";
+
+        // Send HTTP request using cURL
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // Check response and handle accordingly
+        if ($httpCode == 200) {
+            // Message sent successfully
+            \Log::info('Pesan berhasil dikirim ke ' . $chat_id);
         } else {
-            // Tangani kesalahan
-            // Catat atau beri tahu admin tentang kegagalan
-            \Log::error('Gagal mengirim pesan Telegram ke ' . $username . ': ' . $response->getDescription());
+            // Handle error
+            // Log or notify admin about the failure
+            \Log::error('Gagal mengirim pesan Telegram ke ' . $chat_id . ': ' . $response);
         }
     }
+
+    // Function to remove &nbsp; and format bold and italic text
+    private function cleanAndFormatText($message)
+    {
+        // Remove &nbsp; and replace with regular space
+        $message = str_replace('&nbsp;', ' ', $message);
+
+        // Detect <strong> tags and convert them to Markdown bold (* *)
+        $message = preg_replace("/<strong>(.*?)<\/strong>/s", "*$1*", $message);
+
+        // Detect <i> tags and convert them to Markdown italic (_ _)
+        $message = preg_replace("/<i>(.*?)<\/i>/s", "_$1_", $message);
+
+        // Detect text wrapped in asterisks and keep them as they are
+        // Assuming they are already intended to be bold in Markdown
+        $message = preg_replace("/\*(.*?)\*/s", "*$1*", $message);
+
+        return $message;
+    }
+
+
 
     public function show($id)
     {
