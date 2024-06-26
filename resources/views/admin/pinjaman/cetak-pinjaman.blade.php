@@ -14,8 +14,24 @@
         .container {
             margin: 20px;
         }
-
         .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header .header-text {
+            flex-grow: 1;
+            text-align: left;
+            margin-left: 300px;
+        }
+
+        .header .header-text h2 {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        .center-text {
             text-align: center;
         }
 
@@ -121,17 +137,22 @@
         @php
             // Dapatkan data entitas berdasarkan nama
             $entitas = \App\Models\Entitas::where('nama', $item->entitas)->first();
+            setlocale(LC_TIME, 'id_ID.UTF-8');
+            $tanggalCetak = strftime('%d %B %Y', strtotime('now'));
         @endphp
 
         @if ($entitas)
-            <div style="position: absolute; top: 20px; right: 5px;">
-                <img src="{{ public_path('storage/' . $entitas->image) }}" alt="{{ $entitas->nama }} Logo" width="130">
+        <div style="position: absolute; top: 20px; left: 17px;">
+            <img src="{{ public_path('storage/' . $entitas->image) }}" alt="{{ $entitas->nama }} Logo" width="170">
+        </div>
+            <div class="header">
+                <div class="header-text">
+                    <h2>{{ $entitas->nama }}</h2>
+                    <p>{{ $entitas->alamat }}</p>
+                </div>
             </div>
-            <center>
-                <h2>{{ $entitas->nama }}</h2>
-                <h3>SURAT PERMOHONAN PEMINJAMAN UANG</h3>
-                <hr style="width: 50%;border-width: 5px;color:rgb(235, 235, 235)" />
-            </center>
+
+            <h3 class="center-text">SURAT PERMOHONAN PEMINJAMAN UANG</h3>
         @endif
         <table class="date">
             <tr class="no-background">
@@ -208,7 +229,7 @@
                 <td style="border: none; text-align: left;">
                 </td>
                 <td width="200px" style="border: none;">
-                    <p class="font-weight-bold">Semarang, {{ date('d M Y') }}</p>
+                    <p class="font-weight-bold">Semarang, {{ $tanggalCetak }}</p>
                     <br>
                     <p>_________________</p>
                     <p><strong>{{ $item->nama }}</strong></p>
