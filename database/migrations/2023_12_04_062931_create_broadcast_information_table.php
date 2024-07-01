@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('broadcast_information', function (Blueprint $table) {
             $table->id();
             $table->integer('category_id')->nullable();
-            $table->string('message')->nullable();
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }
